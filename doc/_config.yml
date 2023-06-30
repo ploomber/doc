@@ -1,6 +1,6 @@
 title: Ploomber Cloud documentation
 author: Ploomber
-logo: logo.png
+logo: static/logo.png
 
 execute:
   execute_notebooks: force
