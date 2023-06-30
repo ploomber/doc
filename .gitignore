@@ -1,3 +1,6 @@
+# sample data files
+*.csv
+
 # compiled documentation
 doc/_build
 
