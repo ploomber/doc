@@ -1,0 +1,9 @@
+name: doc
+
+channels:
+  - conda-forge
+
+dependencies:
+  - pip
+  - pip:
+    - jupyter-book
