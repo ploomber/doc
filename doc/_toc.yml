@@ -5,3 +5,7 @@ parts:
     chapters:
       - file: quickstart/signup
       - file: quickstart/dashboard
+
+  - caption: Dashboards
+    chapters:
+      - file: dashboards/customize

@@ -21,7 +21,7 @@ After a minute or so, you'll see the "Application logs", which expose your dashb
 Once the deployment is ready you'll see this in the "Application logs":
 
 
-```txt
+```
 Deployment with ID : {some id} completed successfully.
 ```
 
