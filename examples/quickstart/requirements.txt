@@ -2,3 +2,4 @@ jupysql
 duckdb
 duckdb-engine
 ipywidgets
+matplotlib
