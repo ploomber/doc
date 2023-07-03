@@ -1,8 +1,12 @@
 # Customize your dashboard
 
+```{tip}
+If you haven't deployed your first dashboard, check out the [quickstart guide.](../quickstart/dashboard.md)
+```
+
 To deploy a dashboard you need two files:
 
-1. A Jupyter notebook files (`.ipynb`)
+1. A Jupyter notebook file (`.ipynb`)
 2. A dependencies file (`requirements.txt`)
 
 ## Voilà

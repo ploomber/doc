@@ -2,7 +2,7 @@
 
 ## 1. Enter email and password
 
-To create a free account, go to the [sign up page](https://HOST/register).
+To create a free account, go to the [sign up page](https://platform.ploomber.io/register).
 
 ![](../static/web-signup-form.png)
 
@@ -12,7 +12,7 @@ You'll get a confirmation email (if you don't find it, check your spam folder!).
 
 ## 3. Sign in
 
-Submit your credentials in the [sign in page](http://localhost:3000/signin).
+Submit your credentials in the [sign in page](http://platform.ploomber.io/signin).
 
 ![](../static/web-home.png)
 
