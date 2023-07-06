@@ -12,19 +12,20 @@
 
 ## 3. Wait for the deployment to finish
 
-First, you'll see the `Deployment logs`, which show the progress of installing your dashboards's dependencies.
-
-After a minute or so, you'll see the `Application logs`, which expose your dashboard as a web application. The first deployment takes about 2 minutes.
+You'll see three tabs. First, you'll see the `DOCKER LOGS`, which show the progress of installing your dashboards's dependencies:
 
 ![](../static/dashboards-logs.png)
 
-Once the deployment is ready you'll see this in the `Application logs`:
+After a minute or so, you'll start to see the `DEPLOYMENT LOGS`, which will show you the deployment progress. The first deployment takes about 2 minutes.
 
+When you see something like this in the `DEPLOYMENT LOGS`:
 
 ```
 Deployment with ID : {some id} completed successfully.
 ```
 
-Scroll up and click on "View Dashboard"
+It means your application has finished deployment. Scroll up and click on "View Dashboard" to to open your dashboard!
 
 ![](../static/dashboards-view.png)
+
+Whenever someone opens your dashboard, you'll see new log entries in `APPLICATION LOGS`.
