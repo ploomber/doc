@@ -1,11 +1,30 @@
-# Welcome to your Jupyter Book
+# Ploomber Cloud documentation
 
-This is a small sample book to give you a feel for how book content is
-structured.
-It shows off a few of the major file types, as well as some sample content.
-It does not go in-depth into any particular topic - check out [the Jupyter Book documentation](https://jupyterbook.org) for more information.
+::::{grid} 1 1 2 3
+:class-container: text-center
+:gutter: 3
 
-Check out the content pages bundled with this sample book to see more.
+:::{grid-item-card}
+:link: quickstart/signup
+:link-type: doc
+:class-header: bg-light
 
-```{tableofcontents}
-```
+Sign up 🆙
+^^^
+
+Create a free account.
+:::
+
+:::{grid-item-card}
+:link: quickstart/dashboard
+:link-type: doc
+:class-header: bg-light
+
+Deploy a dashboard 📊
+^^^
+
+Learn to deploy a dashboard.
+
+::::
+
+👈 Otherwise, click on the most relevant section.
