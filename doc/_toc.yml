@@ -9,3 +9,4 @@ parts:
   - caption: Dashboards
     chapters:
       - file: dashboards/customize
+      - file: dashboards/jupyterlab-plugin
