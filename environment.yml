@@ -1,9 +1,11 @@
-name: doc
+name: cloud-doc
 
 channels:
   - conda-forge
 
 dependencies:
+  - python=3.11
   - pip
   - pip:
     - jupyter-book
+    - invoke

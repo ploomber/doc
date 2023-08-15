@@ -12,20 +12,23 @@
 
 ## 3. Wait for the deployment to finish
 
-You'll see three tabs. First, you'll see the `DOCKER LOGS`, which show the progress of installing your dashboards's dependencies:
+You'll see two tabs. First, you'll see the `DOCKER LOGS`, which show the progress of installing your dashboards's dependencies:
 
 ![](../static/dashboards-logs.png)
 
-After a minute or so, you'll start to see the `DEPLOYMENT LOGS`, which will show you the deployment progress. The first deployment takes about 2 minutes.
-
-When you see something like this in the `DEPLOYMENT LOGS`:
+After 1-2 minutes (depends on the number of dependencies), you'll see a message like this:
 
 ```
-Deployment with ID : {some id} completed successfully.
+[INFO] : Pushing image to XYZ ","podName":"ABC"
+[INFO] : Pushed XYZ ","podName":"ABC"
 ```
 
-It means your application has finished deployment. Scroll up and click on "View Dashboard" to to open your dashboard!
+Which the Docker image has been built. After a few seconds you'll see that the `VIEW DASHBOARD` button in the top right becomes available:
 
 ![](../static/dashboards-view.png)
 
-Whenever someone opens your dashboard, you'll see new log entries in `APPLICATION LOGS`.
+Click on it to see your dashboard!
+
+```{important}
+If you see a `Service not available` error when clicking on `VIEW DASHBOARD`, wait for a few seconds and try again (remember to remove your browser's cache)
+```
