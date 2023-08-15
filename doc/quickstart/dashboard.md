@@ -23,7 +23,7 @@ After 1-2 minutes (depends on the number of dependencies), you'll see a message 
 [INFO] : Pushed XYZ ","podName":"ABC"
 ```
 
-Which the Docker image has been built. After a few seconds you'll see that the `VIEW DASHBOARD` button in the top right becomes available:
+Which means the Docker image has been built. After a few seconds you'll see that the `VIEW DASHBOARD` button in the top right becomes available:
 
 ![](../static/dashboards-view.png)
 
