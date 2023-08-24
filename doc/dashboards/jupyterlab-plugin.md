@@ -1,10 +1,6 @@
 # JupyterLab plugin
 
 ```{important}
-The JupyterLab plugin is not temporarily available, use the [web interface](../quickstart/dashboard.md).
-```
-
-```{important}
 The plugin **is not** compatible with JupyterLab `4.x`, ensure you're running `3.x`: `pip install "jupyterlab<4"`
 
 This guide was tested with `jupysql-plugin==0.1.6`
