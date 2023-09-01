@@ -1,3 +1,4 @@
+# requirements for ml dashboard
 jupysql
 duckdb
 duckdb-engine
