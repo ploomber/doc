@@ -1,0 +1,6 @@
+openai
+ipywidgets
+ipython
+requests
+jupysql
+duckdb-engine
