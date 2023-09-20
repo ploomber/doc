@@ -1,6 +1,6 @@
 # requirements for ml dashboard
-jupysql
-duckdb
-duckdb-engine
+seaborn   
+scikit-learn
+pandas
+sklearn-evaluation
 ipywidgets
-matplotlib
