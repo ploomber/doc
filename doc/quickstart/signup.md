@@ -18,4 +18,4 @@ Submit your credentials in the [sign in page](http://platform.ploomber.io/signin
 
 ## 4. You're done!
 
-Now learn how to deploy your first [dashboard!](dashboard.md)
+Now learn how to deploy your first [app!](app.md)

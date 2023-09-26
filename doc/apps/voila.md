@@ -1,7 +1,7 @@
-# Customize your dashboard
+# Voilà
 
 ```{tip}
-If you haven't deployed your first dashboard, check out the [quickstart guide.](../quickstart/dashboard.md)
+If you haven't deployed your first dashboard, check out the [quickstart guide.](../quickstart/app.md)
 ```
 
 To deploy a dashboard you need two files:
@@ -23,3 +23,9 @@ jupysql
 pandas
 matplotlib
 ```
+
+## Deploy
+
+To deploy a Voilà app from the deployment menu, follow these instructions:
+
+![](../static/voila.png)

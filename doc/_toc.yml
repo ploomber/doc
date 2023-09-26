@@ -4,9 +4,11 @@ parts:
   - caption: Quickstart
     chapters:
       - file: quickstart/signup
-      - file: quickstart/dashboard
+      - file: quickstart/app
 
-  - caption: Dashboards
+  - caption: Apps
     chapters:
-      - file: dashboards/customize
-      - file: dashboards/jupyterlab-plugin
+      - file: apps/voila
+      - file: apps/flask
+      - file: apps/docker
+      - file: apps/jupyterlab-plugin

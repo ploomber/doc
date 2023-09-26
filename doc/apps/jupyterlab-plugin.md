@@ -1,4 +1,4 @@
-# JupyterLab plugin
+# JupyterLab plugin (Voilà)
 
 ```{important}
 The plugin **is not** compatible with JupyterLab `4.x`, ensure you're running `3.x`: `pip install "jupyterlab<4"`
