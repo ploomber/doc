@@ -16,7 +16,7 @@ You'll see two tabs. First, you'll see the `DOCKER LOGS`, which show the progres
 
 ![](../static/dashboards-logs.png)
 
-You can track progress progress completion from the status bar:
+You can track progress completion from the status bar:
 
 
 ![](../static/dashboards-progress.png)
