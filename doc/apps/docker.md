@@ -27,7 +27,10 @@ RUN pip install flask gunicorn
 ENTRYPOINT ["gunicorn", "app:app", "run", "--bind", "0.0.0.0:80", "--env", "SCRIPT_NAME=/{{PROJECT_ID}}"]
 ```
 
-Once you have all your files, create a zip file.
+Once you have all your files, `.zip` them. For example, a simple app will contain two files:
+
+- `Dockerfile`
+- `app.py`
 
 ## Deploy
 
