@@ -11,7 +11,7 @@ You need to provide a `Dockerfile`, you can use this [flask-based template](http
 For a successful deployment, you need the following:
 
 - Your app must run in port 80
-- You'll be assigned a  `ploomberapp.io/{{PROJECT_ID}}` URL, hence, your app must accept requests from the `/{{PROJECT_ID}}` path.
+- Once your app is deployed for the first time, a URL with the following format will be available: `https://ploomberapp.io/{{PROJECT_ID}}`. Hence, your Dockerfile must accept requests in the `/{{PROJECT_ID}}` path (`{{PROJECT_ID}}` is a placeholder)
 
 Here's an example using flask:
 
