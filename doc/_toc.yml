@@ -10,5 +10,6 @@ parts:
     chapters:
       - file: apps/voila
       - file: apps/flask
+      - file: apps/fastapi
       - file: apps/docker
       - file: apps/jupyterlab-plugin
