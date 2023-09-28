@@ -25,7 +25,7 @@ Once you have all your files, create a zip file.
 
 ## Deploy
 
-To deploy a Flask app from the deployment menu, follow these instructions:
+To deploy a FastAPI app from the deployment menu, follow these instructions:
 
 ![](../static/docker.png)
 
