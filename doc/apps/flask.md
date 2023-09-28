@@ -17,7 +17,7 @@ COPY app.py app.py
 RUN pip install flask gunicorn
 
 # this configuration is needed for your app to work, do not change it
-ENTRYPOINT ["gunicorn", "app:app", "run", "--bind", "0.0.0.0:80", "--env", "SCRIPT_NAME=/{{PROJECT_ID}}"]
+ENTRYPOINT ["gunicorn", "app:app", "run", "--bind", "0.0.0.0:80", "--env", "SCRIPT_NAME=/__PROJECT_ID__"]
 ```
 
 Once you have all your files, create a zip file.

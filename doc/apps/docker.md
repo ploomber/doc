@@ -11,7 +11,7 @@ You need to provide a `Dockerfile`, you can use this [flask-based template](http
 For a successful deployment, you need the following:
 
 - Your app must run in port 80
-- Once your app is deployed for the first time, a URL with the following format will be available: `https://ploomberapp.io/{{PROJECT_ID}}`. Hence, your Dockerfile must accept requests in the `/{{PROJECT_ID}}` path (`{{PROJECT_ID}}` is a placeholder)
+- Once your app is deployed for the first time, a URL with the following format will be available: `https://ploomberapp.io/__PROJECT_ID__`. Hence, your Dockerfile must accept requests in the `/__PROJECT_ID__` path (`__PROJECT_ID__` is a placeholder)
 
 Here's an example using flask:
 
@@ -24,7 +24,7 @@ COPY app.py app.py
 RUN pip install flask gunicorn
 
 # this configuration is needed for your app to work, do not change it
-ENTRYPOINT ["gunicorn", "app:app", "run", "--bind", "0.0.0.0:80", "--env", "SCRIPT_NAME=/{{PROJECT_ID}}"]
+ENTRYPOINT ["gunicorn", "app:app", "run", "--bind", "0.0.0.0:80", "--env", "SCRIPT_NAME=/__PROJECT_ID__"]
 ```
 
 Once you have all your files, `.zip` them. For example, a simple app will contain two files:
