@@ -1,0 +1,6 @@
+# requirements for analytical dashboard
+jupysql
+duckdb
+duckdb-engine
+ipywidgets
+matplotlib

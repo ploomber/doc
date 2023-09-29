@@ -1,0 +1,6 @@
+# requirements for ml dashboard
+seaborn   
+scikit-learn
+pandas
+sklearn-evaluation
+ipywidgets
