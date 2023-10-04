@@ -7,7 +7,7 @@ word_limit = solara.reactive(10)
 
 
 @solara.component
-def Home():
+def Page():
     # Calculate word_count within the component to ensure re-execution when reactive variables change.
     word_count = len(sentence.value.split())
 
@@ -27,4 +27,5 @@ def Home():
         solara.Success("Great short writing!")
 
 
-routes = [solara.Route(path="__PROJECT_ID__", component=Home, label="Home")]
+# The following line is required only when running the code in a Jupyter notebook:
+Page()
