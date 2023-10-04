@@ -8,8 +8,11 @@ parts:
 
   - caption: Apps
     chapters:
-      - file: apps/voila
       - file: apps/flask
       - file: apps/fastapi
+      - file: apps/streamlit
+      - file: apps/voila
+      - file: apps/solara
+      - file: apps/chainlit
       - file: apps/docker
       - file: apps/jupyterlab-plugin
