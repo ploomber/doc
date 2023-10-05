@@ -14,5 +14,6 @@ parts:
       - file: apps/voila
       - file: apps/solara
       - file: apps/chainlit
+      - file: apps/gradio
       - file: apps/docker
       - file: apps/jupyterlab-plugin
