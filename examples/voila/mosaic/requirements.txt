@@ -1,3 +1,5 @@
 # requirements for mosaic example
 pandas<2
 mosaic_widget
+jupysql
+duckdb-engine
