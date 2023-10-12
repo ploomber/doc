@@ -2,7 +2,7 @@
 
 [Altair](https://altair-viz.github.io/index.html) is a declarative statistical visualization library for Python.
 
-Based on [an Altair example](https://altair-viz.github.io/gallery/annual_weather_heatmap.html)
+Based on [an Altair example](https://altair-viz.github.io/gallery/interactive_cross_highlight.html)
 
 """
 import altair as alt
