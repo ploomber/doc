@@ -1,83 +1,87 @@
-"""# Altair
+from typing import Optional, cast
 
-[Altair](https://altair-viz.github.io/index.html) is a declarative statistical visualization library for Python.
-
-Based on [an Altair example](https://altair-viz.github.io/gallery/interactive_cross_highlight.html)
-
-"""
-import altair as alt
-from vega_datasets import data
 import pandas as pd
+
 import solara
-import json
+import solara.express as solara_px  # similar to plotly express, but comes with cross filters
+import solara.lab
+from solara.components.columns import Columns
+from solara.components.file_drop import FileDrop
 
-# title = "Altair visualization"
-source = data.movies()
+import spacy
+import pytextrank
 
-selected_datum = solara.reactive(None)
+
+try:
+    # fails on pyodide
+    # Reference: https://climatechange.chicago.gov/climate-impacts/climate-impacts-agriculture-and-food-supply
+    text_sample = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv")
+except:  # noqa
+    text_sample = None
+
+
+class State:
+    min_ngrams = solara.reactive(2)
+    max_ngrams = solara.reactive(5)
+    text = solara.reactive("")
+
+    @staticmethod
+    def load_sample():
+        State.text.value = "Artificial Intelligence (AI) is a transformative field of computer science that seeks to create machines and software capable of mimicking human-like cognitive functions. AI leverages advanced algorithms, vast datasets, and computing power to enable machines to perceive their environment, reason, learn from experiences, and make decisions autonomously. It encompasses a wide range of applications, from machine learning and natural language processing to computer vision and robotics. AI has revolutionized industries, enhancing automation, data analysis, and predictive capabilities. As AI continues to evolve, its impact on various sectors, including healthcare, finance, and transportation, is increasingly profound, offering the potential for innovation, efficiency, and improved quality of life."
+
+    @staticmethod
+    def load_from_file(file):
+        pass
+
+    @staticmethod
+    def reset():
+        State.text.value = None
 
 
 @solara.component
 def Page():
-    def on_click(datum):
-        selected_datum.value = datum
+    text = State.text.value
 
-    pts = alt.selection_point(encodings=['x'])
+    with solara.Sidebar():
+        with solara.Card("Controls", margin=0, elevation=0):
+            with solara.Column():
+                with solara.Row():
+                    solara.Button("Sample dataset", color="primary", text=True, outlined=True, on_click=State.load_sample)
+                    solara.Button("Clear dataset", color="primary", text=True, outlined=True, on_click=State.reset)
+                FileDrop(on_file=State.load_from_file, on_total_progress=lambda *args: None, label="Drag a .txt file here")
 
-    rect = alt.Chart(data.movies.url).mark_rect().encode(
-        alt.X('IMDB_Rating:Q').bin(),
-        alt.Y('Rotten_Tomatoes_Rating:Q').bin(),
-        alt.Color('count()').scale(scheme='greenblue').title('Total Records')
-    )
+                
 
-    circ = rect.mark_point().encode(
-        alt.ColorValue('grey'),
-        alt.Size('count()').title('Records in Selection')
-    ).transform_filter(
-        pts
-    )
+                if text is not None:
+                    solara.SliderInt(label="Minimum Ngram", value=State.min_ngrams, min=1, max=10)
+                    solara.SliderInt(label="Maximum Ngram", value=State.max_ngrams, min=1, max=10)
 
-    bar = alt.Chart(source, width=550, height=200).mark_bar().encode(
-        x='Major_Genre:N',
-        y='count()',
-        color=alt.condition(pts, alt.ColorValue("steelblue"), alt.ColorValue("grey"))
-    ).add_params(pts)
+    if text is not None:
+                    nlp = spacy.load("en_core_web_sm")
+                    # add PyTextRank to the spaCy pipeline
+                    nlp.add_pipe("textrank")
+                    doc = nlp(text)
+                    phrases_data = []
+                    for phrase in doc._.phrases:
+                        phrase_ngrams = len(phrase.text.split())
+                        if phrase_ngrams >= State.min_ngrams.value and phrase_ngrams <= State.max_ngrams.value:
+                            phrases_data.append([phrase.text, phrase.rank, phrase.count])
+                    if phrases_data:
+                    # Create a DataFrame
+                        keywords_df = pd.DataFrame(phrases_data, columns=['Text', 'Rank', 'Count'])
+                        solara.display(keywords_df)
+                    else:
+                        solara.Info("No keywords found. Try changing the NGrams minimum and maximum value")
 
-    alt.vconcat(
-        rect + circ,
-        bar
-    ).resolve_legend(
-        color="independent",
-        size="independent"
-    )
 
-    with solara.Card("Interactive Chart"):
-        solara.Markdown("This dashboard uses [Solara](https://github.com/widgetti/solara) to display an interactive chart where selections in one portion of the chart affect what is shown in the other panel.")
-        solara.Markdown("Data: Vega [movies](https://github.com/vega/vega/blob/main/docs/data/movies.json) dataset. It contains information about movies, such as their titles, release years, genre, IMDB rating, Rotten tomatoes rating etc.")
-        solara.Markdown("Hosted in [Ploomber Cloud](https://ploomber.io/)")
-        solara.Markdown("How to use it: Click on the bar chart to see a detail of the distribution in the upper panel. It will also display the data for the selected genre in a table below.")
-        solara.Markdown("##Visualisations")
-        solara.Markdown("* **Correlation chart**: The first chart is a visualization that allows you to explore the relationship between movie ratings on Rotten Tomatoes and IMDb. It's designed to provide insights into how these two different rating systems correlate and whether there are any noticeable patterns or trends in movie ratings. The X-axis represents the IMDb ratings of movies. IMDb ratings are typically on a scale of 1 to 10, with 10 being the highest rating. This axis is divided into bins, which group movies by their IMDb ratings. The Y-axis represents the Rotten Tomatoes ratings of movies. Rotten Tomatoes ratings are often represented as percentages, indicating the percentage of critics or audience members who rated a movie positively. The color of each bin in the chart is used to indicate the number of movies falling within that rating range. Lighter colors represent fewer movies and darker colors represent more movies.")
-        solara.Markdown("* **Bar chart**: This indicates how many data points or items fall under each genre category.")
-        solara.AltairChart(rect)
-        solara.AltairChart(bar, on_click=on_click)
-        df = source
-        if selected_datum.value:
-            genre = selected_datum.value["Major_Genre"]
-            genre_df = df[df["Major_Genre"] == genre]
-            solara.Button("Clear selection", on_click=lambda: selected_datum.set(None))
-            #solara.display(
-            solara.DataFrame(genre_df, scrollable=True)
+    else:
+        solara.Info("No data loaded, click on the sample dataset button to load a sample dataset, or upload a file.")
 
-            with solara.Details("Click data"):
-                solara.Markdown(
-                    f"""
-                Click data:
+    
 
-                ```
-                {selected_datum.value}
-                ```
-                """
-                )
-        else:
-            solara.Markdown("Click on the bar chart to see data for a specific genre")
+
+
+@solara.component
+def Layout(children):
+    route, routes = solara.use_route()
+    return solara.AppLayout(children=children)
