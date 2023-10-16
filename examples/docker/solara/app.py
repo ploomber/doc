@@ -25,7 +25,7 @@ except:  # noqa
 class State:
     min_ngrams = solara.reactive(3)
     max_ngrams = solara.reactive(4)
-    text = solara.reactive("")
+    text = solara.reactive(cast(Optional[str], None))
 
     @staticmethod
     def load_sample():
@@ -76,9 +76,8 @@ def Page():
             solara.DataFrame(keywords_df)
 
             solara.FileDownload(keywords_df.to_csv(index=False), label=f"Download keywords", filename="keyowrds.csv")
-
         else:
-            solara.Info("No keywords found. Try changing the NGrams minimum and maximum value")
+            solara.Info("No keywords found")
 
 
     else:
