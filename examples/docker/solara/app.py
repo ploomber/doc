@@ -1,6 +1,7 @@
 from typing import Optional, cast
 
 import pandas as pd
+import requests
 
 import solara
 import solara.express as solara_px  # similar to plotly express, but comes with cross filters
@@ -15,23 +16,24 @@ import pytextrank
 try:
     # fails on pyodide
     # Reference: https://climatechange.chicago.gov/climate-impacts/climate-impacts-agriculture-and-food-supply
-    text_sample = pd.read_csv("https://raw.githubusercontent.com/plotly/datasets/master/gapminderDataFiveYear.csv")
+    response = requests.get("https://raw.githubusercontent.com/ploomber/doc/958c2cfc9ca2892f3b529ee002fdecd2418af36c/examples/docker/solara/sample.txt")
+    text_sample = response.text.lower()
 except:  # noqa
     text_sample = None
 
 
 class State:
-    min_ngrams = solara.reactive(2)
-    max_ngrams = solara.reactive(5)
+    min_ngrams = solara.reactive(3)
+    max_ngrams = solara.reactive(4)
     text = solara.reactive("")
 
     @staticmethod
     def load_sample():
-        State.text.value = "Artificial Intelligence (AI) is a transformative field of computer science that seeks to create machines and software capable of mimicking human-like cognitive functions. AI leverages advanced algorithms, vast datasets, and computing power to enable machines to perceive their environment, reason, learn from experiences, and make decisions autonomously. It encompasses a wide range of applications, from machine learning and natural language processing to computer vision and robotics. AI has revolutionized industries, enhancing automation, data analysis, and predictive capabilities. As AI continues to evolve, its impact on various sectors, including healthcare, finance, and transportation, is increasingly profound, offering the potential for innovation, efficiency, and improved quality of life."
-
+        State.text.value = text_sample
+        
     @staticmethod
     def load_from_file(file):
-        pass
+        State.text.value = file["file_obj"].read().decode("utf-8")
 
     @staticmethod
     def reset():
@@ -56,22 +58,27 @@ def Page():
                     solara.SliderInt(label="Minimum Ngram", value=State.min_ngrams, min=1, max=10)
                     solara.SliderInt(label="Maximum Ngram", value=State.max_ngrams, min=1, max=10)
 
+
     if text is not None:
-                    nlp = spacy.load("en_core_web_sm")
-                    # add PyTextRank to the spaCy pipeline
-                    nlp.add_pipe("textrank")
-                    doc = nlp(text)
-                    phrases_data = []
-                    for phrase in doc._.phrases:
-                        phrase_ngrams = len(phrase.text.split())
-                        if phrase_ngrams >= State.min_ngrams.value and phrase_ngrams <= State.max_ngrams.value:
-                            phrases_data.append([phrase.text, phrase.rank, phrase.count])
-                    if phrases_data:
-                    # Create a DataFrame
-                        keywords_df = pd.DataFrame(phrases_data, columns=['Text', 'Rank', 'Count'])
-                        solara.display(keywords_df)
-                    else:
-                        solara.Info("No keywords found. Try changing the NGrams minimum and maximum value")
+        nlp = spacy.load("en_core_web_sm")
+        
+        # add PyTextRank to the spaCy pipeline
+        nlp.add_pipe("textrank")
+        doc = nlp(text)
+        phrases_data = []
+        for phrase in doc._.phrases:
+            phrase_ngrams = len(phrase.text.split())
+            if phrase_ngrams >= State.min_ngrams.value and phrase_ngrams <= State.max_ngrams.value:
+                phrases_data.append([phrase.text, phrase.rank, phrase.count])
+        if phrases_data:
+        # Create a DataFrame
+            keywords_df = pd.DataFrame(phrases_data, columns=['Text', 'Rank', 'Count']).sort_values(by='Rank', ascending=False)
+            solara.DataFrame(keywords_df)
+
+            solara.FileDownload(keywords_df.to_csv(index=False), label=f"Download keywords", filename="keyowrds.csv")
+
+        else:
+            solara.Info("No keywords found. Try changing the NGrams minimum and maximum value")
 
 
     else:
