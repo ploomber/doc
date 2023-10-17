@@ -2,7 +2,7 @@ FROM python:3.11
 
 COPY app.py app.py
 RUN pip install spacy && python -m spacy download en_core_web_sm
-RUN pip install solara pytextrank pandas
+RUN pip install solara pytextrank pandas yake
 
 
 
