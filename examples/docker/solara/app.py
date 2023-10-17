@@ -9,15 +9,13 @@ import solara
 import solara.lab
 from solara.components.file_drop import FileDrop
 
+solara.app_name = "Keyword Extraction App"
 
 
+# Reference: https://climatechange.chicago.gov/climate-impacts/climate-impacts-agriculture-and-food-supply
+response = requests.get("https://raw.githubusercontent.com/ploomber/doc/main/examples/docker/solara/sample.txt")
 
-try:
-    # Reference: https://climatechange.chicago.gov/climate-impacts/climate-impacts-agriculture-and-food-supply
-    response = requests.get("https://raw.githubusercontent.com/ploomber/doc/main/examples/docker/solara/sample.txt")
-    text_sample = response.text.lower()
-except: # noqa
-    text_sample = None
+text_sample = response.text.lower()
 
 
 class State:
@@ -47,6 +45,16 @@ def Page():
     package = State.package.value
     results = State.results.value
     stopwords = State.stopwords.value
+
+    with solara.AppBarTitle():
+        solara.Text("Keyword Extraction App")
+
+    with solara.Card(title="About", elevation=6, style="background-color: #f5f5f5;"):
+        solara.Markdown("""This Solara app is designed for performing keyword extraction from text documents.
+                        Currently, it supports the packages `PyTextRank` and `Yake` for extracting the relevant keywords.
+                        You may load the sample dataset or upload a custom one. The keywords list can be customized
+                        by varying the `NGram` range (number of tokens in keyword) and whether or not to include stopwords.
+                        The `Download Keywords` button can be used to download the keywords in `.csv` format""")
 
     with solara.Sidebar():
         with solara.Card("Controls", margin=0, elevation=0):
