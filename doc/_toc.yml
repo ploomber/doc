@@ -18,3 +18,7 @@ parts:
       - file: apps/gradio
       - file: apps/docker
       - file: apps/jupyterlab-plugin
+
+  - caption: Examples
+    chapters:
+      - file: examples/voila
