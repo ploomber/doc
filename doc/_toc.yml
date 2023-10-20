@@ -5,6 +5,7 @@ parts:
     chapters:
       - file: quickstart/signup
       - file: quickstart/app
+      - file: quickstart/apikey
 
   - caption: Apps
     chapters:
