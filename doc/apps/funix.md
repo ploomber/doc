@@ -1,4 +1,4 @@
-# Chainlit
+# Funix
 
 To deploy a [Funix](https://github.com/TexteaInc/funix) application in Ploomber Cloud you need:
 
