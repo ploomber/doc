@@ -1,5 +1,9 @@
 # Funix
 
+```{note}
+[Click here](https://gentle-heart-9135.ploomberapp.io/) to see a live Funix demo!
+```
+
 To deploy a [Funix](https://github.com/TexteaInc/funix) application in Ploomber Cloud you need:
 
 - A `Dockerfile`
