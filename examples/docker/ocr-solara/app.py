@@ -9,10 +9,6 @@ from pathlib import Path
 
 reader = easyocr.Reader(['ch_sim', 'en'], gpu=False)
 
-response = requests.get("https://raw.githubusercontent.com/ploomber/doc/main/examples/docker/solara/sample.txt")
-
-text_sample = response.text.lower()
-
 
 class State:
     image = solara.reactive(None)
