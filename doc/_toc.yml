@@ -14,6 +14,7 @@ parts:
       - file: apps/streamlit
       - file: apps/voila
       - file: apps/solara
+      - file: apps/panel
       - file: apps/chainlit
       - file: apps/gradio
       - file: apps/funix
