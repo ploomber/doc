@@ -11,6 +11,13 @@ repository:
   path_to_book: doc
   branch: main
 
+
+sphinx:
+  config:
+    html_theme_options:
+      navigation_with_keys: true
+
+
 html:
   use_issues_button: true
   use_repository_button: true
