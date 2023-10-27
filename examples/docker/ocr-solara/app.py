@@ -39,6 +39,7 @@ class State:
         State.extraction_complete.value = False
         State.extracted_text.value = ""
 
+
 @solara.component
 def Page():
 
@@ -48,14 +49,14 @@ def Page():
         solara.Text("OCR App")
 
     with solara.Card(title="About", elevation=6, style="background-color: #f5f5f5;"):
-        solara.Markdown("""This Solara app is designed for extracting text from images""")
+        solara.Markdown("""This app can extract text from images. 
+        Drop an image in the box to the left to get started or click on \"Sample image\"""")
 
     with solara.Sidebar():
         with solara.Card("Controls", margin=0, elevation=0):
             with solara.Column():
                 with solara.Row():
                     solara.Button("Sample image", color="primary", text=True, outlined=True, on_click=State.load_sample)
-                    # solara.Button("Clear image", color="primary", text=True, outlined=True, on_click=State.reset)
                 FileDrop(on_file=State.load_from_file, label="Drag an image file here")
 
                 solara.Markdown("Hosted in [Ploomber Cloud](https://ploomber.io/)")
@@ -78,6 +79,7 @@ def Page():
 
     if State.image.value is None:
         solara.Info("No image loaded, click on the sample image button to load a sample image, or upload a file.")
+
 
 @solara.component
 def Layout(children):
