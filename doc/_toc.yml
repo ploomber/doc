@@ -21,6 +21,11 @@ parts:
       - file: apps/docker
       - file: apps/jupyterlab-plugin
 
+  - caption: User Guide
+    chapters:
+      - file: user-guide/env-vars
+
+
   - caption: Examples
     chapters:
       - file: examples/voila
