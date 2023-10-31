@@ -188,7 +188,13 @@ def Chat() -> None:
                 final = command
 
             if final.startswith("%sqlplot"):
-                _, name, column = final.split(" ")
+                try:
+                    _, name, column = final.split(" ")
+                except Exception as e:
+                    error_message = "Sorry, we couldn't run your query on the data. " \
+                                    "Please ensure you specify a relevant column."
+                    set_messages(_messages + [Message(role="assistant", content=error_message, df=None, fig=None)])
+                    return
 
                 fig = Figure()
                 ax = fig.subplots()
@@ -243,13 +249,13 @@ def Page():
         solara.Text("Data Querying and Visualisation App")
 
     with solara.Card(title="About", elevation=6, style="background-color: #f5f5f5;"):
-        solara.Markdown("""This Solara app is designed for chatting with your data. <br> <br>
-        Examples of queries :
-        unique column-name values ;  
-        select top 20 rows from table ; <br> <br>
-        Example of queries that will return a plot :
-        histogram on column ; 
-        boxplot on column""")
+        solara.Markdown("""
+        Interact with your data using natural language.
+
+        Examples: <br>
+        - show me the unique values of column {column name} <br>
+        - create a histogram of {column name} <br>
+        - create a boxplot of {column name}""")
 
     with solara.Sidebar():
         with solara.Card("Controls", margin=0, elevation=0):
