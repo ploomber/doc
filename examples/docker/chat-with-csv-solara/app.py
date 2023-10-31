@@ -9,7 +9,8 @@ from solara.components.file_drop import FileDrop
 
 from sql import inspect
 from sql.run import run
-from sql.connection import ConnectionManager
+from sqlalchemy import create_engine
+from sql.connection import SQLAlchemyConnection
 from sql.magic import SqlMagic, load_ipython_extension
 from IPython.core.interactiveshell import InteractiveShell
 from sql.plot import boxplot, histogram
@@ -18,6 +19,7 @@ from sqlalchemy.exc import ProgrammingError
 from chat import *
 
 from matplotlib import pyplot as plt
+
 plt.switch_backend("agg")
 
 css = """
@@ -51,18 +53,21 @@ And replace NAME with the column name, do not include the table  name
 
 
 def gen_name():
-    return str(uuid.uuid4())[:8] + '.csv'
+    return str(uuid.uuid4())[:8] + ".csv"
 
 
 def load_data(name):
     run.run_statements(conn, "drop table if exists my_data", sqlmagic)
-    run.run_statements(conn, f"create table my_data as (select * from '{name}')", sqlmagic)
+    run.run_statements(
+        conn, f"create table my_data as (select * from '{name}')", sqlmagic
+    )
     cols = inspect.get_columns("my_data")
     return cols
 
 
 def delete_data():
     run.run_statements(conn, "drop table if exists my_data", sqlmagic)
+
 
 ip = InteractiveShell()
 
@@ -71,14 +76,7 @@ sqlmagic.feedback = 1
 sqlmagic.autopandas = True
 load_ipython_extension(ip)
 
-conn = ConnectionManager.set(
-            "duckdb://",
-            displaycon=True,
-            connect_args={},
-            creator=None,
-            alias=None,
-            config=sqlmagic,
-        )
+conn = SQLAlchemyConnection(create_engine("duckdb://"), config=sqlmagic)
 
 
 class State:
@@ -95,7 +93,9 @@ class State:
         State.reset()
         name = gen_name()
         State.loading_data.value = True
-        url = "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/penguins.csv"
+        url = (
+            "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/penguins.csv"
+        )
         response = requests.get(url)
         if response.status_code == 200:
             with open(name, "wb") as f:
@@ -118,7 +118,7 @@ class State:
         try:
             df = pd.read_csv(file["file_obj"])
             df.columns = df.columns.str.strip()
-            df.columns = df.columns.str.replace(' ', '_')
+            df.columns = df.columns.str.replace(" ", "_")
             df.to_csv(name, index=False)
             cols = load_data(name)
             State.upload_data.value = True
@@ -145,33 +145,38 @@ class State:
                 {"role": "system", "content": State.initial_prompt.value},
                 {"role": "user", "content": "Show me the first 5 rows"},
                 {"role": "assistant", "content": "SELECT * FROM my_data LIMIT 5"},
-            ] + [{"role": prompt.role, "content": prompt.content} for prompt in prompts],
+            ]
+            + [{"role": prompt.role, "content": prompt.content} for prompt in prompts],
             temperature=0.1,
-            stream=True
+            stream=True,
         )
 
         total = ""
         for chunk in response:
-            part = chunk['choices'][0]['delta'].get("content", "")
+            part = chunk["choices"][0]["delta"].get("content", "")
             total += part
             yield total
 
 
 @solara.component
 def Chat() -> None:
-    solara.Style("""
+    solara.Style(
+        """
         .chat-input {
             max-width: 800px;
         })
-    """)
+    """
+    )
 
-    messages, set_messages = solara.use_state([
-        Message(
-            role="assistant",
-            content=f"Welcome. Please post your queries!",
-            df=None,
-        fig=None)
-    ]
+    messages, set_messages = solara.use_state(
+        [
+            Message(
+                role="assistant",
+                content=f"Welcome. Please post your queries!",
+                df=None,
+                fig=None,
+            )
+        ]
     )
     input, set_input = solara.use_state("")
 
@@ -184,46 +189,91 @@ def Chat() -> None:
         set_messages(_messages)
         if State.initial_prompt.value:
             final = None
-            for command in State.chat_with_gpt3([Message(role="user", content=user_input, df=None, fig=None)]):
+            for command in State.chat_with_gpt3(
+                [Message(role="user", content=user_input, df=None, fig=None)]
+            ):
                 final = command
 
             if final.startswith("%sqlplot"):
                 try:
                     _, name, column = final.split(" ")
                 except Exception as e:
-                    error_message = "Sorry, we couldn't run your query on the data. " \
-                                    "Please ensure you specify a relevant column."
-                    set_messages(_messages + [Message(role="assistant", content=error_message, df=None, fig=None)])
+                    error_message = (
+                        "Sorry, we couldn't run your query on the data. "
+                        "Please ensure you specify a relevant column."
+                    )
+                    set_messages(
+                        _messages
+                        + [
+                            Message(
+                                role="assistant",
+                                content=error_message,
+                                df=None,
+                                fig=None,
+                            )
+                        ]
+                    )
                     return
 
                 fig = Figure()
                 ax = fig.subplots()
 
-                fn_map = {"histogram": partial(histogram, bins=50),
-                          "boxplot": boxplot}
+                fn_map = {"histogram": partial(histogram, bins=50), "boxplot": boxplot}
 
                 fn = fn_map[name]
                 try:
                     ax = fn("my_data", column, ax=ax)
-                    set_messages(_messages + [Message(role="assistant", content="", df=None, fig=fig)])
+                    set_messages(
+                        _messages
+                        + [Message(role="assistant", content="", df=None, fig=fig)]
+                    )
                 except Exception as e:
-                    set_messages(_messages + [
-                        Message(role="assistant", content="Please pass relevant columns", df=None, fig=None)])
+                    set_messages(
+                        _messages
+                        + [
+                            Message(
+                                role="assistant",
+                                content="Please pass relevant columns",
+                                df=None,
+                                fig=None,
+                            )
+                        ]
+                    )
             else:
                 error = "Sorry, we couldn't run your query on the data"
                 try:
                     query_result = run.run_statements(conn, final, sqlmagic)
-                    set_messages(_messages + [Message(role="assistant", content="", df=query_result, fig=None)])
+                    set_messages(
+                        _messages
+                        + [
+                            Message(
+                                role="assistant", content="", df=query_result, fig=None
+                            )
+                        ]
+                    )
                 except ProgrammingError as e:
-                    set_messages(_messages + [
-                        Message(role="assistant", content=error, df=None, fig=None)])
+                    set_messages(
+                        _messages
+                        + [Message(role="assistant", content=error, df=None, fig=None)]
+                    )
                 except Exception as e:
-                    set_messages(_messages + [
-                        Message(role="assistant", content=error, df=None, fig=None)])
+                    set_messages(
+                        _messages
+                        + [Message(role="assistant", content=error, df=None, fig=None)]
+                    )
 
         else:
-            set_messages(_messages + [Message(role="assistant",
-                                              content="Please load some data first!", df=None, fig=None)])
+            set_messages(
+                _messages
+                + [
+                    Message(
+                        role="assistant",
+                        content="Please load some data first!",
+                        df=None,
+                        fig=None,
+                    )
+                ]
+            )
 
     with solara.VBox():
         for message in messages:
@@ -249,40 +299,64 @@ def Page():
         solara.Text("Data Querying and Visualisation App")
 
     with solara.Card(title="About", elevation=6, style="background-color: #f5f5f5;"):
-        solara.Markdown("""
+        solara.Markdown(
+            """
         Interact with your data using natural language.
 
         Examples: <br>
         - show me the unique values of column {column name} <br>
         - create a histogram of {column name} <br>
-        - create a boxplot of {column name}""")
+        - create a boxplot of {column name}"""
+        )
 
     with solara.Sidebar():
         with solara.Card("Controls", margin=0, elevation=0):
             with solara.Column():
                 with solara.Row():
-                    solara.Button("Sample dataset", color="primary", text=True, outlined=True,
-                                  on_click=State.load_sample)
-                    solara.Button("Clear dataset", color="primary", text=True, outlined=True, on_click=State.reset)
-                FileDrop(on_file=State.load_from_file, on_total_progress=lambda *args: None,
-                         label="Drag a .csv file here")
+                    solara.Button(
+                        "Sample dataset",
+                        color="primary",
+                        text=True,
+                        outlined=True,
+                        on_click=State.load_sample,
+                    )
+                    solara.Button(
+                        "Clear dataset",
+                        color="primary",
+                        text=True,
+                        outlined=True,
+                        on_click=State.reset,
+                    )
+                FileDrop(
+                    on_file=State.load_from_file,
+                    on_total_progress=lambda *args: None,
+                    label="Drag a .csv file here",
+                )
                 if State.loading_data.value:
                     with solara.Div():
                         solara.Text("Loading csv...")
                         solara.ProgressLinear(True)
                 if initial_prompt:
-                    solara.InputInt("Number of preview rows", value=State.results, continuous_update=True)
+                    solara.InputInt(
+                        "Number of preview rows",
+                        value=State.results,
+                        continuous_update=True,
+                    )
 
                 solara.Markdown("Hosted in [Ploomber Cloud](https://ploomber.io/)")
 
     if sample_data_loaded:
         solara.Info("Sample data is loaded")
-        sql_output = run.run_statements(conn, f"select * from my_data limit {results}", sqlmagic)
+        sql_output = run.run_statements(
+            conn, f"select * from my_data limit {results}", sqlmagic
+        )
         solara.DataFrame(sql_output, items_per_page=10)
 
     if upload_data:
         solara.Info("Data is successfully uploaded")
-        sql_output = run.run_statements(conn, f"select * from my_data limit {results}", sqlmagic)
+        sql_output = run.run_statements(
+            conn, f"select * from my_data limit {results}", sqlmagic
+        )
         solara.DataFrame(sql_output, items_per_page=10)
 
     if upload_data_error:
@@ -293,7 +367,9 @@ def Page():
 
     solara.Style(css)
     with solara.VBox(classes=["main"]):
-        solara.HTML(tag="h3", style="margin: auto;", unsafe_innerHTML="Chat with your data")
+        solara.HTML(
+            tag="h3", style="margin: auto;", unsafe_innerHTML="Chat with your data"
+        )
 
         Chat()
 
@@ -302,4 +378,3 @@ def Page():
 def Layout(children):
     route, routes = solara.use_route()
     return solara.AppLayout(children=children)
-

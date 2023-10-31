@@ -62,7 +62,11 @@ def ChatBox(message: Message) -> None:
                 with sl.Card():
                     sl.DataFrame(message.df)
                 with sl.Card():
-                    sl.FileDownload(message.df.to_csv(index=False), filename="data.csv", label="Download file")
+                    sl.FileDownload(
+                        message.df.to_csv(index=False),
+                        filename="data.csv",
+                        label="Download file",
+                    )
             elif message.fig is not None:
                 with sl.Card():
                     sl.FigureMatplotlib(message.fig)
@@ -70,11 +74,13 @@ def ChatBox(message: Message) -> None:
                     buf = io.BytesIO()
                     message.fig.savefig(buf, format="jpg")
                     fp = tempfile.NamedTemporaryFile()
-                    with open(f"{fp.name}.jpg", 'wb') as ff:
+                    with open(f"{fp.name}.jpg", "wb") as ff:
                         ff.write(buf.getvalue())
                     buf.close()
                     file_object = sl.use_memo(lambda: open(f"{fp.name}.jpg", "rb"), [])
-                    sl.FileDownload(file_object, mime_type="image/jpeg", close_file=False)
+                    sl.FileDownload(
+                        file_object, mime_type="image/jpeg", close_file=False
+                    )
 
         # Image reference: https://www.flaticon.com/free-icons/bot;
         #                  https://www.flaticon.com/free-icons/use
