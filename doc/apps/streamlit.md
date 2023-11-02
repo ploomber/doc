@@ -1,51 +1,29 @@
 # Streamlit
 
-To deploy a Streamlit application in Ploomber Cloud you need:
+Ploomber Cloud supports [Streamlit](https://streamlit.io/). For information on how to develop Panel apps, [please check the documentation](https://docs.streamlit.io/).
 
-- A `Dockerfile`
-- Your code
+To deploy a Streamlit app you need at least two files:
 
-## `Dockerfile`
+1. Your application file (`app.py`)
+2. A dependencies file (`requirements.txt`)
 
-You need to provide a `Dockerfile`, you can use this [template](https://github.com/ploomber/doc/blob/main/examples/docker/streamlit/Dockerfile) to get started. The template contains the minimal steps needed for a deployment but you need to modify so it installs any required dependencies and copies your code into the Docker image.
+## Application file
 
-```Dockerfile
-FROM python:3.11
+Your `app.py` must be a Streamlit application. An example is available [here.](https://github.com/ploomber/doc/blob/main/examples/streamlit/data-viz/app.py)
 
-COPY app.py app.py
+## Dependencies
 
-RUN pip install streamlit
+To deploy a new project, list your dependencies in a (`requirements.txt`). You must include the streamlit package. If you're using pandas and numpy together, your `requirements.txt` file will look like this:
 
-ENTRYPOINT ["streamlit", "run", "app.py", \
-            # do not change these values
-            "--server.port=80", \
-            "--server.headless=true", \
-            "--server.address=0.0.0.0", \
-            "--browser.gatherUsageStats=false", \
-            "--server.enableStaticServing=true", \
-            "--server.fileWatcherType=none", \
-            "--client.toolbarMode=viewer"]
 ```
-
-## Testing locally
-
-To test your app, you can use `docker` locally:
-
-```sh
-# build the docker image
-docker build . -t streamlit
-
-# run it
-docker run -p 5000:80 streamlit
+# sample requirements.txt
+streamlit
+pandas
+numpy
 ```
-
-Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.
-
 
 ## Deploy
 
-Once you have all your files, create a zip file.
+To deploy a Streamlit app from the deployment menu, follow these instructions:
 
-To deploy a Flask app from the deployment menu, follow these instructions:
-
-![](../static/docker.png)
+![](../static/streamlit.png)
