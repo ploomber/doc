@@ -57,7 +57,8 @@ def ChatBox(message: Message) -> None:
     with sl.Column(align=align):
         with sl.Card(classes=["message", f"{message.role}-message"]):
             if message.content:
-                sl.Markdown(message.content)
+                with sl.Card():
+                    sl.Markdown(message.content)
             elif message.df is not None:
                 with sl.Card():
                     sl.DataFrame(message.df)
