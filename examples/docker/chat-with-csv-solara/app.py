@@ -48,6 +48,12 @@ I'll start prompting you and I want you to return SQL code.
 If you're asked to plot a histogram, you can return: %sqlplot histogram NAME
 If you're asked to plot a boxplot, you can return: %sqlplot boxplot NAME
 
+If you're asked to plot a histogram for rows where column=value, you can 
+return %sql --save snippet SELECT rows where column=value; %sqlplot histogram --table snippet --column NAME
+
+If you're asked to plot a boxplot for rows where column=value, you can 
+return %sql --save snippet SELECT rows where column=value; %sqlplot boxplot --table snippet --column NAME
+
 And replace NAME with the column name, do not include the table  name
 """
 
@@ -194,73 +200,162 @@ def Chat() -> None:
             ):
                 final = command
 
-            if final.startswith("%sqlplot"):
-                try:
-                    _, name, column = final.split(" ")
-                except Exception as e:
-                    error_message = (
-                        "Sorry, we couldn't run your query on the data. "
-                        "Please ensure you specify a relevant column."
-                    )
-                    set_messages(
-                        _messages
-                        + [
-                            Message(
-                                role="assistant",
-                                content=error_message,
-                                df=None,
-                                fig=None,
-                            )
-                        ]
-                    )
-                    return
-
-                fig = Figure()
-                ax = fig.subplots()
-
-                fn_map = {"histogram": partial(histogram, bins=50), "boxplot": boxplot}
-
-                fn = fn_map[name]
-                try:
-                    ax = fn("my_data", column, ax=ax)
-                    set_messages(
-                        _messages
-                        + [Message(role="assistant", content="", df=None, fig=fig)]
-                    )
-                except Exception as e:
-                    set_messages(
-                        _messages
-                        + [
-                            Message(
-                                role="assistant",
-                                content="Please pass relevant columns",
-                                df=None,
-                                fig=None,
-                            )
-                        ]
-                    )
+            if ";" in final:
+                queries = final.split(";")
             else:
-                error = "Sorry, we couldn't run your query on the data"
-                try:
-                    query_result = run.run_statements(conn, final, sqlmagic)
-                    set_messages(
-                        _messages
-                        + [
-                            Message(
-                                role="assistant", content="", df=query_result, fig=None
-                            )
-                        ]
-                    )
-                except ProgrammingError as e:
-                    set_messages(
-                        _messages
-                        + [Message(role="assistant", content=error, df=None, fig=None)]
-                    )
-                except Exception as e:
-                    set_messages(
-                        _messages
-                        + [Message(role="assistant", content=error, df=None, fig=None)]
-                    )
+                queries = [final]
+
+            print(queries)
+
+            for query in queries:
+                query = query.strip()
+                set_messages(
+                    _messages
+                    + [Message(role="assistant", content=query, df=None, fig=None)]
+                )
+                if "--save" in query:
+                    error = "Sorry, we couldn't create a data subset"
+                    try:
+                        snippet_index = query.find("--save snippet")
+                        sql_query = query[
+                            snippet_index + len("--save snippet ") :
+                        ].strip()
+                        print(
+                            f"Running temp table creation : CREATE TABLE snippet as ({sql_query})"
+                        )
+                        query_result = run.run_statements(
+                            conn,
+                            f"DROP TABLE IF EXISTS snippet; CREATE TABLE snippet as "
+                            f"({sql_query})",
+                            sqlmagic,
+                        )
+                        set_messages(
+                            _messages
+                            + [
+                                Message(
+                                    role="assistant",
+                                    content=sql_query,
+                                    df=query_result,
+                                    fig=None,
+                                )
+                            ]
+                        )
+                    except ProgrammingError as e:
+                        set_messages(
+                            _messages
+                            + [
+                                Message(
+                                    role="assistant",
+                                    content=f"{query} {error} {str(e)}",
+                                    df=None,
+                                    fig=None,
+                                )
+                            ]
+                        )
+                    except Exception as e:
+                        set_messages(
+                            _messages
+                            + [
+                                Message(
+                                    role="assistant",
+                                    content=f"{query} {error} {str(e)}",
+                                    df=None,
+                                    fig=None,
+                                )
+                            ]
+                        )
+
+                elif query.startswith("%sqlplot"):
+                    try:
+                        args = query.split(" ")
+                        if len(args) == 3:
+                            name = args[1]
+                            table = "my_data"
+                            column = args[2]
+                        else:
+                            name = args[1]
+                            table = args[3]
+                            column = args[5]
+
+                    except Exception as e:
+                        error_message = (
+                            "Sorry, we couldn't run your query on the data. "
+                            "Please ensure you specify a relevant column."
+                        )
+                        set_messages(
+                            _messages
+                            + [
+                                Message(
+                                    role="assistant",
+                                    content=f"{error_message}",
+                                    df=None,
+                                    fig=None,
+                                )
+                            ]
+                        )
+                        return
+
+                    fig = Figure()
+                    ax = fig.subplots()
+
+                    fn_map = {
+                        "histogram": partial(histogram, bins=50),
+                        "boxplot": boxplot,
+                    }
+
+                    fn = fn_map[name]
+                    try:
+                        ax = fn(table, column=column, ax=ax)
+                        set_messages(
+                            _messages
+                            + [Message(role="assistant", content="", df=None, fig=fig)]
+                        )
+                    except Exception as e:
+                        print(e)
+                        set_messages(
+                            _messages
+                            + [
+                                Message(
+                                    role="assistant",
+                                    content=f"Please pass relevant columns.",
+                                    df=None,
+                                    fig=None,
+                                )
+                            ]
+                        )
+                else:
+                    error = "Sorry, we couldn't run your query on the data"
+                    try:
+                        query_result = run.run_statements(conn, query, sqlmagic)
+                        set_messages(
+                            _messages
+                            + [
+                                Message(
+                                    role="assistant",
+                                    content="",
+                                    df=query_result,
+                                    fig=None,
+                                )
+                            ]
+                        )
+                    except ProgrammingError as e:
+                        set_messages(
+                            _messages
+                            + [
+                                Message(
+                                    role="assistant", content=error, df=None, fig=None
+                                )
+                            ]
+                        )
+                    except Exception as e:
+                        set_messages(
+                            _messages
+                            + [
+                                Message(
+                                    role="assistant", content=error, df=None, fig=None
+                                )
+                            ]
+                        )
 
         else:
             set_messages(
@@ -304,9 +399,9 @@ def Page():
         Interact with your data using natural language.
 
         Examples: <br>
-        - show me the unique values of column {column name} <br>
-        - create a histogram of {column name} <br>
-        - create a boxplot of {column name}"""
+        - Simple query: show me the unique values of column {column name} <br>
+        - Plot columns: create a histogram (or boxplot) of {column name} <br>
+        - Plot transformations: crate a histogram of column {colum name} where {another column} is {some value} """
         )
 
     with solara.Sidebar():
