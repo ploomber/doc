@@ -399,9 +399,9 @@ def Page():
         Interact with your data using natural language.
 
         Examples: <br>
-        - show me the unique values of column {column name} <br>
-        - create a histogram of {column name} <br>
-        - create a boxplot of {column name}"""
+        - Simple query: show me the unique values of column {column name} <br>
+        - Plot columns: create a histogram (or boxplot) of {column name} <br>
+        - Plot transformations: crate a histogram of column {colum name} where {another column} is {some value} """
         )
 
     with solara.Sidebar():
