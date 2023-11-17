@@ -7,6 +7,12 @@ parts:
       - file: quickstart/app
       - file: quickstart/apikey
 
+  - caption: User Guide
+    chapters:
+      - file: user-guide/cli
+      - file: user-guide/github
+      - file: user-guide/env-vars
+
   - caption: Apps
     chapters:
       - file: apps/flask
@@ -20,11 +26,6 @@ parts:
       - file: apps/funix
       - file: apps/docker
       - file: apps/jupyterlab-plugin
-
-  - caption: User Guide
-    chapters:
-      - file: user-guide/env-vars
-
 
   - caption: Examples
     chapters:

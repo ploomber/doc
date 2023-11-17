@@ -1,5 +1,9 @@
 # Deploy an app
 
+```{tip}
+You can also deploy from the [terminal](../user-guide/cli.md) or [GitHub](../user-guide/github.md)
+```
+
 ## 1. Click on "Dashboards" -> "New"
 
 ![](../static/dashboards-new.png)
