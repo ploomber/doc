@@ -26,6 +26,7 @@ parts:
       - file: apps/funix
       - file: apps/docker
       - file: apps/jupyterlab-plugin
+      - file: apps/chalk-it      
 
   - caption: Examples
     chapters:
