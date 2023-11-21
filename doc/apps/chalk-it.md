@@ -7,7 +7,7 @@ To deploy a [Chalk'it](https://github.com/ifpen/chalk-it) application in Ploombe
 
 ## `Dockerfile`
 
-You need to provide a `Dockerfile`, you can use this [template](https://github.com/ploomber/doc/blob/main/examples/docker/chalk-it/Dockerfile) to get started. The template contains the minimal steps needed for a deployment but you need to modify so it installs any required dependencies and copies your code into the Docker image.
+You just need to use this [template](https://github.com/ploomber/doc/blob/main/examples/docker/chalk-it/Dockerfile) `Dockerfile`:
 
 ```Dockerfile
 FROM python:3.11
