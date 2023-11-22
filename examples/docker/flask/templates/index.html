@@ -43,7 +43,7 @@
     <h1>Walmart Sales Forecasting</h1>
 
 
-    <form action="{{ url_for('predict')}}" method="post">
+    <form action="{{ url_for('predict')}}" method="post" autocomplete="off">
         <input type="text" name="Store" placeholder="store" required="required" />
         <input type="text" name="Dept" placeholder="dept" required="required" />
         <label for="Type">Type</label>
