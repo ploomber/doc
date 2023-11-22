@@ -6,4 +6,4 @@ COPY static/ static/
 COPY templates/ templates/
 RUN pip install flask gunicorn numpy pandas scikit-learn
 
-ENTRYPOINT ["gunicorn", "app:app", "run", "--bind", "0.0.0.0:80", "--env", "SCRIPT_NAME=/__PROJECT_ID__"]
+ENTRYPOINT ["gunicorn", "app:app", "run", "--bind", "0.0.0.0:80"]
