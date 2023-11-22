@@ -16,21 +16,16 @@ To get started with this Flask app, follow these steps:
 
 ## How to use
 
-Enter valid inputs for predicting the sales. Mandatory inputs are `Store`, `Dept`, `Year`, `Month` and `Week`.
-**Sample Input**
+Enter valid inputs for predicting the sales. Mandatory inputs are `Store`, `Dept`, `Year`, `Month` and `Week`. `Size` should be an integer and `Markdown` values are of float type.
 
-'Store':9
-'Dept':72
-'IsHoliday':True
-'Type':'B'
-'Size':125833
-'MarkDown1':2.5
-'MarkDown2':0.02
-'MarkDown3':55952.99
-'MarkDown4':14.64
-'MarkDown5':310.72
-'Year':2012
-'Month':11
+**Sample Input**:
+
+'Store':9\
+'Dept':72\
+'IsHoliday':True\
+'Type':'B'\
+'Year':2012\
+'Month':11\
 'Week':47
 
 The **Show Charts** button can be clicked to display the `feature correlation` and `feature importance` charts.
