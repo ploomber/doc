@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Walmart Sales Forecasting</title>
+    <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arimo' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Hind:300' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body style="background: #000;">
+<div class="chartButton">
+    <button id="showChartsButton" class="btn btn-primary btn-block btn-small">Show Charts</button>
+    <div id="chartContainer1" style="display: none;">
+        <img src="{{ url_for('static', filename='feature_correlation.png') }}" alt="Chart 1" style="max-width: 50%; float: left; margin-right: 5px;">
+    </div>
+    <div id="chartContainer2" style="display: none;">
+        <img src="{{ url_for('static', filename='feature_importance.png') }}" alt="Chart 2" style="max-width: 50%; float: left;">
+    </div>
+</div>
+
+<script>
+    document.getElementById('showChartsButton').addEventListener('click', function () {
+        var chartContainer1 = document.getElementById('chartContainer1');
+        var chartContainer2 = document.getElementById('chartContainer2');
+        var loginDiv = document.querySelector('.login'); // Get the "Sales Forecasting" div
+
+        if (chartContainer1.style.display === 'none') {
+            chartContainer1.style.display = 'block';
+            chartContainer2.style.display = 'block';
+            loginDiv.style.display = 'none'; // Hide the "Sales Forecasting" div
+        } else {
+            chartContainer1.style.display = 'none';
+            chartContainer2.style.display = 'none';
+            loginDiv.style.display = 'block'; // Show the "Sales Forecasting" div
+        }
+    });
+</script>
+
+<div class="login" style="float:left; overflow-y: auto; scrollbar-color: #888 #fff;">
+    <h1>Weather Sales Forecasting</h1>
+
+
+    <form action="{{ url_for('predict')}}" method="post">
+        <input type="text" name="Store" placeholder="store" required="required" />
+        <input type="text" name="Dept" placeholder="dept" required="required" />
+        <label for="Type">Type</label>
+        <select name="Type" required="required">
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+        </select>
+        <label for="isHoliday">isHoliday</label>
+        <select name="isHoliday" required="required">
+                <option value="True">True</option>
+                <option value="False">False</option>
+        </select>
+        <input type="text" name="Size" placeholder="Size" />
+        <input type="text" name="MarkDown1" placeholder="MarkDown1" />
+        <input type="text" name="MarkDown2" placeholder="MarkDown2" />
+        <input type="text" name="MarkDown3" placeholder="MarkDown3" />
+        <input type="text" name="MarkDown4" placeholder="MarkDown4" />
+        <input type="text" name="MarkDown5" placeholder="MarkDown5" />
+        <input type="text" name="Year" placeholder="year" required="required" />
+        <input type="text" name="Month" placeholder="month" required="required" />
+        <input type="text" name="Week" placeholder="week" required="required" />
+
+        <button type="submit" class="btn btn-primary btn-block btn-large">Predict weekly sales</button>
+    </form>
+
+    <br>
+    <br>
+    {{ prediction_text }}
+</div>
+
+</body>
+</html>
