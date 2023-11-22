@@ -13,6 +13,8 @@ To deploy a dashboard you need two files:
 
 Currently, Ploomber Cloud supports [Voilà](https://voila.readthedocs.io/en/stable/) for deploying Jupyter notebooks as dashboards. For information on how to write Voilà dashboards, [please check the documentation](https://voila.readthedocs.io/en/stable/).
 
+Click here to see [some examples.](../examples/voila.md)
+
 ## Dependencies
 
 To deploy a new project, list your dependencies in a (`requirements.txt`). For example, if you're using [JupySQL](https://jupysql.ploomber.io), pandas and matplotlib, your `requirements.txt` file will look like this:

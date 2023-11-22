@@ -5,3 +5,4 @@ ipython
 requests
 jupysql
 duckdb-engine
+matplotlib

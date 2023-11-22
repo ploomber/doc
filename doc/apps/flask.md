@@ -17,12 +17,27 @@ COPY app.py app.py
 RUN pip install flask gunicorn
 
 # this configuration is needed for your app to work, do not change it
-ENTRYPOINT ["gunicorn", "app:app", "run", "--bind", "0.0.0.0:80", "--env", "SCRIPT_NAME=/__PROJECT_ID__"]
+ENTRYPOINT ["gunicorn", "app:app", "run", "--bind", "0.0.0.0:80"]
 ```
 
-Once you have all your files, create a zip file.
+## Testing locally
+
+To test your app, you can use `docker` locally:
+
+```sh
+# build the docker image
+docker build . -t flask
+
+# run it
+docker run -p 5000:80 flask
+```
+
+Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.
+
 
 ## Deploy
+
+Once you have all your files, create a zip file.
 
 To deploy a Flask app from the deployment menu, follow these instructions:
 

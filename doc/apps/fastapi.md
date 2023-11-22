@@ -18,24 +18,29 @@ COPY app.py app.py
 RUN pip install fastapi uvicorn
 
 # this configuration is needed for your app to work, do not change it
-ENTRYPOINT ["uvicorn", "app:app", "--host=0.0.0.0", "--port=80", "--root-path=/__PROJECT_ID__"]
+ENTRYPOINT ["uvicorn", "app:app", "--host=0.0.0.0", "--port=80"]
 ```
 
-Once you have all your files, create a zip file.
+
+## Testing locally
+
+To test your app, you can use `docker` locally:
+
+```sh
+# build the docker image
+docker build . -t fastapi
+
+# run it
+docker run -p 5000:80 fastapi
+```
+
+Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.
+
 
 ## Deploy
 
-To deploy a FastAPI app from the deployment menu, follow these instructions:
+Once you have all your files, create a zip file.
+
+To deploy a Flask app from the deployment menu, follow these instructions:
 
 ![](../static/docker.png)
-
-
-## Running locally
-
-You can test your app locally with:
-
-```sh
-uvicorn app:app --port 8000
-```
-
-Note that your app will be served from `http://127.0.0.1:8000/__PROJECT_ID__/`

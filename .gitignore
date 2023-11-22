@@ -1,3 +1,6 @@
+# chainlit tmp files
+.chainlit
+
 # sample data files
 *.csv
 

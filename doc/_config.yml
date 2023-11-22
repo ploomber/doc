@@ -1,5 +1,6 @@
 title: Ploomber Cloud documentation
 author: Ploomber
+copyright: "2023"
 logo: static/logo.png
 
 execute:
@@ -10,6 +11,14 @@ repository:
   path_to_book: doc
   branch: main
 
+
+sphinx:
+  config:
+    html_theme_options:
+      navigation_with_keys: true
+
+
 html:
   use_issues_button: true
   use_repository_button: true
+  announcement: 'Do you need help? <a href="https://ploomber.io/community" target="_blank" rel="noopener noreferrer">Join our Slack!</a>'
