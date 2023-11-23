@@ -31,3 +31,7 @@ parts:
   - caption: Examples
     chapters:
       - file: examples/voila
+
+  - caption: FAQ
+    chapters:
+      - file: faq/docker-error
