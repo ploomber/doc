@@ -48,6 +48,6 @@ Enter valid inputs for predicting the sales.
 'Store': 9\
 'Dept': 72\
 'IsHoliday': True\
-'Date': '12/082011'
+'Date': '12/08/2011'
 
 The **Show Charts** button can be clicked to display the `feature correlation` and `feature importance` charts.
