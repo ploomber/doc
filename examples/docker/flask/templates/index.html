@@ -46,7 +46,7 @@
     <form action="{{ url_for('predict')}}" method="post" autocomplete="off">
 
         <input type="text" name="Store" placeholder="Enter a store number between 1 and 45" required="required" pattern="([1-9]|[1-3][0-9]|4[0-5])" />
-        <input type="text" name="Dept" placeholder="Enter a department number" required="required" />
+        <input type="text" name="Dept" placeholder="Enter a department number between 1 and 95" required="required" />
         <label for="isHoliday" style="font-size: 12px;">special holiday week?</label>
         <select name="isHoliday" required="required">
                 <option value="True">True</option>
