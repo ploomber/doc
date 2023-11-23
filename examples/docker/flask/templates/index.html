@@ -44,34 +44,23 @@
 
 
     <form action="{{ url_for('predict')}}" method="post" autocomplete="off">
-        <input type="text" name="Store" placeholder="store" required="required" />
+        <input type="text" name="Store" placeholder="Enter a store number between 1 and 45" required="required" pattern="([1-9]|[1-3][0-9]|4[0-5])" />
         <input type="text" name="Dept" placeholder="dept" required="required" />
-        <label for="Type">Type</label>
-        <select name="Type" required="required">
-                <option value="A">A</option>
-                <option value="B">B</option>
-                <option value="C">C</option>
-        </select>
         <label for="isHoliday">isHoliday</label>
         <select name="isHoliday" required="required">
                 <option value="True">True</option>
                 <option value="False">False</option>
         </select>
-        <input type="text" name="Size" placeholder="Size" />
-        <input type="text" name="MarkDown1" placeholder="MarkDown1" />
-        <input type="text" name="MarkDown2" placeholder="MarkDown2" />
-        <input type="text" name="MarkDown3" placeholder="MarkDown3" />
-        <input type="text" name="MarkDown4" placeholder="MarkDown4" />
-        <input type="text" name="MarkDown5" placeholder="MarkDown5" />
-        <input type="text" name="Year" placeholder="year" required="required" />
-        <input type="text" name="Month" placeholder="month" required="required" />
-        <input type="text" name="Week" placeholder="week" required="required" />
+        <input type="date" name="Date" placeholder="date" required="required" />
 
         <button type="submit" class="btn btn-primary btn-block btn-large">Predict weekly sales</button>
     </form>
 
     <br>
     <br>
+</div>
+
+<div style="position: relative;">
     {{ prediction_text }}
 </div>
 

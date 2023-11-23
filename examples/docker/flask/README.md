@@ -36,16 +36,18 @@ _ = execute_notebook("walmart_sales.ipynb", output_path=None)
 
 ## How to use
 
-Enter valid inputs for predicting the sales. Mandatory inputs are `Store`, `Dept`, `Year`, `Month` and `Week`. `Size` should be an integer and `Markdown` values are of float type.
+Enter valid inputs for predicting the sales. 
+
+`Store`: values are numbered 1-45 for 45 stores. 
+`Dept`: department number of the particular store.
+`IsHoliday`: whether the week is a special holiday week.
+`Date`: the week for which sales needs to be predicted.
 
 **Sample Input**:
 
-'Store':9\
-'Dept':72\
-'IsHoliday':True\
-'Type':'B'\
-'Year':2012\
-'Month':11\
-'Week':47
+'Store': 9\
+'Dept': 72\
+'IsHoliday': True\
+'Date': '12/082011'
 
 The **Show Charts** button can be clicked to display the `feature correlation` and `feature importance` charts.

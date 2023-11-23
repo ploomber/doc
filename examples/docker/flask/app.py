@@ -25,20 +25,21 @@ def home():
 @app.route('/predict',methods=['POST'])
 def predict():
 
+    date = pd.to_datetime(request.form['Date'])
     input_features = {
     'Store': int(request.form['Store']), 
     'Dept': int(request.form['Dept']), 
     'IsHoliday': request.form['isHoliday'], 
-    'Type': request.form['Type'], 
-    'Size': int(request.form['Size']) if request.form['Size'] else None,
-    'MarkDown1': float(request.form['MarkDown1']) if request.form['MarkDown1'] else None,
-    'MarkDown2': float(request.form['MarkDown2']) if request.form['MarkDown2'] else None,
-    'MarkDown3': float(request.form['MarkDown3']) if request.form['MarkDown3'] else None,
-    'MarkDown4': float(request.form['MarkDown4']) if request.form['MarkDown4'] else None,
-    'MarkDown5': float(request.form['MarkDown5']) if request.form['MarkDown5'] else None,
-    'Year': int(request.form['Year']), 
-    'Month': int(request.form['Month']), 
-    'Week': int(request.form['Week']), 
+    'Type': None,
+    'Size': None,
+    'MarkDown1': None,
+    'MarkDown2': None,
+    'MarkDown3': None,
+    'MarkDown4': None,
+    'MarkDown5': None,
+    'Year': date.year,
+    'Month': date.month,
+    'Week': date.isocalendar().week,
     }
     predicted_price = predict_input(model, input_features)
 
