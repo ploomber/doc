@@ -25,12 +25,15 @@ parts:
       - file: apps/gradio
       - file: apps/funix
       - file: apps/docker
-      - file: apps/jupyterlab-plugin
       - file: apps/chalk-it      
 
-  - caption: Examples
+  - caption: App examples
     chapters:
       - file: examples/voila
+
+  - caption: Sharing notebooks
+    chapters:
+      - file: nb-share/notebook-sharing
 
   - caption: FAQ
     chapters:

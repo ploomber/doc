@@ -26,7 +26,9 @@ Deploy your first app 📊
 ^^^
 
 Learn to deploy an app.
-
 ::::
+
+
+
 
 👈 Otherwise, click on the most relevant section.
