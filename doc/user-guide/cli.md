@@ -36,18 +36,15 @@ The `deploy` command will print a URL that you can visit to track deployment pro
 
 ## Configure an existing project
 
-If you want to deploy an existing project, create a `ploomber-cloud.json` file in the root directory of your project with the following structure:
+If you want to deploy an existing project run the `init` command with the `--from-existing` flag:
 
-```json
-{
-    "id": "APP_ID",
-    "type": "APP_TYPE"
-}
+```sh
+ploomber-cloud init --from-existing
 ```
 
-Substitute `id` for your project ID and `type` for the app type (`docker`, `panel`, `streamlit`, etc.)
+This will prompt you to choose from a list of your existing projects.
 
-For example, if my app ID is `cool-tree-1860` and I'm deploying a `docker` app:
+Upon your choice, the command will generate a `ploomber-cloud.json` with your project's info. For example, if my app ID is `cool-tree-1860` and I'm deploying a `docker` app:
 
 
 ```json
