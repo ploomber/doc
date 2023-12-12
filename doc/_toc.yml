@@ -13,6 +13,10 @@ parts:
       - file: user-guide/github
       - file: user-guide/env-vars
 
+  - caption: Sharing notebooks
+    chapters:
+      - file: nb-share/notebook-sharing
+
   - caption: Apps
     chapters:
       - file: apps/flask
@@ -23,17 +27,12 @@ parts:
       - file: apps/panel
       - file: apps/chainlit
       - file: apps/gradio
-      - file: apps/funix
       - file: apps/docker
       - file: apps/chalk-it      
 
   - caption: App examples
     chapters:
       - file: examples/voila
-
-  - caption: Sharing notebooks
-    chapters:
-      - file: nb-share/notebook-sharing
 
   - caption: FAQ
     chapters:
