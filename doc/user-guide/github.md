@@ -54,7 +54,7 @@ In the logs, you will see updates on the progress of the deployment. You'll also
 
 If you would prefer to track progress only through the project dashboard, you can remove `--watch` from the `deploy` command in your `ploomber-cloud.yaml`:
 
-```
+```yaml
  - name: Deploy
         env:
           PLOOMBER_CLOUD_KEY: ${{ secrets.PLOOMBER_CLOUD_KEY }}
