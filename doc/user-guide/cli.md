@@ -32,7 +32,12 @@ Once the command exits, you can deploy:
 ploomber-cloud deploy
 ```
 
-The `deploy` command will print a URL that you can visit to track deployment progress.
+The `deploy` command will print a URL that you can visit to track deployment progress. If you would like to track progress in the command line,
+add the `--watch` flag.
+
+```sh
+ploomber-cloud deploy --watch
+```
 
 ## Configure an existing project
 
@@ -60,5 +65,3 @@ Then, execute:
 ```sh
 ploomber-cloud deploy
 ```
-
-The `deploy` command will print a URL that you can visit to track deployment progress.

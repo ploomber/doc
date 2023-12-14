@@ -50,6 +50,18 @@ Then, click on the most recent run, and you'll see the logs:
 
 ![](../static/github/logs.png)
 
-In the logs, you'll see a URL that you can use to track progress.
+In the logs, you will see updates on the progress of the deployment. You'll also see a URL to your project dashboard, which also shows its progress.
+
+If you would prefer to track progress only through the project dashboard, you can remove `--watch` from the `deploy` command in your `ploomber-cloud.yaml`:
+
+```
+ - name: Deploy
+        env:
+          PLOOMBER_CLOUD_KEY: ${{ secrets.PLOOMBER_CLOUD_KEY }}
+        run: |
+          ploomber-cloud deploy # remove '--watch' here
+```
+
+Removing `--watch` means deployment updates won't be output to the logs, but you will still be able to track its progress through the URL.
 
 A complete sample project is [available here.](https://github.com/edublancas/cloud-template)
