@@ -59,7 +59,7 @@ If you would prefer to track progress only through the project dashboard, you ca
         env:
           PLOOMBER_CLOUD_KEY: ${{ secrets.PLOOMBER_CLOUD_KEY }}
         run: |
-          ploomber-cloud deploy # remove '--watch' here
+          ploomber-cloud deploy # removed '--watch' here
 ```
 
 Removing `--watch` means deployment updates won't be output to the logs, but you will still be able to track its progress through the URL.
