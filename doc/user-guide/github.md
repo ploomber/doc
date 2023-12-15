@@ -48,9 +48,10 @@ Once you push, you can monitor progress from GitHub. First, go to the actions se
 
 Then, click on the most recent run, and you'll see the logs:
 
-![](../static/github/logs.png)
+![](../static/github/logs-watch.png)
 
-In the logs, you will see updates on the progress of the deployment. You'll also see a URL to your project dashboard, which also shows its progress.
+In the logs, you will see updates on the progress of the deployment. You'll also see a URL to your project dashboard where you can check its status.
+Once the deployment has succeeded, it will return a URL to view your deployed project.
 
 If you would prefer to track progress only through the project dashboard, you can remove `--watch` from the `deploy` command in your `ploomber-cloud.yaml`:
 
@@ -63,5 +64,9 @@ If you would prefer to track progress only through the project dashboard, you ca
 ```
 
 Removing `--watch` means deployment updates won't be output to the logs, but you will still be able to track its progress through the URL.
+
+Without `--watch`, the logs will look like this:
+
+![](../static/github/logs.png)
 
 A complete sample project is [available here.](https://github.com/edublancas/cloud-template)
