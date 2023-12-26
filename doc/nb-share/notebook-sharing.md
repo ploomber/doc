@@ -1,6 +1,13 @@
 # Sharing notebooks
 
+```{note}
+If you're using JupyterLab 4, you might encounter issues. If the link isn't visible after confirming upload, open the [platform](https://www.platform.ploomber.io/notebooks) to get the link to your notebook.
+```
+
+
 You can use Ploomber Cloud to quickly share notebooks from JupyterLab with one click.
+
+![](../static/jupyterlab/share-notebook-demo.gif)
 
 First, install the JupyterLab extension:
 
@@ -29,6 +36,3 @@ Once you confirm, you'll see a link, click on it to copy it and share it with an
 
 To see the notebooks you've uploaded, [click here.](https://www.platform.ploomber.io/notebooks)
 
-```{note}
-If you're using JupyterLab 4, you might encounter issues. If the link isn't visible after confirming upload, open the [platform](https://www.platform.ploomber.io/notebooks) to get the link to your notebook.
-```
