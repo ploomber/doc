@@ -1,0 +1,7 @@
+haystack-ai
+elasticsearch-haystack==0.1.2
+solara
+openai
+python-dotenv
+pydub
+moviepy
