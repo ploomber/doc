@@ -1,0 +1,3 @@
+"farm-haystack[inference]"
+solara
+python-dotenv

@@ -1,6 +1,26 @@
 import solara 
 from functools import partial
 
+## agent definition
+from haystack.nodes import WebSearch
+from haystack.nodes.search_engine import WebSearch
+from haystack.schema import Document
+from typing import List 
+from dotenv import load_dotenv
+import os
+
+# Load the API key from the .env file
+load_dotenv(".env")
+serperdev_api_key = os.getenv("SERPERDEV_API_KEY")
+
+# Let's configure the web search to user SerperDev as the search engine provider
+# SerperDev is the default provider, so we just need the API key
+search = WebSearch(api_key=serperdev_api_key)
+
+# This search uses the default SerperDev provider, so we just need the API key
+ws = WebSearch(api_key=serperdev_api_key)
+documents: List[Document] = search.run(query="What's the meaning of life?")
+
 
 class State:
     diet_plan = solara.reactive("")
@@ -30,14 +50,6 @@ def display_results():
         solara.Markdown(workout_plan)
     ])
 
-def home_tab():
-    return solara.Column([
-        solara.Markdown("# Welcome to Your Personalized Planner"),
-        solara.Markdown("Please enter your details to get started."),
-        user_input_form(),
-        display_results()
-    ])
-
 @solara.component
 def user_input_form():
     weight, set_weight = solara.use_state(0)
@@ -51,7 +63,8 @@ def user_input_form():
     def on_submit():
         process_data(weight, height, gender, body_type, activity_level, goal)
 
-    return solara.Column([
+    return solara.Column(style="margin-top: 20px; width: 40%;", 
+        children=[
         solara.InputFloat(label="Weight (kg)", value=weight, on_value=set_weight),
         solara.InputFloat(label="Height (cm)", value=height, on_value=set_height),
         solara.Select(label="Gender", values=["Male", "Female", "Other"], value=gender, on_value=set_gender),
