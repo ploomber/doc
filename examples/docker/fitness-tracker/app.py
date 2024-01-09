@@ -124,7 +124,7 @@ def user_input_form():
 
 def process_data(weight, height, gender, body_type, activity_level, goal):
     # Example logic for processing data and generating suggestions
-    diet_plan = generate_diet_plan(weight, height, gender, activity_level, goal)
+    diet_plan = generate_diet_plan(weight, height, gender, activity_level, goal, body_type)
     workout_plan = generate_workout_plan(weight, height, gender, body_type, activity_level, goal)
 
     # Store the plans in a state to display them
@@ -150,10 +150,26 @@ def generate_workout_plan(weight, height, gender, body_type, activity_level, goa
     return formatted_results
 
 
-def generate_diet_plan(weight, height, gender, activity_level, goal):
-    # ...
-    # This is a placeholder for the actual logic to generate a diet plan
-    return "Diet plan based on your inputs..."
+def generate_diet_plan(weight, height, gender, activity_level, goal, body_type):
+    search = WebSearch(api_key=serperdev_api_key)
+    query = f"What is a good diet and nutrition plan for someone who is {gender}, \
+        weighs {weight} kg, and is {height} cm tall, with {body_type} \
+            body type, whose activity level is {activity_level}, \
+                whose goal is to {goal}? Please include calorie and macro suggestion."
+    search_results = search.run(query=query, top_k=10)
+
+    # Transform search results into Document objects
+    documents = search_results[0]['documents']
+
+    pipe = document_store_and_pipeline(documents)
+    results = pipe.run(query=query, documents=documents)
+
+    # Process results and return a formatted string
+    answers = "\n".join([res.answer for res in results['answers']])
+    title = "\n".join([res.meta['title'] for res in results['documents']])
+    link =  "\n".join([res.meta['link'] for res in results['documents']])
+    formatted_results = f"Answer: {answers} \n\n Title: {title} \n\n Link: {link} \n\n "
+    return formatted_results
 
 @solara.component
 def Page():
