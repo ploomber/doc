@@ -3,23 +3,65 @@ from functools import partial
 
 ## agent definition
 from haystack.nodes import WebSearch
-from haystack.nodes.search_engine import WebSearch
+from haystack.nodes import AnswerParser, PromptNode, PromptTemplate
+from haystack.document_stores import InMemoryDocumentStore
+from haystack.nodes import BM25Retriever, PromptTemplate, AnswerParser, PromptNode
+import os
+from haystack.pipelines import Pipeline
 from haystack.schema import Document
 from typing import List 
 from dotenv import load_dotenv
 import os
 
+css = """
+    .main {
+        width: 100%;
+        height: 100%;
+        max-width: 1200px;
+        margin: auto;
+        padding: 1em;
+    }
+    
+    #app > div > div:nth-child(2) > div:nth-child(2) {
+    display: none;
+}
+"""
+
 # Load the API key from the .env file
 load_dotenv(".env")
 serperdev_api_key = os.getenv("SERPERDEV_API_KEY")
+openai_key = os.getenv("OPENAI_KEY")
 
-# Let's configure the web search to user SerperDev as the search engine provider
-# SerperDev is the default provider, so we just need the API key
-search = WebSearch(api_key=serperdev_api_key)
 
-# This search uses the default SerperDev provider, so we just need the API key
-ws = WebSearch(api_key=serperdev_api_key)
-documents: List[Document] = search.run(query="What's the meaning of life?")
+def document_store_and_pipeline(documents):
+# Initialize Haystack's QA system
+    document_store = InMemoryDocumentStore(use_bm25=True)
+    document_store.write_documents(documents)
+
+
+    rag_prompt = PromptTemplate(
+        prompt="""Synthesize a brief answer from the following text for the given question.
+                                Provide a clear and concise response that summarizes the key points and information presented in the text.
+                                Your answer should be in your own words and be no longer than 50 words.
+                                \n\n Related text: {join(documents)} \n\n Question: {query} \n\n Answer:""",
+        output_parser=AnswerParser(),
+    )
+
+    # Set up nodes
+    retriever = BM25Retriever(document_store=document_store, top_k=2)
+    pn = PromptNode("gpt-3.5-turbo", 
+                    api_key=openai_key, 
+                    model_kwargs={"stream":False},
+                    default_prompt_template=rag_prompt)
+
+    # Set up pipeline
+    pipe = Pipeline()
+    pipe.add_node(component=retriever, name="retriever", inputs=["Query"])
+    pipe.add_node(component=pn, name="prompt_node", inputs=["retriever"])
+
+    return pipe
+
+
 
 
 class State:
@@ -44,9 +86,9 @@ def display_results():
     workout_plan = State.workout_plan.value
 
     return solara.Column([
-        solara.Markdown("## Your Personalized Diet Plan"),
+        solara.Markdown("### Your Personalized Diet Plan"),
         solara.Markdown(diet_plan),
-        solara.Markdown("## Your Personalized Workout Plan"),
+        solara.Markdown("### Your Personalized Workout Plan"),
         solara.Markdown(workout_plan)
     ])
 
@@ -60,10 +102,14 @@ def user_input_form():
     activity_level, set_activity_level = solara.use_state("")
     goal, set_goal = solara.use_state("")
 
+    def on_clear():
+        State.reset()
+
+
     def on_submit():
         process_data(weight, height, gender, body_type, activity_level, goal)
 
-    return solara.Column(style="margin-top: 20px; width: 40%;", 
+    return solara.Column(style="margin-top: 40px; width: 80%;", 
         children=[
         solara.InputFloat(label="Weight (kg)", value=weight, on_value=set_weight),
         solara.InputFloat(label="Height (cm)", value=height, on_value=set_height),
@@ -71,7 +117,8 @@ def user_input_form():
         solara.Select(label="Body Type", values=["Ectomorph", "Mesomorph", "Endomorph"], value=body_type, on_value=set_body_type),
         solara.Select(label="Activity Level", values=["Sedentary", "Lightly active", "Moderately active", "Very active"], value=activity_level, on_value=set_activity_level),
         solara.Select(label="Goal", values=["Weight loss", "Muscle gain", "Fitness maintenance"], value=goal, on_value=set_goal),
-        solara.Button("Submit", on_click=on_submit)
+        solara.Button("Submit", on_click=on_submit),
+        solara.Button("Clear Results", on_click=on_clear)
     ])
 
 
@@ -85,10 +132,23 @@ def process_data(weight, height, gender, body_type, activity_level, goal):
     State.workout_plan.value = workout_plan
 
 def generate_workout_plan(weight, height, gender, body_type, activity_level, goal):
-    # Logic to generate a workout plan
-    # ...
-    # This is a placeholder for the actual logic to generate a workout plan
-    return "Workout plan based on your inputs..."
+    search = WebSearch(api_key=serperdev_api_key)
+    query = f"What is a good workout plan for someone who is {gender}, weighs {weight} kg, and is {height} cm tall, with {body_type} body type, whose activity level is {activity_level}, whose goal is to {goal}? Please include frequency and duration in your response."
+    search_results = search.run(query=query, top_k=10)
+
+    # Transform search results into Document objects
+    documents = search_results[0]['documents']
+
+    pipe = document_store_and_pipeline(documents)
+    results = pipe.run(query=query, documents=documents)
+
+    # Process results and return a formatted string
+    answers = "\n".join([res.answer for res in results['answers']])
+    title = "\n".join([res.meta['title'] for res in results['documents']])
+    link =  "\n".join([res.meta['link'] for res in results['documents']])
+    formatted_results = f"Answer: {answers} \n\n Title: {title} \n\n Link: {link} \n\n "
+    return formatted_results
+
 
 def generate_diet_plan(weight, height, gender, activity_level, goal):
     # ...
@@ -100,40 +160,36 @@ def Page():
     with solara.AppBarTitle():
         solara.Text("Personalized Diet and Workout Planner")
 
-    with solara.Card(title="About", elevation=6, style="background-color: #f5f5f5;"):
-        solara.Markdown(
-            """
-            Welcome to your Personalized Diet and Workout Planner. 
-            Please input your details like weight, height, gender, body type, activity level, and goal 
-            to receive customized diet and workout plans.
-            """
-        )
 
-    with solara.Sidebar():
-        with solara.Card("Controls", margin=0, elevation=0):
-            with solara.Column():
-                solara.Button(
-                    "Load Example Data", 
-                    color="primary", 
-                    text=True, 
-                    outlined=True, 
-                    on_click=State.load_sample
-                )
-                solara.Button(
-                    "Reset Data", 
-                    color="primary", 
-                    text=True, 
-                    outlined=True, 
-                    on_click=State.reset
-                )
-                solara.Markdown("Hosted in [Ploomber Cloud](https://ploomber.io/)")
+    
+    return solara.Row(classes=["main"],style=css, 
+                      children=[
+                          
+                        solara.Column([
+                        solara.Markdown("# Welcome to Your Personalized Planner"),
+                        solara.Markdown(
+                            """
+                            Welcome to your Personalized Diet and Workout Planner. 
+                            Please input your details like weight, height, gender, body type, activity level, and goal 
+                            to receive customized diet and workout plans.
+                            """, style="margin-top: 20px; width: 80%;",
+                        ),
+                        solara.Markdown("Please enter your details to get started."),
+                        user_input_form(),
+                        solara.Markdown("App hosted in [Ploomber Cloud](https://ploomber.io/)")
+                        
+                    ]),
+        solara.Row(classes=["main"],style=css, children=[
+            solara.Column(
+                style="margin-top: 40px; width: 150%;",
+                children=[
+                    solara.Markdown("# Your results"),
+                    display_results()
+                        ])
+                ])
+        ])
 
-    return solara.Column([
-        solara.Markdown("# Welcome to Your Personalized Planner"),
-        solara.Markdown("Please enter your details to get started."),
-        user_input_form(),
-        display_results()
-    ])
+    
 
 @solara.component
 def Layout(children):
