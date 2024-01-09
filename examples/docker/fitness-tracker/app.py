@@ -42,7 +42,7 @@ def document_store_and_pipeline(documents):
     rag_prompt = PromptTemplate(
         prompt="""Synthesize a brief answer from the following text for the given question.
                                 Provide a clear and concise response that summarizes the key points and information presented in the text.
-                                Your answer should be in your own words and be no longer than 50 words.
+                                Your answer should be in your own words and be no longer than 200 words.
                                 \n\n Related text: {join(documents)} \n\n Question: {query} \n\n Answer:""",
         output_parser=AnswerParser(),
     )
