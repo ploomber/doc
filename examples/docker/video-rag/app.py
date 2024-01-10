@@ -13,11 +13,14 @@ from haystack.components.generators import GPTGenerator
 from elasticsearch_haystack.embedding_retriever import ElasticsearchEmbeddingRetriever
 from elasticsearch_haystack.document_store import ElasticsearchDocumentStore
 
-from chat import *
+from chat import chatbox_css, Message, ChatBox
 
-load_dotenv("../.env")
+load_dotenv(".env")
 openaikey = os.getenv("OPENAI")
 qdrant = os.getenv("qdrant")
+elastic_search_host = os.getenv("elastic_search_host")
+elastic_username = os.getenv("elastic_username")
+elastic_password = os.getenv("elastic_password")
 
 # Build RAG pipeline
 print("Initializing QA pipeline")
@@ -36,8 +39,9 @@ Use the following context to answer the user's question in a friendly manner. \
 {{query}}
 """
 
-document_store = ElasticsearchDocumentStore(hosts= "http://localhost:9200/")
-
+#document_store = ElasticsearchDocumentStore(hosts= "http://localhost:9200/")
+document_store = ElasticsearchDocumentStore(hosts=elastic_search_host,
+                                            basic_auth=(elastic_username, elastic_password))
 prompt_builder = PromptBuilder(prompt_template)
 ############################################
 query_embedder = SentenceTransformersTextEmbedder()
@@ -72,8 +76,6 @@ openai.api_key = os.getenv("OPENAI")
 
 pipeline.draw("question_answer_pipeline.png")
 
-
-
 class State:
     video_data = solara.reactive(None)
     video_upload_error = solara.reactive("")
@@ -99,6 +101,18 @@ class State:
             # Add any additional processing you need for the video file here
         except Exception as e:
             State.video_upload_error.value = str(e)
+
+        try:
+            # Process the video file
+            video_path = State.save_temp_video(file)
+            audio_path = State.convert_video_to_audio(video_path)
+            chunked_audio_paths = State.chunk_audio(audio_path, 180000)  # Chunk length in ms
+
+            # Run the indexing pipeline
+            State.index_audio_chunks(chunked_audio_paths)
+        except Exception as e:
+            State.video_upload_error.value = str(e)
+
 
     @staticmethod
     def reset():

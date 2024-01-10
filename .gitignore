@@ -169,3 +169,4 @@ cython_debug/
 #.idea/
 
 ploomber-cloud.json
+.DS_Store

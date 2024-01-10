@@ -5,3 +5,4 @@ openai
 python-dotenv
 pydub
 moviepy
+modal
