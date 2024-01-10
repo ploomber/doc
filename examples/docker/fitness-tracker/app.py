@@ -42,13 +42,13 @@ def document_store_and_pipeline(documents):
     rag_prompt = PromptTemplate(
         prompt="""Synthesize a brief answer from the following text for the given question.
                                 Provide a clear and concise response that summarizes the key points and information presented in the text.
-                                Your answer should be in your own words and be no longer than 200 words.
+                                
                                 \n\n Related text: {join(documents)} \n\n Question: {query} \n\n Answer:""",
         output_parser=AnswerParser(),
     )
 
     # Set up nodes
-    retriever = BM25Retriever(document_store=document_store, top_k=2)
+    retriever = BM25Retriever(document_store=document_store, top_k=5)
     pn = PromptNode("gpt-3.5-turbo", 
                     api_key=openai_key, 
                     model_kwargs={"stream":False},
@@ -144,9 +144,9 @@ def generate_workout_plan(weight, height, gender, body_type, activity_level, goa
 
     # Process results and return a formatted string
     answers = "\n".join([res.answer for res in results['answers']])
-    title = "\n".join([res.meta['title'] for res in results['documents']])
-    link =  "\n".join([res.meta['link'] for res in results['documents']])
-    formatted_results = f"Answer: {answers} \n\n Title: {title} \n\n Link: {link} \n\n "
+    title = "\n \n ".join([f"* {res.meta['title']}" for res in results['documents']])
+    link =  "\n \n".join([f"* {res.meta['link']}" for res in results['documents']])
+    formatted_results = f"Answer: {answers} \n\n Retrieved from: \n\n Titles: \n\n {title} \n\n Links: \n\n {link} \n\n "
     return formatted_results
 
 
@@ -166,9 +166,9 @@ def generate_diet_plan(weight, height, gender, activity_level, goal, body_type):
 
     # Process results and return a formatted string
     answers = "\n".join([res.answer for res in results['answers']])
-    title = "\n".join([res.meta['title'] for res in results['documents']])
-    link =  "\n".join([res.meta['link'] for res in results['documents']])
-    formatted_results = f"Answer: {answers} \n\n Title: {title} \n\n Link: {link} \n\n "
+    title = "\n \n ".join([f"* {res.meta['title']}" for res in results['documents']])
+    link =  "\n \n".join([f"* {res.meta['link']}" for res in results['documents']])
+    formatted_results = f"Answer: {answers} \n\n Retrieved from: \n\n Titles: \n\n {title} \n\n Links: \n\n {link} \n\n "
     return formatted_results
 
 @solara.component
