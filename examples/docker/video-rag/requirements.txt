@@ -1,8 +1,7 @@
-haystack-ai
+haystack-ai==2.0.0b3
 elasticsearch-haystack==0.1.2
 solara
-openai
 python-dotenv
+sentence-transformers>=2.2.0
+moviepy 
 pydub
-moviepy
-modal
