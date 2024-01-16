@@ -109,7 +109,7 @@ It can take up to 48 hours for nameserver changes to take effect. Please be pati
 
 #### HTTPS and SSL
 
-All Ploomber applications include the HTTPS and SSL protocols, ensuring that communication between your visitors and your site is entirely secure. Once your custom domain has been verified, you'll be able to see it under Registered domains as `ISSED`, and your custom domain will have an SSL certification.
+All Ploomber applications include the HTTPS and SSL protocols, ensuring that communication between your visitors and your site is entirely secure. Once your custom domain has been verified, you'll be able to see it under Registered domains as `ISSUED`, and your custom domain will have an SSL certification.
 
 ![](../static/custom-domains/verified.png)
 
