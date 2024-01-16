@@ -4,7 +4,7 @@ When you publish your application for the first time, your web address (i.e., UR
 
 If you already own a domain, you can easily bring it to your Ploomber account by changing its name servers. With this connection method, Ploomber hosts your DNS, while your domain remains registered with its current host.
 
-## Ading a custom domain
+## Adding a custom domain
 
 ### Before you begin
 
