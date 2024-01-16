@@ -4,7 +4,7 @@ When you publish your application for the first time, your web address (i.e., UR
 
 If you already own a domain, you can easily bring it to your Ploomber account by updating your DNS records, or by changing its nameservers.
 
-## Ading a custom domain
+## Adding a custom domain
 
 ### Before you begin
 
