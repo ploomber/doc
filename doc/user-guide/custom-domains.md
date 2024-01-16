@@ -71,7 +71,7 @@ You've completed the process, and now it's time to be patient. Allow up to 48 ho
 
 #### Method 2: Nameservers
 
-First, let's the change connection method to nameservers, by clicking `nameservers`.
+First, let's change the connection method to nameservers, by clicking `nameservers`.
 
 ![](../static/custom-domains/change-to-nameservers.png)
 
