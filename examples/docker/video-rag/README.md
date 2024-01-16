@@ -45,9 +45,29 @@ Modify the document store in `video_indexing.py` and `app.py` to use the remote 
 python indexing_pipeline.py
 ```
 
-### Execution of retriever pipeline through the Solara app
+### Local execution of retriever pipeline through the Solara app
 
 ```bash
 cd app/
 solara run app.py
+```
+
+### Deploy app on Ploomber cloud (assumes cloud-based set up of an ElasticSearch instance)
+
+Generate an API key on [Ploomber Cloud](https://www.platform.ploomber.io/applications) under Account. Paste your API key via the CLI. 
+
+```bash
+ploomber-cloud key
+```
+
+Initialize your deployment environment
+
+```bash
+ploomber-cloud init
+```
+
+Deploy your app
+
+```bash
+ploomber-cloud deploy
 ```
