@@ -36,7 +36,7 @@ There are two ways to connect a custom domain. Depending on where you want to st
 
 #### Method 1: Pointing
 
-To complete the process, you need to add the following DNS records in your domain host account. If these records are already exist, you need to replace them with the newly provided DNS records.
+To complete the process, you need to add the following DNS records in your domain host account. If these records already exist, you need to replace them with the newly provided DNS records.
 
 ![](../static/custom-domains/pointing-change-dns-records.png)
 
