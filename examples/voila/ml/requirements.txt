@@ -1,4 +1,4 @@
-# requirements for ml dashboard
+# requirements for ml application
 seaborn   
 scikit-learn
 pandas
