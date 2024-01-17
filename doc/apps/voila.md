@@ -11,7 +11,7 @@ To deploy a application you need two files:
 
 ## Voilà
 
-Currently, Ploomber Cloud supports [Voilà](https://voila.readthedocs.io/en/stable/) for deploying Jupyter notebooks as applications. For information on how to write Voilà applications, [please check the documentation](https://voila.readthedocs.io/en/stable/).
+Currently, Ploomber Cloud supports `Voilà` for deploying Jupyter notebooks as applications. For information on how to write Voilà applications, [please check the documentation](https://voila.readthedocs.io/en/stable/).
 
 Click here to see [some examples.](../examples/voila.md)
 
