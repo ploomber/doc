@@ -345,12 +345,9 @@ def Sidebar():
     solara.Markdown("* Back end: [Haystack](https://haystack.deepset.ai/)", style="color: #F0EDCF"),
     solara.Markdown("* Deployment: [Ploomber Cloud](https://ploomber.io/)", style="color: #F0EDCF"),
         # Here you can add more information or links to how the application is built
-    ], style="background-color: #0B60B0; color: #F0EDCF; padding: 1em; width: 550px; height: 200vh;")
+    ], style="background-color: #0B60B0; color: #F0EDCF; padding: 1em; width: 550px; height: 175vh;")
 
 
-"""
-
-"""
 # App layout
 @solara.component
 def Page():
