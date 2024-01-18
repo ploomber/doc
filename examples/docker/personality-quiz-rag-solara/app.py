@@ -1,4 +1,17 @@
 import solara
+from haystack import Pipeline
+from haystack.components.preprocessors import DocumentSplitter
+
+from haystack.components.embedders import SentenceTransformersTextEmbedder
+from haystack.components.builders.prompt_builder import PromptBuilder
+from haystack.components.generators import GPTGenerator
+from haystack import Document
+
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+api_key = os.getenv('OPENAI_KEY')
 
 questions = [
     {"text": "Do you feel more energized when surrounded by people?", "trait": "E"},
@@ -26,6 +39,52 @@ questions = [
     {"text": "Do you find satisfaction in completing tasks and finalizing decisions?", "trait": "J"},
     {"text": "Do you prefer exploring various options before making a decision?", "trait": "P"},
 ]
+
+def llm_pipeline(api_key):
+    prompt_template = """
+    Determine the personality of someone using the Myers-Briggs Type Indicator (MBTI) test. In this test,
+    a user has answeres a series of questions using "Yes" and "No" responses. The questions are
+    labelled according to the trait, where the traits are:
+    E = Extraversion
+    I = Introversion
+    S = Sensing
+    N = Intuition
+    T = Thinking
+    F = Feeling
+    J = Judging
+    P = Perceiving
+    Please provide a concise explanation for your response.
+    If the documents do not contain the answer to the question, say that ‘Answer is unknown.’
+    Context:
+    {% for doc in documents %}
+        Question: {{ doc.content }} Response: {{ doc.meta['answer'] }} Personality trait: {{doc.meta['trait']}} \n
+    {% endfor %};
+    Question: {{query}}
+    \n
+    """
+    splitter = DocumentSplitter(split_length=100, split_overlap=5)
+    prompt_builder = PromptBuilder(prompt_template)
+    llm = GPTGenerator(api_key=api_key, model='gpt-4')
+
+    pipeline = Pipeline()
+    pipeline.add_component("splitter", splitter)
+    pipeline.add_component(name="prompt_builder", instance=prompt_builder)
+    pipeline.add_component(name="llm", instance=llm)
+    pipeline.connect("splitter.documents", "prompt_builder.documents")
+    pipeline.connect("prompt_builder", "llm")
+
+    return pipeline
+
+def generate_documents_from_responses(responses):
+    for i, question in enumerate(questions):
+        question['meta'] = {
+            'trait': question['trait'],
+            'answer': responses[i]
+        }
+
+    documents = [Document(content=question["text"], meta=question["meta"]) for question in questions]
+
+    return documents
 
 def calculate_mbti_scores(responses):
     if len(responses) != 24:
@@ -60,6 +119,18 @@ def calculate_mbti_scores(responses):
 
     return scores
 
+def classic_mbti(responses):
+    scores = calculate_mbti_scores(responses)
+    # Process the scores to determine MBTI type
+    mbti_type = ''
+    for trait_pair in ['EI', 'SN', 'TF', 'JP']:
+        trait1, trait2 = trait_pair
+        if scores[trait1] >= scores[trait2]:
+            mbti_type += trait1
+        else:
+            mbti_type += trait2
+    return mbti_type
+
 # A component to display a question
 @solara.component
 def QuestionComponent(question, on_answer):
@@ -83,6 +154,14 @@ def PersonalityQuiz():
     current_index, set_current_index = solara.use_state(0)
     responses, set_responses = solara.use_state([])
     mbti_result, set_mbti_result = solara.use_state("")
+    is_processing, set_is_processing = solara.use_state(False)
+
+    def reset_quiz():
+        # Reset the state variables
+        set_current_index(0)
+        set_responses([])
+        set_mbti_result("")
+        set_is_processing(False)
 
     def handle_answer(question, answer):
         new_responses = responses[:]
@@ -99,19 +178,31 @@ def PersonalityQuiz():
             set_current_index(current_index - 1)
 
     def on_submit():
+        set_is_processing(True)  # Start processing
         try:
-            scores = calculate_mbti_scores(responses)
-            # Process the scores to determine MBTI type
-            mbti_type = ''
-            for trait_pair in ['EI', 'SN', 'TF', 'JP']:
-                trait1, trait2 = trait_pair
-                if scores[trait1] >= scores[trait2]:
-                    mbti_type += trait1
-                else:
-                    mbti_type += trait2
-            set_mbti_result(f"Your MBTI type is: {mbti_type}")
+            # Decision tree approach
+            mbti_type_classic = classic_mbti(responses)
+
+            # LLM approach 
+            pipeline = llm_pipeline(api_key)
+            documents = generate_documents_from_responses(responses)
+            query = "Based on the responses, what is this user's Myers-Briggs personality type?"
+            answer = pipeline.run(data={'splitter': {'documents': documents}, "prompt_builder": {"query": query}})
+            mbti_type_llm = answer['llm']['replies'][0]
+
+            set_mbti_result(f"Your MBTI type (according to a classic decision-tree approach) is: {mbti_type_classic}; according to LLM approach: {mbti_type_llm}")
         except ValueError as e:
             set_mbti_result(str(e))
+        finally:
+            set_is_processing(False)  # End processing
+
+        # Display the result or the processing message
+        if is_processing:
+            return solara.Markdown("Generating results... Please wait.")
+        elif mbti_result:
+            set_mbti_result(f"### Your MBTI results :\n\n According to a classic decision-tree approach: {mbti_type_classic}. \n\n According to LLM approach: {mbti_type_llm}")
+        else:
+            set_mbti_result(f"### Your MBTI results :\n\n According to a classic decision-tree approach: {mbti_type_classic}. \n\n According to LLM approach: {mbti_type_llm}")
 
 
     # Display the result or the next question
@@ -124,6 +215,7 @@ def PersonalityQuiz():
                 solara.Button("Next", on_click=lambda: set_current_index(current_index + 1), disabled=current_index == len(questions) - 1),
             ], justify="space-between", style="margin-top: 1em;"),
             solara.Button("Submit", on_click=on_submit, disabled=current_index != len(questions) - 1, style="margin-top: 1em;"),
+            solara.Button("Reset Quiz", on_click=reset_quiz, style="margin-top: 1em;"), 
             ResultsComponent(mbti_result)  # Add this line to display results
         ], style="flex: 1;")
     else:
@@ -134,25 +226,57 @@ def PersonalityQuiz():
                 solara.Button("Back", on_click=on_back, disabled=current_index == 0),
                 solara.Button("Next", on_click=lambda: set_current_index(current_index + 1), disabled=current_index == len(questions) - 1),
             ], justify="space-between", style="margin-top: 1em;"),
-            solara.Button("Submit", on_click=on_submit, disabled=current_index != len(questions) - 1, style="margin-top: 1em;")
+            solara.Button("Submit", on_click=on_submit, disabled=current_index != len(questions) - 1, style="margin-top: 1em;"),
+            solara.Button("Reset Quiz", on_click=reset_quiz, style="margin-top: 1em;"), 
         ], style="flex: 1;")
 
 
 @solara.component
 def ResultsComponent(mbti_result):
-    return solara.Markdown(f"### Your results:\n\n{mbti_result}")
+    return solara.Markdown(f"{mbti_result}")
 
 
 @solara.component
 def Sidebar():
     return solara.Column([
-        solara.Markdown("# About MBPT"),
-        solara.Markdown("brief text on this personality test"),
-        solara.Markdown("# How is this application built"),
+        solara.Markdown("### About The Myers-Briggs Type Indicator (MBTI)", style="color: #F0EDCF; font-size: 1.2em;"),
+        solara.Markdown("The Myers-Briggs Type Indicator (MBTI) is a widely recognized psychological tool \
+                            designed by Isabel Myers and Katherine Briggs, \
+                            drawing from Carl Jung's theory on personality types. \
+                            It aims to categorize individuals into one of 16 distinct personality types, \
+                            each with unique preferences and characteristics.", style="color: #F0EDCF"),
+        solara.Markdown("In summary, the MBTI is a reflective tool that helps individuals understand \
+                            their own personality, encompassing their likes, dislikes, strengths, weaknesses, \
+                            potential career paths, and social compatibility. It is not intended to \
+                            measure or diagnose psychological health but rather to facilitate \
+                            personal insight and self-understanding.", style="color: #F0EDCF"),
+        solara.Markdown("The MBTI measures four key dimensions of personality:", style="color: #F0EDCF"),
+        solara.Markdown("* Extraversion (E) – Introversion (I): This dimension assesses how people interact \
+                            with their environment, with extraverts being action-oriented and sociable, \
+                                while introverts are contemplative and solitary.", style="color: #F0EDCF"),
+        solara.Markdown("* Sensing (S) – Intuition (N): This looks at how individuals gather information, \
+                        with sensors focusing on concrete facts and details, and intuitives \
+                            looking at patterns and possibilities.", style="color: #F0EDCF"),
+        solara.Markdown("* Thinking (T) – Feeling (F): This scale examines decision-making processes, \
+                        with thinkers prioritizing \
+                            objective data and logic, and feelers considering personal \
+                            implications and emotions.", style="color: #F0EDCF"),
+        solara.Markdown("* Judging (J) – Perceiving (P): This final dimension evaluates how people\
+                        approach the external world, \
+                            with judgers preferring order and decisiveness,\
+                                while perceivers value flexibility and openness.", style="color: #F0EDCF"),
+        solara.Markdown("The MBTI suggests that while everyone utilizes each dimension to \
+                            some extent, individuals tend to \
+                            have a dominant preference in each of the four categories,\
+                                culminating in a specific personality type.", style="color: #F0EDCF"),
+    solara.Markdown("# How is this application built", style="color: #F0EDCF"),
         # Here you can add more information or links to how the application is built
-    ], style="background-color: #333; color: white; padding: 1em; width: 250px; height: 100vh;")
+    ], style="background-color: #0B60B0; color: #F0EDCF; padding: 1em; width: 550px; height: 200vh;")
 
 
+"""
+
+"""
 # App layout
 @solara.component
 def Page():
