@@ -2,9 +2,8 @@ import solara
 from haystack import Pipeline
 from haystack.components.preprocessors import DocumentSplitter
 
-from haystack.components.embedders import SentenceTransformersTextEmbedder
 from haystack.components.builders.prompt_builder import PromptBuilder
-from haystack.components.generators import GPTGenerator
+from haystack.components.generators import OpenAIGenerator
 from haystack import Document
 
 from dotenv import load_dotenv
@@ -77,7 +76,9 @@ def llm_pipeline(api_key):
     """
     splitter = DocumentSplitter(split_length=100, split_overlap=5)
     prompt_builder = PromptBuilder(prompt_template)
-    llm = GPTGenerator(api_key=api_key, model='gpt-4')
+    llm = OpenAIGenerator(api_key=api_key, 
+                          model='gpt-4',
+                          generation_kwargs={"temperature":0.1})
 
     pipeline = Pipeline()
     pipeline.add_component("splitter", splitter)
@@ -257,9 +258,9 @@ def PersonalityQuiz():
         if is_processing:
             return solara.Markdown("Generating results... Please wait.")
         elif mbti_result:
-            set_mbti_result(f"### Your MBTI results :\n\n According to a classic decision-tree approach: {mbti_type_classic}. \n\n According to LLM approach: {mbti_type_llm}")
+            set_mbti_result(f"### Your MBTI results :\n\n According to a classic decision-tree approach: {mbti_type_classic}. \n\n According to an LLM-based approach: {mbti_type_llm}")
         else:
-            set_mbti_result(f"### Your MBTI results :\n\n According to a classic decision-tree approach: {mbti_type_classic}. \n\n According to LLM approach: {mbti_type_llm}")
+            set_mbti_result(f"### Your MBTI results :\n\n According to a classic decision-tree approach: {mbti_type_classic}. \n\n According to an LLM-based approach: {mbti_type_llm}")
 
 
     # Display the result or the next question
