@@ -1,4 +1,4 @@
-# requirements for analytical dashboard
+# requirements for analytical application
 jupysql
 duckdb
 duckdb-engine

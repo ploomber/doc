@@ -3,7 +3,7 @@
 To deploy a [Chalk'it](https://github.com/ifpen/chalk-it) application in Ploomber Cloud you need:
 
 - A `Dockerfile`
-- A Chalk'it projet definition JSON file renamed to `dashboard.xprjson`
+- A Chalk'it projet definition JSON file renamed to `application.xprjson`
 
 ## `Dockerfile`
 
@@ -12,8 +12,8 @@ You just need to use this [template](https://github.com/ploomber/doc/blob/main/e
 ```Dockerfile
 FROM python:3.11
 
-# assume your dashboard is named dashboard.xprjson
-COPY dashboard.xprjson dashboard.xprjson
+# assume your application is named application.xprjson
+COPY application.xprjson application.xprjson
 
 # install py-chalk-it and gunicorn
 RUN pip install py-chalk-it gunicorn
@@ -28,10 +28,10 @@ To test your app, you can use `docker` locally:
 
 ```sh
 # build the docker image
-docker build . -t dashboard
+docker build . -t application
 
 # run it
-docker run -p 5000:80 dashboard
+docker run -p 5000:80 application
 ```
 
 Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.

@@ -1,17 +1,17 @@
 # Voilà
 
 ```{tip}
-If you haven't deployed your first dashboard, check out the [quickstart guide.](../quickstart/app.md)
+If you haven't deployed your first application, check out the [quickstart guide.](../quickstart/app.md)
 ```
 
-To deploy a dashboard you need two files:
+To deploy a application you need two files:
 
 1. A Jupyter notebook file (`.ipynb`)
 2. A dependencies file (`requirements.txt`)
 
 ## Voilà
 
-Currently, Ploomber Cloud supports [Voilà](https://voila.readthedocs.io/en/stable/) for deploying Jupyter notebooks as dashboards. For information on how to write Voilà dashboards, [please check the documentation](https://voila.readthedocs.io/en/stable/).
+Currently, Ploomber Cloud supports `Voilà` for deploying Jupyter notebooks as applications. For information on how to write Voilà applications, [please check the documentation](https://voila.readthedocs.io/en/stable/).
 
 Click here to see [some examples.](../examples/voila.md)
 
