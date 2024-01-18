@@ -41,6 +41,19 @@ questions = [
 ]
 
 def llm_pipeline(api_key):
+    """
+    This function creates an LLM-powered pipeline to determine someone's MBTI type.
+
+    Parameters
+    ----------
+    api_key : str
+        OpenAI API key
+
+    Returns
+    -------
+    pipeline : Pipeline (Haystack)
+        A pipeline that can be used to determine someone's MBTI type.
+    """
     prompt_template = """
     Determine the personality of someone using the Myers-Briggs Type Indicator (MBTI) test. In this test,
     a user answers a series of questions using "Yes" and "No" responses. The questions are
@@ -76,6 +89,20 @@ def llm_pipeline(api_key):
     return pipeline
 
 def generate_documents_from_responses(responses):
+    """
+    This function takes responses and generates Haystack Documents.
+
+    Parameters
+    ----------
+    responses : list
+        A list of responses to the MBTI questions. Each response is of type dict
+        and has the following keys: 'text' (str), 'trait' (str), 'answer' (str).
+
+    Returns
+    -------
+    documents : list
+        A list of Haystack Documents.
+    """
     for i, question in enumerate(questions):
         question['meta'] = {
             'trait': question['trait'],
@@ -87,6 +114,21 @@ def generate_documents_from_responses(responses):
     return documents
 
 def calculate_mbti_scores(responses):
+    """
+    This function takes responses and calculates the MBTI scores.
+    
+    Parameters
+    ----------
+    responses : list
+        A list of responses to the MBTI questions. Each response is of type dict
+        and has the following keys: 'text' (str), 'trait' (str), 'answer' (str).
+        
+    Returns
+    -------
+    scores : dict
+        A dictionary containing the MBTI scores for each trait.
+    
+    """
     if len(responses) != 24:
         raise ValueError("There must be exactly 24 responses.")
 
@@ -120,6 +162,21 @@ def calculate_mbti_scores(responses):
     return scores
 
 def classic_mbti(responses):
+    """
+    This function takes responses and determines the MBTI type using a classic decision-tree approach.
+    
+    Parameters
+    ----------
+    responses : list
+        A list of responses to the MBTI questions. Each response is of type dict
+        and has the following keys: 'text' (str), 'trait' (str), 'answer' (str).
+
+    Returns
+    -------
+    mbti_type : str
+        The MBTI type.
+
+    """
     scores = calculate_mbti_scores(responses)
     # Process the scores to determine MBTI type
     mbti_type = ''
@@ -155,12 +212,6 @@ def PersonalityQuiz():
     responses, set_responses = solara.use_state([])
     mbti_result, set_mbti_result = solara.use_state("")
     is_processing, set_is_processing = solara.use_state(False)
-
-    quiz_container_style = {
-        "padding": "20px",  # Adjust the padding as needed
-        "margin": "auto",
-        "maxWidth": "800px",  # You can set a max width to constrain the quiz area
-    }
 
     def reset_quiz():
         # Reset the state variables
@@ -246,7 +297,7 @@ def Topbar():
     # Define the top bar style and content
     return solara.Row(
         [
-            solara.Markdown("### Take the test to determine your MBTI\n", style="color: #FFFFFF; font-size: 24px; padding: 10px;"),
+            solara.Markdown("### Take the test to determine your MBTI personality type\n", style="color: #FFFFFF; font-size: 20px; padding: 10px;"),
             solara.Markdown("Note - the purpose  of this quiz is to test the different responses between a classic and LLM-based approach. \
                             The quiz is also not extensive nor should it be used to evaluate someone's personality.", 
                             style="color: #FFFFFF;padding: 10px;")
