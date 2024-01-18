@@ -156,6 +156,12 @@ def PersonalityQuiz():
     mbti_result, set_mbti_result = solara.use_state("")
     is_processing, set_is_processing = solara.use_state(False)
 
+    quiz_container_style = {
+        "padding": "20px",  # Adjust the padding as needed
+        "margin": "auto",
+        "maxWidth": "800px",  # You can set a max width to constrain the quiz area
+    }
+
     def reset_quiz():
         # Reset the state variables
         set_current_index(0)
@@ -217,7 +223,7 @@ def PersonalityQuiz():
             solara.Button("Submit", on_click=on_submit, disabled=current_index != len(questions) - 1, style="margin-top: 1em;"),
             solara.Button("Reset Quiz", on_click=reset_quiz, style="margin-top: 1em;"), 
             ResultsComponent(mbti_result)  # Add this line to display results
-        ], style="flex: 1;")
+        ], style="flex: 1; padding: 20px; margin: auto;")
     else:
         return solara.Column([
             solara.Markdown(f"### Question {current_index + 1}"),
@@ -228,13 +234,25 @@ def PersonalityQuiz():
             ], justify="space-between", style="margin-top: 1em;"),
             solara.Button("Submit", on_click=on_submit, disabled=current_index != len(questions) - 1, style="margin-top: 1em;"),
             solara.Button("Reset Quiz", on_click=reset_quiz, style="margin-top: 1em;"), 
-        ], style="flex: 1;")
+        ], style="flex: 1; padding: 20px; margin: auto;")
 
 
 @solara.component
 def ResultsComponent(mbti_result):
     return solara.Markdown(f"{mbti_result}")
 
+@solara.component
+def Topbar():
+    # Define the top bar style and content
+    return solara.Row(
+        [
+            solara.Markdown("### Take the test to determine your MBTI\n", style="color: #FFFFFF; font-size: 24px; padding: 10px;"),
+            solara.Markdown("Note - the purpose  of this quiz is to test the different responses between a classic and LLM-based approach. \
+                            The quiz is also not extensive nor should it be used to evaluate someone's personality.", 
+                            style="color: #FFFFFF;padding: 10px;")
+        ],
+        style="background-color: #333333; justify-content: center; align-items: center;"
+    )
 
 @solara.component
 def Sidebar():
@@ -269,7 +287,11 @@ def Sidebar():
                             some extent, individuals tend to \
                             have a dominant preference in each of the four categories,\
                                 culminating in a specific personality type.", style="color: #F0EDCF"),
-    solara.Markdown("# How is this application built", style="color: #F0EDCF"),
+    solara.Markdown("### How is this application built", style="color: #F0EDCF"),
+    solara.Markdown("This application is built using the following libraries and frameworks:", style="color: #F0EDCF"),
+    solara.Markdown("* Front end: [Solara](https://solara.dev/docs)", style="color: #F0EDCF"),
+    solara.Markdown("* Back end: [Haystack](https://haystack.deepset.ai/)", style="color: #F0EDCF"),
+    solara.Markdown("* Deployment: [Ploomber Cloud](https://ploomber.io/)", style="color: #F0EDCF"),
         # Here you can add more information or links to how the application is built
     ], style="background-color: #0B60B0; color: #F0EDCF; padding: 1em; width: 550px; height: 200vh;")
 
@@ -280,10 +302,16 @@ def Sidebar():
 # App layout
 @solara.component
 def Page():
-    return solara.Row([
-        Sidebar(),
-        PersonalityQuiz(),
-    ])
+    return solara.Column(
+        [
+            Topbar(),  # This will place the Topbar at the top of the page
+            solara.Row([
+                Sidebar(),
+                PersonalityQuiz(),
+            ])
+        ],
+        style="height: 100vh;"  # Set the height to fill the screen vertically
+    )
 
 @solara.component
 def Layout(children):
