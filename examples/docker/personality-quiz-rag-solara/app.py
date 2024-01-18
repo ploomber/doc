@@ -299,8 +299,9 @@ def Topbar():
         [
             solara.Markdown("### Take the test to determine your MBTI personality type\n", style="color: #FFFFFF; font-size: 20px; padding: 10px;"),
             solara.Markdown("Note - the purpose  of this quiz is to test the different responses between a classic and LLM-based approach. \
-                            The quiz is also not extensive nor should it be used to evaluate someone's personality.", 
-                            style="color: #FFFFFF;padding: 10px;")
+                            The quiz is also not extensive nor should it be used to evaluate someone's personality. \
+                            This application is hosted on Ploomber Cloud. To learn more about Ploomber Cloud, visit [ploomber.io](https://ploomber.io/).", 
+                            style="color: #FFFFFF;padding: 10px;"),
         ],
         style="background-color: #333333; justify-content: center; align-items: center;"
     )
