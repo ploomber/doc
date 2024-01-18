@@ -43,7 +43,7 @@ questions = [
 def llm_pipeline(api_key):
     prompt_template = """
     Determine the personality of someone using the Myers-Briggs Type Indicator (MBTI) test. In this test,
-    a user has answeres a series of questions using "Yes" and "No" responses. The questions are
+    a user answers a series of questions using "Yes" and "No" responses. The questions are
     labelled according to the trait, where the traits are:
     E = Extraversion
     I = Introversion
