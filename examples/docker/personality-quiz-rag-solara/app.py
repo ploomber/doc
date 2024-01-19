@@ -192,13 +192,16 @@ def classic_mbti(responses):
 
 # A component to display a question
 @solara.component
-def QuestionComponent(question, on_answer, key):
-    # Define a local state for each question to track the selected answer
+def QuestionComponent(question, on_answer, key, reset_flag):
     answer, set_answer = solara.use_state(None, key=key)
 
+    # Reset answer state when the reset flag changes
+    if reset_flag:
+        set_answer(None)
+
     def on_click(response):
-        set_answer(response)  # Update the local state with the selected answer
-        on_answer(question, response)  # Pass the answer up to the handler
+        set_answer(response)
+        on_answer(question, response)
 
     yes_style = {"background-color": "#030637", "color": "white"} if answer == "Yes" else {}
     no_style = {"background-color": "#030637", "color": "white"} if answer == "No" else {}
@@ -209,7 +212,7 @@ def QuestionComponent(question, on_answer, key):
         solara.Button("No", on_click=lambda: on_click("No"), style=no_style),
     ])
 
-# Main Quiz component
+
 # Main Quiz component
 @solara.component
 def PersonalityQuiz():
@@ -217,12 +220,15 @@ def PersonalityQuiz():
     responses, set_responses = solara.use_state([])
     mbti_result, set_mbti_result = solara.use_state("")
     is_processing, set_is_processing = solara.use_state(False)
+    reset_flag, set_reset_flag = solara.use_state(False)  # Add a flag for reset status
 
     def reset_quiz():
         set_current_index(0)
         set_responses([])
         set_mbti_result("")
         set_is_processing(False)
+        set_reset_flag(True)  # Set the reset flag to true
+
 
     def handle_answer(question, answer):
         new_responses = responses[:]
@@ -266,7 +272,7 @@ def PersonalityQuiz():
     # If still in the quiz, display the next question
     return solara.Column([
         solara.Markdown(f"### Question {current_index + 1} out of 24"),
-        QuestionComponent(questions[current_index], handle_answer, key=current_index),
+        QuestionComponent(questions[current_index], handle_answer, key=current_index, reset_flag=reset_flag),
         solara.Row([
             solara.Button("Back", on_click=on_back, disabled=current_index == 0),
             solara.Button("Next", on_click=lambda: set_current_index(current_index + 1), disabled=current_index >= len(questions) - 1),
