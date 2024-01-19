@@ -65,7 +65,8 @@ def llm_pipeline(api_key):
     F = Feeling
     J = Judging
     P = Perceiving
-    Please provide a concise explanation for your response.
+    Please provide a concise explanation for your response and also provide insights into the personality type of the user. 
+    In your description mention the defining characteristics of the personality type.
     If the documents do not contain the answer to the question, say that ‘Answer is unknown.’
     Context:
     {% for doc in documents %}
@@ -191,19 +192,21 @@ def classic_mbti(responses):
 
 # A component to display a question
 @solara.component
-def QuestionComponent(question, on_answer):
-    text, set_text = solara.use_state("")
+def QuestionComponent(question, on_answer, key):
+    # Using state to track button clicks, with a key to reset state on new questions
+    answer, set_answer = solara.use_state(None, key=key)
 
-    def on_yes():
-        on_answer(question, "Yes")
+    def on_click(response):
+        set_answer(response)  # Set the clicked answer
+        on_answer(question, response)  # Pass the answer up to the handler
 
-    def on_no():
-        on_answer(question, "No")
+    yes_style = {"background-color": "#030637","color": "white"} if answer == "Yes" else {}
+    no_style = {"background-color": "#030637", "color": "white"} if answer == "No" else {}
 
     return solara.Column([
         solara.Text(question["text"]),
-        solara.Button("Yes", on_click=on_yes),
-        solara.Button("No", on_click=on_no)
+        solara.Button("Yes", on_click=lambda: on_click("Yes"), style=yes_style),
+        solara.Button("No", on_click=lambda: on_click("No"), style=no_style),
     ])
 
 # Main Quiz component
@@ -213,6 +216,7 @@ def PersonalityQuiz():
     responses, set_responses = solara.use_state([])
     mbti_result, set_mbti_result = solara.use_state("")
     is_processing, set_is_processing = solara.use_state(False)
+    answer, set_answer = solara.use_state(None)  # Add a state for tracking the answer
 
     def reset_quiz():
         # Reset the state variables
@@ -220,14 +224,20 @@ def PersonalityQuiz():
         set_responses([])
         set_mbti_result("")
         set_is_processing(False)
+        set_answer(None) 
 
     def handle_answer(question, answer):
         new_responses = responses[:]
+        # If this is a new answer, append it; otherwise, replace the current answer
         if current_index >= len(new_responses):
             new_responses.append(answer)
         else:
             new_responses[current_index] = answer
+
+        # Update the state with the new responses
         set_responses(new_responses)
+
+        # If there are more questions, go to the next one, otherwise stay on the current
         if current_index < len(questions) - 1:
             set_current_index(current_index + 1)
 
@@ -248,7 +258,7 @@ def PersonalityQuiz():
             answer = pipeline.run(data={'splitter': {'documents': documents}, "prompt_builder": {"query": query}})
             mbti_type_llm = answer['llm']['replies'][0]
 
-            set_mbti_result(f"Your MBTI type (according to a classic decision-tree approach) is: {mbti_type_classic}; according to LLM approach: {mbti_type_llm}")
+            set_mbti_result(f"Your MBTI type (according to a deterministic approach) is: {mbti_type_classic}; according to LLM approach: {mbti_type_llm}")
         except ValueError as e:
             set_mbti_result(str(e))
         finally:
@@ -258,16 +268,17 @@ def PersonalityQuiz():
         if is_processing:
             return solara.Markdown("Generating results... Please wait.")
         elif mbti_result:
-            set_mbti_result(f"### Your MBTI results :\n\n According to a classic decision-tree approach: {mbti_type_classic}. \n\n According to an LLM-based approach: {mbti_type_llm}")
+            set_mbti_result(f"### Your MBTI results :\n\n According to a deterministic approach: {mbti_type_classic}.\n\n ---------------------------------------- \n\n According to an LLM-based approach (with the LLM generating information about the personality): {mbti_type_llm}")
         else:
-            set_mbti_result(f"### Your MBTI results :\n\n According to a classic decision-tree approach: {mbti_type_classic}. \n\n According to an LLM-based approach: {mbti_type_llm}")
+            set_mbti_result(f"### Your MBTI results :\n\n According to a deterministic approach: {mbti_type_classic}. \n\n ---------------------------------------- \n\n According to an LLM-based approach (with the LLM generating information about the personality): {mbti_type_llm}")
+        
 
 
     # Display the result or the next question
     if mbti_result is not None:
         return solara.Column([
-            solara.Markdown(f"### Question {current_index + 1}"),
-            QuestionComponent(questions[current_index], handle_answer),
+            solara.Markdown(f"### Question {current_index + 1} out of 24"),
+            QuestionComponent(questions[current_index], handle_answer, key=current_index),
             solara.Row([
                 solara.Button("Back", on_click=on_back, disabled=current_index == 0),
                 solara.Button("Next", on_click=lambda: set_current_index(current_index + 1), disabled=current_index == len(questions) - 1),
@@ -278,8 +289,8 @@ def PersonalityQuiz():
         ], style="flex: 1; padding: 20px; margin: auto;")
     else:
         return solara.Column([
-            solara.Markdown(f"### Question {current_index + 1}"),
-            QuestionComponent(questions[current_index], handle_answer),
+            solara.Markdown(f"### Question {current_index + 1} out of 24"),
+            QuestionComponent(questions[current_index], handle_answer, key=current_index),
             solara.Row([
                 solara.Button("Back", on_click=on_back, disabled=current_index == 0),
                 solara.Button("Next", on_click=lambda: set_current_index(current_index + 1), disabled=current_index == len(questions) - 1),
@@ -300,54 +311,54 @@ def Topbar():
         [
             solara.Markdown("### Take the test to determine your MBTI personality type\n", 
                             style="color: #FFFFFF; font-size: 20px; padding: 10px;"),
-            solara.Markdown("Note - the purpose  of this quiz is to test the different responses between a classic and LLM-based approach. \
-                            The quiz is also not extensive nor should it be used to evaluate someone's personality. \
+            solara.Markdown("Note - the purpose  of this test is to assess the different responses between a deterministic and an LLM-based approach. \
+                            The test is also not extensive nor should it be used to evaluate someone's personality. \
                             This application is hosted on Ploomber Cloud. To learn more about Ploomber Cloud, visit [ploomber.io](https://ploomber.io/).", 
                             style="color: #FFFFFF;padding: 10px;"),
         ],
-        style="background-color: #000000; justify-content: center; align-items: center;"
+        style="background-color: #3C0753; justify-content: center; align-items: center;"
     )
 
 @solara.component
 def Sidebar():
     return solara.Column([
-        solara.Markdown("### About The Myers-Briggs Type Indicator (MBTI)", style="color: #F0EDCF; font-size: 1.2em;"),
+        solara.Markdown("### About The Myers-Briggs Type Indicator (MBTI)", style="color: white; font-size: 1.2em;"),
         solara.Markdown("The Myers-Briggs Type Indicator (MBTI) is a widely recognized psychological tool \
                             designed by Isabel Myers and Katherine Briggs, \
                             drawing from Carl Jung's theory on personality types. \
                             It aims to categorize individuals into one of 16 distinct personality types, \
-                            each with unique preferences and characteristics.", style="color: #F0EDCF"),
+                            each with unique preferences and characteristics.", style="color: white"),
         solara.Markdown("In summary, the MBTI is a reflective tool that helps individuals understand \
                             their own personality, encompassing their likes, dislikes, strengths, weaknesses, \
                             potential career paths, and social compatibility. It is not intended to \
                             measure or diagnose psychological health but rather to facilitate \
-                            personal insight and self-understanding.", style="color: #F0EDCF"),
-        solara.Markdown("The MBTI measures four key dimensions of personality:", style="color: #F0EDCF"),
+                            personal insight and self-understanding.", style="color: white"),
+        solara.Markdown("The MBTI measures four key dimensions of personality:", style="color: white"),
         solara.Markdown("* Extraversion (E) – Introversion (I): This dimension assesses how people interact \
                             with their environment, with extraverts being action-oriented and sociable, \
-                                while introverts are contemplative and solitary.", style="color: #F0EDCF"),
+                                while introverts are contemplative and solitary.", style="color: white"),
         solara.Markdown("* Sensing (S) – Intuition (N): This looks at how individuals gather information, \
                         with sensors focusing on concrete facts and details, and intuitives \
-                            looking at patterns and possibilities.", style="color: #F0EDCF"),
+                            looking at patterns and possibilities.", style="color: white"),
         solara.Markdown("* Thinking (T) – Feeling (F): This scale examines decision-making processes, \
                         with thinkers prioritizing \
                             objective data and logic, and feelers considering personal \
-                            implications and emotions.", style="color: #F0EDCF"),
+                            implications and emotions.", style="color: white"),
         solara.Markdown("* Judging (J) – Perceiving (P): This final dimension evaluates how people\
                         approach the external world, \
                             with judgers preferring order and decisiveness,\
-                                while perceivers value flexibility and openness.", style="color: #F0EDCF"),
+                                while perceivers value flexibility and openness.", style="color: white"),
         solara.Markdown("The MBTI suggests that while everyone utilizes each dimension to \
                             some extent, individuals tend to \
                             have a dominant preference in each of the four categories,\
-                                culminating in a specific personality type.", style="color: #F0EDCF"),
-    solara.Markdown("### How is this application built", style="color: #F0EDCF"),
-    solara.Markdown("This application is built using the following libraries and frameworks:", style="color: #F0EDCF"),
-    solara.Markdown("* Front end: [Solara](https://solara.dev/docs)", style="color: #F0EDCF"),
-    solara.Markdown("* Back end: [Haystack](https://haystack.deepset.ai/)", style="color: #F0EDCF"),
-    solara.Markdown("* Deployment: [Ploomber Cloud](https://ploomber.io/)", style="color: #F0EDCF"),
+                                culminating in a specific personality type.", style="color: white"),
+    solara.Markdown("### How is this application built", style="color: white"),
+    solara.Markdown("This application is built using the following libraries and frameworks:", style="color: white"),
+    solara.Markdown("* Front end: <a href='https://solara.dev/docs' style='color: #030637;'>Solara</a>", style="color: white"),
+    solara.Markdown("* Back end: <a href='https://haystack.deepset.ai/' style='color: #030637;'>Haystack</a>", style="color: white"),
+    solara.Markdown("* Deployment: <a href='https://ploomber.io/' style='color:  #030637;'>Ploomber Cloud</a>", style="color: white"),
         # Here you can add more information or links to how the application is built
-    ], style="background-color: #0B60B0; color: #F0EDCF; padding: 1em; width: 550px; height: 175vh;")
+    ], style="background-color: #910A67; color: #F0EDCF; padding: 1em; width: 550px; height: 175vh;")
 
 
 # App layout
