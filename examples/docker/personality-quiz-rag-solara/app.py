@@ -193,14 +193,14 @@ def classic_mbti(responses):
 # A component to display a question
 @solara.component
 def QuestionComponent(question, on_answer, key):
-    # Using state to track button clicks, with a key to reset state on new questions
+    # Define a local state for each question to track the selected answer
     answer, set_answer = solara.use_state(None, key=key)
 
     def on_click(response):
-        set_answer(response)  # Set the clicked answer
+        set_answer(response)  # Update the local state with the selected answer
         on_answer(question, response)  # Pass the answer up to the handler
 
-    yes_style = {"background-color": "#030637","color": "white"} if answer == "Yes" else {}
+    yes_style = {"background-color": "#030637", "color": "white"} if answer == "Yes" else {}
     no_style = {"background-color": "#030637", "color": "white"} if answer == "No" else {}
 
     return solara.Column([
@@ -210,34 +210,27 @@ def QuestionComponent(question, on_answer, key):
     ])
 
 # Main Quiz component
+# Main Quiz component
 @solara.component
 def PersonalityQuiz():
     current_index, set_current_index = solara.use_state(0)
     responses, set_responses = solara.use_state([])
     mbti_result, set_mbti_result = solara.use_state("")
     is_processing, set_is_processing = solara.use_state(False)
-    answer, set_answer = solara.use_state(None)  # Add a state for tracking the answer
 
     def reset_quiz():
-        # Reset the state variables
         set_current_index(0)
         set_responses([])
         set_mbti_result("")
         set_is_processing(False)
-        set_answer(None) 
 
     def handle_answer(question, answer):
         new_responses = responses[:]
-        # If this is a new answer, append it; otherwise, replace the current answer
         if current_index >= len(new_responses):
             new_responses.append(answer)
         else:
             new_responses[current_index] = answer
-
-        # Update the state with the new responses
         set_responses(new_responses)
-
-        # If there are more questions, go to the next one, otherwise stay on the current
         if current_index < len(questions) - 1:
             set_current_index(current_index + 1)
 
@@ -246,58 +239,42 @@ def PersonalityQuiz():
             set_current_index(current_index - 1)
 
     def on_submit():
-        set_is_processing(True)  # Start processing
+        set_is_processing(True)
         try:
-            # Decision tree approach
             mbti_type_classic = classic_mbti(responses)
-
-            # LLM approach 
             pipeline = llm_pipeline(api_key)
             documents = generate_documents_from_responses(responses)
             query = "Based on the responses, what is this user's Myers-Briggs personality type?"
             answer = pipeline.run(data={'splitter': {'documents': documents}, "prompt_builder": {"query": query}})
             mbti_type_llm = answer['llm']['replies'][0]
-
             set_mbti_result(f"Your MBTI type (according to a deterministic approach) is: {mbti_type_classic}; according to LLM approach: {mbti_type_llm}")
         except ValueError as e:
             set_mbti_result(str(e))
         finally:
-            set_is_processing(False)  # End processing
+            set_is_processing(False)
 
-        # Display the result or the processing message
-        if is_processing:
-            return solara.Markdown("Generating results... Please wait.")
-        elif mbti_result:
-            set_mbti_result(f"### Your MBTI results :\n\n According to a deterministic approach: {mbti_type_classic}.\n\n ---------------------------------------- \n\n According to an LLM-based approach (with the LLM generating information about the personality): {mbti_type_llm}")
+    # Check if all questions have been answered and processing is not ongoing
+    if current_index >= len(questions) - 1 and not is_processing:
+        if mbti_result:
+            return solara.Column([
+                ResultsComponent(mbti_result),
+                solara.Button("Reset Quiz", on_click=reset_quiz, style="margin-top: 1em;")
+            ], style="flex: 1; padding: 20px; margin: auto;")
         else:
-            set_mbti_result(f"### Your MBTI results :\n\n According to a deterministic approach: {mbti_type_classic}. \n\n ---------------------------------------- \n\n According to an LLM-based approach (with the LLM generating information about the personality): {mbti_type_llm}")
-        
+            return solara.Markdown("Calculating your MBTI type... Please wait.")
 
+    # If still in the quiz, display the next question
+    return solara.Column([
+        solara.Markdown(f"### Question {current_index + 1} out of 24"),
+        QuestionComponent(questions[current_index], handle_answer, key=current_index),
+        solara.Row([
+            solara.Button("Back", on_click=on_back, disabled=current_index == 0),
+            solara.Button("Next", on_click=lambda: set_current_index(current_index + 1), disabled=current_index >= len(questions) - 1),
+        ], justify="space-between", style="margin-top: 1em;"),
+        solara.Button("Submit", on_click=on_submit, disabled=current_index != len(questions) - 1, style="margin-top: 1em;"),
+        solara.Button("Reset Quiz", on_click=reset_quiz, style="margin-top: 1em;")
+    ], style="flex: 1; padding: 20px; margin: auto;")
 
-    # Display the result or the next question
-    if mbti_result is not None:
-        return solara.Column([
-            solara.Markdown(f"### Question {current_index + 1} out of 24"),
-            QuestionComponent(questions[current_index], handle_answer, key=current_index),
-            solara.Row([
-                solara.Button("Back", on_click=on_back, disabled=current_index == 0),
-                solara.Button("Next", on_click=lambda: set_current_index(current_index + 1), disabled=current_index == len(questions) - 1),
-            ], justify="space-between", style="margin-top: 1em;"),
-            solara.Button("Submit", on_click=on_submit, disabled=current_index != len(questions) - 1, style="margin-top: 1em;"),
-            solara.Button("Reset Quiz", on_click=reset_quiz, style="margin-top: 1em;"), 
-            ResultsComponent(mbti_result)  # Add this line to display results
-        ], style="flex: 1; padding: 20px; margin: auto;")
-    else:
-        return solara.Column([
-            solara.Markdown(f"### Question {current_index + 1} out of 24"),
-            QuestionComponent(questions[current_index], handle_answer, key=current_index),
-            solara.Row([
-                solara.Button("Back", on_click=on_back, disabled=current_index == 0),
-                solara.Button("Next", on_click=lambda: set_current_index(current_index + 1), disabled=current_index == len(questions) - 1),
-            ], justify="space-between", style="margin-top: 1em;"),
-            solara.Button("Submit", on_click=on_submit, disabled=current_index != len(questions) - 1, style="margin-top: 1em;"),
-            solara.Button("Reset Quiz", on_click=reset_quiz, style="margin-top: 1em;"), 
-        ], style="flex: 1; padding: 20px; margin: auto;")
 
 
 @solara.component
