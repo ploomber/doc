@@ -2,7 +2,7 @@
 
 You can use GitHub Actions to deploy your project on each push.
 
-(set_key=)
+(set-key)=
 ## Set Github secret
 
 First, you need to get your [API key](../quickstart/apikey.md). Once you have the API
@@ -87,7 +87,7 @@ A complete sample project is [available here.](https://github.com/edublancas/clo
 
 If your project is already hosted on GitHub, running `ploomber-cloud github` inside your repository folder will prompt for configuring a GitHub action for project deployment.
 On confirming with `y` the CLI will create a `ploomber-cloud.yaml` file in the path `.github/workflows`.
-Ensure that the Ploomber Cloud API Key is set as described in [this section](set_key).
+Ensure that the Ploomber Cloud API Key is set as described in [this section](set-key).
 
 ```bash
 Please confirm that you want to generate a GitHub workflow file [y/N]: y
