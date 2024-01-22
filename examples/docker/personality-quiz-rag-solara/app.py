@@ -190,14 +190,11 @@ def classic_mbti(responses):
             mbti_type += trait2
     return mbti_type
 
-# A component to display a question
 @solara.component
 def QuestionComponent(question, on_answer, key, reset_flag):
     answer, set_answer = solara.use_state(None, key=key)
 
-    # Reset answer state when the reset flag changes
-    if reset_flag:
-        set_answer(None)
+    solara.use_effect(lambda: set_answer(None), [reset_flag])
 
     def on_click(response):
         set_answer(response)
@@ -213,6 +210,7 @@ def QuestionComponent(question, on_answer, key, reset_flag):
     ])
 
 
+
 # Main Quiz component
 @solara.component
 def PersonalityQuiz():
@@ -223,25 +221,28 @@ def PersonalityQuiz():
     reset_flag, set_reset_flag = solara.use_state(False)  # Add a flag for reset status
 
     def reset_quiz():
-        set_current_index(0)
-        set_responses([])
-        set_mbti_result("")
-        set_is_processing(False)
-        set_reset_flag(True)  # Set the reset flag to true
-
+        if not is_processing:  # Disable during processing
+            set_current_index(0)
+            set_responses([])
+            set_mbti_result("")
+            set_is_processing(False)
+            set_reset_flag(True) 
+       
 
     def handle_answer(question, answer):
-        new_responses = responses[:]
-        if current_index >= len(new_responses):
-            new_responses.append(answer)
-        else:
-            new_responses[current_index] = answer
-        set_responses(new_responses)
-        if current_index < len(questions) - 1:
-            set_current_index(current_index + 1)
+        if not is_processing:  
+            new_responses = responses[:]
+            if current_index >= len(new_responses):
+                new_responses.append(answer)
+            else:
+                new_responses[current_index] = answer
+            set_responses(new_responses)
+            if current_index < len(questions) - 1:
+                set_current_index(current_index + 1)
+
 
     def on_back():
-        if current_index > 0:
+        if current_index > 0 and not is_processing:
             set_current_index(current_index - 1)
 
     def on_submit():
@@ -253,33 +254,35 @@ def PersonalityQuiz():
             query = "Based on the responses, what is this user's Myers-Briggs personality type?"
             answer = pipeline.run(data={'splitter': {'documents': documents}, "prompt_builder": {"query": query}})
             mbti_type_llm = answer['llm']['replies'][0]
-            set_mbti_result(f"Your MBTI type (according to a deterministic approach) is: {mbti_type_classic}; according to LLM approach: {mbti_type_llm}")
+            set_mbti_result(f"Your MBTI type:\n\n According to a deterministic approach: {mbti_type_classic}. \n\n According to an LLM-generated approach: {mbti_type_llm}")
         except ValueError as e:
             set_mbti_result(str(e))
         finally:
             set_is_processing(False)
 
-    # Check if all questions have been answered and processing is not ongoing
-    if current_index >= len(questions) - 1 and not is_processing:
-        if mbti_result:
-            return solara.Column([
-                ResultsComponent(mbti_result),
-                solara.Button("Reset Quiz", on_click=reset_quiz, style="margin-top: 1em;")
-            ], style="flex: 1; padding: 20px; margin: auto;")
-        else:
-            return solara.Markdown("Calculating your MBTI type... Please wait.")
+    # Conditional elements based on state
+    quiz_elements = []
 
-    # If still in the quiz, display the next question
-    return solara.Column([
-        solara.Markdown(f"### Question {current_index + 1} out of 24"),
-        QuestionComponent(questions[current_index], handle_answer, key=current_index, reset_flag=reset_flag),
-        solara.Row([
-            solara.Button("Back", on_click=on_back, disabled=current_index == 0),
-            solara.Button("Next", on_click=lambda: set_current_index(current_index + 1), disabled=current_index >= len(questions) - 1),
-        ], justify="space-between", style="margin-top: 1em;"),
-        solara.Button("Submit", on_click=on_submit, disabled=current_index != len(questions) - 1, style="margin-top: 1em;"),
-        solara.Button("Reset Quiz", on_click=reset_quiz, style="margin-top: 1em;")
-    ], style="flex: 1; padding: 20px; margin: auto;")
+    if mbti_result:
+        # Show results and additional buttons if results are ready
+        quiz_elements.append(ResultsComponent(mbti_result))
+        quiz_elements.append(solara.Button("Reset quiz", on_click=reset_quiz, disabled=is_processing, style="margin-top: 1em;"))
+        quiz_elements.append(solara.Button("Re-generate results (the LLM may take a few seconds)", on_click=on_submit, disabled=is_processing, style="margin-top: 1em;"))
+    elif current_index < len(questions) or is_processing:
+        # Show questions and navigation buttons
+        quiz_elements.append(solara.Markdown(f"### Question {current_index + 1} out of 24"))
+        quiz_elements.append(QuestionComponent(questions[current_index], handle_answer, key=current_index, reset_flag=reset_flag))
+        quiz_elements.append(solara.Row([
+            solara.Button("Back", on_click=on_back, disabled=current_index == 0 or is_processing),
+            solara.Button("Submit", on_click=on_submit, disabled=current_index != len(questions) - 1 or is_processing),
+            solara.Button("Reset Quiz", on_click=reset_quiz, disabled=is_processing)
+        ], justify="space-between", style="margin-top: 1em;"))
+
+        if is_processing:
+            # Show processing message while results are being computed
+            quiz_elements.append(solara.Markdown("Calculating your MBTI type through a deterministic and an LLM-based approach. Generation may take the LLM a few seconds... Please wait."))
+
+    return solara.Column(quiz_elements, style="flex: 1; padding: 20px; margin: auto;")
 
 
 
@@ -296,7 +299,7 @@ def Topbar():
                             style="color: #FFFFFF; font-size: 20px; padding: 10px;"),
             solara.Markdown("Note - the purpose  of this test is to assess the different responses between a deterministic and an LLM-based approach. \
                             The test is also not extensive nor should it be used to evaluate someone's personality. \
-                            This application is hosted on Ploomber Cloud. To learn more about Ploomber Cloud, visit [ploomber.io](https://ploomber.io/).", 
+                            This application is hosted on Ploomber Cloud. To learn more about Ploomber Cloud, visit <a href='https://ploomber.io/' style='color:  #FFC800;'>Ploomber.io</a>.", 
                             style="color: #FFFFFF;padding: 10px;"),
         ],
         style="background-color: #3C0753; justify-content: center; align-items: center;"
@@ -337,9 +340,9 @@ def Sidebar():
                                 culminating in a specific personality type.", style="color: white"),
     solara.Markdown("### How is this application built", style="color: white"),
     solara.Markdown("This application is built using the following libraries and frameworks:", style="color: white"),
-    solara.Markdown("* Front end: <a href='https://solara.dev/docs' style='color: #030637;'>Solara</a>", style="color: white"),
-    solara.Markdown("* Back end: <a href='https://haystack.deepset.ai/' style='color: #030637;'>Haystack</a>", style="color: white"),
-    solara.Markdown("* Deployment: <a href='https://ploomber.io/' style='color:  #030637;'>Ploomber Cloud</a>", style="color: white"),
+    solara.Markdown("* Front end: <a href='https://solara.dev/docs' style='color: #FFC800;'>Solara</a>", style="color: white"),
+    solara.Markdown("* Back end: <a href='https://haystack.deepset.ai/' style='color: #FFC800;'>Haystack</a>", style="color: white"),
+    solara.Markdown("* Deployment: <a href='https://ploomber.io/' style='color:  #FFC800;'>Ploomber Cloud</a>", style="color: white"),
         # Here you can add more information or links to how the application is built
     ], style="background-color: #910A67; color: #F0EDCF; padding: 1em; width: 550px; height: 175vh;")
 
