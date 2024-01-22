@@ -214,6 +214,9 @@ def QuestionComponent(question, on_answer, key, reset_flag):
 # Main Quiz component
 @solara.component
 def PersonalityQuiz():
+    """
+    This component is the main quiz component. It contains the logic for the quiz.
+    """
     current_index, set_current_index = solara.use_state(0)
     responses, set_responses = solara.use_state([])
     mbti_result, set_mbti_result = solara.use_state("")
@@ -221,6 +224,9 @@ def PersonalityQuiz():
     reset_flag, set_reset_flag = solara.use_state(False)  # Add a flag for reset status
 
     def reset_quiz():
+        """
+        This function resets the quiz and state
+        """
         if not is_processing:  # Disable during processing
             set_current_index(0)
             set_responses([])
@@ -230,6 +236,11 @@ def PersonalityQuiz():
        
 
     def handle_answer(question, answer):
+        """
+        This function handles the answer to a question.
+        It allows the quiz to continue advancing to the next question
+        after an answer is selected.
+        """
         if not is_processing:  
             new_responses = responses[:]
             if current_index >= len(new_responses):
@@ -242,10 +253,20 @@ def PersonalityQuiz():
 
 
     def on_back():
+        """
+        This function handles the back button.
+        """
         if current_index > 0 and not is_processing:
             set_current_index(current_index - 1)
 
     def on_submit():
+        """
+        This function handles the logic for the submit button.
+
+        It calculates the MBTI type using a deterministic approach and an LLM-based approach.
+
+        It also sets the state to indicate that the application is processing the results.
+        """
         set_is_processing(True)
         try:
             mbti_type_classic = classic_mbti(responses)
