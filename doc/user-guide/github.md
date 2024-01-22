@@ -93,7 +93,7 @@ Ensure that the Ploomber Cloud API Key is set as described in [this section](set
 Please confirm that you want to generate a GitHub workflow file [y/N]: y
 'ploomber-cloud.yaml' file created in the path .github/workflows.
 Please add, commit and push this file along with the 'ploomber-cloud.json' file to trigger an action.
-For details on configuring a github secret please refer: https://docs.cloud.ploomber.io/en/latest/user-guide/github.html
+For details on configuring a GitHub secret please refer: https://docs.cloud.ploomber.io/en/latest/user-guide/github.html
 ```
 
 In order to trigger an action for deploying the project using GitHub actions you need to add, commit and push this file along with the `ploomber-cloud.json`.
