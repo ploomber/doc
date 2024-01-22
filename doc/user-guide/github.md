@@ -116,7 +116,8 @@ To learn more about GitHub actions refer: https://docs.cloud.ploomber.io/en/late
 If workflow needs an update a relevant message will be displayed:
 
 ```bash
-Please confirm that you want to update the GitHub workflow file [y/N]:
+.github/workflows/ploomber-cloud.yaml seems outdated. You may update it by running 'ploomber-cloud github'.
+To learn more about GitHub actions refer: https://docs.cloud.ploomber.io/en/latest/user-guide/github.html
 ```
 
 Please review the workflow file and update if needed.
