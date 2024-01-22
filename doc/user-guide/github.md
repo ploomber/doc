@@ -2,6 +2,7 @@
 
 You can use GitHub Actions to deploy your project on each push.
 
+(set-key=)
 ## Set Github secret
 
 First, you need to get your [API key](../quickstart/apikey.md). Once you have the API
@@ -76,28 +77,51 @@ Without `--watch`, the logs will look like this:
 
 ![](../static/github/logs.png)
 
+If the workflow template has been updated you will notified the same in the logs:
+
+![](../static/github/workflow-update.png)
+
 A complete sample project is [available here.](https://github.com/edublancas/cloud-template)
 
 ## Configure action through CLI
 
-If your project is already hosted on Github, running `ploomber-cloud init` inside your repository folder will initialize
-the project and prompt for configuring Github action:
+If your project is already hosted on GitHub, running `ploomber-cloud github` inside your repository folder will prompt for configuring a GitHub action for project deployment.
+On confirming with `y` the CLI will create a `ploomber-cloud.yaml` file in the path `.github/workflows`.
+Ensure that the Ploomber Cloud API Key is set as described in [this section](set-key).
 
 ```bash
-Your app 'snowy-disk-4284' has been configured successfully!
-Do you want to configure a github action? [y/N]: 
+Please confirm that you want to generate a GitHub workflow file [y/N]: y
+'ploomber-cloud.yaml' file created in the path .github/workflows.
+Please add, commit and push this file along with the 'ploomber-cloud.json' file to trigger an action.
+For details on configuring a github secret please refer: https://docs.cloud.ploomber.io/en/latest/user-guide/github.html
 ```
 
-On confirming with `y` the CLI will create a `ploomber-cloud.yaml` file in the path `.github/workflows`.
-In order to trigger an action for deploying the project using Github actions you need to add, commit and push this file along with the `ploomber-cloud.json`.
+In order to trigger an action for deploying the project using GitHub actions you need to add, commit and push this file along with the `ploomber-cloud.json`.
 
-Once done, you can monitor progress as discussed [above](monitor). Ensure that the API key is set as Github secret.
+Once done, you can monitor progress as discussed [above](monitor).
 
-In case the [workflow template](https://github.com/edublancas/cloud-template/blob/main/.github/workflows/ploomber-cloud.yaml) has been updated, and you need to re-initialise the application the CLI will prompt your for updating the workflow file:
+In case the [workflow template](https://github.com/edublancas/cloud-template/blob/main/.github/workflows/ploomber-cloud.yaml) has been updated, running `ploomber-cloud github` will prompt user to confirm updating the file:
 
 ```bash
-Your app 'red-river-8187' has been configured successfully!
-.github/workflows/ploomber-cloud.yaml seems outdated. Do you want to configure a github action? [y/N]:
+Please confirm that you want to update the GitHub workflow file [y/N]:
+```
+
+On confirming with `y` the CLI will replace the workflow file with the updated one.
+
+Additionally, users are also notified of GitHub workflow file creation or updation as needed while initializing or deploying a project.
+
+If no workflow file is present, running `ploomber-cloud init` or `ploomber-cloud deploy` display the following information:
+
+```bash
+You may create a GitHub workflow file for deploying your application by running 'ploomber-cloud github'.
+To learn more about GitHub actions refer: https://docs.cloud.ploomber.io/en/latest/user-guide/github.html
+```
+
+If workflow needs update a relevant message will be displayed:
+
+```bash
+Please confirm that you want to update the GitHub workflow file [y/N]:
 ```
 
 Please review the workflow file and update if needed.
+
