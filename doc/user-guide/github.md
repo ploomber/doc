@@ -77,10 +77,6 @@ Without `--watch`, the logs will look like this:
 
 ![](../static/github/logs.png)
 
-If the workflow template has been updated you will be notified the same in the logs:
-
-![](../static/github/workflow-update.png)
-
 A complete sample project is [available here.](https://github.com/edublancas/cloud-template)
 
 ## Configure action through CLI
