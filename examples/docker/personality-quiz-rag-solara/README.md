@@ -15,7 +15,7 @@ pip install -r requirements.txt
 solara run app.py
 ```
 
-### 3. Navigate to the application
+### Navigate to the application
 
 A web browser window should automatically open to the application. If it does not, navigate to http://localhost:8765 in your web browser.
 
