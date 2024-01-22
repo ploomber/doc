@@ -267,14 +267,17 @@ def PersonalityQuiz():
         # Show results and additional buttons if results are ready
         quiz_elements.append(ResultsComponent(mbti_result))
         quiz_elements.append(solara.Button("Reset quiz", on_click=reset_quiz, disabled=is_processing, style="margin-top: 1em;"))
-        quiz_elements.append(solara.Button("Re-generate results (the LLM may take a few seconds)", on_click=on_submit, disabled=is_processing, style="margin-top: 1em;"))
+        quiz_elements.append(solara.Button("Re-generate results (the LLM may take a few seconds)", on_click=on_submit, disabled=is_processing,style="margin-top: 1em;"))
     elif current_index < len(questions) or is_processing:
         # Show questions and navigation buttons
         quiz_elements.append(solara.Markdown(f"### Question {current_index + 1} out of 24"))
         quiz_elements.append(QuestionComponent(questions[current_index], handle_answer, key=current_index, reset_flag=reset_flag))
+        # Disable submit button if not all questions are answered
+        submit_disabled = len(responses) != len(questions) or is_processing
+
         quiz_elements.append(solara.Row([
             solara.Button("Back", on_click=on_back, disabled=current_index == 0 or is_processing),
-            solara.Button("Submit", on_click=on_submit, disabled=current_index != len(questions) - 1 or is_processing),
+            solara.Button("Submit", on_click=on_submit, disabled=submit_disabled),
             solara.Button("Reset Quiz", on_click=reset_quiz, disabled=is_processing)
         ], justify="space-between", style="margin-top: 1em;"))
 
