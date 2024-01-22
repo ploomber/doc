@@ -6,7 +6,10 @@
 pip install -r requirements.txt
 ```
 
-### 2. Run the application
+### 2. Ensure you have an OpenAI API key and save it into a `.env` file
+
+
+### 3. Run the application
 
 ```bash
 solara run app.py
