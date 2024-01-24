@@ -27,3 +27,5 @@ matplotlib
 To deploy a Panel app from the deployment menu, follow these instructions:
 
 ![](../static/panel.png)
+
+To learn more about deploying Panel applications on Ploomber Cloud [click here](https://panel.holoviz.org/how_to/deployment/ploomber.html)
