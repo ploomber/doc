@@ -38,6 +38,11 @@ Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.
 
 Once you have all your files, create a zip file.
 
-To deploy a Flask app from the deployment menu, follow these instructions:
+To deploy a Solara app from the deployment menu, follow these instructions:
 
-![](../static/docker.png)
+![](../static/solara.png)
+
+## Example
+Ploomber has created an example solara app for your convenience.
+
+Check it out [here.](https://github.com/ploomber/doc/blob/main/examples/solara/data-viz/app.py)
