@@ -30,7 +30,7 @@ Next, in **Custom domains** section, enter your domain name and click `Connect`.
 
 There are two ways to connect a custom domain. Depending on where you want to store your DNS records, choose the method that suits you:
 
-* **Pointing** (default) - Your domain host stores your DNS records on their platform
+* **Pointing** (default) - You add a CNAME and ALIAS record in your DNS provider
 * **Nameservers** - We host your DNS records
 
 
