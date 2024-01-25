@@ -1,37 +1,24 @@
 # Solara
 
-To deploy a Solara application in Ploomber Cloud you need:
+Ploomber Cloud supports [Solara](https://solara.dev/). For information on how to develop Solara apps, [please check the documentation](https://solara.dev/docs).
 
-- A `Dockerfile`
-- Your code
+To deploy a Solara app you need at least two files zipped up:
 
-## `Dockerfile`
+1. Your application file (`app.py`)
+2. A dependencies file (`requirements.txt`)
 
-You need to provide a `Dockerfile`, you can use this [template](https://github.com/ploomber/doc/blob/main/examples/docker/solara/Dockerfile) to get started. The template contains the minimal steps needed for a deployment but you need to modify so it installs any required dependencies and copies your code into the Docker image.
 
-```Dockerfile
-FROM python:3.11
+## Dependencies
 
-COPY app.py app.py
-RUN pip install solara
+To deploy a new project, list your dependencies in a (`requirements.txt`). For example, if you're using [JupySQL](https://jupysql.ploomber.io), pandas and matplotlib in the solara application, your `requirements.txt` file will look like this:
 
-# do not change the --host and --port values
-ENTRYPOINT ["solara", "run", "app.py", "--host=0.0.0.0", "--port=80"]
 ```
-
-## Testing locally
-
-To test your app, you can use `docker` locally:
-
-```sh
-# build the docker image
-docker build . -t solara
-
-# run it
-docker run -p 5000:80 solara
+# sample requirements.txt
+solara
+jupysql
+pandas
+matplotlib
 ```
-
-Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.
 
 
 ## Deploy
