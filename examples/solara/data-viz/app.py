@@ -71,7 +71,7 @@ def Page():
     with solara.Column(margin=10):
         solara.Markdown("# GPT-4 token encoder and decoder")
         solara.Markdown("This is a sample solara educational tool for understanding how tokenization works.")
-        solara.Markdown("Created by Ploomber")
+        solara.Markdown("Created by [Ploomber Cloud](https://ploomber.io)")
 
         solara.InputText("Enter text to tokenize it:", value=sentence, continuous_update=True)
         tokens = tokenizer.encode(sentence.value)
@@ -80,7 +80,15 @@ def Page():
                 Token(token)
 
         solara.InputText("Or convert space separated tokens to text:", value=tokens_ids_to_lookup, continuous_update=True)
-        token_input = [int(span) for span in tokens_ids_to_lookup.value.split(" ") if span != ""]
+        token_input = []
+        for span in tokens_ids_to_lookup.value.split(" "):
+            if span != "":
+                try:
+                    token_input.append(int(span))
+                except ValueError:
+                # Handle the exception or continue
+                    print(f"Skipping invalid token: {span}")
+                    continue
         text_output = tokenizer.decode(token_input)
         solara.Markdown(f"{text_output}")
 
