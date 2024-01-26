@@ -13,7 +13,6 @@ parts:
       - file: user-guide/github
       - file: user-guide/env-vars
       - file: user-guide/custom-domains
-      - file: user-guide/application_cleanup
 
   - caption: Sharing notebooks
     chapters:
@@ -35,6 +34,10 @@ parts:
   - caption: App examples
     chapters:
       - file: examples/voila
+
+  - caption: Pricing
+    chapters:
+      - file: pricing/overview
 
   - caption: FAQ
     chapters:
