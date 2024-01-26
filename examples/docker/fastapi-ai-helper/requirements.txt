@@ -1,0 +1,11 @@
+haystack-ai==2.0.0b5
+fastapi==0.109.0
+torch==2.1.1 # pip install -r requirements.txt --index-url https://download.pytorch.org/whl/cpu
+torchvision==0.16.1
+transformers 
+accelerate 
+bitsandbytes 
+sentence-transformers
+astrapy
+python-dotenv
+astra-haystack
