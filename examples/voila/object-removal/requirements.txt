@@ -1,0 +1,8 @@
+ipywidgets
+ipycanvas
+replicate
+pillow
+ipython
+ipyspin
+voila
+requests
