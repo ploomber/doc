@@ -53,14 +53,14 @@ def generate_haystack_documents(df_dict):
 
         # Create a list of Haystack documents
         for i in range(len(df_dict)):
-            content_str = f"Name of item purchased: {df_dict[i]['description']} \
-                \nQuantity purchased: {df_dict[i]['quantity']} \
-                \nPrice of item: {df_dict[i]['unitprice']} \
-                \nDate of purchase: {df_dict[i]['invoicedate']} \
-                \nCountry of purchase: {df_dict[i]['country']} \
-                \nCustomer ID: {df_dict[i]['customerid']} \
-                \nInvoice Number: {df_dict[i]['invoiceno']} \
-                \nStock Code: {df_dict[i]['stockcode']}" ,
+            content_str = f"Name of item purchased: {df_dict[i]['description']}; \
+                Quantity purchased: {df_dict[i]['quantity']}; \
+                Price of item: {df_dict[i]['unitprice']}; \
+                Date of purchase: {df_dict[i]['invoicedate']}; \
+                Country of purchase: {df_dict[i]['country']}; \
+                Customer ID: {df_dict[i]['customerid']}; \
+                Invoice Number: {df_dict[i]['invoiceno']}; \
+                Stock Code: {df_dict[i]['stockcode']}" ,
             haystack_documents.append(Document(
                 content=content_str[0],
                 id = f"ZOOA{str(1000000 + i)}",

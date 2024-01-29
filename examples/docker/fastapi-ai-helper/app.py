@@ -40,12 +40,10 @@ async def query_sales_data(query_model: QueryModel):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-# Optionally, you can add a GET endpoint for health checks or basic info
 @app.get("/")
 async def read_root():
     return {"message": "Haystack AI Sales Query API"}
 
-# Main execution for Uvicorn
 if __name__ == "__main__":
     
     uvicorn.run(app, host="0.0.0.0", port=8000)
