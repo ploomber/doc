@@ -28,8 +28,9 @@ parts:
       - file: apps/panel
       - file: apps/chainlit
       - file: apps/gradio
-      - file: apps/docker
       - file: apps/shiny-express
+      - file: apps/dash
+      - file: apps/docker
       - file: apps/chalk-it      
 
   - caption: App examples
