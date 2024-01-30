@@ -2,7 +2,7 @@
 
 This example shows how to use a language model tokenizer to encode and decode and how to search for a token
 
-Inspired by: [Understanding GPT tokenizers by Simon Willison](https://simonwillison.net/2023/Jun/8/gpt-tokenizers/)
+Inspired by: [Understanding GPT tokenizers by Simon Willison](https://simonwillison.net/2023/Jun/8/gpt-tokenizers/) & [GPT-4 Tokenizer by Alonso Silva Allende](https://solara.dev/examples/ai/tokenizer)
 
 
 ## Note
