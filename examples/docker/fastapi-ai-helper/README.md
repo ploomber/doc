@@ -33,4 +33,15 @@ Python data and AI-based apps.
 * What was the date of order 536365?
 
 Order numbers you can try: '536365', '536366', '536367', '536368', '536369', '536370'
+
 Orders that contain information on cancellations: 'C536379', 'C536383', 'C536391'
+
+## Key components in this application
+
+1. `pipelinehelper.py`: This file contains the code for the pipeline. It uses the Haystack framework to build a RAG pipeline that can answer questions about orders. The pipeline is initialized with a document store that contains information about orders. The pipeline uses the document store to answer questions about orders.
+
+2. `app.py`: This file contains the code for the API. It uses FastAPI to build an API that can answer questions about orders. The API is initialized with a pipeline that can answer questions about orders.
+
+3. `Dockerfile`: This file contains the instructions for building a Docker image for this application.
+
+4. `requirements.txt`: This file contains the Python dependencies for this application.
