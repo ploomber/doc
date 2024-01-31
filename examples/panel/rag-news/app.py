@@ -5,66 +5,19 @@ The chatbot Assistant echoes back the message entered by the User.
 
 https://github.com/holoviz-topics/panel-chat-examples/blob/main/docs/examples/basics/basic_chat.py
 """
-from pathlib import Path
-import json
-
 import panel as pn
 from openai import OpenAI
 from gnews import GNews
 from scipy.spatial import KDTree
 import numpy as np
 
+from rag_news import TOPICS, get_news_by_topic, EmbeddingsStore, get_descriptions
+
 
 client = OpenAI()
 google_news = GNews()
 
 pn.extension()
-
-# these are the values that the GNews.get_news_by_topic function can take
-TOPICS = {
-    "WORLD",
-    "NATION",
-    "BUSINESS",
-    "TECHNOLOGY",
-    "ENTERTAINMENT",
-    "SPORTS",
-    "SCIENCE",
-    "HEALTH",
-}
-
-
-def get_descriptions(news):
-    """Get news descriptions from a list of dictionaries, as returned by GNews"""
-    return [article["description"] for article in news]
-
-
-class EmbeddingsStore:
-    def __init__(self):
-        self._path = Path("embeddings.json")
-
-        if not self._path.exists():
-            self._data = {}
-        else:
-            self._data = json.loads(self._path.read_text())
-
-    def get_one(self, text):
-        if text in self._data:
-            return self._data[text]
-
-        response = client.embeddings.create(input=text, model="text-embedding-3-small")
-
-        embedding = response.data[0].embedding
-
-        self._data[text] = embedding
-        self._path.write_text(json.dumps(self._data))
-
-        return embedding
-
-    def get_many(self, content):
-        return [self.get_one(text) for text in content]
-
-    def __len__(self):
-        return len(self._data)
 
 
 store = EmbeddingsStore()
@@ -94,7 +47,9 @@ You must classify a user prompt into one of the following values:
         seed=42,
         n=1,
     )
-    return response.choices[0].message.content
+    topic = response.choices[0].message.content.upper()
+
+    return "WORLD" if topic not in TOPICS else topic
 
 
 def news_agent(user_query, verbose=False):
@@ -106,7 +61,7 @@ def news_agent(user_query, verbose=False):
         print(f"Topic: {topic}")
 
     # get news that correspond to the selected topic
-    news = google_news.get_news_by_topic(topic)[:5]
+    news = get_news_by_topic(topic)
 
     descriptions = get_descriptions(news)
 
@@ -152,8 +107,12 @@ def callback(contents: str, user: str, instance: pn.chat.ChatInterface):
 
 chat_interface = pn.chat.ChatInterface(callback=callback)
 chat_interface.send(
-    "Ask me anything about today's news! Note: each query takes ~10s to process, as it needs to download the news.",
+    "Ask me anything about today's news! You can deploy your own by signing up at https://ploomber.io",
     user="System",
     respond=False,
 )
-chat_interface.servable()
+
+pn.template.MaterialTemplate(
+    title="News summarizer",
+    main=[chat_interface],
+).servable()
