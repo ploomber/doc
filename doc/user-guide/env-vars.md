@@ -17,7 +17,7 @@ To add more, click on the button to the right:
 
 
 ```{Note}
-You can also define environment variables using the [command-line interface.](./cli.md#defining-environment-variables)
+You can also define environment variables using the [command-line interface.](./cli.md#-defining-environment-variables)
 ```
 
 ## Reading variables

@@ -76,7 +76,7 @@ touch .env
 
 Then open `.env` in your code editor and enter your environment variables. It should look like this:
 
-```env
+```
 MY_ENV_VAR_1=value_1
 MY_ENV_VAR_2=value_2
 ```
@@ -89,4 +89,4 @@ ploomber-cloud deploy
 
 The command-line interface will automatically read your environment variables and include them in the deployment.
 
-Now, you can access your environment variables inside your application. Learn how to access them [here.](./env-vars.md#reading-variables)
+Now, you can access and verify your environment variables inside your application. Learn how to access them [here.](./env-vars.md#-reading-variables)
