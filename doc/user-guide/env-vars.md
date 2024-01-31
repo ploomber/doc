@@ -16,7 +16,7 @@ To add more, click on the button to the right:
 ![](../static/env-vars/env-vars-plus.png)
 
 
-```{Note}
+```{tip}
 You can also define environment variables using the [command-line interface.](./cli.md)
 ```
 
