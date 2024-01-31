@@ -45,3 +45,32 @@ Orders that contain information on cancellations: 'C536379', 'C536383', 'C536391
 3. `Dockerfile`: This file contains the instructions for building a Docker image for this application.
 
 4. `requirements.txt`: This file contains the Python dependencies for this application.
+
+
+## Deploying this application on Ploomber Cloud
+
+Ensure you have an account and an API key. Refer to the [documentation on creating an account](https://docs.cloud.ploomber.io/en/latest/quickstart/signup.html) and [documentation on generating an API key](https://docs.cloud.ploomber.io/en/latest/quickstart/apikey.html) for more details.
+
+### 1. Install Ploomber Cloud's CLI
+
+```bash
+pip install ploomber-cloud
+```
+
+### 2. Connect your API key
+
+```bash
+ploomber-cloud key YOURKEY
+```
+
+### 3. Initialize your app
+
+```bash
+ploomber-cloud init
+```
+
+### 4. Deploy your app
+
+```bash
+ploomber-cloud deploy
+```
