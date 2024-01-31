@@ -16,6 +16,7 @@ Then, set your API key ([learn how to get it](../quickstart/apikey.md)):
 ploomber-cloud key YOURKEY
 ```
 
+(init)=
 ## Initialize a new app
 
 If you want to create a new app, run the `init` command:
@@ -77,7 +78,7 @@ MY_ENV_VAR_1=value_1
 MY_ENV_VAR_2=value_2
 ```
 
-Now make sure your project has been [initialized](#-initialize-a-new-app), and deploy it:
+Now make sure your project has been [initialized](#init), and deploy it:
 
 ```sh
 ploomber-cloud deploy
