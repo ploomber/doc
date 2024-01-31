@@ -15,6 +15,11 @@ To add more, click on the button to the right:
 
 ![](../static/env-vars/env-vars-plus.png)
 
+
+```{Note}
+You can also define environment variables using the [command-line interface.](./cli.md#defining-environment-variables)
+```
+
 ## Reading variables
 
 To read the variables, use the following Python code:
