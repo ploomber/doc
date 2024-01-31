@@ -17,10 +17,9 @@ To add more, click on the button to the right:
 
 
 ```{tip}
-You can also define environment variables using the [command-line interface.](./cli.md#define-env-vars)
+You can also define environment variables using the [command-line interface.](./cli.md)
 ```
 
-(read-variables)=
 ## Reading variables
 
 To read the variables, use the following Python code:
