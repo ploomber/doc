@@ -67,6 +67,7 @@ Then, execute:
 ploomber-cloud deploy
 ```
 
+(define-env-vars)=
 ## Defining environment variables
 
 If your project uses of environment variables, you can define them in an `.env` file.
@@ -87,4 +88,4 @@ ploomber-cloud deploy
 The command-line interface will automatically read and encrypt your environment variables and include them in the deployment.
 For security reasons, your `.env` file is replaced with an empty file at runtime. Ploomber only stores your encrypted environment variables.
 
-To learn how to read your environment variables from within your application, see [Reading variables.](./env-vars.md)
+To learn how to read your environment variables from within your application, see [Reading variables.](./env-vars.md#read-variables)
