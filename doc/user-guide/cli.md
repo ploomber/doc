@@ -89,4 +89,4 @@ ploomber-cloud deploy
 
 The command-line interface will automatically read your environment variables and include them in the deployment.
 
-Now, you can access and verify your environment variables inside your application. Learn how to access them [here.](./env-vars.md#-reading-variables)
+Now, you can access and verify your environment variables inside your application. Learn how to access them [here.](./env-vars.md)
