@@ -9,17 +9,17 @@ If you already own a domain, you can easily bring it to your Ploomber account by
 (custom-subdomain)=
 ## Adding a custom subdomain
 
-If you would like a custom subdomain, like `my-custom-app.ploomberapp.io`, you can add a custom name during application setup:
-
-![](../static/custom-domains/custom-names.png)
-
 ```{note}
 Custom project names are a [paid feature.](../pricing/overview.md)
 ```
 
-Customizing the project name only changes the x portion in `x.ploomberapp.io`.
+If you would like a custom subdomain, like `my-custom-app.ploomberapp.io`, you can add a custom name during application setup:
 
-If you would like a fully customized domain, see: [Adding a custom domain](#custom-domain)
+![](../static/custom-domains/custom-names.png)
+
+Customizing the project name only changes the `x` portion in `x.ploomberapp.io`.
+
+If you would like a fully customized domain, see [Adding a custom domain](#custom-domain).
 
 
 (custom-domain)=
