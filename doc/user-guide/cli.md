@@ -16,6 +16,7 @@ Then, set your API key ([learn how to get it](../quickstart/apikey.md)):
 ploomber-cloud key YOURKEY
 ```
 
+(init)=
 ## Initialize a new app
 
 If you want to create a new app, run the `init` command:
@@ -65,3 +66,25 @@ Then, execute:
 ```sh
 ploomber-cloud deploy
 ```
+
+## Defining environment variables
+
+If your project uses environment variables, you can define them in an `.env` file.
+
+In your main project directory, create an `.env` file. Open it in your code editor, and enter your environment variables. It should look like this:
+
+```
+MY_ENV_VAR_1=value_1
+MY_ENV_VAR_2=value_2
+```
+
+Now make sure your project has been [initialized](#init), and deploy it:
+
+```sh
+ploomber-cloud deploy
+```
+
+The command-line interface will automatically read and encrypt your environment variables and include them in the deployment.
+For security reasons, your `.env` file is replaced with an empty file at runtime. Ploomber only stores your encrypted environment variables.
+
+To learn how to read your environment variables from within your application, see [Reading variables.](./env-vars.md)
