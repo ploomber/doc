@@ -13,7 +13,7 @@ parts:
       - file: user-guide/github
       - file: user-guide/env-vars
       - file: user-guide/custom-domains
-      - file: user-guide/identifying-project
+      - file: user-guide/managing-apps
 
   - caption: Sharing notebooks
     chapters:
