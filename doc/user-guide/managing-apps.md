@@ -1,15 +1,5 @@
 # Managing applications
 
-## Custom project names
-
-```{note}
-Custom project names are a [paid feature.](../pricing/overview.md)
-```
-
-You may set a custom name, like `my-cool-app` for your application here:
-
-![](../static/manage-apps/custom-names.png)
-
 ## Labels
 
 Labels can help you organize and identify your apps. You can add them during creation:

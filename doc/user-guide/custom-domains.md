@@ -1,9 +1,27 @@
-# Custom domains
+# Custom domains and subdomains
 
 When you publish your application for the first time, your web address (i.e., URL) is in the following format: `project-id.plooberapp.io`
 
+Ploomber offers options to customize the subdomain, ie. `my-custom-app.ploomberapp.io`, or the full domain.
+
 If you already own a domain, you can easily bring it to your Ploomber account by updating your DNS records, or by changing its nameservers.
 
+## Adding a custom subdomain
+
+If you would like a custom subdomain, like `my-custom-app.ploomberapp.io`, you can add a custom name during application setup:
+
+![](../static/custom-domains/custom-names.png)
+
+```{note}
+Custom project names are a [paid feature.](../pricing/overview.md)
+```
+
+Customizing the project name only changes the x portion in `x.ploomberapp.io`.
+
+If you would like a fully customized domain, see: [Adding a custom domain](#custom-domain)
+
+
+(custom-domain)=
 ## Adding a custom domain
 
 ### Before you begin
