@@ -69,7 +69,7 @@ ploomber-cloud deploy
 
 ## Defining environment variables
 
-If your project uses of environment variables, you can define them in an `.env` file.
+If your project uses environment variables, you can define them in an `.env` file.
 
 In your main project directory, create an `.env` file. Open it in your code editor, and enter your environment variables. It should look like this:
 
