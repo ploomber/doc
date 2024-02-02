@@ -43,7 +43,7 @@ Note that you also need to set the MongoDB connection URI as an environment vari
 
 ![](./static/env-variable.png)
 
-Once the `VIEW APPLICATION` button is enabled, you can view the tart the training script and monitor the training.
+Once the `VIEW APPLICATION` button is enabled, you can start the training script and monitor the training.
 
 ## Train models
 
@@ -73,3 +73,8 @@ Once the scripts are running you can monitor the accuracy scores as the training
 ![](./static/monitor.png)
 
 Currently, the threshold for an accurate model (marked in green) is 0.9. You can modify it by setting `THRESHOLD_MID` in `app.py`.
+
+If you wish to restart the training process ensure to drop the collection:
+
+![](./static/delete-collection.png)
+

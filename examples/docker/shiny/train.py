@@ -5,7 +5,6 @@ from datetime import datetime
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 
-from pymongo.errors import OperationFailure
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
@@ -61,10 +60,6 @@ def train_model(train_images, train_labels, val_images, val_labels, model_name, 
 
 
 def begin(model_name, dense_units):
-    try:
-        my_collection.drop()
-    except OperationFailure as e:
-        raise ConnectionError(str(e)) from e
 
     fashion_mnist = tf.keras.datasets.fashion_mnist
     (train_images, train_labels), (test_images, test_labels) = fashion_mnist.load_data()
