@@ -38,7 +38,12 @@ export MONGODB_CONNECTION_URI="connection_uri"
 
 Create a zip file using `Dockerfile`, `app.py` and `requirements.txt` and deploy this file to Ploomber cloud.
 Refer to the [Shiny deployment documentation](https://docs.cloud.ploomber.io/en/latest/apps/shiny.html) for more details.
-Once the `VIEW APPLICATION` button is enabled, you can start the training script and monitor the training.
+
+Note that you also need to set the MongoDB connection URI as an environment variable:
+
+![](./static/env-variable.png)
+
+Once the `VIEW APPLICATION` button is enabled, you can view the tart the training script and monitor the training.
 
 ## Train models
 
