@@ -1,0 +1,43 @@
+# Shiny Core
+
+To deploy a [Shiny Core](https://shiny.posit.co/py/docs/overview.html) application to Ploomber Cloud you need:
+
+- A `Dockerfile`
+- A Shiny project
+
+## `Dockerfile`
+
+Use this [template](https://github.com/ploomber/doc/blob/main/examples/docker/shiny-core/Dockerfile) `Dockerfile`:
+
+```Dockerfile
+FROM python:3.11
+
+COPY app-core.py app-core.py
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
+
+ENTRYPOINT ["shiny", "run", "app-core.py", "--host", "0.0.0.0", "--port", "80"]
+```
+
+## Testing locally
+
+To test your app, you can use `docker` locally:
+
+```sh
+# build the docker image
+docker build . -t shiny-core-app
+
+# run it
+docker run -p 5000:80 shiny-core-app
+```
+
+Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.
+
+
+## Deploy
+
+Once you have all your files, create a zip file.
+
+To deploy a Shiny Core app from the deployment menu, select the Docker option and follow the instructions:
+
+![](../static/docker.png)
