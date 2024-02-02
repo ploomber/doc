@@ -74,7 +74,7 @@ Once the scripts are running you can monitor the accuracy scores as the training
 
 Currently, the threshold for an accurate model (marked in green) is 0.9. You can modify it by setting `THRESHOLD_MID` in `app.py`.
 
-If you wish to restart the training process ensure to drop the collection:
+If you wish to restart the training process you may drop the collection to ensure a clean plot:
 
 ![](./static/delete-collection.png)
 
