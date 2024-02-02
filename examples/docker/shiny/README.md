@@ -26,13 +26,17 @@ Now select `ALLOW ACCESS FROM ANYWHERE` and confirm to allow all IP addresses to
 
 ![](./static/ip-access.png)
 
-Once you have completed the access rules setup, select the `CONNECT` button on the `Overview` page to get the connection details. Specifically, copy the connection string and replace the `URI` variable value in `app-core.py`, `train_one.py` and `train_two.py`
+Once you have completed the access rules setup, select the `CONNECT` button on the `Overview` page to get the connection details. Specifically, copy the connection URI and set it in an environment variable `MONGODB_CONNECTION_URI`:
+
+```bash
+export MONGODB_CONNECTION_URI="connection_uri"
+```
 
 ![](./static/connect.png)
 
 ## Deploy application
 
-Create a zip file using `Dockerfile`, `app-core.py` and `requirements.txt` and deploy this file to Ploomber cloud.
+Create a zip file using `Dockerfile`, `app.py` and `requirements.txt` and deploy this file to Ploomber cloud.
 Refer to the [Shiny deployment documentation](https://docs.cloud.ploomber.io/en/latest/apps/shiny.html) for more details.
 Once the `VIEW APPLICATION` button is enabled, you can start the training script and monitor the training.
 
@@ -47,14 +51,20 @@ First create a virtual environment and install the required packages:
 pip install tensorflow scikit-learn "pymongo[srv]"
 ```
 
-Then run the training scripts parallely:
+To train two models parallely, open two terminals and run the below commands in each respectively:
 
 ```bash
-python train_one.py & python train_two.py & wait
+python train.py --model model_1 --units 128
 ```
+
+```bash
+python train.py --model model_2 --units 12
+```
+
+In case you wish to change the model names you need to update the same in `app.py`.
 
 Once the scripts are running you can monitor the accuracy scores as the training progresses on the Ploomber Cloud application deployed in above step:
 
 ![](./static/monitor.png)
 
-Currently, the threshold for an accurate model (marked in green) is 0.9. You can modify it by setting `THRESHOLD_MID` in `app-core.py`.
+Currently, the threshold for an accurate model (marked in green) is 0.9. You can modify it by setting `THRESHOLD_MID` in `app.py`.

@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import plotly.express as px
 from shinywidgets import output_widget, render_widget
@@ -12,7 +13,7 @@ THRESHOLD_MID_COLOR = "rgb(0, 137, 26)"
 THRESHOLD_LOW = 0.5
 THRESHOLD_LOW_COLOR = "rgb(193, 0, 0)"
 
-URI = "CONNECTION_STRING"
+URI = os.environ.get("MONGODB_CONNECTION_URI", "")
 
 # Create a new client and connect to the server
 client = MongoClient(URI, server_api=ServerApi('1'))

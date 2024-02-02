@@ -1,3 +1,5 @@
+import os
+import argparse
 from datetime import datetime
 
 import tensorflow as tf
@@ -7,7 +9,7 @@ from pymongo.errors import OperationFailure
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 
-URI = "mongodb+srv://neelashasen:ZOT47WMuXCAKZZqK@cluster0.nshn6td.mongodb.net/?retryWrites=true&w=majority"
+URI = os.environ.get("MONGODB_CONNECTION_URI", "")
 
 # Create a new client and connect to the server
 client = MongoClient(URI, server_api=ServerApi('1'))
@@ -32,11 +34,11 @@ class TrackLossandAccuracyCallback(tf.keras.callbacks.Callback):
         my_collection.insert_one({'model': self.model_name, 'score': logs["accuracy"], 'timestamp': datetime.now()})
 
 
-def train_model(train_images, train_labels, val_images, val_labels):
+def train_model(train_images, train_labels, val_images, val_labels, model_name, dense_units):
     model = tf.keras.Sequential(
         [
             tf.keras.layers.Flatten(input_shape=(28, 28)),
-            tf.keras.layers.Dense(128, activation="relu"),
+            tf.keras.layers.Dense(int(dense_units), activation="relu"),
             tf.keras.layers.Dense(10),
         ]
     )
@@ -53,11 +55,12 @@ def train_model(train_images, train_labels, val_images, val_labels):
         validation_data=(val_images, val_labels),
         epochs=50,
         verbose=0,
-        callbacks=[TrackLossandAccuracyCallback('model_1')],
+        callbacks=[TrackLossandAccuracyCallback(model_name)],
     )
+    print("Training completed!")
 
 
-def begin():
+def begin(model_name, dense_units):
     try:
         my_collection.drop()
     except OperationFailure as e:
@@ -74,8 +77,12 @@ def begin():
     # Scale the images to range (0,1)
     train_images = train_images / 255.0
     val_images = val_images / 255.0
-    train_model(train_images, train_labels, val_images, val_labels)
+    train_model(train_images, train_labels, val_images, val_labels, model_name, dense_units)
 
 
 if __name__ == "__main__":
-    begin()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-m", "--model", required=True, help="Model name")
+    parser.add_argument("-u", "--units", required=True, help="Dense layer units")
+    args = parser.parse_args()
+    begin(args.model, args.units)
