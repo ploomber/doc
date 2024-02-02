@@ -1,22 +1,22 @@
-# Shiny Core
+# Shiny
 
-To deploy a [Shiny Core](https://shiny.posit.co/py/docs/overview.html) application to Ploomber Cloud you need:
+To deploy a [Shiny](https://shiny.posit.co/py/docs/overview.html) application to Ploomber Cloud you need:
 
 - A `Dockerfile`
 - A Shiny project
 
 ## `Dockerfile`
 
-Use this [template](https://github.com/ploomber/doc/blob/main/examples/docker/shiny-core/Dockerfile) `Dockerfile`:
+Use this [template](https://github.com/ploomber/doc/blob/main/examples/docker/shiny/Dockerfile) `Dockerfile`:
 
 ```Dockerfile
 FROM python:3.11
 
-COPY app-core.py app-core.py
+COPY app.py app.py
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-ENTRYPOINT ["shiny", "run", "app-core.py", "--host", "0.0.0.0", "--port", "80"]
+ENTRYPOINT ["shiny", "run", "app.py", "--host", "0.0.0.0", "--port", "80"]
 ```
 
 ## Testing locally
@@ -25,10 +25,10 @@ To test your app, you can use `docker` locally:
 
 ```sh
 # build the docker image
-docker build . -t shiny-core-app
+docker build . -t shiny-app
 
 # run it
-docker run -p 5000:80 shiny-core-app
+docker run -p 5000:80 shiny-app
 ```
 
 Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.
@@ -38,6 +38,6 @@ Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.
 
 Once you have all your files, create a zip file.
 
-To deploy a Shiny Core app from the deployment menu, select the Docker option and follow the instructions:
+To deploy a Shiny app from the deployment menu, select the Docker option and follow the instructions:
 
 ![](../static/docker.png)

@@ -7,7 +7,8 @@ This app is built on Shiny and allows you to visualize model training accuracy s
 
 ## Connecting to MongoDB Cloud
 
-For the purpose of this tutorial we will use the `MongoDB Atlas` cloud database. Let's see the steps for creating a cluster:
+For the purpose of this tutorial we will use the `MongoDB Atlas` cloud database. It allows users to host a database for free.
+Let's see the steps for creating a cluster:
 
 First create an account on [MongoDB cloud](https://www.mongodb.com/atlas/database) and create a new project:
 
@@ -32,6 +33,7 @@ Once you have completed the access rules setup, select the `CONNECT` button on t
 ## Deploy application
 
 Create a zip file using `Dockerfile`, `app-core.py` and `requirements.txt` and deploy this file to Ploomber cloud.
+Refer to the [Shiny deployment documentation](https://docs.cloud.ploomber.io/en/latest/apps/shiny.html) for more details.
 Once the `VIEW APPLICATION` button is enabled, you can start the training script and monitor the training.
 
 ## Train models
@@ -45,7 +47,7 @@ First create a virtual environment and install the required packages:
 pip install tensorflow scikit-learn "pymongo[srv]"
 ```
 
-Then run the training scripts parallely.:
+Then run the training scripts parallely:
 
 ```bash
 python train_one.py & python train_two.py & wait
