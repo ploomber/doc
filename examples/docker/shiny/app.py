@@ -28,8 +28,6 @@ except Exception as e:
 
 db = client.myDatabase
 my_collection = db["accuracy_scores"]
-# Insert a random row so that last_modified picks up the current timestamp
-my_collection.insert_one({'model': "", 'score': 0, 'timestamp': datetime.now()})
 
 
 def last_modified():
@@ -38,7 +36,12 @@ def last_modified():
     """
     result = my_collection.find().sort({'timestamp':-1}).limit(1)
     tbl = list(result)
-    return tbl[0]["timestamp"].strftime("%H:%M:%S")
+    if len(tbl) == 0:
+        # Insert a random row so that last_modified picks up the current timestamp
+        my_collection.insert_one({'model': "", 'score': 0, 'timestamp': datetime.now()})
+    result = my_collection.find().sort({'timestamp': -1}).limit(1)
+    tbl = list(result)
+    return tbl[0]["timestamp"]
 
 
 @reactive.poll(lambda: last_modified())
@@ -48,15 +51,11 @@ def df():
     the expensive query (`df()`) should be run and downstream calculations should be
     updated.
     """
-    results = my_collection.find().sort({'timestamp': -1, 'model': -1}).limit(150)
+    results = my_collection.find().sort({'timestamp': -1}).limit(50)
     tbl = pd.DataFrame(list(results))
-    tbl["timestamp"] = pd.to_datetime(tbl["timestamp"], utc=True)
-    # Create a short label for readability
-    tbl["time"] = tbl["timestamp"].dt.strftime("%H:%M:%S")
-
+    tbl["time"] = tbl["timestamp"]
     # Reverse order of rows
     tbl = tbl.iloc[::-1]
-
     return tbl
 
 

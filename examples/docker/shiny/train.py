@@ -52,7 +52,7 @@ def train_model(train_images, train_labels, val_images, val_labels, model_name, 
         train_images,
         train_labels,
         validation_data=(val_images, val_labels),
-        epochs=50,
+        epochs=100,
         verbose=0,
         callbacks=[TrackLossandAccuracyCallback(model_name)],
     )
