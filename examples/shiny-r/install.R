@@ -1,0 +1,6 @@
+install.packages("shiny")
+install.packages("bslib")
+install.packages("dplyr")
+install.packages("ggplot2")
+install.packages("ggExtra")
+install.packages("readr")
