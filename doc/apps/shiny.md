@@ -1,9 +1,9 @@
-# Shiny
+# Shiny (Python)
 
-To deploy a [Shiny](https://shiny.posit.co/py/docs/overview.html) application to Ploomber Cloud you need:
+To deploy a [Shiny](https://shiny.posit.co/py/docs/overview.html) Python application to Ploomber Cloud you need:
 
 - A `Dockerfile`
-- A Shiny project
+- A Shiny Python project
 
 ## `Dockerfile`
 
