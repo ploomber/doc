@@ -30,7 +30,10 @@ class TrackLossandAccuracyCallback(tf.keras.callbacks.Callback):
         self.model_name = model_name
 
     def on_epoch_end(self, epoch, logs=None):
-        my_collection.insert_one({'model': self.model_name, 'score': logs["accuracy"], 'timestamp': datetime.now()})
+        timestamp = datetime.now()
+        epoch_data = {'model': self.model_name, 'score': logs["accuracy"], 'timestamp': timestamp}
+        print(f"accuracy : {logs['accuracy']}, timestamp : {timestamp.strftime('%H:%M:%S')}")
+        my_collection.insert_one(epoch_data)
 
 
 def train_model(train_images, train_labels, val_images, val_labels, model_name, dense_units):

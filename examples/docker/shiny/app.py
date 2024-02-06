@@ -1,6 +1,5 @@
 import os
 import pandas as pd
-from datetime import datetime
 
 import plotly.express as px
 from shinywidgets import output_widget, render_widget
@@ -30,21 +29,12 @@ db = client.myDatabase
 my_collection = db["accuracy_scores"]
 
 
-def last_modified():
-    """
-    Get the timestamp of the most recent row in the MongoDB database.
-    """
-    result = my_collection.find().sort({'timestamp':-1}).limit(1)
-    tbl = list(result)
-    if len(tbl) == 0:
-        # Insert a random row so that last_modified picks up the current timestamp
-        my_collection.insert_one({'model': "", 'score': 0, 'timestamp': datetime.now()})
-    result = my_collection.find().sort({'timestamp': -1}).limit(1)
-    tbl = list(result)
-    return tbl[0]["timestamp"]
+def number_of_observations():
+    n = my_collection.count_documents({})
+    return n
 
 
-@reactive.poll(lambda: last_modified())
+@reactive.poll(lambda: number_of_observations())
 def df():
     """
     @reactive.poll calls a cheap query (`last_modified()`) every 1 second to check if
