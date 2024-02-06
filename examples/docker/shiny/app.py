@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+from datetime import datetime
 
 import plotly.express as px
 from shinywidgets import output_widget, render_widget
@@ -31,6 +32,8 @@ my_collection = db["accuracy_scores"]
 
 def number_of_observations():
     n = my_collection.count_documents({})
+    if n == 0:
+        my_collection.insert_one({'model': "", 'score': 0, 'timestamp': datetime.now()})
     return n
 
 
