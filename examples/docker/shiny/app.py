@@ -33,6 +33,7 @@ my_collection = db["accuracy_scores"]
 def number_of_observations():
     n = my_collection.count_documents({})
     if n == 0:
+        # insert random record to prevent KeyError message when no records present in DB
         my_collection.insert_one({'model': "", 'score': 0, 'timestamp': datetime.now()})
     return n
 
