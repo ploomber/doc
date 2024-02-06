@@ -18,10 +18,10 @@ THRESHOLD_LOW_COLOR = "rgb(193, 0, 0)"
 URI = os.environ.get("MONGODB_CONNECTION_URI", "")
 
 # Create a new client and connect to the server
-client = MongoClient(URI, server_api=ServerApi('1'))
+client = MongoClient(URI, server_api=ServerApi("1"))
 
 try:
-    client.admin.command('ping')
+    client.admin.command("ping")
     print("Successfully connected to MongoDB!")
 except Exception as e:
     raise ConnectionError(str(e)) from e
@@ -34,7 +34,7 @@ def number_of_observations():
     n = my_collection.count_documents({})
     if n == 0:
         # insert random record to prevent KeyError message when no records present in DB
-        my_collection.insert_one({'model': "", 'score': 0, 'timestamp': datetime.now()})
+        my_collection.insert_one({"model": "", "score": 0, "timestamp": datetime.now()})
     return n
 
 
@@ -45,7 +45,7 @@ def df():
     the expensive query (`df()`) should be run and downstream calculations should be
     updated.
     """
-    results = my_collection.find().sort({'timestamp': -1}).limit(50)
+    results = my_collection.find().sort({"timestamp": -1}).limit(50)
     tbl = pd.DataFrame(list(results))
     tbl["time"] = tbl["timestamp"]
     # Reverse order of rows
@@ -79,6 +79,7 @@ app_ui = ui.page_sidebar(
     ),
     ui.row(
         ui.h1("Model monitoring dashboard"),
+        ui.h4("Deploy your own at ploomber.io"),
         ui.output_ui("value_boxes"),
     ),
     ui.row(

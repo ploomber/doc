@@ -78,3 +78,8 @@ If you wish to restart the training process you may drop the collection to ensur
 
 ![](./static/delete-collection.png)
 
+Or using Python:
+
+```python
+python clean.py
+```
