@@ -1,10 +1,5 @@
 # Sharing notebooks
 
-```{note}
-If you're using JupyterLab 4, you might encounter issues. If the link isn't visible after confirming upload, open the [platform](https://www.platform.ploomber.io/notebooks) to get the link to your notebook.
-```
-
-
 You can use Ploomber Cloud to quickly share notebooks from JupyterLab with one click.
 
 ![](../static/jupyterlab/share-notebook-demo.gif)
@@ -12,7 +7,7 @@ You can use Ploomber Cloud to quickly share notebooks from JupyterLab with one c
 First, install the JupyterLab extension:
 
 ```sh
-pip install jupysql-plugin
+pip install ploomber-extension
 ```
 
 Then, start JupyterLab and open a notebook. You'll see a "Share notebook" button:
