@@ -12,6 +12,7 @@ parts:
       - file: user-guide/cli
       - file: user-guide/github
       - file: user-guide/env-vars
+      - file: user-guide/password
       - file: user-guide/custom-domains
       - file: user-guide/managing-apps
 

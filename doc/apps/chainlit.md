@@ -41,3 +41,31 @@ Once you have all your files, create a zip file.
 To deploy a Chainlit app from the deployment menu, follow these instructions:
 
 ![](../static/docker.png)
+
+## Password protection
+
+Currently, our [password authentication](../user-guide/password.md) feature doesn't work with Chainlit, however,
+we can still use Chainlit's authentication feature.
+
+First, download the [sample code](https://github.com/ploomber/doc/tree/main/examples/chainlit/chainlit-with-password).
+The `Dockerfile` remains the same, the only change happens in the `app.py`.
+
+During deployment, you need to provide three [environment variables](../user-guide/env-vars.md):
+
+```sh
+CHAINTLIT_USERNAME="user"
+CHAINTLIT_PASSWORD="somepassword"
+
+CHAINLIT_AUTH_SECRET="somerandomstring"
+```
+
+`CHAINLIT_AUTH_SECRET` is a random string used to authenticate user tokens, you can
+generate one by executing the following command in your terminal:
+
+```sh
+python -c 'from secrets import token_hex; print(token_hex(16))'
+```
+
+```{note}
+You can change `CHAINLIT_AUTH_SECRET`, but it'll log out all your users.
+```
