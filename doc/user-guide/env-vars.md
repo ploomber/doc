@@ -1,5 +1,9 @@
 # Environment variables
 
+```{note}
+Environment variables are not preserved across deployments. We're working on a fix.
+```
+
 If your application requires environment variables, you can define them when
 deploying it. To expand the section click on the triangle to the left:
 
