@@ -9,7 +9,7 @@ To deploy a [Shiny](https://shiny.posit.co/py/docs/overview.html) R application 
 
 ## Required files
 
-You can use this [template](https://github.com/ploomber/doc/blob/main/examples/docker/shiny-r/shiny-r-data-visualization) to get started. The `Dockerfile` and `startApp.R` will remain the same, but you need to modify `install.R` and `app.R`.
+You can use this [template](https://github.com/ploomber/doc/blob/main/examples/shiny-r/shiny-r-data-visualization) to get started. The `Dockerfile` and `startApp.R` will remain the same, but you need to modify `install.R` and `app.R`.
 
 In the `install.R` file, add all the dependencies that you need for your application to run. And put your application logic in the `app.R` file.
 
