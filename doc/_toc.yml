@@ -30,7 +30,8 @@ parts:
       - file: apps/panel
       - file: apps/chainlit
       - file: apps/gradio
-      - file: apps/shiny
+      - file: apps/shiny-python
+      - file: apps/shiny-r
       - file: apps/shiny-express
       - file: apps/dash
       - file: apps/docker
