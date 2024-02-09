@@ -4,7 +4,7 @@ You can deploy [Quarto](https://quarto.org/) projects to Ploomber Cloud.
 
 We currently support the following types of projects: website, blog, manuscript, and confluence.
 
-Let's create a new website and put it under `myproject/` (you can use an existing project as well):
+Let's create a new website and put it under `myproject/` (you can use an [existing project](https://github.com/ploomber/doc/tree/main/examples/quarto/quarto-website) as well):
 
 ```sh
 quarto create project website myproject --no-open
