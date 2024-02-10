@@ -87,9 +87,8 @@ def Chat() -> None:
         relevant_articles = [articles_raw[i] for i in indexes]
 
         ac.results_to_json(relevant_articles)
-        print("CALLED LOAD FROM PAGE")
         oc.load_prompt()
-        print("CALLED CHAT FROM PAGE")
+
         for new_message in oc.article_chat("Summarize each article in a sentence"):
             set_messages(_messages + [Message(role="assistant", content=f"Fetched some articles. Here's a summary: \n\n{new_message}")])
 
@@ -101,10 +100,8 @@ def Chat() -> None:
         _messages = messages + [Message(role="user", content=input)]
         set_messages(_messages)
         if not loaded:
-            print("Called load articles from ask_chatgpt")
             load_articles_from_topic_query(input)
         else:
-            print("Called chat from ask_chatgpt")
             for new_message in oc.article_chat(input):
                 set_messages(_messages + [Message(role="assistant", content=new_message)])
 
