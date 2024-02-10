@@ -1,25 +1,25 @@
 # Custom domains and subdomains
 
-When you publish your application for the first time, your web address (i.e., URL) is in the following format: `project-id.plooberapp.io`
+By default, applications are available under `project-id.ploomberapp.io`, where `project-id` is a randomly generated string.
 
-Ploomber offers options to customize the [subdomain](#custom-subdomain) or the [full domain](#custom-domain).
+You can customize the [`project-id`](custom-ploomber-subdomain) or [bring your own domain](custom-domain).
 
 If you already own a domain, you can easily bring it to your Ploomber account by updating your DNS records, or by changing its nameservers.
 
-(custom-subdomain)=
-## Adding a custom subdomain
+(custom-ploomber-subdomain)=
+## Custom `ploomberapp` subdomain
 
 ```{note}
 Custom project names are a [paid feature.](../pricing/overview.md)
 ```
 
-If you would like a custom subdomain, like `my-custom-app.ploomberapp.io`, you can add a custom name during application setup:
+If you would like a custom `ploomberapp` subdomain, like `my-custom-app.ploomberapp.io`, you can add it during application setup:
 
 ![](../static/custom-domains/custom-names.png)
 
-Customizing the project name only changes the `x` portion in `x.ploomberapp.io`.
-
-If you would like a fully customized domain, see [Adding a custom domain](#custom-domain).
+```{warning}
+The custom name is **only visible** during setup. We're working on a fix.
+```
 
 
 (custom-domain)=
@@ -52,6 +52,10 @@ There are two ways to connect a custom domain. Depending on where you want to st
 * **Pointing** (default) - You add a CNAME and ALIAS record in your DNS provider
 * **Nameservers** - We host your DNS records
 
+
+```{important}
+DNS record changes might take up to 48 hours to take effect. In the meantime, your application will be accessible from the `ploomberapp.io` URL.
+```
 
 #### Method 1: Pointing
 
