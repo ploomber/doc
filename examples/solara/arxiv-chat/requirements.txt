@@ -1,0 +1,7 @@
+solara==1.25.0
+openai
+arxiv
+IPython
+scipy
+numpy
+tiktoken
