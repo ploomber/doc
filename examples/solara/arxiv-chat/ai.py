@@ -74,7 +74,7 @@ and disregard articles that are not relevant to answer the question:
         return response
     
 
-    def topic_classifier(self, user_query):
+    def topic_classify_categories(self, user_query):
         system_prompt = f"""
 You're a system that determines the topic of a question about academic articles in the field of Math and Science.
 
@@ -104,11 +104,50 @@ which would be the key in the key, value pair.
         )
         return response.choices[0].message.content
     
+    def topic_classify_terms(self, user_query):
+        system_prompt = f"""
+You're a system that determines the topic of a question about academic articles in the field of Math and Science.
+
+Given a user prompt, you should categorize it into a set of article search terms.
+Keep it to a few essential terms. Here is a list of examples:
+
+{self.categories.values()}
+"""
+
+        messages_to_send = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": "Articles about kinematics"},
+            {"role": "system", "content": "kinematics"},
+            {"role": "user", "content": "I want to know articles about react.js and node libraries"},
+            {"role": "system", "content": "react node libraries"},
+            {"role": "user", "content": "Give me some articles on LLMs"},
+            {"role": "system", "content": "large language models"},
+            {"role": "user", "content": "Any new news on cryptography? or information security?"},
+            {"role": "system", "content": "cryptography information security"},
+            {"role": "user", "content": user_query},
+        ]
+
+        response = self.client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=messages_to_send,
+            seed=42,
+            n=1,
+        )
+
+        return response.choices[0].message.content
+    
     def get_article_by_title(self, title):
         for a in self.articles:
             if a["title"] == title:
                 return a
         return None
+
+    def get_description(self, arguments):
+        try:
+            article = self.get_article_by_title(arguments["title"])
+            return f"Here's the description for **{arguments['title']}**: \n\n" + article["description"]
+        except:
+            return "There was a problem answering this question, try rephrasing."
     
     def get_authors(self, arguments):
         try:
@@ -120,7 +159,7 @@ which would be the key in the key, value pair.
     def get_links(self, arguments):
         try:
             article = self.get_article_by_title(arguments["title"])
-            return str(list(article["links"])[0])
+            return list(article["links"])[0]
         except:
             return "There was a problem answering this question, try rephrasing."
 
