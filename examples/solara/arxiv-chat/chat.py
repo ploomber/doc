@@ -103,8 +103,8 @@ def Chat() -> None:
         ac.results_to_json(relevant_articles)
         oc.load_prompt()
 
-        for new_message in oc.article_chat("Summarize each article in a sentence. Include its title."):
-            set_messages(_messages + [Message(role="assistant", content=f"Fetched some articles. Here's a summary: \n\n{new_message}")])
+        for new_message in oc.article_chat("Summarize each article in a sentence. Number them, and format like title: summary."):
+            set_messages(_messages + [Message(role="assistant", content=f"Fetched some articles.\n\n{new_message}")])
 
         set_loaded(True)
 
