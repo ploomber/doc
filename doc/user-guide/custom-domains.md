@@ -125,11 +125,6 @@ We will cover the instructions for changing your nameservers on Namecheap. While
 ![](../static/custom-domains/namecheap-save-nameservers.png)
 
 
-
-```{note}
-It can take up to 48 hours for nameserver changes to take effect. Please be patient if your website isn’t showing up at your domain right away.
-```
-
 #### HTTPS and SSL
 
 All Ploomber applications include the HTTPS and SSL protocols, ensuring that communication between your visitors and your site is entirely secure. Once your custom domain has been verified, you'll be able to see it under Registered domains as `ISSUED`, and your custom domain will have an SSL certification.
