@@ -74,34 +74,11 @@ def Chat() -> None:
     def load_articles_from_topic_query(query):
         _messages = messages + [Message(role="user", content=query)]
         set_messages(_messages + [Message(role="assistant", content="Processing...")])
-        topic = oc.topic_classify_categories(query)
-        articles_raw = None
+        success, content = oc.fetch_articles_from_query(query)
 
-        if topic in oc.categories:
-            articles_raw = ac.get_articles_by_cat(topic)
-        else:
-            topic = oc.topic_classify_terms(query)
-            if len(topic.split()) > 10:
-                set_messages(_messages + [Message(role="assistant", content=topic)])
-                return
-            else:
-                articles_raw = ac.get_articles_by_terms(topic)
-
-        articles = ac.results_to_array(articles_raw)
-        embeddings = store.get_many(articles)
-
-        try:
-            kdtree = KDTree(np.array(embeddings))
-        except:
-            help_msg = "I'm having trouble understanding that. Can you please try again? \n\n I can help you with a wide range of topics, including but not limited to: mathematics, computer science, astrophysics, statistics, and quantitative biology!"
-            set_messages(_messages + [Message(role="assistant", content=help_msg)])
+        if not success:
+            set_messages(_messages + [Message(role="assistant", content=content)])
             return
-
-        _, indexes = kdtree.query(store.get_one(query), k=5)
-        relevant_articles = [articles_raw[i] for i in indexes]
-
-        ac.results_to_json(relevant_articles)
-        oc.load_prompt()
 
         for new_message in oc.article_chat("Summarize each article in a sentence. Number them, and format like title: summary."):
             set_messages(_messages + [Message(role="assistant", content=f"Fetched some articles.\n\n{new_message}")])

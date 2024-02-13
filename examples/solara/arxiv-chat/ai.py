@@ -4,6 +4,9 @@ import json
 from IPython import display
 from datetime import datetime
 import tiktoken
+import articles as art
+from scipy.spatial import KDTree
+import numpy as np
 
 TOKEN_LIMIT = 4096
 
@@ -45,11 +48,44 @@ class OpenAIClient:
             first_msg = self.messages.pop(0)
             token_count -= len(self.encoding.encode(str(first_msg)))
         return token_count
+    
+    def fetch_articles_from_query(self, query):
+        ac = art.ArxivClient()
+        store = EmbeddingsStore()
+        topic = self.topic_classify_categories(query)
+        articles_raw = None
+
+        if topic in self.categories:
+            articles_raw = ac.get_articles_by_cat(topic)
+        else:
+            topic = self.topic_classify_terms(query)
+            if len(topic.split()) > 10:
+                return False, topic
+            else:
+                articles_raw = ac.get_articles_by_terms(topic)
+
+        articles = ac.results_to_array(articles_raw)
+        embeddings = store.get_many(articles)
+
+        try:
+            kdtree = KDTree(np.array(embeddings))
+        except:
+            help_msg = "There was a problem processing that message. Can you please try again? \n\n I can help you with a wide range of topics, including but not limited to: mathematics, computer science, astrophysics, statistics, and quantitative biology!"
+            return False, help_msg
+
+        _, indexes = kdtree.query(store.get_one(query), k=5)
+        relevant_articles = [articles_raw[i] for i in indexes]
+
+        ac.results_to_json(relevant_articles)
+        self.load_prompt()
+
+        print(len(relevant_articles))
+        return True, None
 
     
     def load_prompt(self, verbose=False):
         prompt = f"""
-You are a helpful assistant that can answer questions about Computer Science articles.
+You are a helpful assistant that can answer questions about scientific articles.
 Here are the articles info in JSON format: 
 
 Use these to generate your answer,
@@ -184,9 +220,22 @@ Keep it to a few essential terms. Here is a list of examples:
             return " ".join(category_names)
         except:
             return "There was a problem answering this question, try rephrasing."
+    
+    def fetch_articles(self, arguments):
+        query = arguments["query"]
+        success, content = self.fetch_articles_from_query(query)
+        print("got here 226")
+        if not success:
+            print("failed")
+            return content
+        message = ""
+        for new_message in self.article_chat("Summarize each article in a sentence. Number them, and format like title: summary."):
+            message += new_message
+        return new_message
 
 
     def call_tool(self, call):
+        print(f"Call tool: {call}")
         func_name, args = call["name"], dict(eval(call["arguments"]))
         self.messages.append( # adding assistant response to messages
             {
@@ -198,15 +247,26 @@ Keep it to a few essential terms. Here is a list of examples:
                 "content": ""
             }
         )
-        content = getattr(self, func_name)(args)
-        self.messages.append( # adding function response to messages
-            {
-                "role": "function",
-                "name": func_name,
-                "content": str(content),
-            }
-        )
-        return content
+        if "query" not in args:
+            content = getattr(self, func_name)(args)
+            self.messages.append( # adding function response to messages
+                {
+                    "role": "function",
+                    "name": func_name,
+                    "content": str(content),
+                }
+            )
+            return content
+        else:
+            print("Got here 259")
+            return self.fetch_articles(args)
+            self.messages.append( # adding function response to messages
+                {
+                    "role": "function",
+                    "name": func_name,
+                    "content": str(content),
+                }
+            )
 
 
     def article_chat(self, user_query):
@@ -245,6 +305,7 @@ Keep it to a few essential terms. Here is a list of examples:
                 content = delta.content
                 if content:
                     answer += content
+            #print(answer)
             yield answer
         
         self.messages.append({"role": "assistant", "content": answer})
