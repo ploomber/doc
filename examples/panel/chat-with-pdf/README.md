@@ -1,4 +1,4 @@
 # Chat with a PDF
 
-This Panel was was [originally developed](https://github.com/holoviz-topics/panel-chat-examples/blob/main/docs/examples/langchain/langchain_pdf_assistant.py) by [Andrew Huang](https://github.com/ahuang11),
+This Panel app was [originally developed](https://github.com/holoviz-topics/panel-chat-examples/blob/main/docs/examples/langchain/langchain_pdf_assistant.py) by [Andrew Huang](https://github.com/ahuang11),
 and [Marc Skov Madsen](https://github.com/MarcSkovMadsen).
