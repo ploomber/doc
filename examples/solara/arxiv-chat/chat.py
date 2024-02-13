@@ -92,8 +92,18 @@ def Chat() -> None:
         set_messages(_messages)
         if not loaded:
             load_articles_from_topic_query(input)
-        else:
-            for new_message in oc.article_chat(input):
+            set_disabled(False)
+            return
+        
+        for new_message in oc.article_chat(input):
+            if new_message == "":
+                set_messages(_messages + [Message(role="assistant", content="Processing...")])
+        
+            elif new_message == "FETCHED-NEED-SUMMARIZE":
+                for msg in oc.article_chat("Summarize each article in a sentence. Number them, and format like title: summary."):
+                    set_messages(_messages + [Message(role="assistant", content=msg)])
+        
+            else:
                 set_messages(_messages + [Message(role="assistant", content=new_message)])
 
         set_disabled(False)
