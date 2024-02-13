@@ -19,15 +19,18 @@ class OpenAIClient:
         self.load_tools()
         self.load_categories()
 
+
     def load_categories(self):
         path = Path("./json/categories.json")
         with open(path, "r") as categories_json:
             self.categories = json.load(categories_json)
-    
+
+
     def load_tools(self):
         path = Path("./json/tools.json")
         self.tools = json.loads(path.read_text())["tools"]
     
+
     def get_articles(self):
         path = Path("./json/articles.json")
         articles = None
@@ -35,7 +38,8 @@ class OpenAIClient:
             articles = json.load(articles_json)
             self.articles = articles
         return articles
-    
+
+
     def count_tokens(self, msgs):
         token_count = 0
         for m in msgs:
@@ -43,12 +47,14 @@ class OpenAIClient:
             token_count += tc
         return token_count
 
+
     def trim_messages(self, token_count):
         while token_count > TOKEN_LIMIT:
             first_msg = self.messages.pop(0)
             token_count -= len(self.encoding.encode(str(first_msg)))
         return token_count
-    
+
+
     def fetch_articles_from_query(self, query):
         ac = art.ArxivClient()
         store = EmbeddingsStore()
@@ -78,8 +84,6 @@ class OpenAIClient:
 
         ac.results_to_json(relevant_articles)
         self.load_prompt()
-
-        print(len(relevant_articles))
         return True, None
 
     
@@ -139,7 +143,8 @@ which would be the key in the key, value pair.
             n=1,
         )
         return response.choices[0].message.content
-    
+
+
     def topic_classify_terms(self, user_query):
         system_prompt = f"""
 You're a system that determines the topic of a question about academic articles in the field of Math and Science.
@@ -171,12 +176,14 @@ Keep it to a few essential terms. Here is a list of examples:
         )
 
         return response.choices[0].message.content
-    
+
+
     def get_article_by_title(self, title):
         for a in self.articles:
             if a["title"] == title:
                 return a
         return None
+
 
     def get_description(self, arguments):
         try:
@@ -184,13 +191,15 @@ Keep it to a few essential terms. Here is a list of examples:
             return f"Here's the description for **{arguments['title']}**: \n\n" + article["description"]
         except:
             return "There was a problem answering this question, try rephrasing."
-    
+
+
     def get_authors(self, arguments):
         try:
             article = self.get_article_by_title(arguments["title"])
             return ", ".join(list(article["authors"]))
         except:
             return "There was a problem answering this question, try rephrasing."
+
 
     def get_links(self, arguments):
         try:
@@ -199,6 +208,7 @@ Keep it to a few essential terms. Here is a list of examples:
         except:
             return "There was a problem answering this question, try rephrasing."
 
+
     def get_published_date(self, arguments):
         try:
             article = self.get_article_by_title(arguments["title"])
@@ -206,7 +216,8 @@ Keep it to a few essential terms. Here is a list of examples:
             return date.strftime("%m/%d/%Y")
         except:
             return "There was a problem answering this question, try rephrasing."
-    
+
+
     def get_categories(self, arguments):
         try:
             article = self.get_article_by_title(arguments["title"])
@@ -220,23 +231,21 @@ Keep it to a few essential terms. Here is a list of examples:
             return " ".join(category_names)
         except:
             return "There was a problem answering this question, try rephrasing."
-    
+
+
     def fetch_articles(self, arguments):
-        query = arguments["query"]
-        success, content = self.fetch_articles_from_query(query)
-        print("got here 226")
-        if not success:
-            print("failed")
-            return content
-        message = ""
-        for new_message in self.article_chat("Summarize each article in a sentence. Number them, and format like title: summary."):
-            message += new_message
-        return new_message
+        try:
+            query = arguments["query"]
+            success, content = self.fetch_articles_from_query(query)
+        except:
+            return f"There was a problem answering your question: {content}"
+        
+        return "FETCHED-NEED-SUMMARIZE"
 
 
     def call_tool(self, call):
-        print(f"Call tool: {call}")
         func_name, args = call["name"], dict(eval(call["arguments"]))
+        
         self.messages.append( # adding assistant response to messages
             {
                 "role": "assistant",
@@ -247,26 +256,15 @@ Keep it to a few essential terms. Here is a list of examples:
                 "content": ""
             }
         )
-        if "query" not in args:
-            content = getattr(self, func_name)(args)
-            self.messages.append( # adding function response to messages
-                {
-                    "role": "function",
-                    "name": func_name,
-                    "content": str(content),
-                }
-            )
-            return content
-        else:
-            print("Got here 259")
-            return self.fetch_articles(args)
-            self.messages.append( # adding function response to messages
-                {
-                    "role": "function",
-                    "name": func_name,
-                    "content": str(content),
-                }
-            )
+        content = getattr(self, func_name)(args)
+        self.messages.append( # adding function response to messages
+            {
+                "role": "function",
+                "name": func_name,
+                "content": str(content),
+            }
+        )
+        return content
 
 
     def article_chat(self, user_query):
@@ -305,7 +303,6 @@ Keep it to a few essential terms. Here is a list of examples:
                 content = delta.content
                 if content:
                     answer += content
-            #print(answer)
             yield answer
         
         self.messages.append({"role": "assistant", "content": answer})
