@@ -13,6 +13,7 @@
 - 4 GiB RAM per app max
 - Deployment limited (one every 5 minutes)
 - Random app name assigned to each deployment (e.g., `green-scene-1234.ploomberapp.io`)
+- Deployment artifact limited to 50MB
 - [Public Slack](https://ploomber.io/community/) support
 
 
@@ -29,6 +30,7 @@
 - Custom domains (i.e., serve your app from `my-cool-app.com`)
 - App password protection
 - Faster app builds
+- Deployment artifact limited to 200MB
 - Email support, and optional, dedicated Slack channel
 
 ### Ploomber Cloud Enterprise
