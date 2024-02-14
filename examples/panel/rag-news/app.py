@@ -7,14 +7,21 @@ https://github.com/holoviz-topics/panel-chat-examples/blob/main/docs/examples/ba
 """
 import panel as pn
 from openai import OpenAI
+import openai
 from gnews import GNews
 from scipy.spatial import KDTree
 import numpy as np
+from dotenv import load_dotenv
+import os
 
 from rag_news import TOPICS, get_news_by_topic, EmbeddingsStore, get_descriptions
 
+# load the .env file
+load_dotenv(".env")
+openaikey = os.getenv("OPENAI_API_KEY")
 
-client = OpenAI()
+
+client = OpenAI(api_key=openaikey)
 google_news = GNews()
 
 pn.extension()
