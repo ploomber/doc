@@ -6,12 +6,13 @@ import os
 import wandb
 import datetime
 
-# start a wandb run to log to
-wandb.init(project="llm-trace-example", entity="lgutierrwr")
-
-
 # load the .env file
 load_dotenv(".env")
+# Set the WANDB_API_KEY environment variable
+os.environ["WANDB_API_KEY"] = os.getenv("WANDB_API_KEY")
+
+# start a wandb run to log to
+wandb.init(project="llm-trace-example", entity="lgutierrwr")
 
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
