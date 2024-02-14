@@ -12,7 +12,8 @@ load_dotenv(".env")
 os.environ["WANDB_API_KEY"] = os.getenv("WANDB_API_KEY")
 
 # start a wandb run to log to
-wandb.init(project="llm-trace-example", entity="lgutierrwr")
+wandb.init(project=os.getenv("WANDB_PROJECT"), 
+           entity=os.getenv("WANDB_ENTITY"))
 
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
