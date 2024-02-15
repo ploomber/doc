@@ -10,7 +10,7 @@ class ArxivClient:
     def _search(self, query):
         search = arxiv.Search(
             query=query,
-            max_results = 15,
+            max_results = 10,
             sort_by = arxiv.SortCriterion.Relevance
         )
         return search
@@ -33,8 +33,7 @@ class ArxivClient:
                 "description": r.summary,
                 "published": str(r.published),
                 "authors": [a.name for a in r.authors],
-                "links": [l.href for l in r.links],
-                "primary_category": r.primary_category,
+                "links": r.links[0].href,
                 "categories": r.categories,
             })
 
@@ -44,7 +43,7 @@ class ArxivClient:
     def results_to_array(self, results):
         out = []
         for r in results:
-            out.append(f"{r.title}:\n\n\t{r.summary}")
+            out.append(f"{r.title}:\n\n\t{r.summary[:500]}")
         return out
 
     def format_array_results(self, arr):
