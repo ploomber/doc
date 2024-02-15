@@ -90,6 +90,10 @@ def start_assistant(query):
 def trace_log(status, status_message, token_usage, \
               start_time_ms, end_time_ms, query, \
                 response_text, json_run, model_name):
+    
+    """
+    This function logs a span to Weights and Biases
+    """
 
     root_span = Trace(
             name="root_span",
@@ -113,6 +117,8 @@ def github_url_generator(query):
     This function takes a query in natural language
     and returns a url that can be used to search through 
     repositories on GitHub
+
+    This function also has Weights and Biases tracing enabled
     """
     try:
 
@@ -169,6 +175,10 @@ def github_url_generator(query):
         return interpretation
 
 def search_github_repositories(url):
+    """
+    This function takes a url and uses the GitHub API to search for repositories
+    sorted by the number of stars
+    """
 
     url += "&sort=stars&order=desc"
     headers = {
@@ -185,11 +195,12 @@ def search_github_repositories(url):
         if len(json_response['items']) > 15:
             repo_list = "Here are top 15 repositories (by number of stars) related to your search:\n"
             top_repos = json_response['items'][:15]  # Get the top 15 repositories
-            repo_list += "\n".join([f"- <a href='{repo['html_url']}' target='_blank'>{repo['html_url']}</a> - Stargazer count ⭐: {repo['stargazers_count']}" for repo in top_repos])
+            repo_list += "\n".join([f"- <a href='{repo['html_url']}' target='_blank'>{repo['html_url'].split('/')[-1]}</a>: {repo['description']} - Stargazer count ⭐: {repo['stargazers_count']}" for repo in top_repos])
             return Markdown(repo_list)
         else:
             repo_list = "Here are the repositories related to your search:\n"
-            repo_list += "\n".join([f"- <a href='{json_response['items'][i]['html_url']}' target='_blank'>{json_response['items'][i]['description']}</a> - Stargazer count ⭐: {repo_list['stargazers_count']}" for i in range(len(json_response['items']))])
+            repos = json_response['items']
+            repo_list += "\n".join([f"- <a href='{repo['html_url']}' target='_blank'>{repo['html_url'].split('/')[-1]}</a>: '{repo['description']}' - Stargazer count ⭐: {repo['stargazers_count']}" for repo in repos])
             return Markdown(repo_list)
             
     else:
@@ -199,14 +210,17 @@ def search_github_repositories(url):
             please try again later."
    
 def callback(input_text, user, instance: pn.chat.ChatInterface):
+    """
+    This function is called when the user sends a message
+    """
     
     return github_url_generator(input_text)
 
 
-
 chat_interface = pn.chat.ChatInterface(callback=callback)
 chat_interface.send(
-    "Hello 😊 I can help you find repositories on GitHub. \
+    "Hello 😊 I am an OpenAI-powered assistant. \
+        I can help you find repositories on GitHub. \
         Tell me a topic and I will use the GitHub API to suggest a few \
         repositories for you.\
         What kinds of GitHub repositories are you looking for?",
@@ -215,6 +229,7 @@ chat_interface.send(
 )
 
 pn.template.MaterialTemplate(
-    title="GitHub Repository Searcher",
+    title="<h4>GitHub Repository Searcher - <a href='https://ploomber.io/' target='_blank'> Hosted on Ploomber Cloud 🚀</a></h4>",
+    logo="./images/logo-nb.png",
     main=[chat_interface],
 ).servable()
