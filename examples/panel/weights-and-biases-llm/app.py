@@ -9,9 +9,7 @@ import json
 import re
 import os 
 from IPython.display import Markdown
-from dotenv import load_dotenv
 
-load_dotenv(".env")
 # Set the WANDB_API_KEY environment variable
 os.environ["WANDB_API_KEY"] = os.getenv("WANDB_API_KEY")
 
