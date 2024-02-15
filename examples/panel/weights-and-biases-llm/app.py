@@ -165,6 +165,8 @@ def search_github_repositories(response):
     
     if match:
         url = match.group()
+        # Add the sort parameter to sort by stars in descending order
+        url += "&sort=stars&order=desc"
         headers = {
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28"
