@@ -3,14 +3,8 @@ from pathlib import Path
 
 from gnews import GNews
 from openai import OpenAI
-import os
-from dotenv import load_dotenv
 
-load_dotenv(".env")
-openaikey = os.getenv("OPENAI_API_KEY")
-
-
-client = OpenAI(api_key=openaikey)
+client = OpenAI()
 
 # these are the values that the GNews.get_news_by_topic function can take
 TOPICS = {
