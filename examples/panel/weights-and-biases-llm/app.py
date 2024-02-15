@@ -87,13 +87,11 @@ def start_assistant(query):
     messages = client.beta.threads.messages.list(thread_id=thread.id)
     return run, messages
  
-def trace_log(status, status_message, token_usage, \
-              start_time_ms, end_time_ms, query, \
-                response_text, json_run, model_name):
-    
+def trace_log(status, status_message, token_usage, start_time_ms, end_time_ms, query, response_text, json_run, model_name):
     """
     This function logs a span to Weights and Biases
     """
+    system_prompt = json_run.get('instructions', 'Unknown instructions')  # Use a default value if 'instructions' key is not found
 
     root_span = Trace(
             name="root_span",
@@ -106,11 +104,12 @@ def trace_log(status, status_message, token_usage, \
             },
             start_time_ms=start_time_ms,
             end_time_ms=end_time_ms,
-            inputs={"system_prompt": json_run['instructions'], "query": query},
+            inputs={"system_prompt": system_prompt, "query": query},
             outputs={"response": response_text},
         )
     
     return root_span
+
 
 def github_url_generator(query):
     """
@@ -120,6 +119,7 @@ def github_url_generator(query):
 
     This function also has Weights and Biases tracing enabled
     """
+    json_run = {}
     try:
 
         # start a span to trace the assistant
@@ -154,6 +154,8 @@ def github_url_generator(query):
         status_message = str(e)
         response_text = ""
         token_usage = {}
+        json_run = {}
+        instructions = ""
 
         root_span = trace_log(status, status_message, token_usage, \
                             start_time_ms, end_time_ms, query, \
