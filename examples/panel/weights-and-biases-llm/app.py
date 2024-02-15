@@ -27,7 +27,6 @@ def as_json(obj):
     """
     return json.loads(obj.model_dump_json())
 
-
 def create_thread():
     """
     Create a new thread
@@ -139,7 +138,8 @@ def github_url_generator(query):
         # log the span to wandb
         root_span.log(name="openai_trace")
 
-
+        
+        
     except Exception as e:
         end_time_ms = round(
             datetime.datetime.now().timestamp() * 1000
@@ -155,43 +155,47 @@ def github_url_generator(query):
 
         # log the span to wandb
         root_span.log(name="openai_trace")
-        
-    return search_github_repositories(interpretation)
 
-def search_github_repositories(response):
     # Use regular expressions to extract the URL
     url_pattern = r"https://api\.github\.com/search/repositories\?.+"
-    match = re.search(url_pattern, response)
-    
+    match = re.search(url_pattern, interpretation)
+
     if match:
         url = match.group()
-        # Add the sort parameter to sort by stars in descending order
-        url += "&sort=stars&order=desc"
-        headers = {
-            "Accept": "application/vnd.github+json",
-            "X-GitHub-Api-Version": "2022-11-28"
-        }
-        response = requests.get(url, headers=headers)
-        json_response = response.json()
-
-        if response.status_code == 200:
-            if len(json_response['items']) < 1:
-                return "No repositories found for the given search criteria."
-            if len(json_response['items']) > 15:
-                repo_list = "Here are top 15 repositories (by number of stars) related to your search:\n"
-                top_repos = json_response['items'][:15]  # Get the top 15 repositories
-                repo_list += "\n".join([f"- <a href='{repo['html_url']}' target='_blank'>{repo['description']}</a> - Stargazer count ⭐: {repo['stargazers_count']}" for repo in top_repos])
-                return Markdown(repo_list)
-            else:
-                repo_list = "Here are the repositories related to your search:\n"
-                repo_list += "\n".join([f"- <a href='{json_response['items'][i]['html_url']}' target='_blank'>{json_response['items'][i]['description']}</a> - Stargazer count ⭐: {repo_list['stargazers_count']}" for i in range(len(json_response['items']))])
-                return Markdown(repo_list)
-                
-        else:
-            return "There was an error accessing the GitHub API. Please try again."
+        return search_github_repositories(url)
     else:
-        return "Please provide a valid GitHub API search URL."
+        return interpretation
 
+def search_github_repositories(url):
+
+    url += "&sort=stars&order=desc"
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+    }
+    response = requests.get(url, headers=headers)
+    json_response = response.json()
+
+    if response.status_code == 200:
+        if len(json_response['items']) < 1:
+            return "No repositories found for the given search criteria.\
+                Please try a different search."
+        if len(json_response['items']) > 15:
+            repo_list = "Here are top 15 repositories (by number of stars) related to your search:\n"
+            top_repos = json_response['items'][:15]  # Get the top 15 repositories
+            repo_list += "\n".join([f"- <a href='{repo['html_url']}' target='_blank'>{repo['html_url']}</a> - Stargazer count ⭐: {repo['stargazers_count']}" for repo in top_repos])
+            return Markdown(repo_list)
+        else:
+            repo_list = "Here are the repositories related to your search:\n"
+            repo_list += "\n".join([f"- <a href='{json_response['items'][i]['html_url']}' target='_blank'>{json_response['items'][i]['description']}</a> - Stargazer count ⭐: {repo_list['stargazers_count']}" for i in range(len(json_response['items']))])
+            return Markdown(repo_list)
+            
+    else:
+        return "I am sorry, I wasn't able to retrieve the repositories. \
+            Please tell me a topic for which you want to find repositories.\
+            If the problem persists and I cannot connect to the GitHub API,\
+            please try again later."
+   
 def callback(input_text, user, instance: pn.chat.ChatInterface):
     
     return github_url_generator(input_text)
@@ -200,7 +204,10 @@ def callback(input_text, user, instance: pn.chat.ChatInterface):
 
 chat_interface = pn.chat.ChatInterface(callback=callback)
 chat_interface.send(
-    "Hello, I can help you find repositories on GitHub. What are you looking for?",
+    "Hello 😊 I can help you find repositories on GitHub. \
+        Tell me a topic and I will use the GitHub API to suggest a few \
+        repositories for you.\
+        What kinds of GitHub repositories are you looking for?",
     user="System",
     respond=False,
 )
