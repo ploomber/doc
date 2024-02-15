@@ -9,7 +9,9 @@ import json
 import re
 import os 
 from IPython.display import Markdown
+from dotenv import load_dotenv
 
+load_dotenv(".env")
 # Set the WANDB_API_KEY environment variable
 os.environ["WANDB_API_KEY"] = os.getenv("WANDB_API_KEY")
 
@@ -155,6 +157,8 @@ def github_url_generator(query):
 
         # log the span to wandb
         root_span.log(name="openai_trace")
+
+        return "I am sorry, our LLM is currently down. Please try again later."
 
     # Use regular expressions to extract the URL
     url_pattern = r"https://api\.github\.com/search/repositories\?.+"
