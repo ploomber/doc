@@ -76,7 +76,7 @@ def start_assistant(query):
         'I can help you find GitHub repositories only. Tell me a topic you are interested in.'"
     
     assistant = client.beta.assistants.create(
-    name="GitHub repository searcher",
+    name="GitHub repository searcher. App deployed on Ploomber Cloud. Visit ploomber.io",
     instructions=system_message,
     model=model_name,
 )
