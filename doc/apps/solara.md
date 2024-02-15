@@ -7,6 +7,9 @@ To deploy a Solara app you need at least two files zipped up:
 1. Your application file (`app.py`)
 2. A dependencies file (`requirements.txt`)
 
+```{note}
+We currently only support Solara deployments via a `app.py` file, not via `.ipynb` files
+```
 
 ## Dependencies
 
