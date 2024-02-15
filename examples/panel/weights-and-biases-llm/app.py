@@ -8,6 +8,7 @@ import datetime
 import requests
 import time
 import json
+import re
 
 # load the .env file
 load_dotenv(".env")
@@ -69,10 +70,13 @@ def start_assistant(query):
     Start an assistant to search for repositories on GitHub
     """
     
-    system_message = "You are a helpful assistant who translates natural language questions and forms a url that can be used\
+    system_message = "You are a helpful assistant whose only job is to\
+        translates natural language questions and forms a url that can be used\
         to search through repositories on GitHub through their API\
         For example, if a user asks for repositories for llm monitoring, you will form a query as follows\
-        https://api.github.com/search/repositories?q=llm+monitoring"
+        https://api.github.com/search/repositories?q=llm+monitoring\
+        Any inquiries outside of this should be responded with \
+        'I can help you find GitHub repositories only. Tell me a topic you are interested in.'"
     
     assistant = client.beta.assistants.create(
     name="GitHub repository searcher",
@@ -106,7 +110,6 @@ def trace_log(status, status_message, token_usage, \
         )
     
     return root_span
-
 
 def github_url_generator(query):
     """
@@ -155,19 +158,38 @@ def github_url_generator(query):
         # log the span to wandb
         root_span.log(name="openai_trace")
         
-    return interpretation
+    return search_github_repositories(interpretation)
 
-def search_github_repositories(url):
-    url = url
-    headers = {
-        "Accept": "application/vnd.github+json",
-        "X-GitHub-Api-Version": "2022-11-28"
-    }
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        return response.json()['items']
+def search_github_repositories(response):
+    # Use regular expressions to extract the URL
+    url_pattern = r"https://api\.github\.com/search/repositories\?.+"
+    match = re.search(url_pattern, response)
+    
+    if match:
+        url = match.group()
+        headers = {
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28"
+        }
+        response = requests.get(url, headers=headers)
+        json_response = response.json()
+
+        if response.status_code == 200:
+            if len(json_response['items'])<0:
+                return "No repositories found for the given search criteria."
+            if len(json_response['items'])>15:
+                repo_list = "Here are 15 repositories related to your search:\n"
+                repo_list += "\n".join([f"- Description: {json_response['items'][i]['description']}: {json_response['items'][i]['html_url']}. " for i in range(15)])
+                return repo_list
+            else:
+                repo_list = "Here are the repositories related to your search:\n"
+                repo_list += "\n".join([f"- Description: {json_response['items'][i]['description']}: {json_response['items'][i]['html_url']}. " for i in range(len(json_response['items']))])
+                return repo_list
+                
+        else:
+            return "There was an error accessing the GitHub API. Please try again."
     else:
-        return []
+        return "Please provide a valid GitHub API search URL."
 
 def callback(input_text, user, instance: pn.chat.ChatInterface):
     
