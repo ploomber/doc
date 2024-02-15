@@ -1,7 +1,6 @@
-# Data querying and visualisation App
+# Chat with a CSV
 
-This query and data visualisation application is designed to provide a user-friendly chatbot interface to interact with your data, making data exploration and analysis a breeze.
-
+Chat with a CSV file using natural language.
 
 ## Getting Started
 
