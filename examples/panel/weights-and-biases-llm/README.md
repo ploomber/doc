@@ -12,7 +12,7 @@ Once you log in, you can create a new project by visiting your user profile, sel
 
 ![](./images/new_project.png)
 
-Create a new `.env` file in the root of the project and add the following lines:
+The app assumes the following environment variable names. Please store them somewhere safe, as you will need them later. You can set them as environment variables. 
 
 ```bash
 WANDB_API_KEY=your_api_key
@@ -24,7 +24,7 @@ WANDB_ENTITY=your_user_name
 
 You will also need to create an account in OpenAI. You can do this by visiting the [OpenAI website](https://platform.openai.com/account/). Once you have an account, you will need to generate an API key, which you can obtain by visiting the [API keys page](https://platform.openai.com/api-keys).
 
-Create a new environment variable in the `.env` file and add the following line:
+Save the API key in an environment variable. You can set it as an environment variable with the following name:
 
 ```bash
 OPENAI_API_KEY=your_api_key
