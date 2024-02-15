@@ -1,6 +1,6 @@
-# About this application
+# Orders LLM
 
-This is an LLM-based API with a focus on helping you answer questions about orders. 🚀
+An LLM-based app to ask questions about an orders database.
 
 ## How it works
 

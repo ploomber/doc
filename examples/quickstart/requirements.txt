@@ -1,6 +1,0 @@
-# requirements for analytical application
-jupysql
-duckdb
-duckdb-engine
-ipywidgets
-matplotlib

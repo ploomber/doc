@@ -8,7 +8,9 @@ import articles as art
 from scipy.spatial import KDTree
 import numpy as np
 
+
 TOKEN_LIMIT = 3750 # allow some buffer so responses aren't cut off
+
 
 class OpenAIClient:
     def __init__(self):
@@ -204,7 +206,9 @@ Keep it to a few essential terms. Here is a list of examples:
     def get_links(self, arguments):
         try:
             article = self.get_article_by_title(arguments["title"])
+
             return article["links"]
+
         except:
             return "There was a problem answering this question, try rephrasing."
 
@@ -237,6 +241,7 @@ Keep it to a few essential terms. Here is a list of examples:
         try:
             query = arguments["query"]
             success, content = self.fetch_articles_from_query(query)
+
             if not success:
                 return content
         except:
@@ -314,6 +319,7 @@ Keep it to a few essential terms. Here is a list of examples:
 class EmbeddingsStore:
     def __init__(self):
         self._path = Path("./json/embeddings.json")
+
 
         if not self._path.exists() or not self._path.read_text():
             self._data = {}
