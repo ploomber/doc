@@ -1,17 +1,14 @@
 import panel as pn
 from openai import OpenAI
 from wandb.sdk.data_types.trace_tree import Trace
-from dotenv import load_dotenv
-import os
 import wandb
 import datetime
 import requests
 import time
 import json
 import re
+import os 
 
-# load the .env file
-load_dotenv(".env")
 # Set the WANDB_API_KEY environment variable
 os.environ["WANDB_API_KEY"] = os.getenv("WANDB_API_KEY")
 
