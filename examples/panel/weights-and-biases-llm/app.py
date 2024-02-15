@@ -5,6 +5,9 @@ from dotenv import load_dotenv
 import os
 import wandb
 import datetime
+import requests
+import time
+import json
 
 # load the .env file
 load_dotenv(".env")
@@ -15,60 +18,122 @@ os.environ["WANDB_API_KEY"] = os.getenv("WANDB_API_KEY")
 wandb.init(project=os.getenv("WANDB_PROJECT"), 
            entity=os.getenv("WANDB_ENTITY"))
 
-
+# Initialize the OpenAI client and create an assistant
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+model_name = "gpt-3.5-turbo"
+
+def as_json(obj):
+    """
+    Convert an object to a JSON serializable dictionary
+    """
+    return json.loads(obj.model_dump_json())
 
 
-def dream_interpreter(query):
-    
-    model_name = "gpt-3.5-turbo"
-    temperature = 0.9
-    system_message = "You are a helpful and informative dream interpreter, \
-        you draw your knowledge from\
-        psychology, culture and symbolism. \
-        You receive questions from a user on their dreams and life experiences,\
-        and you provide them with insights and guidance. Your tone is empathetic, \
-        and has an air of mystery and wisdom. Your responses have a maximum length of 5 sentences"
-    
-    messages = [
-        {"role": "system", "content": system_message},
-        {"role": "user", "content": query},
-    ]
-    
-    try:
-        start_time_ms = datetime.datetime.now().timestamp() * 1000
-        response =  client.chat.completions.create(
-                model=model_name, 
-                messages=messages, 
-                temperature=temperature,
-                seed=42,
-                n=1,
-            )
-        end_time_ms = round(
-                datetime.datetime.now().timestamp() * 1000
-            ) 
-        
-        interpretation = response.choices[0].message.content
-        status = "success"
-        status_message = (None,)
-        response_text = interpretation
-        token_usage = response.usage.dict()
+def create_thread():
+    """
+    Create a new thread
+    """
+    return client.beta.threads.create()
 
-        root_span = Trace(
+def add_message_to_thread(thread_id, message_content):
+    return client.beta.threads.messages.create(
+        thread_id=thread_id,
+        role="user",
+        content=message_content
+    )
+
+def run_assistant(thread_id, assistant_id):
+    """
+    Run an assistant on a thread
+    """
+    return client.beta.threads.runs.create(
+        thread_id=thread_id,
+        assistant_id=assistant_id
+    )
+
+def wait_on_run(run, thread):
+    """
+    Wait for a run to complete - assistant runs are queued by default, 
+    we need to wait for them to complete before we can retrieve the messages
+    """
+    while run.status == "queued" or run.status == "in_progress":
+        run = client.beta.threads.runs.retrieve(
+            thread_id=thread.id,
+            run_id=run.id,
+        )
+        time.sleep(0.5)
+    return run
+    
+def start_assistant(query):
+    """
+    Start an assistant to search for repositories on GitHub
+    """
+    
+    system_message = "You are a helpful assistant who translates natural language questions and forms a url that can be used\
+        to search through repositories on GitHub through their API\
+        For example, if a user asks for repositories for llm monitoring, you will form a query as follows\
+        https://api.github.com/search/repositories?q=llm+monitoring"
+    
+    assistant = client.beta.assistants.create(
+    name="GitHub repository searcher",
+    instructions=system_message,
+    model=model_name,
+)
+    thread = create_thread()
+    add_message_to_thread(thread.id, query)
+    queued_run = run_assistant(thread.id, assistant.id)
+    run = wait_on_run(queued_run, thread)
+    messages = client.beta.threads.messages.list(thread_id=thread.id)
+    return run, messages
+ 
+def trace_log(status, status_message, token_usage, \
+              start_time_ms, end_time_ms, query, \
+                response_text, json_run, model_name):
+
+    root_span = Trace(
             name="root_span",
-            kind="llm",  # kind can be "llm", "chain", "agent" or "tool"
+            kind="tool",  # kind can be "llm", "chain", "agent" or "tool"
             status_code=status,
             status_message=status_message,
             metadata={
-                "temperature": temperature,
                 "token_usage": token_usage,
                 "model_name": model_name,
             },
             start_time_ms=start_time_ms,
             end_time_ms=end_time_ms,
-            inputs={"system_prompt": system_message, "query": query},
+            inputs={"system_prompt": json_run['instructions'], "query": query},
             outputs={"response": response_text},
         )
+    
+    return root_span
+
+
+def github_url_generator(query):
+    """
+    This function takes a query in natural language
+    and returns a url that can be used to search through 
+    repositories on GitHub
+    """
+    try:
+
+        # start a span to trace the assistant
+        start_time_ms = datetime.datetime.now().timestamp() * 1000
+        run, raw_response = start_assistant(query)
+        messages = as_json(raw_response)
+        json_run = as_json(run)
+        end_time_ms = round(
+                    datetime.datetime.now().timestamp() * 1000
+            ) 
+        # Obtain response from the assistant and log it
+        interpretation = messages['data'][0]['content'][0]['text']['value']
+        status = "success"
+        status_message = (None,)
+        response_text = interpretation
+        token_usage = json_run['usage']
+
+        root_span = trace_log(status, status_message, token_usage, \
+                            start_time_ms, end_time_ms, query, \
+                                response_text, json_run, model_name)
 
         # log the span to wandb
         root_span.log(name="openai_trace")
@@ -83,59 +148,41 @@ def dream_interpreter(query):
         response_text = ""
         token_usage = {}
 
-        root_span = Trace(
-            name="root_span",
-            kind="llm",  # kind can be "llm", "chain", "agent" or "tool"
-            status_code=status,
-            status_message=status_message,
-            metadata={
-                "temperature": temperature,
-                "token_usage": token_usage,
-                "model_name": model_name,
-            },
-            start_time_ms=start_time_ms,
-            end_time_ms=end_time_ms,
-            inputs={"system_prompt": system_message, "query": query},
-            outputs={"response": response_text},
-        )
+        root_span = trace_log(status, status_message, token_usage, \
+                            start_time_ms, end_time_ms, query, \
+                                response_text, json_run, model_name)
 
         # log the span to wandb
         root_span.log(name="openai_trace")
         
     return interpretation
 
-
-        
-
-
+def search_github_repositories(url):
+    url = url
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"
+    }
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.json()['items']
+    else:
+        return []
 
 def callback(input_text, user, instance: pn.chat.ChatInterface):
     
-    return dream_interpreter(input_text)
+    return github_url_generator(input_text)
 
 
 
 chat_interface = pn.chat.ChatInterface(callback=callback)
 chat_interface.send(
-    "Hello, I'm a dream interpreter, a guide to the subconscious \
-    realm where dreams reveal our deepest secrets and desires. \
-    I explore the symbolic language of dreams to uncover insights \
-    about our inner worlds. \
-        \n \
-    \
-    Imagine a journey where your dreams \
-    guide you toward self-discovery and insight. \
-    Let's navigate this together, using your dreams as a compass \
-    to explore the mysteries of your soul. Share your dreams with me, \
-    and let's decode the messages hidden within, shedding light on your \
-    life's path.\n\
-    🪷🧘‍♀️🧿🔥💧🪨🌿🤍🧘🏽‍♀️🌙",
+    "Hello, I can help you find repositories on GitHub. What are you looking for?",
     user="System",
     respond=False,
-    avatar="🔮",
 )
 
 pn.template.MaterialTemplate(
-    title="Dream interpreter",
+    title="GitHub Repository Searcher",
     main=[chat_interface],
 ).servable()
