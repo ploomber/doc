@@ -8,6 +8,7 @@ import time
 import json
 import re
 import os 
+from IPython.display import Markdown
 
 # Set the WANDB_API_KEY environment variable
 os.environ["WANDB_API_KEY"] = os.getenv("WANDB_API_KEY")
@@ -172,16 +173,17 @@ def search_github_repositories(response):
         json_response = response.json()
 
         if response.status_code == 200:
-            if len(json_response['items'])<0:
+            if len(json_response['items']) < 1:
                 return "No repositories found for the given search criteria."
-            if len(json_response['items'])>15:
-                repo_list = "Here are 15 repositories related to your search:\n"
-                repo_list += "\n".join([f"- Description: {json_response['items'][i]['description']}: {json_response['items'][i]['html_url']}. " for i in range(15)])
-                return repo_list
+            if len(json_response['items']) > 15:
+                repo_list = "Here are top 15 repositories (by number of stars) related to your search:\n"
+                top_repos = json_response['items'][:15]  # Get the top 15 repositories
+                repo_list += "\n".join([f"- <a href='{repo['html_url']}' target='_blank'>{repo['description']}</a> - Stargazer count ⭐: {repo['stargazers_count']}" for repo in top_repos])
+                return Markdown(repo_list)
             else:
                 repo_list = "Here are the repositories related to your search:\n"
-                repo_list += "\n".join([f"- Description: {json_response['items'][i]['description']}: {json_response['items'][i]['html_url']}. " for i in range(len(json_response['items']))])
-                return repo_list
+                repo_list += "\n".join([f"- <a href='{json_response['items'][i]['html_url']}' target='_blank'>{json_response['items'][i]['description']}</a> - Stargazer count ⭐: {repo_list['stargazers_count']}" for i in range(len(json_response['items']))])
+                return Markdown(repo_list)
                 
         else:
             return "There was an error accessing the GitHub API. Please try again."
