@@ -59,7 +59,7 @@ CSS_FIXES_TO_BE_UPSTREAMED_TO_PANEL = """
     background-color: var(--panel-surface-color);
 }
 .pn-wrapper {
-    height: calc( 100vh - 150px);
+    height: calc( 100vh - 50px);
 }
 .bk-active.bk-btn-primary {border-color: var(--accent-fill-active)}
 .bk-btn-primary:hover {border-color: var(--accent-fill-hover)}
@@ -306,6 +306,7 @@ async def chat_component(index: VectorStoreIndex, index_loader: IndexLoader):
             yield text
 
     chat_interface = pn.chat.ChatInterface(
+        min_height=550,
         callback=generate_response,
         sizing_mode="stretch_both",
     )
