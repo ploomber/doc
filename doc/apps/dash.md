@@ -5,6 +5,15 @@ To deploy a [Dash](https://dash.plotly.com/) application to Ploomber Cloud you n
 - A `Dockerfile`
 - A Dash project
 
+Note that your app should exist in an `app.py` file and be initialized in this way:
+
+```python
+# name your app "app"
+app = Dash(__name__)
+# add this line below
+server = app.server
+```
+
 ## `Dockerfile`
 
 Use this [template](https://github.com/ploomber/doc/blob/main/examples/dash/simple-app/Dockerfile) `Dockerfile`:
