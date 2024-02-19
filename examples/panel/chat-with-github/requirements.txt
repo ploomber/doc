@@ -1,0 +1,5 @@
+nest-asyncio
+panel
+llama-index-core
+llama-index-readers-github
+llama-index
