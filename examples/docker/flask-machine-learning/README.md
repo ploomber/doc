@@ -1,4 +1,6 @@
-#  App
+# Machine Learning app
+
+A Flask app that makes predictions using an ML model.
 
 This Flask app serves a machine learning model trained on the `Walmart Recruiting - Store Sales Forecasting` dataset for predicting store sales.
 

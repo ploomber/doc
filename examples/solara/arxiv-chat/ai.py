@@ -89,7 +89,7 @@ class OpenAIClient:
 
         ac.results_to_json(relevant_articles)
         self.load_prompt()
-
+        
         return True, None
 
     
@@ -154,12 +154,14 @@ You're a system that determines the topic of a question about academic articles 
 
 Given a user prompt, you should categorize it into an article category. 
 Categories will be provided in a JSON dictionary format. Please return the category code,
+
 which would be the key in the key, value pair. 
 
 Only return a code if the category is explicitly mentioned in the query. If you aren't sure, don't return a code.
 
 {self.categories}
 """
+
         messages_to_send = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": "Articles about kinematics"},
@@ -186,6 +188,7 @@ You're a system that determines the topic of a question about academic articles 
 
 Given a user prompt, you should simplify it into a set of article search terms.
 Your response should be less than 5 words. When in doubt, just return the query without filler words. Here is a list of examples:
+
 
 {self.categories.values()}
 """
@@ -240,6 +243,7 @@ Your response should be less than 5 words. When in doubt, just return the query 
         try:
             article = self.get_article_by_title(arguments["title"])
             return article["links"]
+
         except:
             return "There was a problem answering this question, try rephrasing."
 
@@ -271,9 +275,11 @@ Your response should be less than 5 words. When in doubt, just return the query 
     def fetch_articles(self, arguments):
         try:
             query = arguments["query"]
+
             sort_criterion = arguments["sort_criterion"]
             sort_order = arguments["sort_order"]
             success, content = self.fetch_articles_from_query(query, sort_criterion, sort_order)
+     
             if not success:
                 return content
         except:
@@ -322,6 +328,7 @@ Here is the user's question:
             return "There was a problem answering this question, try rephrasing."
         
         content = getattr(self, func_name)(args)
+
         self.messages.append( # adding assistant response to messages
             {
                 "role": "assistant",
@@ -332,6 +339,7 @@ Here is the user's question:
                 "content": "" # str(content)
             }
         )
+
         self.messages.append( # adding function response to messages
             {
                 "role": "function",
@@ -381,6 +389,7 @@ Here is the user's question:
             yield answer
         
         self.messages.append({"role": "assistant", "content": answer})
+
     
 
     def _load_article_chunks(self, id=None):
@@ -410,6 +419,7 @@ Here is the user's question:
         return relevant_chunk
 
 
+
 class EmbeddingsStore:
     def __init__(self):
         self._path = Path("./json/embeddings.json")
@@ -434,6 +444,7 @@ class EmbeddingsStore:
         self._path.write_text(json.dumps(self._data))
 
         return embedding
+
     
     def get_bunch(self, content):
         print_msg("Getting many embeddings.")
@@ -449,6 +460,7 @@ class EmbeddingsStore:
         self._path.write_text(json.dumps(self._data))
         print_msg(f"Returned {len(embeddings)} embeddings.")
         return embeddings
+
 
     def get_many(self, content):
         return [self.get_one(text) for text in content]

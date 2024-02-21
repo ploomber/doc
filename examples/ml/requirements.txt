@@ -1,6 +1,0 @@
-# requirements for ml application
-seaborn   
-scikit-learn
-pandas
-sklearn-evaluation
-ipywidgets

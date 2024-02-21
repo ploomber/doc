@@ -86,6 +86,7 @@ def Chat() -> None:
             return
 
         for new_message in oc.article_chat("Summarize each article in a sentence. Number them, and format like title: summary. Do not call a function."):
+
             set_messages(_messages + [Message(role="assistant", content=f"Fetched some articles.\n\n{new_message}")])
 
         set_loaded(True)

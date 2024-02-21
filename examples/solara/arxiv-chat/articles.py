@@ -7,6 +7,7 @@ import tiktoken
 MAX_CHUNK_SIZE = 1500 # measured in tokens
 
 
+
 class ArxivClient:
     def __init__(self):
         self.client = arxiv.Client()
@@ -70,6 +71,7 @@ class ArxivClient:
         results = self.client.results(self._search(query))
         return list(results)
     
+
     def get_articles_by_terms(self, query, criterion="relevance", order="descending"):
         results = self.client.results(self._search(query, criterion, order))
         return list(results)
@@ -80,6 +82,7 @@ class ArxivClient:
         for r in results:
             arr.append({
                 "id": r.get_short_id(),
+
                 "title": r.title,
                 "description": r.summary,
                 "published": str(r.published),
