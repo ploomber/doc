@@ -74,13 +74,14 @@ def Chat() -> None:
     def load_articles_from_topic_query(query):
         _messages = messages + [Message(role="user", content=query)]
         set_messages(_messages + [Message(role="assistant", content="Processing...")])
-        success, content = oc.fetch_articles_from_query(query)
+        criterion, order = oc.call_fetch_articles_tool_for_query_params(query)
+        success, content = oc.fetch_articles_from_query(query, criterion, order)
 
         if not success:
             set_messages(_messages + [Message(role="assistant", content=content)])
             return
 
-        for new_message in oc.article_chat("Summarize each article in a sentence. Number them, and format like title: summary."):
+        for new_message in oc.article_chat("Summarize each article in a sentence. Number them, and format like title: summary. Do not call a function."):
             set_messages(_messages + [Message(role="assistant", content=f"Fetched some articles.\n\n{new_message}")])
 
         set_loaded(True)

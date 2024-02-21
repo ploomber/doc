@@ -7,8 +7,12 @@ import tiktoken
 import articles as art
 from scipy.spatial import KDTree
 import numpy as np
+from datetime import datetime
 
 TOKEN_LIMIT = 3750 # allow some buffer so responses aren't cut off
+
+def current_time():
+    return datetime.now().strftime("%H:%M:%S")
 
 class OpenAIClient:
     def __init__(self):
@@ -55,21 +59,17 @@ class OpenAIClient:
         return token_count
 
 
-    def fetch_articles_from_query(self, query):
+    def fetch_articles_from_query(self, query, criterion="relevance", order="descending"):
         ac = art.ArxivClient()
         store = EmbeddingsStore()
-        topic = self.topic_classify_categories(query)
         articles_raw = None
-
-        if topic in self.categories:
-            articles_raw = ac.get_articles_by_cat(topic)
+            
+        topic = self.topic_classify_terms(query)
+        if len(topic.split()) > 10:
+            return False, topic
         else:
-            topic = self.topic_classify_terms(query)
-            if len(topic.split()) > 10:
-                return False, topic
-            else:
-                articles_raw = ac.get_articles_by_terms(topic)
-
+            articles_raw = ac.get_articles_by_terms(topic, criterion, order)
+    
         articles = ac.results_to_array(articles_raw)
         embeddings = store.get_many(articles)
 
@@ -84,6 +84,7 @@ class OpenAIClient:
 
         ac.results_to_json(relevant_articles)
         self.load_prompt()
+
         return True, None
 
     
@@ -113,6 +114,35 @@ and disregard articles that are not relevant to answer the question:
 {content}"""))
         return response
     
+    def call_fetch_articles_tool_for_query_params(self, query):
+        prompt = f"""
+Given the query, call the fetch_articles function.
+Do not return any text, just call the tool. Here is the query:
+
+{query}
+"""     
+        response = self.client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "system", "content": prompt}],
+            tools=[self.tools[-1]],
+            seed=42,
+            n=1,
+        )
+
+        msg = dict(response.choices[0].message)
+
+        if not msg.get("tool_calls"):
+            return "relevance", "descending"
+        
+        try:
+            args = msg["tool_calls"]
+            args = dict(eval(args[0].function.arguments))
+        except:
+            return "relevance", "descending"
+
+        return args["sort_criterion"], args["sort_order"]
+
+    
 
     def topic_classify_categories(self, user_query):
         system_prompt = f"""
@@ -120,11 +150,12 @@ You're a system that determines the topic of a question about academic articles 
 
 Given a user prompt, you should categorize it into an article category. 
 Categories will be provided in a JSON dictionary format. Please return the category code,
-which would be the key in the key, value pair.
+which would be the key in the key, value pair. 
+
+Only return a code if the category is explicitly mentioned in the query. If you aren't sure, don't return a code.
 
 {self.categories}
 """
-
         messages_to_send = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": "Articles about kinematics"},
@@ -149,8 +180,8 @@ which would be the key in the key, value pair.
         system_prompt = f"""
 You're a system that determines the topic of a question about academic articles in the field of Math and Science.
 
-Given a user prompt, you should categorize it into a set of article search terms.
-Keep it to a few essential terms. Here is a list of examples:
+Given a user prompt, you should simplify it into a set of article search terms.
+Your response should be less than 5 words. When in doubt, just return the query without filler words. Here is a list of examples:
 
 {self.categories.values()}
 """
@@ -236,7 +267,9 @@ Keep it to a few essential terms. Here is a list of examples:
     def fetch_articles(self, arguments):
         try:
             query = arguments["query"]
-            success, content = self.fetch_articles_from_query(query)
+            sort_criterion = arguments["sort_criterion"]
+            sort_order = arguments["sort_order"]
+            success, content = self.fetch_articles_from_query(query, sort_criterion, sort_order)
             if not success:
                 return content
         except:
@@ -246,6 +279,7 @@ Keep it to a few essential terms. Here is a list of examples:
 
 
     def call_tool(self, call):
+        # print(call)
         func_name, args = call["name"], dict(eval(call["arguments"]))
         
         self.messages.append( # adding assistant response to messages

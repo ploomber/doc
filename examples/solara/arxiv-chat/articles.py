@@ -5,14 +5,24 @@ import json
 class ArxivClient:
     def __init__(self):
         self.client = arxiv.Client()
-        self.results = None
 
-    def _search(self, query):
+    def _search(self, query, criterion="relevance", order="descending"):
+        criterion_map = {
+            "relevance": arxiv.SortCriterion.Relevance,
+            "lastUpdatedDate": arxiv.SortCriterion.LastUpdatedDate,
+            "submittedDate": arxiv.SortCriterion.SubmittedDate,
+        }
+        order_map = {
+            "ascending": arxiv.SortOrder.Ascending,
+            "descending": arxiv.SortOrder.Descending,
+        }
         search = arxiv.Search(
             query=query,
-            max_results = 10,
-            sort_by = arxiv.SortCriterion.Relevance
+            max_results=10,
+            sort_by=criterion_map[criterion],
+            sort_order=order_map[order]
         )
+        # print(f"Searching: {query}\nOrder by: {criterion} {order}")
         return search
     
     def get_articles_by_cat(self, query):
@@ -20,8 +30,8 @@ class ArxivClient:
         results = self.client.results(self._search(query))
         return list(results)
     
-    def get_articles_by_terms(self, query):
-        results = self.client.results(self._search(query))
+    def get_articles_by_terms(self, query, criterion="relevance", order="descending"):
+        results = self.client.results(self._search(query, criterion, order))
         return list(results)
 
     def results_to_json(self, results):

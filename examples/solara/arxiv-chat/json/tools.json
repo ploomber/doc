@@ -4,7 +4,7 @@
             "type": "function",
             "function": {
                 "name": "get_description",
-                "description": "Return the detailed description of a given article",
+                "description": "Return the detailed description of a given article. Called in the case user asks 'tell me more about this article'.",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -84,15 +84,24 @@
             "type": "function",
             "function": {
                 "name": "fetch_articles",
-                "description": "Given a user query, fetch a new set of articles from Arxiv",
+                "description": "Given a user query, fetch a new set of articles from Arxiv. Do not call this function if you are asked to summarize articles.",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "query": {
                             "type": "string",
                             "description": "A query containing the topic that the user would like articles on"
+                        },
+                        "sort_criterion": {
+                            "type": "string",
+                            "enum": ["relevance", "lastUpdatedDate", "submittedDate"]
+                        },
+                        "sort_order": {
+                            "type": "string",
+                            "enum": ["ascending", "descending"]
                         }
-                    }
+                    },
+                    "required": ["query", "sort_criterion", "sort_order"]
                 }
             }
         }
