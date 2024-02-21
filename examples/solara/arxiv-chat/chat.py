@@ -65,7 +65,11 @@ def Chat() -> None:
                 Start by entering a math, science, or technology topic to learn about.  \
                 Once I find you a set of articles, I can provide detailed information on each article including:  \
                 author, description, category, published date, and download link."""
-        )
+        ),
+        Message(
+            role="assistant",
+            content="If you want to ask more detailed questions about an article, phrase them like \"In article 1, what is an LLM?\""
+        ),
     ])
 
     loaded, set_loaded = sl.use_state(False)

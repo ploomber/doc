@@ -1,10 +1,19 @@
 import arxiv
 from pathlib import Path
 import json
+import fitz
+import tiktoken
+
+MAX_CHUNK_SIZE = 1500 # measured in tokens
+
 
 class ArxivClient:
     def __init__(self):
         self.client = arxiv.Client()
+        self.encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
+    
+    def token_length(self, text):
+        return len(self.encoding.encode(text))
 
     def _search(self, query, criterion="relevance", order="descending"):
         criterion_map = {
@@ -25,6 +34,37 @@ class ArxivClient:
         # print(f"Searching: {query}\nOrder by: {criterion} {order}")
         return search
     
+    def _search_by_id(self, id):
+        return list(self.client.results(arxiv.Search(
+            id_list=[id]
+        )))[0]
+    
+    def download_article(self, id=None):
+        self._search_by_id(id).download_pdf(filename="article.pdf")
+
+        doc = fitz.open("article.pdf")
+        out = open("output.txt", "wb")
+
+        print(f"Document length: {len(doc)}")
+        chunks = []
+        curr_chunk = ""
+
+        for p in doc:
+            t = p.get_text()
+            out.write(t.encode("utf8")) # write text of pag
+            length = self.token_length(curr_chunk)
+            if length + self.token_length(t) <= MAX_CHUNK_SIZE:
+                curr_chunk += t
+            else:
+                # print(f"Length: {self.token_length(curr_chunk)}, Chunk: {curr_chunk[:15]}")
+                chunks.append(curr_chunk)
+                curr_chunk = t
+
+        Path("article.pdf").unlink()
+        out.close()
+        print("Downloaded file.")
+        return chunks
+    
     def get_articles_by_cat(self, query):
         query = f"cat:{query}"
         results = self.client.results(self._search(query))
@@ -39,6 +79,7 @@ class ArxivClient:
         arr = []
         for r in results:
             arr.append({
+                "id": r.get_short_id(),
                 "title": r.title,
                 "description": r.summary,
                 "published": str(r.published),

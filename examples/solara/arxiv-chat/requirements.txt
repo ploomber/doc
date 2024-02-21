@@ -5,3 +5,4 @@ IPython
 scipy
 numpy
 tiktoken
+pymupdf

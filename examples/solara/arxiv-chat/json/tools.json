@@ -4,7 +4,7 @@
             "type": "function",
             "function": {
                 "name": "get_description",
-                "description": "Return the detailed description of a given article. Called in the case user asks 'tell me more about this article'.",
+                "description": "Return the detailed description of a given article. Only called if the user specifically asks for the description.",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -12,7 +12,8 @@
                             "type": "string",
                             "description": "The title of the article"
                         }
-                    }
+                    },
+                    "required": ["title"]
                 }
             }
         },
@@ -28,7 +29,8 @@
                             "type": "string",
                             "description": "The title of the article"
                         }
-                    }
+                    },
+                    "required": ["title"]
                 }
             }
         },
@@ -44,7 +46,8 @@
                             "type": "string",
                             "description": "The title of the article"
                         }
-                    }
+                    },
+                    "required": ["title"]
                 }
             }
         },
@@ -60,7 +63,8 @@
                             "type": "string",
                             "description": "The title of the article"
                         }
-                    }
+                    },
+                    "required": ["title"]
                 }
             }
         },
@@ -76,7 +80,29 @@
                             "type": "string",
                             "description": "The title of the article"
                         }
-                    }
+                    },
+                    "required": ["title"]
+                }
+            }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "answer_question",
+                "description": "If a user asks a question about a specific article that can't be answered with the other functions, call this function.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "The ID of the article that the user is asking a question about"
+                        },
+                        "query": {
+                            "type": "string",
+                            "description": "The user's question, verbatim. Don't alter it."
+                        }
+                    },
+                    "required": ["id", "query"]
                 }
             }
         },

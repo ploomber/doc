@@ -4,7 +4,7 @@ import json
 from IPython import display
 from datetime import datetime
 import tiktoken
-import articles as art
+from articles import ArxivClient
 from scipy.spatial import KDTree
 import numpy as np
 from datetime import datetime
@@ -14,12 +14,18 @@ TOKEN_LIMIT = 3750 # allow some buffer so responses aren't cut off
 def current_time():
     return datetime.now().strftime("%H:%M:%S")
 
+def print_msg(msg):
+    print(f"[{current_time()}]: {msg}")
+
 class OpenAIClient:
     def __init__(self):
         self.client = OpenAI()
+        self.store = EmbeddingsStore()
         self.encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
         self.messages = []
         self.articles = []
+        self.article_chunks = []
+        self.article_focus_id = None
         self.load_tools()
         self.load_categories()
 
@@ -54,14 +60,13 @@ class OpenAIClient:
 
     def trim_messages(self, token_count):
         while token_count > TOKEN_LIMIT:
-            first_msg = self.messages.pop(0)
+            first_msg = self.messages.pop(1)
             token_count -= len(self.encoding.encode(str(first_msg)))
         return token_count
 
 
     def fetch_articles_from_query(self, query, criterion="relevance", order="descending"):
-        ac = art.ArxivClient()
-        store = EmbeddingsStore()
+        ac = ArxivClient()
         articles_raw = None
             
         topic = self.topic_classify_terms(query)
@@ -71,7 +76,7 @@ class OpenAIClient:
             articles_raw = ac.get_articles_by_terms(topic, criterion, order)
     
         articles = ac.results_to_array(articles_raw)
-        embeddings = store.get_many(articles)
+        embeddings = self.store.get_bunch(articles)
 
         try:
             kdtree = KDTree(np.array(embeddings))
@@ -79,7 +84,7 @@ class OpenAIClient:
             help_msg = "There was a problem processing that message. Can you please try again? \n\n I can help you with a wide range of topics, including but not limited to: mathematics, computer science, astrophysics, statistics, and quantitative biology!"
             return False, help_msg
 
-        _, indexes = kdtree.query(store.get_one(query), k=5)
+        _, indexes = kdtree.query(self.store.get_one(query), k=5)
         relevant_articles = [articles_raw[i] for i in indexes]
 
         ac.results_to_json(relevant_articles)
@@ -142,7 +147,6 @@ Do not return any text, just call the tool. Here is the query:
 
         return args["sort_criterion"], args["sort_order"]
 
-    
 
     def topic_classify_categories(self, user_query):
         system_prompt = f"""
@@ -276,12 +280,48 @@ Your response should be less than 5 words. When in doubt, just return the query 
             return f"There was a problem answering your question: {content}"
         
         return "FETCHED-NEED-SUMMARIZE"
+    
+    
+    def answer_question(self, arguments):
+        # try:
+        id, query = arguments["id"], arguments["query"]
+        chunk = self._get_article_chunk(id, query)
+        prompt = f"""
+Use this chunk of the article to answer the user's question.
+{chunk}
+
+Here is the user's question:
+{query}
+"""
+        self.messages.append({
+            "role": "system",
+            "content": prompt,
+        })
+
+        print_msg("Getting response from Open AI.")
+        response = self.client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=self.messages,
+            seed=42,
+            n=1,
+        )
+
+        answer = response.choices[0].message.content
+        print_msg(answer)
+        self.messages.append({"role": "assistant", "content": answer})
+        return answer
+        # except:
+            # return f"There was a problem answering your question, try rephrasing."
 
 
     def call_tool(self, call):
-        # print(call)
-        func_name, args = call["name"], dict(eval(call["arguments"]))
+        try:
+            func_name, args = call["name"], dict(eval(call["arguments"]))
+            print_msg(f"Called function: {func_name}, Args: {args}")
+        except:
+            return "There was a problem answering this question, try rephrasing."
         
+        content = getattr(self, func_name)(args)
         self.messages.append( # adding assistant response to messages
             {
                 "role": "assistant",
@@ -289,10 +329,9 @@ Your response should be less than 5 words. When in doubt, just return the query 
                     "name": func_name,
                     "arguments": str(args),
                 },
-                "content": ""
+                "content": "" # str(content)
             }
         )
-        content = getattr(self, func_name)(args)
         self.messages.append( # adding function response to messages
             {
                 "role": "function",
@@ -342,7 +381,33 @@ Your response should be less than 5 words. When in doubt, just return the query 
             yield answer
         
         self.messages.append({"role": "assistant", "content": answer})
+    
 
+    def _load_article_chunks(self, id=None):
+        if self.article_focus_id == id:
+            print("Skipped")
+            return
+
+        print(f"Downloading articles, id: {id}")
+        self.article_chunks = ArxivClient().download_article(id)
+        self.article_focus_id = id
+
+
+    def _get_article_chunk(self, id=None, query=None):
+        self._load_article_chunks(id)
+        chunk_embeddings = self.store.get_bunch(self.article_chunks)
+
+        query_embedding = self.store.get_one(query)
+        kdtree = KDTree(np.array(chunk_embeddings))
+
+        _, index = kdtree.query(query_embedding, k=1)
+        relevant_chunk = self.article_chunks[index]
+
+        # print(f"Relevant chunk: \n\n {relevant_chunk}")
+        # with open("output.txt", "w") as of:
+        #     of.write(relevant_chunk)
+
+        return relevant_chunk
 
 
 class EmbeddingsStore:
@@ -369,7 +434,21 @@ class EmbeddingsStore:
         self._path.write_text(json.dumps(self._data))
 
         return embedding
-
+    
+    def get_bunch(self, content):
+        print_msg("Getting many embeddings.")
+        response = OpenAIClient().client.embeddings.create(
+            input=content,
+            model="text-embedding-3-small"
+        )
+        print_msg("Received response.")
+        embeddings = [item.embedding for item in response.data]
+        for i, text in enumerate(content):
+            self._data[text] = embeddings[i]
+    
+        self._path.write_text(json.dumps(self._data))
+        print_msg(f"Returned {len(embeddings)} embeddings.")
+        return embeddings
 
     def get_many(self, content):
         return [self.get_one(text) for text in content]
