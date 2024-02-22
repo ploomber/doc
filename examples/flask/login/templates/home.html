@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="bg-gray-100 p-4">
+    <h2 class="text-2xl font-bold mb-4">Hello, {{ user.email }}!</h2>
+    <a href="{{ url_for('logout') }}" class="text-blue-500">Logout</a>
+
+
+    <form id="newApiKeyForm" class="mt-8">
+        <label for="apiKeyName" class="block font-medium text-gray-700">Create a new API key</label>
+        <input type="text" id="apiKeyName" name="apiKeyName" class="mt-1 p-2 border border-gray-300 rounded-md" required
+            placeholder="API key name">
+        <button id="newApiKeyButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4">Create
+            API Key</button>
+    </form>
+
+    <div id="codeSnippets">
+        <h3 class="text-lg font-bold mt-8">API call example</h3>
+
+        <div class="bg-black text-white p-4" id="codeContainer">
+            <code id="sampleCommand">
+                    curl -H "Authorization: Bearer YOUR_API_KEY" {{ server_name + url_for('api_sum', a='21', b='21') }}
+                </code>
+            <i id="clipboardIcon" class="far fa-clipboard clipboard-icon" style="float: right;"></i>
+
+        </div>
+    </div>
+
+
+
+
+    <h3 class="text-lg font-bold mt-8">API Keys</h3>
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">API Key</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for api_key in user.api_keys %}
+            <tr>
+                <td class="px-6 py-4 whitespace-nowrap">{{ api_key.name }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ api_key.created_natural }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3 class="text-lg font-bold mt-8">API Calls</h3>
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Event Name
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for api_call in user.api_calls %}
+            <tr>
+                <td class="px-6 py-4 whitespace-nowrap">{{ api_call.event_name }}</td>
+                <td class="px-6 py-4 whitespace-nowrap">{{ api_call.created_natural }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% else %}
+<div class=" bg-gray-100 p-4">
+    <h2 class="text-2xl font-bold mb-4">Welcome to the app!</h2>
+    <a href="{{ url_for('login') }}" class="text-blue-500">Sign In</a>
+    <br>
+    <a href="{{ url_for('signup') }}" class="text-blue-500">Register</a>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block footer %}
+<script>
+    document.getElementById('newApiKeyForm').addEventListener("submit", function () {
+        event.preventDefault();
+        let apiKeyName = document.getElementById('apiKeyName').value;
+
+        fetch("{{ url_for('api_key') }}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "name": apiKeyName
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('sampleCommand').innerText = `curl -H "Authorization: Bearer ${data.key}" {{ server_name + url_for('api_sum', a='21', b='21') }}`;
+            });
+
+    });
+
+    document.getElementById("codeContainer").addEventListener("click", function () {
+        let element = document.getElementById('clipboardIcon');
+
+        element.classList.add('colorChange');
+        setTimeout(() => {
+            element.classList.remove('colorChange');
+        }, 300);
+
+
+        navigator.clipboard.writeText(document.getElementById('sampleCommand').innerText);
+    });
+
+</script>
+
+
+<style>
+    #codeContainer:hover .clipboard-icon {
+        display: inline-block;
+    }
+
+    .clipboard-icon {
+        display: none;
+    }
+
+    .colorChange {
+        color: rgb(151, 151, 151);
+    }
+</style>
+{% endblock %}

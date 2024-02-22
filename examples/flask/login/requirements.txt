@@ -1,0 +1,8 @@
+flask
+Flask-SQLAlchemy
+Flask-Login
+sqlalchemy
+wtforms
+humanize
+bcrypt
+gunicorn

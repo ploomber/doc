@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Head contents here -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <!-- Flash messages -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <div class="bg-blue-100 border-t-4 border-blue-500 rounded-b text-blue-900 px-4 py-3 shadow-md" role="alert">
+        <div class="flex">
+            <div>
+                {% for message in messages %}
+                <p class="font-bold">{{ message }}</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Content -->
+    {% block content %}
+    {% endblock %}
+
+    {% block footer %}
+    {% endblock %}
+</body>
+
+</html>

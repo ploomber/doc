@@ -1,0 +1,28 @@
+{% from "_formhelpers.html" import render_field %}
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex items-center justify-center h-screen">
+    <form method="post" class="max-w-sm mx-auto">
+        <div class="mb-4">
+            {{ render_field(form.email, class="w-full px-3 py-2 border rounded-md") }}
+        </div>
+        <div class="mb-4">
+            {{ render_field(form.password, class="w-full px-3 py-2 border rounded-md") }}
+        </div>
+        <div class="mb-4">
+            {{ render_field(form.confirm, class="w-full px-3 py-2 border rounded-md") }}
+        </div>
+        <div class="mb-4">
+            {{ render_field(form.accept_tos, class="mr-2") }}
+            <label for="{{ form.accept_tos.id_for_label }}"></label>
+        </div>
+        <div>
+            <input type="submit" value="Register" class="px-4 py-2 bg-blue-500 text-white rounded-md">
+        </div>
+        <div class="flex items-center justify-center mt-4">
+            <a href="{{url_for('login')}}">Already have an account? Login</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

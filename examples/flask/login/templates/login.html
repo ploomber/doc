@@ -1,0 +1,25 @@
+{% from "_formhelpers.html" import render_field %}
+{% extends "base.html" %}
+
+{% block content %}
+<div class="flex items-center justify-center h-screen">
+    <form method="post" class="max-w-md mx-auto">
+        <div class="mb-4">
+            {{ render_field(form.email, class="w-full p-2 border border-gray-300 rounded") }}
+        </div>
+        <div class="mb-4">
+            {{ render_field(form.password, class="w-full p-2 border border-gray-300 rounded") }}
+        </div>
+        <div class="mb-4">
+            <input type="submit" value="Login"
+                class="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 cursor-pointer">
+        </div>
+
+        <div class="text-center mt-4">
+            <a href="{{url_for('signup')}}">Don't have an account? Sign up</a>
+        </div>
+    </form>
+
+
+</div>
+{% endblock %}
