@@ -9,9 +9,15 @@ import json
 import re
 import os 
 from IPython.display import Markdown
+from dotenv import load_dotenv
 
+last_action = {"type": None, "data": None}
+# Load environment variables from a .env file
+load_dotenv(".env")
 # Set the WANDB_API_KEY environment variable
 os.environ["WANDB_API_KEY"] = os.getenv("WANDB_API_KEY")
+# Set the GITHUB_TOKEN environment variable
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 # start a wandb run to log to
 wandb.init(project=os.getenv("WANDB_PROJECT"), 
@@ -72,11 +78,16 @@ def start_assistant(query):
         to search through repositories on GitHub through their API\
         For example, if a user asks for repositories for llm monitoring, you will form a query as follows\
         https://api.github.com/search/repositories?q=llm+monitoring\
+        \
+        If a user asks you to tell them more about a specific repository, the user should specify the complete GitHub URL \
+        For example, if a user asks 'tell me more about https://github.com/WenjieDu/PyPOTS', you will form a query as follows \
+        https://api.github.com/repos/WenjieDu/PyPOTS/readme\
+        \
         Any inquiries outside of this should be responded with \
         'I can help you find GitHub repositories only. Tell me a topic you are interested in.'"
     
     assistant = client.beta.assistants.create(
-    name="GitHub repository searcher. App deployed on Ploomber Cloud. Visit ploomber.io",
+    name="GitHub repository searcher.",
     instructions=system_message,
     model=model_name,
 )
@@ -166,13 +177,20 @@ def github_url_generator(query):
 
         return "I am sorry, our LLM is currently down. Please try again later."
 
-    # Use regular expressions to extract the URL
-    url_pattern = r"https://api\.github\.com/search/repositories\?.+"
+     # Updated regular expression to match either search repositories or a specific repo's README
+    url_pattern = r"(https://api\.github\.com/search/repositories\?.+)|(https://api\.github\.com/repos/.+?/.+?/readme)"
     match = re.search(url_pattern, interpretation)
 
     if match:
         url = match.group()
-        return search_github_repositories(url)
+        # Determine which pattern was matched to decide on the action
+        if "search/repositories" in url:
+            return search_github_repositories(url)
+        elif "repos" in url and "readme" in url:
+            # Assuming you have a function to process direct README requests
+            return fetch_readme_details(url)
+        else:
+            return "URL matched but did not fit expected patterns."
     else:
         return interpretation
 
@@ -210,7 +228,51 @@ def search_github_repositories(url):
             Please tell me a topic for which you want to find repositories.\
             If the problem persists and I cannot connect to the GitHub API,\
             please try again later."
-   
+
+def fetch_readme_details(url):
+    """
+    Fetch the README.md file from a specific repository using GitHub API with authorization.
+    
+    """
+    headers = {
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {GITHUB_TOKEN}",
+        "X-GitHub-Api-Version": "2022-11-28"
+    }
+
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        readme_data = response.json()
+        # Fetch the raw README content using the download_url from the README metadata
+        readme_content_response = requests.get(readme_data['download_url'], headers=headers)
+        if readme_content_response.status_code == 200:
+            return readme_content_response.text
+        else:
+            print(f"Failed to fetch raw README content: {readme_content_response.status_code}")
+            return None
+    else:
+        print(f"Failed to fetch README.md: {response.status_code}")
+        return None
+
+
+def summarize_readme(readme_content):
+    """
+    Use OpenAI to summarize the README.md content.
+    """
+    response = client.chat.completions.create(
+        model=model_name,
+        prompt=f"Summarize this README.md content:\n\n{readme_content}",
+        temperature=0.7,
+        max_tokens=150,
+        top_p=1.0,
+        frequency_penalty=0.0,
+        presence_penalty=0.0
+    )
+    return response.choices[0].text.strip()
+
+
+
+
 def callback(input_text, user, instance: pn.chat.ChatInterface):
     """
     This function is called when the user sends a message
