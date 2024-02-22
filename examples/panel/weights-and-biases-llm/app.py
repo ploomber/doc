@@ -10,6 +10,7 @@ import re
 import os 
 from IPython.display import Markdown
 from dotenv import load_dotenv
+from rag import run_indexing_pipeline, run_retrieval_pipeline
 
 last_action = {"type": None, "data": None}
 # Load environment variables from a .env file
@@ -18,6 +19,7 @@ load_dotenv(".env")
 os.environ["WANDB_API_KEY"] = os.getenv("WANDB_API_KEY")
 # Set the GITHUB_TOKEN environment variable
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+openai_api_key = os.getenv("OPENAI_API_KEY")
 
 # start a wandb run to log to
 wandb.init(project=os.getenv("WANDB_PROJECT"), 
@@ -186,8 +188,8 @@ def github_url_generator(query):
         if "search/repositories" in url:
             return search_github_repositories(url)
         elif "repos" in url and "readme" in url:
-            # Assuming you have a function to process direct README requests
-            return fetch_readme_details(url)
+            document_store = run_indexing_pipeline(url)
+            return run_retrieval_pipeline(document_store, query)
         else:
             return "URL matched but did not fit expected patterns."
     else:
@@ -252,23 +254,6 @@ def fetch_readme_details(url):
     else:
         print(f"Failed to fetch README.md: {response.status_code}")
         return None
-
-
-def summarize_readme(readme_content):
-    """
-    Use OpenAI to summarize the README.md content.
-    """
-    response = client.chat.completions.create(
-        model=model_name,
-        prompt=f"Summarize this README.md content:\n\n{readme_content}",
-        temperature=0.7,
-        max_tokens=150,
-        top_p=1.0,
-        frequency_penalty=0.0,
-        presence_penalty=0.0
-    )
-    return response.choices[0].text.strip()
-
 
 
 
