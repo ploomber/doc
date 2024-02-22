@@ -15,17 +15,15 @@ In the `install.R` file, add all the dependencies that you need for your applica
 
 ## Testing locally
 
-To test your app, you can use `docker` locally:
+To test your Shiny app, you can run the following commands locally:
 
 ```sh
-# build the docker image
-docker build . -t shiny-r
+# Install dependencies
+Rscript install.R
 
-# run it
-docker run -p 5000:80 shiny-r
+# Start the application
+Rscript startApp.R
 ```
-
-Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.
 
 
 ## Deploy
