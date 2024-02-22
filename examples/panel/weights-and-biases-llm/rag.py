@@ -31,8 +31,6 @@ def run_indexing_pipeline(url):
 
     if response.status_code == 200:
         readme_data = response.json()
-        # Fetch the raw README content using the download_url from the README metadata
-        
         document_store = InMemoryDocumentStore()
         fetcher = LinkContentFetcher()
         converter = MarkdownToDocument()
@@ -56,40 +54,45 @@ def run_indexing_pipeline(url):
 
         return document_store
     
+    else:
+        return "I wasn't able to fetch the data from the given GitHub repository. Please ensure your search is valid and try again."
+    
 def run_retrieval_pipeline(document_store, query):
-    template = """
-    Given the following information, answer the question.
+    try:
+        template = """
+        Given the following information, answer the question.
 
-    Context:
-    {% for document in documents %}
-        {{ document.content }}
-    {% endfor %}
+        Context:
+        {% for document in documents %}
+            {{ document.content }}
+        {% endfor %}
 
-    Question: {{question}}
-    Answer:
-    """
+        Question: {{question}}
+        Answer:
+        """
 
+        
+        generator = OpenAIGenerator()
+
+        prompt_builder = PromptBuilder(template=template)
+
+        retriever = InMemoryBM25Retriever(document_store=document_store)
+        reader = ExtractiveReader()
+        reader.warm_up()
+
+        basic_rag_pipeline = Pipeline()
+        # Add components to your pipeline
+        basic_rag_pipeline.add_component("retriever", retriever)
+        basic_rag_pipeline.add_component("prompt_builder", prompt_builder)
+        basic_rag_pipeline.add_component("llm", generator)
+
+        # Now, connect the components to each other
+        basic_rag_pipeline.connect("retriever", "prompt_builder.documents")
+        basic_rag_pipeline.connect("prompt_builder", "llm")
+
+        response = basic_rag_pipeline.run({"retriever": {"query": query}, "prompt_builder": {"question": query}})
+
+        return response["llm"]["replies"][0]
     
-    generator = OpenAIGenerator()
-
-    prompt_builder = PromptBuilder(template=template)
-
-    retriever = InMemoryBM25Retriever(document_store=document_store)
-    reader = ExtractiveReader()
-    reader.warm_up()
-
-    basic_rag_pipeline = Pipeline()
-    # Add components to your pipeline
-    basic_rag_pipeline.add_component("retriever", retriever)
-    basic_rag_pipeline.add_component("prompt_builder", prompt_builder)
-    basic_rag_pipeline.add_component("llm", generator)
-
-    # Now, connect the components to each other
-    basic_rag_pipeline.connect("retriever", "prompt_builder.documents")
-    basic_rag_pipeline.connect("prompt_builder", "llm")
-
-    
-
-    response = basic_rag_pipeline.run({"retriever": {"query": query}, "prompt_builder": {"question": query}})
-
-    return response["llm"]["replies"][0]
+    except Exception as e:
+        return "I wasn't able to retrieve the data from the given GitHub repository. Please ensure your search is valid and try again."
