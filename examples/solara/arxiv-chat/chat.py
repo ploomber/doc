@@ -75,30 +75,31 @@ def Chat() -> None:
     loaded, set_loaded = sl.use_state(False)
     disabled, set_disabled = sl.use_state(False)
 
-    def load_articles_from_topic_query(query):
-        _messages = messages + [Message(role="user", content=query)]
-        set_messages(_messages + [Message(role="assistant", content="Processing...")])
-        criterion, order = oc.call_fetch_articles_tool_for_query_params(query)
-        success, content = oc.fetch_articles_from_query(query, criterion, order)
 
-        if not success:
-            set_messages(_messages + [Message(role="assistant", content=content)])
-            return
+    # def load_articles_from_topic_query(query):
+    #     _messages = messages + [Message(role="user", content=query)]
+    #     set_messages(_messages + [Message(role="assistant", content="Processing...")])
+    #     criterion, order = oc.call_fetch_articles_tool_for_query_params(query)
+    #     success, content = oc.fetch_articles_from_query(query, criterion, order)
 
-        for new_message in oc.article_chat("Summarize each article in a sentence. Number them and mention the title. Do not call any function."):
-            set_messages(_messages + [Message(role="assistant", content=f"Fetched some articles.\n\n{new_message}")])
+    #     if not success:
+    #         set_messages(_messages + [Message(role="assistant", content=content)])
+    #         return
 
-        set_loaded(True)
+    #     for new_message in oc.article_chat("Summarize each article in a sentence. Number them and mention the title. Do not call any function."):
+    #         set_messages(_messages + [Message(role="assistant", content=f"Fetched some articles.\n\n{new_message}")])
+
+    #     set_loaded(True)
 
 
     def ask_chatgpt(input):
         set_disabled(True)
         _messages = messages + [Message(role="user", content=input)]
         set_messages(_messages)
-        if not loaded:
-            load_articles_from_topic_query(input)
-            set_disabled(False)
-            return
+        # if not loaded:
+        #     load_articles_from_topic_query(input)
+        #     set_disabled(False)
+        #     return
         
         for new_message in oc.article_chat(input):
             if new_message == "":

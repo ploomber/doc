@@ -11,6 +11,14 @@ from datetime import datetime
 
 TOKEN_LIMIT = 3750 # allow some buffer so responses aren't cut off
 
+PROMPT_MESSAGES = [
+    "You are a system designed to give users information about scientific articles from Arxiv.",
+    "The user will start by entering a topic, or entering a URL to an Arxiv article.",
+    "If the user enters a topic, call the fetch_articles function.",
+    "If the user enters a URL, call the download_article_from_url function.",
+    "Only call one function at a time. Don't chain multiple function calls together.",
+]
+
 def current_time():
     return datetime.now().strftime("%H:%M:%S")
 
@@ -26,8 +34,16 @@ class OpenAIClient:
         self.articles = [None for _ in range(6)]
         self.article_chunks = []
         self.article_focus_id = None
+        self.load_messages()
         self.load_tools()
         self.load_categories()
+    
+    def load_messages(self):
+        for msg in list(PROMPT_MESSAGES):
+            self.messages.append({
+                "role": "system",
+                "content": msg
+            })
 
 
     def load_categories(self):
@@ -225,7 +241,7 @@ Your response should be less than 5 words. When in doubt, just return the query 
 
     def get_article_by_title(self, title):
         for a in self.articles:
-            if a["title"] == title:
+            if a is not None and a["title"] == title:
                 return a
         return None
 
@@ -314,7 +330,7 @@ Your response should be less than 5 words. When in doubt, just return the query 
             print_msg("Getting response from Open AI.")
             response = self.client.chat.completions.create(
                 model="gpt-3.5-turbo",
-                messages=self.messages,
+                messages=[msg for msg in self.messages if msg is not None],
                 seed=42,
                 n=1,
             )
@@ -325,12 +341,13 @@ Your response should be less than 5 words. When in doubt, just return the query 
             return answer
         except:
             return f"There was a problem answering your question, try rephrasing."
-    
+
+
     def download_article_from_url(self, arguments):
         url = arguments["url"]
         id = url.split("/")[-1]
         self._load_article_chunks(id)
-        message = f"Summarize the paper that was just provided in a few sentences based on this description: {self.articles[-1]['description']}"
+        message = f"Summarize the paper that was just provided in a few sentences based on this description: {self.articles[-1]['description']}. Don't call a function."
         content = ""
         for response in self.article_chat(message):
             content = response
@@ -382,7 +399,7 @@ Your response should be less than 5 words. When in doubt, just return the query 
 
         response = self.client.chat.completions.create(
             model="gpt-3.5-turbo",
-            messages=self.messages,
+            messages=[msg for msg in self.messages if msg is not None],
             tools=self.tools,
             tool_choice="auto",
             seed=42,
