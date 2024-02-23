@@ -8,7 +8,7 @@ A Django polls application, as seen in the introductory [tutorial.](https://docs
 # generate database tables
 python manage.py migrate
 
-# crewate admin user
+# create admin user
 DJANGO_SUPERUSER_USERNAME=user \
 DJANGO_SUPERUSER_PASSWORD=pass \
 DJANGO_SUPERUSER_EMAIL="admin@example.com" \
