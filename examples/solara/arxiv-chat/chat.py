@@ -68,7 +68,7 @@ def Chat() -> None:
         ),
         Message(
             role="assistant",
-            content="If you want to ask more detailed questions about an article, phrase them like \"In article 1, what is an LLM?\""
+            content="If you want to ask more detailed questions about an article, phrase them like \"In article 1, what is an LLM?\". If you provide a link to an article, I can also answer questions about it."
         ),
     ])
 
@@ -85,7 +85,7 @@ def Chat() -> None:
             set_messages(_messages + [Message(role="assistant", content=content)])
             return
 
-        for new_message in oc.article_chat("Summarize each article in a sentence. Number them, and format like title: summary. Do not call any function."):
+        for new_message in oc.article_chat("Summarize each article in a sentence. Number them and mention the title. Do not call any function."):
             set_messages(_messages + [Message(role="assistant", content=f"Fetched some articles.\n\n{new_message}")])
 
         set_loaded(True)
@@ -105,7 +105,7 @@ def Chat() -> None:
                 set_messages(_messages + [Message(role="assistant", content="Processing...")])
         
             elif new_message == "FETCHED-NEED-SUMMARIZE":
-                for msg in oc.article_chat("Summarize each article in a sentence. Number them, and format like title: summary. Do not call any functions."):
+                for msg in oc.article_chat("Summarize each article in a sentence. Number them and mention the title. Do not call any function."):
                     set_messages(_messages + [Message(role="assistant", content=msg)])
         
             else:
