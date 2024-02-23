@@ -14,6 +14,14 @@ Then, set the value:
 export FLASK_SECRET_KEY=MYFLASKSECRETKEY
 ```
 
+## Deployment
+
+[Instructions here.](https://docs.cloud.ploomber.io/en/latest/apps/flask.html)
+
+Remember to add the `FLASK_SECRET_KEY` environment variable.
+
+## Running locally
+
 Start locally:
 
 ```sh
