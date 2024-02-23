@@ -34,8 +34,9 @@ parts:
       - file: apps/shiny-r
       - file: apps/shiny-express
       - file: apps/dash
-      - file: apps/docker
+      - file: apps/django
       - file: apps/quarto
+      - file: apps/docker
       - file: apps/chalk-it
 
   - caption: App examples
