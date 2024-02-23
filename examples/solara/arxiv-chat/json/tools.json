@@ -4,7 +4,7 @@
             "type": "function",
             "function": {
                 "name": "get_description",
-                "description": "Return the detailed description of a given article",
+                "description": "Return the detailed description of a single article. Only called if the user specifically asks for the description. You may not call this function for several articles at a time.",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -12,7 +12,8 @@
                             "type": "string",
                             "description": "The title of the article"
                         }
-                    }
+                    },
+                    "required": ["title"]
                 }
             }
         },
@@ -28,7 +29,8 @@
                             "type": "string",
                             "description": "The title of the article"
                         }
-                    }
+                    },
+                    "required": ["title"]
                 }
             }
         },
@@ -44,7 +46,8 @@
                             "type": "string",
                             "description": "The title of the article"
                         }
-                    }
+                    },
+                    "required": ["title"]
                 }
             }
         },
@@ -60,7 +63,8 @@
                             "type": "string",
                             "description": "The title of the article"
                         }
-                    }
+                    },
+                    "required": ["title"]
                 }
             }
         },
@@ -76,7 +80,46 @@
                             "type": "string",
                             "description": "The title of the article"
                         }
-                    }
+                    },
+                    "required": ["title"]
+                }
+            }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "answer_question",
+                "description": "If a user asks a question about a specific article that can't be answered with the other functions, call this function.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "id": {
+                            "type": "string",
+                            "description": "The ID of the article that the user is asking a question about"
+                        },
+                        "query": {
+                            "type": "string",
+                            "description": "The user's question, verbatim. Don't alter it."
+                        }
+                    },
+                    "required": ["id", "query"]
+                }
+            }
+        },
+        {
+            "type": "function",
+            "function": {
+                "name": "download_article_from_url",
+                "description": "Called if the user provides an arxiv url to a single article that they want to ask questions about. Example url: https://arxiv.org/abs/2402.00103. Cannot be called for multiple urls.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "url": {
+                            "type": "string",
+                            "description": "The URL of the article to be downloaded. Do not modify the URL."
+                        }
+                    },
+                    "required": ["url"]
                 }
             }
         },
@@ -84,15 +127,24 @@
             "type": "function",
             "function": {
                 "name": "fetch_articles",
-                "description": "Given a user query, fetch a new set of articles from Arxiv",
+                "description": "Given a user query, download a new set of articles from Arxiv. Do not call this function if you are asked to summarize articles.",
                 "parameters": {
                     "type": "object",
                     "properties": {
                         "query": {
                             "type": "string",
                             "description": "A query containing the topic that the user would like articles on"
+                        },
+                        "sort_criterion": {
+                            "type": "string",
+                            "enum": ["relevance", "lastUpdatedDate", "submittedDate"]
+                        },
+                        "sort_order": {
+                            "type": "string",
+                            "enum": ["ascending", "descending"]
                         }
-                    }
+                    },
+                    "required": ["query", "sort_criterion", "sort_order"]
                 }
             }
         }
