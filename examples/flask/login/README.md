@@ -2,7 +2,6 @@
 
 Sample Flask application that allows creating accounts, signing in, and making requests via an API key.
 
-
 This application requires a `FLASK_SECRET_KEY` variable, generate one with:
 
 ```sh

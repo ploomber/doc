@@ -24,6 +24,29 @@ app.secret_key = environ["FLASK_SECRET_KEY"]
 login_manager = LoginManager()
 login_manager.init_app(app)
 
+from functools import wraps
+
+
+def rate_limit(func):
+    """Decorator to rate limit API calls from anonymous users."""
+
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if current_user.is_anonymous:
+            n_api_calls = APICall.count_calls_for_user(user_id=current_user.id)
+
+            error = (
+                "You have exceeded the number of allowed API calls for "
+                "anonymous users, please create an account!"
+            )
+
+            if n_api_calls >= 5:
+                return {"error": error}, 429
+
+        return func(*args, **kwargs)
+
+    return wrapper
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -102,6 +125,17 @@ def login():
     return render_template("login.html", form=form)
 
 
+@app.route("/anonymous", methods=["POST"])
+def anonymous():
+    user = User()
+    db_session.add(user)
+    db_session.commit()
+
+    login_user(user)
+    flash("Logged in as anonymous user")
+    return redirect(url_for("home"))
+
+
 @app.route("/logout")
 @login_required
 def logout():
@@ -121,6 +155,7 @@ def api_key():
 
 
 @app.route("/api/sum/<int:a>/<int:b>")
+@rate_limit
 @login_required
 def api_sum(a, b):
     api_call = APICall(event_name="api_sum", user_id=current_user.id)
@@ -130,6 +165,7 @@ def api_sum(a, b):
 
 
 @app.route("/api/substract/<int:a>/<int:b>")
+@rate_limit
 @login_required
 def api_substract(a, b):
     api_call = APICall(event_name="api_substract", user_id=current_user.id)

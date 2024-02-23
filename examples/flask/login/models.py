@@ -29,6 +29,10 @@ class APICall(ModelMixin, Base):
 
     user_id = Column(Integer, ForeignKey("users.id"))
 
+    @classmethod
+    def count_calls_for_user(cls, user_id):
+        return cls.query.filter(cls.user_id == user_id).count()
+
 
 class APIKey(ModelMixin, Base):
     __tablename__ = "api_keys"
@@ -104,7 +108,7 @@ class User(Base):
 
     @property
     def is_anonymous(self):
-        return False
+        return self.email is None
 
     def get_id(self):
         return str(self.id)
