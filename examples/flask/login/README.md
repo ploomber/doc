@@ -16,7 +16,8 @@ export FLASK_SECRET_KEY=MYFLASKSECRETKEY
 
 ## Deployment
 
-[Instructions here.](https://docs.cloud.ploomber.io/en/latest/apps/flask.html)
+1. [Create an account in Ploomber Cloud](https://platform.ploomber.io/register)
+2. [FOllow this](https://docs.cloud.ploomber.io/en/latest/apps/flask.html)
 
 Remember to add the `FLASK_SECRET_KEY` environment variable.
 
