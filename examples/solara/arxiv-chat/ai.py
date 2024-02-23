@@ -129,7 +129,7 @@ Additional instructions:
         if verbose:
             print(prompt)
 
-        self.messages[0] = {"role": "system", "content": prompt} # tentatively works, needs testing
+        self.messages[0] = {"role": "system", "content": prompt}
     
 
     def display_response(self, response):
@@ -296,7 +296,7 @@ Your response should be less than 5 words. When in doubt, just return the query 
 
 
     def fetch_articles(self, arguments):
-        try: # bring this back after testing
+        try:
             query = arguments["query"]
 
             sort_criterion = arguments["sort_criterion"]
@@ -364,7 +364,6 @@ Your response should be less than 5 words. When in doubt, just return the query 
         print_msg(f"Function call: {call}")
         try:
             func_name, args = call["name"], dict(eval(call["arguments"]))
-            # print_msg(f"Called function: {func_name}, Args: {args}")
         except:
             return "There was a problem answering this question, try rephrasing."
         
@@ -377,7 +376,7 @@ Your response should be less than 5 words. When in doubt, just return the query 
                     "name": func_name,
                     "arguments": str(args),
                 },
-                "content": "" # str(content)
+                "content": ""
             }
         )
 
