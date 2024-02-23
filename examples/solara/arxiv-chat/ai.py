@@ -22,8 +22,8 @@ class OpenAIClient:
         self.client = OpenAI()
         self.store = EmbeddingsStore()
         self.encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
-        self.messages = []
-        self.articles = []
+        self.messages = [None, ]
+        self.articles = [None for _ in range(6)]
         self.article_chunks = []
         self.article_focus_id = None
         self.load_tools()
@@ -46,7 +46,8 @@ class OpenAIClient:
         articles = None
         with open(path, "r") as articles_json:
             articles = json.load(articles_json)
-            self.articles = articles
+            for i in range(5):
+                self.articles[i] = articles[i]
         return articles
 
 
@@ -62,6 +63,7 @@ class OpenAIClient:
         while token_count > TOKEN_LIMIT:
             first_msg = self.messages.pop(1)
             token_count -= len(self.encoding.encode(str(first_msg)))
+            print_msg(f"Trimmed messages to: {token_count} tokens.")
         return token_count
 
 
@@ -96,17 +98,22 @@ class OpenAIClient:
     def load_prompt(self, verbose=False):
         prompt = f"""
 You are a helpful assistant that can answer questions about scientific articles.
-Here are the articles info in JSON format: 
+Here are the articles info in dictionary format: 
 
 Use these to generate your answer,
 and disregard articles that are not relevant to answer the question:
 
 {str(self.get_articles())}
+
+Additional instructions:
+1. Obey the rules set in each tool's description.
+2. You will have a knowledge base of 5 articles and 1 article to focus on at a time. The article to focus on, or 'current article context', may or may not be in the main set of 5.
+3. Assume the user is asking about the current article in focus. This is usually the paper that the user most recently asked about.
 """
         if verbose:
             print(prompt)
 
-        self.messages.append({"role": "system", "content": prompt})
+        self.messages[0] = {"role": "system", "content": prompt} # tentatively works, needs testing
     
 
     def display_response(self, response):
@@ -273,13 +280,13 @@ Your response should be less than 5 words. When in doubt, just return the query 
 
 
     def fetch_articles(self, arguments):
-        try:
+        try: # bring this back after testing
             query = arguments["query"]
 
             sort_criterion = arguments["sort_criterion"]
             sort_order = arguments["sort_order"]
             success, content = self.fetch_articles_from_query(query, sort_criterion, sort_order)
-     
+        
             if not success:
                 return content
         except:
@@ -289,41 +296,58 @@ Your response should be less than 5 words. When in doubt, just return the query 
     
     
     def answer_question(self, arguments):
-        # try:
-        id, query = arguments["id"], arguments["query"]
-        chunk = self._get_article_chunk(id, query)
-        prompt = f"""
-Use this chunk of the article to answer the user's question.
-{chunk}
+        try:
+            id, query = arguments["id"], arguments["query"]
+            chunk = self._get_article_chunk(id, query)
+            prompt = f"""
+    Use this chunk of the article to answer the user's question.
+    {chunk}
 
-Here is the user's question:
-{query}
-"""
+    Here is the user's question:
+    {query}
+    """
+            self.messages.append({
+                "role": "system",
+                "content": prompt,
+            })
+
+            print_msg("Getting response from Open AI.")
+            response = self.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=self.messages,
+                seed=42,
+                n=1,
+            )
+
+            answer = response.choices[0].message.content
+            print_msg(answer)
+            self.messages.append({"role": "assistant", "content": answer})
+            return answer
+        except:
+            return f"There was a problem answering your question, try rephrasing."
+    
+    def download_article_from_url(self, arguments):
+        url = arguments["url"]
+        id = url.split("/")[-1]
+        self._load_article_chunks(id)
+        message = f"Summarize the paper that was just provided in a few sentences based on this description: {self.articles[-1]['description']}"
+        content = ""
+        for response in self.article_chat(message):
+            content = response
+        print_msg(f"Response from Open AI: {content}")
+        content = f"Got your article. Here's a summary: \n\n {content} \n\n Now I can answer your questions, so ask away!"
         self.messages.append({
-            "role": "system",
-            "content": prompt,
+            "role": "assistant",
+            "content": content
         })
-
-        print_msg("Getting response from Open AI.")
-        response = self.client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=self.messages,
-            seed=42,
-            n=1,
-        )
-
-        answer = response.choices[0].message.content
-        print_msg(answer)
-        self.messages.append({"role": "assistant", "content": answer})
-        return answer
-        # except:
-            # return f"There was a problem answering your question, try rephrasing."
+        return content
 
 
     def call_tool(self, call):
+        print_msg(f"Function call: {call}")
         try:
             func_name, args = call["name"], dict(eval(call["arguments"]))
-            print_msg(f"Called function: {func_name}, Args: {args}")
+            # print_msg(f"Called function: {func_name}, Args: {args}")
         except:
             return "There was a problem answering this question, try rephrasing."
         
@@ -389,17 +413,22 @@ Here is the user's question:
             yield answer
         
         self.messages.append({"role": "assistant", "content": answer})
-
     
 
     def _load_article_chunks(self, id=None):
         if self.article_focus_id == id:
-            print("Skipped")
+            print_msg("Already downloaded this article.")
             return
 
         print(f"Downloading articles, id: {id}")
-        self.article_chunks = ArxivClient().download_article(id)
+        info, chunks = ArxivClient().download_article(id)
         self.article_focus_id = id
+        self.article_chunks = chunks
+        self.articles[-1] = info
+        self.messages.append({
+            "role": "system",
+            "content": f"The current paper context is this title: {info['title']}. Unless the user mentions a different article, assume the user is asking about this article. You may call any of the tools."
+        })
 
 
     def _get_article_chunk(self, id=None, query=None):
@@ -411,10 +440,6 @@ Here is the user's question:
 
         _, index = kdtree.query(query_embedding, k=1)
         relevant_chunk = self.article_chunks[index]
-
-        # print(f"Relevant chunk: \n\n {relevant_chunk}")
-        # with open("output.txt", "w") as of:
-        #     of.write(relevant_chunk)
 
         return relevant_chunk
 
@@ -448,10 +473,13 @@ class EmbeddingsStore:
     
     def get_bunch(self, content):
         print_msg("Getting many embeddings.")
-        response = OpenAIClient().client.embeddings.create(
-            input=content,
-            model="text-embedding-3-small"
-        )
+        try:
+            response = OpenAIClient().client.embeddings.create(
+                input=content,
+                model="text-embedding-3-small"
+            )
+        except:
+            return self.get_many(content)
         print_msg("Received response.")
         embeddings = [item.embedding for item in response.data]
         for i, text in enumerate(content):

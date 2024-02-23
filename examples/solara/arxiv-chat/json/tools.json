@@ -4,7 +4,7 @@
             "type": "function",
             "function": {
                 "name": "get_description",
-                "description": "Return the detailed description of a given article. Only called if the user specifically asks for the description.",
+                "description": "Return the detailed description of a single article. Only called if the user specifically asks for the description. You may not call this function for several articles at a time.",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -109,8 +109,25 @@
         {
             "type": "function",
             "function": {
+                "name": "download_article_from_url",
+                "description": "Called if the user provides an arxiv url to a single article that they want to ask questions about. Example url: https://arxiv.org/abs/2402.00103. Cannot be called for multiple urls.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "url": {
+                            "type": "string",
+                            "description": "The URL of the article to be downloaded. Do not modify the URL."
+                        }
+                    },
+                    "required": ["url"]
+                }
+            }
+        },
+        {
+            "type": "function",
+            "function": {
                 "name": "fetch_articles",
-                "description": "Given a user query, fetch a new set of articles from Arxiv. Do not call this function if you are asked to summarize articles.",
+                "description": "Given a user query, download a new set of articles from Arxiv. Do not call this function if you are asked to summarize articles.",
                 "parameters": {
                     "type": "object",
                     "properties": {

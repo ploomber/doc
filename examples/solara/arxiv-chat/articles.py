@@ -41,10 +41,21 @@ class ArxivClient:
         )))[0]
     
     def download_article(self, id=None):
-        self._search_by_id(id).download_pdf(filename="article.pdf")
+        result = self._search_by_id(id)
+        info = {
+            "id": result.get_short_id(),
+            "title": result.title,
+            "description": result.summary,
+            "published": str(result.published),
+            "authors": [a.name for a in result.authors],
+            "links": result.links[0].href,
+            "categories": result.categories,
+        }
+
+        result.download_pdf(filename="article.pdf")
 
         doc = fitz.open("article.pdf")
-        out = open("output.txt", "wb")
+        # out = open("output.txt", "wb")
 
         print(f"Document length: {len(doc)}")
         chunks = []
@@ -52,7 +63,7 @@ class ArxivClient:
 
         for p in doc:
             t = p.get_text()
-            out.write(t.encode("utf8")) # write text of pag
+            # out.write(t.encode("utf8")) # write text of pag
             length = self.token_length(curr_chunk)
             if length + self.token_length(t) <= MAX_CHUNK_SIZE:
                 curr_chunk += t
@@ -62,9 +73,9 @@ class ArxivClient:
                 curr_chunk = t
 
         Path("article.pdf").unlink()
-        out.close()
+        # out.close()
         print("Downloaded file.")
-        return chunks
+        return info, chunks
     
     def get_articles_by_cat(self, query):
         query = f"cat:{query}"
@@ -82,7 +93,6 @@ class ArxivClient:
         for r in results:
             arr.append({
                 "id": r.get_short_id(),
-
                 "title": r.title,
                 "description": r.summary,
                 "published": str(r.published),

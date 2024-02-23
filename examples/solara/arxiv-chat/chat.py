@@ -85,8 +85,7 @@ def Chat() -> None:
             set_messages(_messages + [Message(role="assistant", content=content)])
             return
 
-        for new_message in oc.article_chat("Summarize each article in a sentence. Number them, and format like title: summary. Do not call a function."):
-
+        for new_message in oc.article_chat("Summarize each article in a sentence. Number them, and format like title: summary. Do not call any function."):
             set_messages(_messages + [Message(role="assistant", content=f"Fetched some articles.\n\n{new_message}")])
 
         set_loaded(True)
@@ -106,7 +105,7 @@ def Chat() -> None:
                 set_messages(_messages + [Message(role="assistant", content="Processing...")])
         
             elif new_message == "FETCHED-NEED-SUMMARIZE":
-                for msg in oc.article_chat("Summarize each article in a sentence. Number them, and format like title: summary."):
+                for msg in oc.article_chat("Summarize each article in a sentence. Number them, and format like title: summary. Do not call any functions."):
                     set_messages(_messages + [Message(role="assistant", content=msg)])
         
             else:
