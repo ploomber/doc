@@ -1,56 +1,65 @@
 import panel as pn
 import hvplot.pandas
-from chat import sql_query_generator
-from stock import get_stock_data
+import pandas as pd
+import duckdb
 
-# Initialize Panel with extensions
+# Initialize Panel with extensions for plotting
 pn.extension('hvplot')
 
-# UI Components
-ticker_input = pn.widgets.TextInput(name='Stock Symbol', value='AAPL')
-start_date = pn.widgets.DatePicker(name='Start Date')
-end_date = pn.widgets.DatePicker(name='End Date')
-instruction_input = pn.widgets.TextAreaInput(name='Instructions', height=100)
+# Define the stock symbols you're interested in for the dropdown
+stock_symbols = ["AAPL", "GOOGL", "MSFT", "AMZN", "FB"]
+
+# UI Components for stock selection
+ticker_input = pn.widgets.Select(name='Stock Symbol', options=stock_symbols, value='AAPL')
+start_date = pn.widgets.DatePicker(name='Start Date', value=pd.to_datetime('2022-01-01'))
+end_date = pn.widgets.DatePicker(name='End Date', value=pd.to_datetime('2024-01-01'))
+
+# Visualization area where the plot will be displayed
 visualization_area = pn.pane.HoloViews()
 
-# Callback for updating the visualization based on instructions
-def update_visualization():
-    ticker = ticker_input.value
-    start = start_date.value
-    end = end_date.value
-    instructions = sql_query_generator(instruction_input.value)
-    
-    # Here, you would parse the instructions to understand what plot the user wants
-    # For simplicity, let's assume the user always wants a closing price plot
-    data = get_stock_data(ticker, start, end)
-    plot = data.hvplot.line(x='Date', y='Close', width=800, height=400, title=f'{ticker} Closing Price')
+# Database file path
+db_file = "stockdata.duckdb"
+
+def get_stock_data_from_duckdb(ticker, start_date, end_date):
+    """
+    Fetches stock data for a given ticker from a DuckDB database.
+    """
+    query = f"""
+    SELECT Date, Close
+    FROM {ticker.lower()}
+    WHERE Date BETWEEN '{start_date.strftime('%Y-%m-%d')}' AND '{end_date.strftime('%Y-%m-%d')}'
+    """
+    conn = duckdb.connect(db_file)
+    data = conn.execute(query).fetchdf()
+    conn.close()
+    return data
+
+def update_visualization(ticker, start, end):
+    # Fetch the stock data from DuckDB
+    data = get_stock_data_from_duckdb(ticker, start, end)
+    # Generate the plot
+    plot = data.hvplot.line('Date', 'Close', width=800, height=400, title=f'{ticker} Closing Price')
+    # Update the visualization area with the new plot
     visualization_area.object = plot
 
-def callback(input_text, user, instance: pn.chat.ChatInterface):
-    """
-    This function is called when the user sends a message
-    """
-    
-    return sql_query_generator(input_text),update_visualization()
+# Example callback function to trigger plot update on selection change
+def on_selection_change(event):
+    update_visualization(ticker_input.value, start_date.value, end_date.value)
 
+# Watch for changes in the UI components
+ticker_input.param.watch(on_selection_change, 'value')
+start_date.param.watch(on_selection_change, 'value')
+end_date.param.watch(on_selection_change, 'value')
 
-# Listen for changes in the instruction input
-instruction_input.param.watch(update_visualization, 'value')
+# Trigger initial plot update
+update_visualization(ticker_input.value, start_date.value, end_date.value)
 
-chat_interface = pn.chat.ChatInterface(callback=callback)
-chat_interface.send(
-    "Hello 😊 I am an OpenAI-powered assistant. \
-        I can help answer questions about stock data",
-    user="System",
-    respond=False,
-)
-# Layout
-layout = pn.Column(pn.Row(ticker_input, start_date, end_date), instruction_input, chat_interface,visualization_area)
+# Organize the layout
+input_column = pn.Column("# Input Parameters", ticker_input, start_date, end_date)
+visualization_column = pn.Column("# Visualization", visualization_area)
 
-pn.template.MaterialTemplate(
-    title="<h4>GitHub Repository Searcher - <a href='https://ploomber.io/' target='_blank'> Hosted on Ploomber Cloud 🚀</a></h4>",
-    logo="./images/logo-nb.png",
-    main=[layout],
-)
+# Main layout
+main_layout = pn.Row(input_column, visualization_column)
+
 # Serve the Panel app
-layout.servable()
+main_layout.servable()
