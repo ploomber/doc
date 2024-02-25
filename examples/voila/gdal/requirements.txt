@@ -1,0 +1,9 @@
+geopandas
+voila
+ipywidgets
+ipykernel
+matplotlib
+cartopy
+geodatasets
+folium
+mapclassify
