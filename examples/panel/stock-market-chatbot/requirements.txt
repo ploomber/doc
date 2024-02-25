@@ -1,0 +1,5 @@
+panel 
+yfinance 
+hvplot 
+pandas 
+openai
