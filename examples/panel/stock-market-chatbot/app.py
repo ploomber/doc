@@ -71,8 +71,11 @@ def update_visualization(ticker, start, end, data_instruction):
 
     image_base64 = image_to_base64("plot_image.png")
 
-    result = analyze_image_with_text("https://ik.imagekit.io/e6absrljj/test-file_9KGWSIoqb.jpg?updatedAt=1708934072564")
-    print(result)
+    image_url = "https://ik.imagekit.io/e6absrljj/test-file_9KGWSIoqb.jpg?updatedAt=1708934072564"
+    interpretation_text = analyze_image_with_text(image_url)
+    
+    # Update the interpretation_area with the interpretation text
+    interpretation_area.object = interpretation_text
 
 
 # Example callback function to trigger plot update on selection change
@@ -109,6 +112,8 @@ instruction_input = pn.widgets.Select(name='Value',
 
 # Visualization area where the plot will be displayed
 visualization_area = pn.pane.HoloViews()
+interpretation_area = pn.pane.Markdown("", width=800)
+
 submit_button = pn.widgets.Button(name='Submit', button_type='primary')
 reset_button = pn.widgets.Button(name='Reset', button_type='danger')
 
@@ -126,7 +131,9 @@ input_column = pn.Column("# Input Parameters",
                          submit_button, 
                          reset_button,
                          )
-visualization_column = pn.Column("# Visualization", visualization_area)
+visualization_column = pn.Column("# Visualization", 
+                                 visualization_area,
+                                 interpretation_area)
 main_layout = pn.Row(input_column, visualization_column)
 
 main_layout.servable()
