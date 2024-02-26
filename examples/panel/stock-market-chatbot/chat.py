@@ -50,7 +50,7 @@ def wait_on_run(run, thread):
             thread_id=thread.id,
             run_id=run.id,
         )
-        time.sleep(0.5)
+        time.sleep(0.000005)
     return run
     
 def natural_language_to_sql_assistant(query, ticker, start_date, end_date):
@@ -58,21 +58,25 @@ def natural_language_to_sql_assistant(query, ticker, start_date, end_date):
     Start an assistant 
     """
     
-    system_message = "You are an expert data and stock market analyst whose only job is to\
-                        translate natural language questions into SQL queries that can be executed\
-                        against a DuckDB instance containing stock market data.\
-                        Your responses are correct,acurate and lack special characters.\
-                        The table name corresponds to the symbol. These are the field names:\
-                        'Date'	'Open'	'High'	'Low'	'Close'	'Adj Close'	'Volume'\
-                        You will be given a ticker symbol, start date, end date and query\
-                        The 'Date' columns should be added when the user asks for closing, opening, \
-                        low, high and adj close values assuming no summary statistics are requested\
-                        Translate this natural language question into an SQL query : {query}.\
-                        \
-                        For example,if you are asked about all data on Apple (aapl) stock,\
-                        the correct query would be :\
-                            SELECT * \
-                            FROM aapl"
+    system_message = """You are an expert data and stock market analyst whose only job is to
+                        translate natural language questions into SQL queries that can be executed
+                        against a DuckDB instance containing stock market data.
+                        Your responses are correct,acurate and lack special characters.
+                        The table name corresponds to the symbol. These are the field names:
+                        'Date'	'Open'	'High'	'Low'	'Close'	'Adj Close'	'Volume'
+                        You will be given a ticker symbol, start date, end date and query
+                        The 'Date' columns should be added when the user asks for closing, opening, 
+                        low, high and adj close values assuming no summary statistics are requested
+                        Translate this natural language question into an SQL query : {query}.
+                        
+                        For example,if you are asked about all data on Apple (aapl) stock,
+                        the correct query would be :
+                            SELECT * 
+                            FROM aapl
+
+                        If not additional context is provided, assume all data is requested    
+                        """
+
     
     assistant = client.beta.assistants.create(
     name="Stock market assistant",
@@ -112,69 +116,22 @@ def get_data_from_duckdb_with_natural_language_query(nl_query, tickers, start_da
     
     return combined_data
 
-def natural_language_to_plot_assistant(query, ticker, data):
-    """
-    Start an assistant 
-    """
-    
-    system_message = """You are an expert data and stock market analyst whose only job is to
-                        interpret natural language questions and determine what functions to use
-                        for the purpose of plotting data.
-                        These are the two functions:
-                        
+def analyze_image_with_text(image_base64, text_query="Describe the trends in this plot"):
+    response = client.chat.completions.create(
+        model="gpt-4-vision-preview",
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": text_query},
+                    {
+                        "type": "image_base64",
+                       "image_base64": {"base64": image_base64},
+                    },
+                ],
+            }
+        ],
+        max_tokens=300,
+    )
+    return response.choices[0].message['content']
 
-                        def line_plot(data, column_a, column_b, title):
-
-                            if "Ticker" in data.columns:
-                                plot = data.hvplot.line(column_a, column_b, 
-                                                        width=800, height=400, 
-                                                        title=title,
-                                                        by='Ticker'
-                                                        )
-                            else:
-                                plot = data.hvplot.line(column_a, column_b, 
-                                                        width=800, height=400, 
-                                                        title=title,
-                                                        )
-                            visualization_area.object = plot
-
-                        def bar_plot(data, column_a, column_b, title):
-
-                            if "Ticker" in data.columns:
-                                plot = data.hvplot.bar(column_a, column_b, 
-                                                        width=800, height=400, 
-                                                        title=title,
-                                                        by='Ticker'
-                                                        )
-                            else:
-                                plot = data.hvplot.bar(column_a, column_b, 
-                                                        width=800, height=400, 
-                                                        title=title,
-                                                        )
-                            visualization_area.object = plot
-
-                        Your response should be in the form of a dictionary with the following keys:
-                        'function', 'column_a', 'column_b', 'title'
-
-                        For example, if a user asks for the closing price of a given stock, your response should be:
-                        '{"function": "line_plot", "column_a": "Date", "column_b": "Close", "title": "Closing Price"}'
-                        
-                        Evaluate the natural language query and determine the appropriate
-                        function and parameters to use to plot the data: {query}"""
-    
-    assistant = client.beta.assistants.create(
-    name="Stock market assistant",
-    instructions=system_message,
-    model=model_name,
-)
-    thread = create_thread()
-    complete_io = f"{query} with ticker/symbol {ticker} with columns {data.columns}"
-    add_message_to_thread(thread.id, complete_io)
-    queued_run = run_assistant(thread.id, assistant.id)
-    run = wait_on_run(queued_run, thread)
-    raw_response = client.beta.threads.messages.list(thread_id=thread.id)
-    messages = as_json(raw_response)
-    # Obtain response from the assistant and log it
-    interpretation = messages['data'][0]['content'][0]['text']['value']
-
-    return interpretation
