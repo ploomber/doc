@@ -1,0 +1,8 @@
+jupysql
+requests
+solara
+pandas
+duckdb
+duckdb-engine
+matplotlib
+openai==0.28
