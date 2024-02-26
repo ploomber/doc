@@ -3,7 +3,10 @@ import pandas as pd
 import duckdb
 import hvplot.pandas
 import datetime
-from chat import get_data_from_duckdb_with_natural_language_query
+from chat import get_data_from_duckdb_with_natural_language_query, \
+                sql_query_generator
+from dotenv import load_dotenv
+load_dotenv(".env")
 
 # Initialize Panel with extensions for plotting
 pn.extension('hvplot')
@@ -31,6 +34,7 @@ def submit_action(event):
 
 def reset_action(event):
     visualization_area.object = None
+
 
 
 # Define the stock symbols you're interested in for the dropdown
@@ -64,7 +68,8 @@ input_column = pn.Column("# Input Parameters",
                          end_date, 
                          instruction_input, 
                          submit_button, 
-                         reset_button)
+                         reset_button,
+                         )
 visualization_column = pn.Column("# Visualization", visualization_area)
 main_layout = pn.Row(input_column, visualization_column)
 

@@ -52,9 +52,9 @@ def wait_on_run(run, thread):
         time.sleep(0.5)
     return run
     
-def start_assistant(query, ticker, start_date, end_date):
+def natural_language_to_sql_assistant(query, ticker, start_date, end_date):
     """
-    Start an assistant to search for repositories on GitHub
+    Start an assistant 
     """
     
     system_message = "You are an expert data and stock market analyst whose only job is to\
@@ -86,7 +86,7 @@ def start_assistant(query, ticker, start_date, end_date):
     return run, messages
 
 def sql_query_generator(query, ticker, start_date, end_date):
-    run, raw_response = start_assistant(query, ticker, start_date, end_date)
+    run, raw_response = natural_language_to_sql_assistant(query, ticker, start_date, end_date)
     messages = as_json(raw_response)
     # Obtain response from the assistant and log it
     interpretation = messages['data'][0]['content'][0]['text']['value']
@@ -106,3 +106,27 @@ def get_data_from_duckdb_with_natural_language_query(nl_query, ticker, start_dat
     conn.close()
     
     return data
+
+def natural_language_to_plot_assistant(query, ticker):
+    """
+    Start an assistant 
+    """
+    
+    system_message = "You are an expert data and stock market analyst whose only job is to\
+                        interpret natural language questions and determine what functions to use\
+                        for the purpose of plotting data.\
+                        Evaluate the natural language query and determine the appropriate\
+                        function to use to plot the data: {query}"
+    
+    assistant = client.beta.assistants.create(
+    name="Stock market assistant",
+    instructions=system_message,
+    model=model_name,
+)
+    thread = create_thread()
+    complete_io = f"{query} with ticker/symbol {ticker.lower()}"
+    add_message_to_thread(thread.id, complete_io)
+    queued_run = run_assistant(thread.id, assistant.id)
+    run = wait_on_run(queued_run, thread)
+    messages = client.beta.threads.messages.list(thread_id=thread.id)
+    return run, messages
