@@ -8,7 +8,7 @@ stock_symbols = ["AAPL", "GOOGL", "MSFT", "AMZN", "FB"]
 
 # Define the date range
 start_date = "2014-01-01"
-end_date = "2024-01-01"
+end_date = "2024-02-22"
 
 # Database file path
 db_file = "stockdata.duckdb"
