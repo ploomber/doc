@@ -10,13 +10,15 @@ import base64
 import holoviews as hv
 import os
 from imagekitio import ImageKit
+import nest_asyncio
 
 load_dotenv(".env")
 img_private = os.getenv("image_private_key")
 img_public = os.getenv("image_public_key")
 img_endpoint = os.getenv("image_url_endpoint")
 
-
+# needed because  Panel starts up the ioloop
+nest_asyncio.apply()
 
 # Initialize Panel with extensions for plotting
 pn.extension('hvplot')
@@ -83,7 +85,7 @@ def submit_action(event):
 
 def reset_action(event):
     visualization_area.object = None
-    
+
 # Define the stock symbols you're interested in for the dropdown
 stock_symbols = ["AAPL", "GOOGL", "MSFT", "AMZN", "FB"]
 stat = ["Closing price", "Opening price", "Highest value of day", "Lowest of day"]
