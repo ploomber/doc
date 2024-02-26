@@ -48,8 +48,9 @@ class EmbeddingsStore:
         return len(self._data)
 
     def clear(self):
-        self._path.unlink()
-        self._data = {}
+        if self._path.exists():
+            self._path.unlink()
+            self._data = {}
 
 
 news_dir = Path("news")
