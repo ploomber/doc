@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 import time
 import json 
 import duckdb
+import pandas as pd
 
 load_dotenv(".env")
 
@@ -64,6 +65,8 @@ def natural_language_to_sql_assistant(query, ticker, start_date, end_date):
                         The table name corresponds to the symbol. These are the field names:\
                         'Date'	'Open'	'High'	'Low'	'Close'	'Adj Close'	'Volume'\
                         You will be given a ticker symbol, start date, end date and query\
+                        The 'Date' columns should be added when the user asks for closing, opening, \
+                        low, high and adj close values assuming no summary statistics are requested\
                         Translate this natural language question into an SQL query : {query}.\
                         \
                         For example,if you are asked about all data on Apple (aapl) stock,\
@@ -77,7 +80,7 @@ def natural_language_to_sql_assistant(query, ticker, start_date, end_date):
     model=model_name,
 )
     thread = create_thread()
-    full_info = f"{query} with ticker/symbol {ticker.lower()} \
+    full_info = f"{query} with ticker/symbol {ticker} \
         with start date {start_date} and end date {end_date}"
     add_message_to_thread(thread.id, full_info)
     queued_run = run_assistant(thread.id, assistant.id)
@@ -93,30 +96,71 @@ def sql_query_generator(query, ticker, start_date, end_date):
 
     return interpretation
 
-def get_data_from_duckdb_with_natural_language_query(nl_query, ticker, start_date, end_date):
+def get_data_from_duckdb_with_natural_language_query(nl_query, tickers, start_date, end_date):
     """
     Converts a natural language query into SQL and fetches data from DuckDB.
     """
-    # Generate SQL query from natural language query
-    sql_query = sql_query_generator(nl_query, ticker, start_date, end_date)
-    print(sql_query)
-    # Connect to DuckDB and execute the SQL query
-    conn = duckdb.connect(db_file)
-    data = conn.execute(sql_query).fetchdf()
-    conn.close()
+    combined_data = pd.DataFrame()
+    for ticker in tickers:
+        sql_query = sql_query_generator(nl_query, ticker, start_date, end_date)
+        conn = duckdb.connect(db_file)
+        data = conn.execute(sql_query).fetchdf()
+        conn.close()
+        # Optionally, add a column to identify the ticker symbol in the combined DataFrame
+        data['Ticker'] = ticker
+        combined_data = pd.concat([combined_data, data], ignore_index=True)
     
-    return data
+    return combined_data
 
-def natural_language_to_plot_assistant(query, ticker):
+def natural_language_to_plot_assistant(query, ticker, data):
     """
     Start an assistant 
     """
     
-    system_message = "You are an expert data and stock market analyst whose only job is to\
-                        interpret natural language questions and determine what functions to use\
-                        for the purpose of plotting data.\
-                        Evaluate the natural language query and determine the appropriate\
-                        function to use to plot the data: {query}"
+    system_message = """You are an expert data and stock market analyst whose only job is to
+                        interpret natural language questions and determine what functions to use
+                        for the purpose of plotting data.
+                        These are the two functions:
+                        
+
+                        def line_plot(data, column_a, column_b, title):
+
+                            if "Ticker" in data.columns:
+                                plot = data.hvplot.line(column_a, column_b, 
+                                                        width=800, height=400, 
+                                                        title=title,
+                                                        by='Ticker'
+                                                        )
+                            else:
+                                plot = data.hvplot.line(column_a, column_b, 
+                                                        width=800, height=400, 
+                                                        title=title,
+                                                        )
+                            visualization_area.object = plot
+
+                        def bar_plot(data, column_a, column_b, title):
+
+                            if "Ticker" in data.columns:
+                                plot = data.hvplot.bar(column_a, column_b, 
+                                                        width=800, height=400, 
+                                                        title=title,
+                                                        by='Ticker'
+                                                        )
+                            else:
+                                plot = data.hvplot.bar(column_a, column_b, 
+                                                        width=800, height=400, 
+                                                        title=title,
+                                                        )
+                            visualization_area.object = plot
+
+                        Your response should be in the form of a dictionary with the following keys:
+                        'function', 'column_a', 'column_b', 'title'
+
+                        For example, if a user asks for the closing price of a given stock, your response should be:
+                        '{"function": "line_plot", "column_a": "Date", "column_b": "Close", "title": "Closing Price"}'
+                        
+                        Evaluate the natural language query and determine the appropriate
+                        function and parameters to use to plot the data: {query}"""
     
     assistant = client.beta.assistants.create(
     name="Stock market assistant",
@@ -124,9 +168,13 @@ def natural_language_to_plot_assistant(query, ticker):
     model=model_name,
 )
     thread = create_thread()
-    complete_io = f"{query} with ticker/symbol {ticker.lower()}"
+    complete_io = f"{query} with ticker/symbol {ticker} with columns {data.columns}"
     add_message_to_thread(thread.id, complete_io)
     queued_run = run_assistant(thread.id, assistant.id)
     run = wait_on_run(queued_run, thread)
-    messages = client.beta.threads.messages.list(thread_id=thread.id)
-    return run, messages
+    raw_response = client.beta.threads.messages.list(thread_id=thread.id)
+    messages = as_json(raw_response)
+    # Obtain response from the assistant and log it
+    interpretation = messages['data'][0]['content'][0]['text']['value']
+
+    return interpretation
