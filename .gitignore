@@ -173,3 +173,4 @@ cython_debug/
 *.bkp
 *.dtmp
 wandb/
+examples/panel/stock-market-chatbot/bokehomc4ivi9.html
