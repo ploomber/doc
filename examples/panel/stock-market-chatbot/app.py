@@ -8,12 +8,37 @@ from chat import get_data_from_duckdb_with_natural_language_query, analyze_image
 from dotenv import load_dotenv
 import base64
 import holoviews as hv
-
+import os
+from imagekitio import ImageKit
 
 load_dotenv(".env")
+img_private = os.getenv("image_private_key")
+img_public = os.getenv("image_public_key")
+img_endpoint = os.getenv("image_url_endpoint")
+
+
 
 # Initialize Panel with extensions for plotting
 pn.extension('hvplot')
+
+def save_image():
+    imagekit = ImageKit(
+        private_key=img_private,
+        public_key=img_public,
+        url_endpoint = img_endpoint
+    )
+
+    image_url = imagekit.url({
+                "path": "/plot.jpg"
+            }
+        )
+
+    result = imagekit.upload_file(
+            file=open("plot_image.png", "rb"),
+            file_name="test-file.jpg",
+        )
+
+
 
 def save_plot(plot, filename="plot.png"):
     hv.save(plot, filename, fmt='png')
@@ -44,7 +69,7 @@ def update_visualization(ticker, start, end, data_instruction):
 
     image_base64 = image_to_base64("plot_image.png")
 
-    result = analyze_image_with_text(image_base64)
+    result = analyze_image_with_text("https://ik.imagekit.io/e6absrljj/test-file_9KGWSIoqb.jpg?updatedAt=1708934072564")
     print(result)
 
 
@@ -58,9 +83,7 @@ def submit_action(event):
 
 def reset_action(event):
     visualization_area.object = None
-
-
-
+    
 # Define the stock symbols you're interested in for the dropdown
 stock_symbols = ["AAPL", "GOOGL", "MSFT", "AMZN", "FB"]
 stat = ["Closing price", "Opening price", "Highest value of day", "Lowest of day"]

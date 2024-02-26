@@ -3,3 +3,4 @@ yfinance
 hvplot 
 pandas 
 openai
+imagekitio

@@ -116,7 +116,7 @@ def get_data_from_duckdb_with_natural_language_query(nl_query, tickers, start_da
     
     return combined_data
 
-def analyze_image_with_text(image_base64, text_query="Describe the trends in this plot"):
+def analyze_image_with_text(image_url, text_query="Describe the trends in this plot"):
     response = client.chat.completions.create(
         model="gpt-4-vision-preview",
         messages=[
@@ -125,13 +125,13 @@ def analyze_image_with_text(image_base64, text_query="Describe the trends in thi
                 "content": [
                     {"type": "text", "text": text_query},
                     {
-                        "type": "image_base64",
-                       "image_base64": {"base64": image_base64},
+                        "type": "image_url",
+                        "image_url": {"url": image_url},
                     },
                 ],
             }
         ],
         max_tokens=300,
     )
-    return response.choices[0].message['content']
+    return response
 
