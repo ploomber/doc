@@ -3,7 +3,7 @@
 To download today's news and compute the embeddings you first need to set the OpenAI key:
 
 ```bash
-OPENAI_API_KEY=<your_api_key> 
+export OPENAI_API_KEY=<your_api_key> 
 ```
 
 Then run the below command to download the news:
