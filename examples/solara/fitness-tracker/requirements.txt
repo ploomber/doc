@@ -1,0 +1,3 @@
+farm-haystack
+solara==1.25.1
+python-dotenv
