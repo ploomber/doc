@@ -35,4 +35,4 @@ To deploy a Solara app from the deployment menu, follow these instructions:
 ## Example
 Ploomber has created an example solara app for your convenience.
 
-Check it out [here.](https://github.com/ploomber/doc/blob/main/examples/solara/data-viz/app.py)
+Check it out [here.](https://github.com/ploomber/doc/blob/main/examples/solara/gpt-4-tokenizer/app.py)
