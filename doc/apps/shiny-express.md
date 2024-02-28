@@ -7,7 +7,7 @@ To deploy a [Shiny Express](https://shiny.posit.co/blog/posts/shiny-express/) ap
 
 ## `Dockerfile`
 
-Use this [template](https://github.com/ploomber/doc/blob/main/examples/docker/shiny-express/Dockerfile) `Dockerfile`:
+Use this [template](https://github.com/ploomber/doc/blob/main/examples/shiny/express-tip-calculator/Dockerfile) `Dockerfile`:
 
 ```Dockerfile
 FROM python:3.11

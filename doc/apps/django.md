@@ -3,12 +3,12 @@
 To deploy a Django application in Ploomber Cloud you need:
 
 - A `Dockerfile`
-- A Django project ([example](https://github.com/ploomber/doc/blob/main/examples/django/basicapp))
+- A Django project ([example](https://github.com/ploomber/doc/blob/main/examples/django/basic-app))
 
 
 ## `Dockerfile`
 
-You need to provide a `Dockerfile`, you can use this [template](https://github.com/ploomber/doc/blob/main/examples/django/basicapp/Dockerfile) to get started. A basic `Dockerfile` looks like this:
+You need to provide a `Dockerfile`, you can use this [template](https://github.com/ploomber/doc/blob/main/examples/django/basic-app/Dockerfile) to get started. A basic `Dockerfile` looks like this:
 
 ```Dockerfile
 FROM python:3.11
