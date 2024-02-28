@@ -11,6 +11,8 @@ df <- readr::read_csv(penguins_csv)
 df_num <- df |> select(where(is.numeric), -Year)
 
 ui <- page_sidebar(
+  title = "Shiny Data Visualization on Ploomber Cloud", # website title
+
   sidebar = sidebar(
     varSelectInput("xvar", "X variable", df_num, selected = "Bill Length (mm)"),
     varSelectInput("yvar", "Y variable", df_num, selected = "Bill Depth (mm)"),

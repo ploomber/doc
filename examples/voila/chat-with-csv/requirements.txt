@@ -1,5 +1,5 @@
 # requirements for chat-with-csv
-openai
+openai==0.28
 ipywidgets
 ipython
 requests
