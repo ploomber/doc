@@ -5,49 +5,21 @@ The chatbot Assistant echoes back the message entered by the User.
 
 https://github.com/holoviz-topics/panel-chat-examples/blob/main/docs/examples/basics/basic_chat.py
 """
-import json
+
 import panel as pn
 from openai import OpenAI
 from scipy.spatial import KDTree
 import numpy as np
 
-from rag_book_recommender import get_book_description_by_title, EmbeddingsStore, DESCRIPTIONS, GENRES, AUTHORS
+from rag_book_recommender import get_book_description_by_title, EmbeddingsStore, get_authors, get_embeddings
 
 
 client = OpenAI()
 
 pn.extension()
 
-
 store = EmbeddingsStore()
-
-
-def genre_classifier(user_query):
-    genres_ = ", ".join(GENRES)
-    system_prompt = f"""
-    You're a system that determines the book genre in user's query.
-
-    You must classify a user prompt into a comma separated list of top 5 genres wheres available genres are:
-
-{genres_[:100]}
-"""
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": "Recommend some thriller books?"},
-            {"role": "system", "content": "THRILLER"},
-            {"role": "user", "content": "I want a list of fictional books"},
-            {"role": "system", "content": "FICTION,SCIENCE FICTION,SCIENCE FICTION FANTASY,"
-                                          "HISTORICAL FICTION,LITERARY FICTION"},
-            {"role": "user", "content": user_query},
-        ],
-        seed=42,
-        n=1,
-    )
-    genre_list = response.choices[0].message.content.split(",")
-    valid_genres = [genre for genre in genre_list if genre.upper() in GENRES]
-    return ", ".join(valid_genres)
+all_authors = get_authors()
 
 
 def detect_author(user_query):
@@ -68,26 +40,19 @@ def detect_author(user_query):
         n=1,
     )
     author = response.choices[0].message.content.upper()
-    return author if author in AUTHORS else ""
+    return author if author in all_authors else ""
 
 
 def book_recommender_agent(user_query, verbose=True):
     """An agent that can retrieve news by topic and summarizes them"""
     # determine the topic based on the query
-    genre = genre_classifier(user_query)
-
+    embeddings_json = get_embeddings()
     author = detect_author(user_query)
     titles = []
     if author:
-        titles = AUTHORS[author]
+        titles = all_authors[author]
         if verbose:
             print(f"Found these titles: {titles} by author: {author}")
-
-    if verbose:
-        print(f"Genre: {genre}")
-
-    with open("embeddings.json", "r", encoding="utf-8") as file:
-        embeddings_json = json.load(file)
 
     filtered_embeddings_by_title = {}
     for title in titles:
@@ -123,7 +88,9 @@ and disregard books that are not relevant to user's input:
 
 {recommendation_text}
 
-You should also create a summary of the description and format the answer properly. Select upto 5 recommendations.
+You should also create a summary of the description and format the answer properly. 
+You can display a maximum of 5 recommendations.
+If only 2 relevant texts are found please display those 2 only.
 Please do not suggest any books outside this list.
 """
 
@@ -147,9 +114,11 @@ def callback(contents: str, user: str, instance: pn.chat.ChatInterface):
     return book_recommender_agent(contents)
 
 
-chat_interface = pn.chat.ChatInterface(callback=callback)
+chat_interface = pn.chat.ChatInterface(callback=callback, callback_exception='verbose')
 chat_interface.send(
-    "I am a book recommendation engine! You can deploy your own by signing up at https://ploomber.io",
+    "I am a book recommendation engine! "
+    "You may ask questions like: Recommend books by Dan Brown; Suggest some books based in the Victorian era"
+    "You can deploy your own by signing up at https://ploomber.io",
     user="System",
     respond=False,
 )

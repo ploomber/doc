@@ -11,17 +11,28 @@ client = OpenAI()
 file_path = os.path.join('assets', 'goodreads.csv')
 df = pd.read_csv(file_path)
 
+
 file_path = os.path.join('assets', 'title_to_description.pkl')
 with open(file_path, 'rb') as file:
     DESCRIPTIONS = pickle.load(file)
 
-file_path = os.path.join('assets', 'genres.pkl')
-with open(file_path, 'rb') as file:
-    GENRES = pickle.load(file)
 
-file_path = os.path.join('assets', 'author_to_title.pkl')
-with open(file_path, 'rb') as file:
-    AUTHORS = pickle.load(file)
+def get_authors():
+    file_path = os.path.join('assets', 'author_to_title.pkl')
+    with open(file_path, 'rb') as file:
+        authors = pickle.load(file)
+    return authors
+
+
+def get_embeddings():
+    file_path = os.path.join('assets', 'embeddings.json')
+    with open(file_path, "r", encoding="utf-8") as file:
+        embeddings_json = json.load(file)
+    return embeddings_json
+
+
+def get_book_description_by_title(title):
+    return DESCRIPTIONS[title.upper()]
 
 
 class EmbeddingsStore:
@@ -61,11 +72,6 @@ class EmbeddingsStore:
         if self._path.exists():
             self._path.unlink()
             self._data = {}
-
-
-def get_book_description_by_title(title):
-    print(f"Title: {title}")
-    return DESCRIPTIONS[title.upper()]
 
 
 def compute_embeddings():
