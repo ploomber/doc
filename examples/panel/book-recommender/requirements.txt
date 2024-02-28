@@ -1,0 +1,4 @@
+panel
+openai
+scipy
+numpy
