@@ -1,0 +1,8 @@
+voila
+voila-gridstack
+numpy
+pandas
+ipywidgets
+ipython
+ipykernel
+bqplot

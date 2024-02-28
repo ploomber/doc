@@ -1,0 +1,6 @@
+farm-haystack
+solara==1.25.1
+python-dotenv
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.1.1
+torchvision==0.16.1

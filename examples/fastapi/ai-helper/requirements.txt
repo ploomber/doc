@@ -1,0 +1,10 @@
+haystack-ai
+fastapi==0.109.0
+transformers 
+accelerate 
+bitsandbytes 
+sentence-transformers
+astrapy
+python-dotenv
+uvicorn
+astra-haystack

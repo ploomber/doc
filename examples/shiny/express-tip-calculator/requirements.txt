@@ -1,0 +1,4 @@
+faicons
+ridgeplot
+shiny
+shinywidgets
