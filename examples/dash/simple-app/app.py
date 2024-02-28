@@ -12,6 +12,8 @@ df = pd.read_csv(
 app = Dash(__name__)
 server = app.server
 
+app.title = "Population by country - Ploomber Cloud Dash Application"
+
 app.layout = html.Div(
     [
         html.H1(children="Population by country", style={"textAlign": "center"}),
