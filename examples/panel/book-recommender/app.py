@@ -8,28 +8,18 @@ https://github.com/holoviz-topics/panel-chat-examples/blob/main/docs/examples/ba
 import json
 import panel as pn
 from openai import OpenAI
-from gnews import GNews
 from scipy.spatial import KDTree
 import numpy as np
-import pickle
 
-from assets import *
-from rag_book_recommender import get_book_description_by_title, EmbeddingsStore
+from rag_book_recommender import get_book_description_by_title, EmbeddingsStore, DESCRIPTIONS, GENRES, AUTHORS
 
 
 client = OpenAI()
-google_news = GNews()
 
 pn.extension()
 
 
 store = EmbeddingsStore()
-
-with open("genres.pkl", 'rb') as file:
-    GENRES = pickle.load(file)
-
-with open("author_to_title.pkl", 'rb') as file:
-    AUTHORS = pickle.load(file)
 
 
 def genre_classifier(user_query):

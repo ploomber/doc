@@ -1,17 +1,27 @@
+import os
 import json
 import pickle
 import pandas as pd
+
 from pathlib import Path
 from openai import OpenAI
 
-from assets import *
-
 client = OpenAI()
 
-df = pd.read_csv("goodreads.csv")
+file_path = os.path.join('assets', 'goodreads.csv')
+df = pd.read_csv(file_path)
 
-with open("title_to_description.pkl", 'rb') as file:
+file_path = os.path.join('assets', 'title_to_description.pkl')
+with open(file_path, 'rb') as file:
     DESCRIPTIONS = pickle.load(file)
+
+file_path = os.path.join('assets', 'genres.pkl')
+with open(file_path, 'rb') as file:
+    GENRES = pickle.load(file)
+
+file_path = os.path.join('assets', 'author_to_title.pkl')
+with open(file_path, 'rb') as file:
+    AUTHORS = pickle.load(file)
 
 
 class EmbeddingsStore:
