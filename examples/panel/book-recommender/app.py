@@ -71,7 +71,10 @@ def book_recommender_agent(user_query, verbose=False):
     kdtree = KDTree(np.array(embeddings))
     _, indexes = kdtree.query(store.get_one(user_query), k=min(len(titles), 3))
 
-    titles_relevant = [titles[i] for i in indexes if titles[i]!="null"]
+    print(type(indexes))
+    if isinstance(indexes, np.int64):
+        indexes = [indexes]
+    titles_relevant = [titles[i] for i in indexes if titles[i] != "null"]
     print(titles_relevant)
     descriptions_relevant = [get_book_description_by_title(title) for title in titles_relevant]
 
@@ -84,13 +87,12 @@ You are a helpful book recommendation system that can recommend users books base
 
 Here are the top relevant titles and descriptions (separated by ##) in the format titles: descriptions, 
 use these to generate your answer,
-and disregard books that are not relevant to user's input:
+and disregard books that are not relevant to user's input. You can display 5 or less recommendations.:
 
 {recommendation_text}
 
 You should also create a summary of the description and format the answer properly. 
 You can display a maximum of 5 recommendations.
-If only 2 relevant texts are found please display those 2 only.
 Please do not suggest any books outside this list.
 """
 
