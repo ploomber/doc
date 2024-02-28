@@ -1,4 +1,0 @@
-faicons
-ridgeplot
-shiny
-shinywidgets
