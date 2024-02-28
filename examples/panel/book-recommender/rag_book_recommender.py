@@ -4,6 +4,8 @@ import pandas as pd
 from pathlib import Path
 from openai import OpenAI
 
+from assets import *
+
 client = OpenAI()
 
 df = pd.read_csv("goodreads.csv")
@@ -35,7 +37,6 @@ class EmbeddingsStore:
 
             return embedding
         except Exception:
-            print("Failed")
             self._data[title] = []
             self._path.write_text(json.dumps(self._data))
             return None
@@ -53,7 +54,7 @@ class EmbeddingsStore:
 
 
 def get_book_description_by_title(title):
-    print(title)
+    print(f"Title: {title}")
     return DESCRIPTIONS[title.upper()]
 
 
@@ -62,7 +63,7 @@ def compute_embeddings():
     store.clear()
 
     for index, row in df.iterrows():
-        print(index)
+        print(f"Index: {index}")
         store.get_one(row["description"], row["title"])
 
 

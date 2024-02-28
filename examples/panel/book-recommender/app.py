@@ -13,6 +13,7 @@ from scipy.spatial import KDTree
 import numpy as np
 import pickle
 
+from assets import *
 from rag_book_recommender import get_book_description_by_title, EmbeddingsStore
 
 
@@ -115,7 +116,8 @@ def book_recommender_agent(user_query, verbose=True):
     kdtree = KDTree(np.array(embeddings))
     _, indexes = kdtree.query(store.get_one(user_query), k=min(len(titles), 3))
 
-    titles_relevant = [titles[i] for i in indexes]
+    titles_relevant = [titles[i] for i in indexes if titles[i]!="null"]
+    print(titles_relevant)
     descriptions_relevant = [get_book_description_by_title(title) for title in titles_relevant]
 
     recommendation_text = ""
