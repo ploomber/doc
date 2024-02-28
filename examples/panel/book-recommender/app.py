@@ -43,7 +43,7 @@ def detect_author(user_query):
     return author if author in all_authors else ""
 
 
-def book_recommender_agent(user_query, verbose=True):
+def book_recommender_agent(user_query, verbose=False):
     """An agent that can retrieve news by topic and summarizes them"""
     # determine the topic based on the query
     embeddings_json = get_embeddings()
@@ -114,10 +114,11 @@ def callback(contents: str, user: str, instance: pn.chat.ChatInterface):
     return book_recommender_agent(contents)
 
 
-chat_interface = pn.chat.ChatInterface(callback=callback, callback_exception='verbose')
+chat_interface = pn.chat.ChatInterface(callback=callback)
 chat_interface.send(
     "I am a book recommendation engine! "
-    "You may ask questions like: Recommend books by Dan Brown; Suggest some books based in the Victorian era"
+    "You may ask questions like: \n* Recommend books by Dan Brown.\n"
+    "* Suggest some books based in the Victorian era.\n\n"
     "You can deploy your own by signing up at https://ploomber.io",
     user="System",
     respond=False,

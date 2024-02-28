@@ -37,7 +37,7 @@ def get_book_description_by_title(title):
 
 class EmbeddingsStore:
     def __init__(self):
-        self._path = Path("embeddings.json")
+        self._path = Path("embeddings_another.json")
 
         if not self._path.exists():
             self._data = {}
