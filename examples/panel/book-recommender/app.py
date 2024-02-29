@@ -17,7 +17,6 @@ The chat assistant then determines the top relevant answers shortlisted by compa
 provides the top 5 recommendations.
 """
 
-import os
 import json
 import panel as pn
 from openai import OpenAI
