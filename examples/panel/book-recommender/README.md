@@ -1,18 +1,33 @@
 # Book Recommender
 
+## Set key
+
 To run this example you need to set the `OPENAI_API_KEY` environment variable.
 
 ```bash
 export OPENAI_API_KEY=<your_api_key> 
 ```
 
-Create a zip from all the files and follow the instructions for deploying a [Panel](https://docs.cloud.ploomber.io/en/latest/apps/panel.html) application.
-You also need to set `OPENAI_API_KEY` as an [environment variable](https://docs.cloud.ploomber.io/en/latest/user-guide/env-vars.html) while deploying the application.
+## Generate lookup files
 
-To re-generate embeddings run the below command:
+Generate lookup files by running the following script:
 
 ```bash
-python rag_book_recommender.py
+python generate_assets.py
 ```
 
-Copy the `embeddings.json` file to the `assets/` folder.
+Running this command should generate `author_to_title.json` and `title_to_description.json` files in the `assets/` folder.
+
+The `assets/embeddings.json` file contains embeddings of the description column of the dataset.
+If you want to re-generate the `embeddings.json` file you can run:
+
+```bash
+python generate_assets.py -n 100 --embeddings --verbose
+```
+
+Here `-n 100` will generate embeddings for first 100 rows. If `-n` option is not provided the script will generate embeddings of all rows.
+
+## Deployment
+
+Create a zip from all the files and follow the instructions for deploying a [Panel](https://docs.cloud.ploomber.io/en/latest/apps/panel.html) application.
+You also need to set `OPENAI_API_KEY` as an [environment variable](https://docs.cloud.ploomber.io/en/latest/user-guide/env-vars.html) while deploying the application.
