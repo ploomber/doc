@@ -30,7 +30,7 @@ Download the tickers. You can use the `nasdaq_symbols.csv` in this repository. T
 
 If you want to use different tickers, ensure to replace the `nasdaq_symbols.csv` file with your file and update the `get_stock_symbols` function in the `stock.py` file.
 
-```bash
+```python
 def get_stock_symbols():
 # Symbols obtained from 
 # https://www.nasdaq.com/market-activity/stocks/screener
@@ -41,6 +41,7 @@ def get_stock_symbols():
     symbol_name = {symbol: name for symbol, name in zip(symbols, names)}
 
     return symbols, symbol_name
+```
 
 ### Running the app
 
