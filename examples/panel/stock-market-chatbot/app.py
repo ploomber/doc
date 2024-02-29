@@ -116,6 +116,7 @@ def submit_action(event):
 
 def reset_action(event):
     visualization_area.object = None
+    interpretation_area.objetc = None
 
 # Define the stock symbols you're interested in for the dropdown
 stock_symbols,  symbol_name = get_stock_symbols()
