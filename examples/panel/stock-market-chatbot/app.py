@@ -149,7 +149,7 @@ credits = pn.pane.Markdown("""
 * Data source: yfinance
 * Data storage: DuckDB
 * UI: Panel
-* Plotting: Holoviews
+* Plotting: Plotly
 * Plot Interpretation: OpenAI's gpt-4-vision-preview
 * Hosted on [Ploomber Cloud](https://ploomber.io/).
 App Author: [Laura Funderburk](https://github.com/lfunderburk)
