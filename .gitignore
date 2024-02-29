@@ -174,3 +174,5 @@ cython_debug/
 *.dtmp
 wandb/
 examples/panel/stock-market-chatbot/bokehomc4ivi9.html
+
+!examples/panel/stock-market-chatbot/nasdaq_symbols.csv

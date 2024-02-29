@@ -1,21 +1,25 @@
 import panel as pn
 import pandas as pd
-import duckdb
-from bokeh.io import export_png
-import hvplot.pandas
-import datetime
-from chat import get_data_from_duckdb_with_natural_language_query, analyze_image_with_text
+from chat import  analyze_image_with_text
 from dotenv import load_dotenv
 import base64
 import holoviews as hv
 import os
 from imagekitio import ImageKit
 import nest_asyncio
+import hvplot.pandas  # This patches pandas DataFrame with the .hvplot accessor
+
+from stock import  store_data_in_duckdb, get_data_from_duckdb, get_stock_symbols
+from bokeh.themes import Theme
+from bokeh.io import curdoc
 
 load_dotenv(".env")
 img_private = os.getenv("image_private_key")
 img_public = os.getenv("image_public_key")
 img_endpoint = os.getenv("image_url_endpoint")
+
+curdoc().theme = Theme(json={})
+
 
 # needed because  Panel starts up the ioloop
 nest_asyncio.apply()
@@ -24,23 +28,41 @@ nest_asyncio.apply()
 pn.extension('hvplot')
 
 def save_image():
+    """
+    
+    Content of upload object
+    
+    {
+    'fileId': '6311960051c0c0bdd51cff53',
+    'name': 'test-url_9lQZRkh8J.jpg',
+    'size': 1222,
+    'versionInfo': {
+        'id': '6311960051c0c0bdd51cff53',
+        'name': 'Version 1'
+    },
+    'filePath': '/test-url_9lQZRkh8J.jpg',
+    'url': 'https://ik.imagekit.io/your_imagekit_id/test-url_9lQZRkh8J.jpg',
+    'fileType': 'non-image',
+    'tags': ['tag1', 'tag2'],
+    'AITags': None,
+    'isPrivateFile': False
+    }
+    
+    """
     imagekit = ImageKit(
         private_key=img_private,
         public_key=img_public,
         url_endpoint = img_endpoint
     )
 
-    image_url = imagekit.url({
-                "path": "/plot.jpg"
-            }
-        )
-
-    result = imagekit.upload_file(
+    upload = imagekit.upload_file(
             file=open("plot_image.png", "rb"),
             file_name="test-file.jpg",
         )
+    
+    result = upload.response_metadata.raw
 
-
+    return result['url']
 
 def save_plot(plot, filename="plot.png"):
     hv.save(plot, filename, fmt='png')
@@ -49,12 +71,10 @@ def image_to_base64(image_path):
     with open(image_path, "rb") as image_file:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
-def update_visualization(ticker, start, end, data_instruction):
+def update_visualization(ticker, start, end, data_instruction, question):
     # Fetch the stock data from DuckDB
-    data = get_data_from_duckdb_with_natural_language_query(data_instruction, 
-                                                            ticker, 
-                                                            start, 
-                                                            end)
+    store_data_in_duckdb(ticker, start_date, end_date, db_file="stockdata.duckdb")
+    data = get_data_from_duckdb(stat_dic[data_instruction], ticker, start, end)
 
     # Generate the plot
     plot = data.hvplot.line('Date', stat_dic[data_instruction], 
@@ -62,53 +82,98 @@ def update_visualization(ticker, start, end, data_instruction):
                             title=f'{data_instruction} for {ticker}',
                             by='Ticker'
                             )
-    
-    # Save the plot
-    save_plot(plot, "plot_image.png")
-    
     # Display plot
     visualization_area.object = plot
 
-    image_base64 = image_to_base64("plot_image.png")
+    interpretation_area.object = "LLM is generating plot interpretation, please wait..."
 
-    image_url = "https://ik.imagekit.io/e6absrljj/test-file_9KGWSIoqb.jpg?updatedAt=1708934072564"
-    interpretation_text = analyze_image_with_text(image_url)
+    # Save the plot
+    save_plot(plot, "plot_image.png")
+    
+
+    image_base64 = image_to_base64("plot_image.png")
+    result_url = save_image()
+
+    interpretation_text = analyze_image_with_text(result_url, question)
     
     # Update the interpretation_area with the interpretation text
     interpretation_area.object = interpretation_text
 
-
-# Example callback function to trigger plot update on selection change
 def submit_action(event):
+    submit_button.disabled = True
+    reset_button.disabled = True
+
     update_visualization(ticker_input.value, 
                          start_date.value, 
                          end_date.value, 
                          instruction_input.value,
+                         question.value
                          )
+    
+    submit_button.disabled = False
+    reset_button.disabled = False
 
 def reset_action(event):
     visualization_area.object = None
 
 # Define the stock symbols you're interested in for the dropdown
-stock_symbols = ["AAPL", "GOOGL", "MSFT", "AMZN", "FB"]
+stock_symbols,  symbol_name = get_stock_symbols()
 stat = ["Closing price", "Opening price", "Highest value of day", "Lowest of day"]
 stat_dic = {"Closing price": "Close",
             "Opening price": "Open",
             "Highest value of day": "High",
             "Lowest value of day": "Low"}
+# Create a header with the app's title and description
+header = pn.pane.Markdown("""
+## LLM-powered NASDAQ Stock Analysis App
+
+""",  margin=(0, 0, 10, 0), align='center')
+
+description = pn.pane.Markdown("""
+### How does it work?
+This app analyzes stock data and provides visualizations and interpretations.
+
+1. Select a stock symbol from the dropdown.
+2. Select a start and end date for the analysis.
+3. Select the value you want to analyze (e.g., closing price, opening price, etc.).
+4. Enter a natural language question about the stock data.
+
+The app will then display a plot of the selected stock's value over time and provide an interpretation of the plot generated by an LLM that takes into account the user's question.
+""",  margin=(0, 0, 10, 0))
+
+# Add a logo at the top of the user menu
+logo = pn.pane.PNG('image.png', width=200, height=100, align='center')
+
+# Add credits at the bottom of the user menu
+credits = pn.pane.Markdown("""
+# How it was built
+* Data source: yfinance
+* Data storage: DuckDB
+* Plotting and UI: Panel
+* Plot Interpretation: OpenAI's gpt-4-vision-preview
+* Hosted on [Ploomber Cloud](https://ploomber.io/).
+""", )
+
+
 # UI Components for stock selection
-ticker_input = pn.widgets.MultiSelect(name='Stock Symbol', 
-                                 value=stock_symbols[0:2], 
-                                    options=stock_symbols,
-                                 )
+# Define the AutocompleteInput for stock selection
+ticker_input = pn.widgets.MultiChoice(
+    name='Stock Symbol', 
+    options=stock_symbols, 
+    value=['AAPL','GOOGL','AMZN']
+    ) 
 start_date = pn.widgets.DatePicker(name='Start Date', 
                                    value=pd.to_datetime('2022-01-01'))
 end_date = pn.widgets.DatePicker(name='End Date', 
-                                 value=pd.to_datetime('2024-01-01'))
+                                 value=pd.to_datetime('2024-02-27'))
 instruction_input = pn.widgets.Select(name='Value',
                                       options = stat,
                                       value='Close'
                                       )
+question = pn.widgets.TextAreaInput(name='Ask a natural language question', 
+                                    height=90,
+                                    placeholder = "What stock displays strongest growth over the selected period?",
+                                    value = "What stock displays strongest growth over the selected period?")
 
 # Visualization area where the plot will be displayed
 visualization_area = pn.pane.HoloViews()
@@ -117,23 +182,50 @@ interpretation_area = pn.pane.Markdown("", width=800)
 submit_button = pn.widgets.Button(name='Submit', button_type='primary')
 reset_button = pn.widgets.Button(name='Reset', button_type='danger')
 
-# Database file path
-db_file = "stockdata.duckdb"
+
 submit_button.on_click(submit_action)
 reset_button.on_click(reset_action)
 
-# Layout
-input_column = pn.Column("# Input Parameters", 
-                         ticker_input, 
-                         start_date, 
-                         end_date, 
-                         instruction_input,
-                         submit_button, 
-                         reset_button,
-                         )
-visualization_column = pn.Column("# Visualization", 
-                                 visualization_area,
-                                 interpretation_area)
-main_layout = pn.Row(input_column, visualization_column)
+# Organize the layout
+user_menu = pn.Column(
+    
+    header,
+    pn.pane.PNG('image.png', width=300,  align='center'), 
+    description,
+    ticker_input,
+    start_date,
+    end_date,
+    instruction_input,
+    question,
+    submit_button,
+    reset_button,
+    credits,
+    background='#F5F5F5',  
+    width=300,  
+    margin=(10, 10, 10, 10),  
+)
 
-main_layout.servable()
+visualization_layout = pn.Column(
+    "# Visualization",
+    visualization_area,
+    interpretation_area,
+    background='#FFFFFF',  
+    margin=(10, 10, 10, 10),  
+)
+
+# Combine the menu and visualization layout into the main layout
+main_layout = pn.Row(user_menu, visualization_layout)
+
+# Serve the app with a custom template that hides the theme toggle
+template = pn.template.FastListTemplate(
+    site="Ploomber Cloud",
+    title="AI-powered Stock Analysis App",
+    sidebar=[user_menu],
+    accent='#DAA520',
+    main=[visualization_layout],
+    theme_toggle=False,
+)
+
+# Servable without the theme toggle
+template.servable()
+
