@@ -11,6 +11,15 @@ The app will store the plot generated and save it to ImageKit.io, and then use t
 1. OpenAI API key. Visit their [Documentation](https://platform.openai.com/docs/api-reference/introduction)
 2. ImageKit.io url endpoint, public key, and private key. Visit their [Dashboard](https://imagekit.io/dashboard)
 
+Save your OpenAI API key in an environment variable. You can set it as an environment variable with the following name:
+
+```bash
+OPENAI_API_KEY=your_api_key
+image_private_key=your-imagekit-private-key
+image_public_key=your-imagekit-public-key
+image_url_endpoint=your-imagekit-endpoint
+```
+
 To run the app, you need to install the following packages:
 
 ```bash
