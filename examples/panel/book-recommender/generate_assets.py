@@ -35,7 +35,7 @@ def generate_embeddings(rows, verbose=False):
 
 
 def generate_lookup(verbose=False):
-    """Function to generate mappings between column for faster lookup"""
+    """Function to generate mappings between columns for faster lookup"""
     author_to_title = df.groupby(df['authors'].str.upper())['title'].apply(list).to_dict()
     path = Path("assets", "author_to_title.json")
     with open(path, 'w') as f:

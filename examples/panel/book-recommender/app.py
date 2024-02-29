@@ -2,7 +2,7 @@
 Chat application for recommending books to the user.
 
 Input:
-User can submit queries that describe the type of books they are looking for, e.g., suggest fiction novels.
+Users can submit queries that describe the type of books they are looking for, e.g., suggest fiction novels.
 Users can also ask the chat assistant for books by specific author, e.g., recommend books by Dan Brown.
 Answers to user's queries will be based on the Goodreads dataset:
 https://www.kaggle.com/datasets/cristaliss/ultimate-book-collection-top-100-books-up-to-2023
@@ -36,7 +36,7 @@ def load_embeddings_file():
     """Load the pre-computed embeddings of description column
     The data is in the format title: embedding
     """
-    file_path = os.path.join('assets', 'embeddings.json')
+    file_path = Path('assets', 'embeddings.json')
     with open(file_path, "r", encoding="utf-8") as file:
         embeddings_json = json.load(file)
     return embeddings_json
@@ -57,7 +57,7 @@ def get_embedding_from_text(text):
 
 
 def get_book_description_by_title(title):
-    """Return description of a book title"""
+    """Return description of a book"""
     return DESCRIPTIONS[title.upper()]
 
 
@@ -65,7 +65,7 @@ def detect_author(user_query):
     system_prompt = f"""
     You're a system that determines the author in user query. 
     
-    You need to return only he author name.Please fix any typo if possible
+    You need to return only the author name.Please fix any typo if possible
 """
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -85,6 +85,9 @@ def detect_author(user_query):
 def book_recommender_agent(user_query, verbose=False):
     """An agent that can recommend books to the user based on input"""
     embeddings_json = load_embeddings_file()
+
+    # If author is mentioned, filter books written by the author.
+    # Otherwise, consider all the available books.
     author = detect_author(user_query)
     titles = []
     if author:
