@@ -1,3 +1,7 @@
+# Personality Quiz
+
+A RAG application to deduce user's Myers-Briggs personality type from answers to quiz questions.
+
 ## How to run this application locally
 
 ### 1. Install dependencies

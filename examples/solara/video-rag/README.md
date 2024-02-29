@@ -1,5 +1,7 @@
 ## RAG from video
 
+A RAG application that takes video content as input and answers questions about it.
+
 This is a full stack project that uses a video as input, populates an ElasticSearch instance with vectors through an indexing pipeline, and initializes a retriver pipeline with a Solara app.
 
 A complete walk through of this application can be found [here](https://ploomber.io/blog/rag-video-app/)

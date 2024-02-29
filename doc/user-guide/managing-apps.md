@@ -15,3 +15,11 @@ You may add as many labels as you want. Once you've added some labels, they will
 ![](../static/manage-apps/see-labels-status.png)
 
 ![](../static/manage-apps/see-labels-main.png)
+
+
+(stop-application)=
+## Stop application
+
+If you want to stop your application, you can do so by opening the detailed view, clicking in the three dots (`...`) and then `Stop Job`:
+
+![](../static/manage-apps/stop-app.png)

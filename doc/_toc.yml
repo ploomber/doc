@@ -17,10 +17,6 @@ parts:
       - file: user-guide/custom-domains
       - file: user-guide/managing-apps
 
-  - caption: Sharing notebooks
-    chapters:
-      - file: nb-share/notebook-sharing
-
   - caption: Apps
     chapters:
       - file: apps/flask
@@ -44,9 +40,14 @@ parts:
     chapters:
       - file: examples/voila
 
+  - caption: Sharing notebooks
+    chapters:
+      - file: nb-share/notebook-sharing
+
   - caption: Pricing
     chapters:
       - file: pricing/overview
+      - file: pricing/compute
 
   - caption: FAQ
     chapters:
