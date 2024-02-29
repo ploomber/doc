@@ -23,8 +23,8 @@
 
 - 10 concurrent apps max
 - 3 apps running 24/7 max (the rest are stopped, but can be restarted)
-- 2 vCPU per app (can upgrade hardware with on-demand resources)
-- 4 GiB RAM per app (can upgrade hardware with on-demand resources)
+- 2 vCPU per app (can upgrade hardware with [on-demand resources](compute.md))
+- 4 GiB RAM per app (can upgrade hardware with [on-demand resources](compute.md))
 - Unlimited deployment rate
 - Custom app name (e.g., `my-cool-app.ploomberapp.io`)
 - Custom domains (i.e., serve your app from `my-cool-app.com`)
@@ -36,10 +36,3 @@
 ### Ploomber Cloud Enterprise
 
 Customized plan to suit your needs. Send us an email to [contact@ploomber.io](mailto:contact@ploomber.io).
-
-## On-demand resources
-
-You can upgrade the app's resources (CPUs, RAM, GPUs). You'll be billed per-second,
-and you can downgrade the hardware at any time.
-
-We're beta testing on-demand resources. If you want to use it, send us an email to [contact@ploomber.io](mailto:contact@ploomber.io).

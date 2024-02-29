@@ -1,6 +1,6 @@
 # Chat with Github
 
-This Panel app enables users to chat with their GitHub repositories using the llama_index [GithubRepositoryReader](https://docs.llamaindex.ai/en/stable/examples/data_connectors/GithubRepositoryReaderDemo.html).
+A Panel app that enables users to chat with their GitHub repositories using the llama_index [GithubRepositoryReader](https://docs.llamaindex.ai/en/stable/examples/data_connectors/GithubRepositoryReaderDemo.html).
 
 To run the app you need to set a couple of [environment variables](https://docs.cloud.ploomber.io/en/latest/user-guide/env-vars.html):
 
