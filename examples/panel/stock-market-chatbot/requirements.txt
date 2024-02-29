@@ -1,6 +1,9 @@
-panel 
-yfinance 
+panel==1.3.8 
+yfinance==0.2.37 
 hvplot 
 pandas 
-openai
+openai==1.12.0
 imagekitio
+holoviews==1.18.3
+duckdb==0.10.0
+bokeh==3.3.4
