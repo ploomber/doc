@@ -1,6 +1,8 @@
 # Keyword Extraction Solara App
 
-This Solara app is designed for performing keyword extraction from text documents. Currently, it supports the packages `PyTextRank` and `Yake` for extracting the most relevant keywords from the input text. 
+A Solara app designed for performing keyword extraction from text documents. 
+
+Currently, it supports the packages `PyTextRank` and `Yake` for extracting the most relevant keywords from the input text. 
 The extracted keywords can be useful for content analysis, search engine optimization (SEO), and other natural language processing tasks.
 
 ## Getting Started
