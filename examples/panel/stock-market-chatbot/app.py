@@ -85,7 +85,10 @@ def update_visualization(ticker, start, end, data_instruction, question):
 
     try:
         # Generate the plot
-        plot =  data.plot.scatter(x="Date", y="Close", c='Ticker',
+        plot =  data.plot.line(x="Date",
+                                   y="Close",
+                                   color="Ticker",
+                                   facet_col="Ticker",
                                   title=f"{' '.join(ticker)}: {data_instruction} from {start} to {end}")
 
         # Display plot
