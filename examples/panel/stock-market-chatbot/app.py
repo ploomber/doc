@@ -25,7 +25,6 @@ curdoc().theme = Theme(json={})
 nest_asyncio.apply()
 
 # Initialize Panel with extensions for plotting
-pn.extension('hvplot')
 pn.extension('plotly')
 
 
