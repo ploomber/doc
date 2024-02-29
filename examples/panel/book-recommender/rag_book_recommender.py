@@ -37,7 +37,7 @@ def get_book_description_by_title(title):
 
 class EmbeddingsStore:
     def __init__(self):
-        self._path = Path("embeddings_another.json")
+        self._path = Path("embeddings.json")
 
         if not self._path.exists():
             self._data = {}
@@ -79,7 +79,6 @@ def compute_embeddings():
     store.clear()
 
     for index, row in df.iterrows():
-        print(f"Index: {index}")
         store.get_one(row["description"], row["title"])
 
 

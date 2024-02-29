@@ -1,9 +1,19 @@
 """
-Demonstrates how to use the `ChatInterface` and a `callback` function to respond.
+Chat application for recommending books to the user.
 
-The chatbot Assistant echoes back the message entered by the User.
+Input:
+User can submit queries that describe the type of books they are looking for, e.g., suggest fiction novels.
+Users can also ask the chat assistant for books by specific author, e.g., recommend books by Dan Brown.
+Answers to user's queries will be based on the Goodreads dataset:
+https://www.kaggle.com/datasets/cristaliss/ultimate-book-collection-top-100-books-up-to-2023
 
-https://github.com/holoviz-topics/panel-chat-examples/blob/main/docs/examples/basics/basic_chat.py
+Application logic:
+The app determines the closest matches by comparing user query's embedding to the available
+book embeddings. Embeddings of books are generated on the description column of every book.
+
+Response:
+The chat assistant then determines the top relevant answers shortlisted by comparing embeddings and
+provides the top 5 recommendations.
 """
 
 import panel as pn
@@ -44,7 +54,7 @@ def detect_author(user_query):
 
 
 def book_recommender_agent(user_query, verbose=False):
-    """An agent that can retrieve news by topic and summarizes them"""
+    """An agent that can recommend books to the user based on input"""
     # determine the topic based on the query
     embeddings_json = get_embeddings()
     author = detect_author(user_query)
@@ -71,11 +81,11 @@ def book_recommender_agent(user_query, verbose=False):
     kdtree = KDTree(np.array(embeddings))
     _, indexes = kdtree.query(store.get_one(user_query), k=min(len(titles), 3))
 
-    print(type(indexes))
     if isinstance(indexes, np.int64):
         indexes = [indexes]
     titles_relevant = [titles[i] for i in indexes if titles[i] != "null"]
-    print(titles_relevant)
+    if verbose:
+        print(f"Found these relevant titles: {titles_relevant}")
     descriptions_relevant = [get_book_description_by_title(title) for title in titles_relevant]
 
     recommendation_text = ""
