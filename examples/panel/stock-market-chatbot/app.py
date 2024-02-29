@@ -2,17 +2,13 @@ import panel as pn
 import pandas as pd
 from chat import  analyze_image_with_text
 from dotenv import load_dotenv
-import base64
-import holoviews as hv
 import os
 from imagekitio import ImageKit
 import nest_asyncio
-import hvplot.pandas  # This patches pandas DataFrame with the .hvplot accessor
 
 from stock import  store_data_in_duckdb, get_data_from_duckdb, get_stock_symbols
 from bokeh.themes import Theme
 from bokeh.io import curdoc
-
 
 import plotly.express as px
 pd.options.plotting.backend = "plotly"
@@ -73,10 +69,6 @@ def save_image():
 def save_plot(plot, filename="plot.png"):
     plot.write_image(filename)
 
-def image_to_base64(image_path):
-    with open(image_path, "rb") as image_file:
-        return base64.b64encode(image_file.read()).decode('utf-8')
-
 def update_visualization(ticker, start, end, data_instruction, question):
     # Fetch the stock data from DuckDB
     print(type(start))
@@ -86,7 +78,7 @@ def update_visualization(ticker, start, end, data_instruction, question):
     try:
         # Generate the plot
         plot =  data.plot.line(x="Date",
-                                   y="Close",
+                                   y=stat_dic[data_instruction],
                                    color="Ticker",
                                    facet_col="Ticker",
                                   title=f"{' '.join(ticker)}: {data_instruction} from {start} to {end}")
@@ -102,8 +94,6 @@ def update_visualization(ticker, start, end, data_instruction, question):
     # Save the plot
     save_plot(plot, "plot_image.png")
 
-
-    image_base64 = image_to_base64("plot_image.png")
     result_url = save_image()
 
     interpretation_text = analyze_image_with_text(result_url, question)
@@ -130,7 +120,7 @@ def reset_action(event):
 
 # Define the stock symbols you're interested in for the dropdown
 stock_symbols,  symbol_name = get_stock_symbols()
-stat = ["Closing price", "Opening price", "Highest value of day", "Lowest of day"]
+stat = ["Closing price", "Opening price", "Highest value of day", "Lowest value of day"]
 stat_dic = {"Closing price": "Close",
             "Opening price": "Open",
             "Highest value of day": "High",
@@ -162,6 +152,7 @@ credits = pn.pane.Markdown("""
 * Plotting: Holoviews
 * Plot Interpretation: OpenAI's gpt-4-vision-preview
 * Hosted on [Ploomber Cloud](https://ploomber.io/).
+App Author: [Laura Funderburk](https://github.com/lfunderburk)
 """, )
 
 
