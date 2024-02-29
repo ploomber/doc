@@ -172,7 +172,4 @@ cython_debug/
 .DS_Store
 *.bkp
 *.dtmp
-wandb/
-examples/panel/stock-market-chatbot/bokehomc4ivi9.html
 
-*.duckdb
