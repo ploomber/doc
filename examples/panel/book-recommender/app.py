@@ -9,27 +9,56 @@ https://www.kaggle.com/datasets/cristaliss/ultimate-book-collection-top-100-book
 
 Application logic:
 The app determines the closest matches by comparing user query's embedding to the available
-book embeddings. Embeddings of books are generated on the description column of every book.
+book embeddings. Embeddings of books are pre-computed on the description column of every book
+and stored in the assets/ folder.
 
 Response:
 The chat assistant then determines the top relevant answers shortlisted by comparing embeddings and
 provides the top 5 recommendations.
 """
 
+import os
+import json
 import panel as pn
 from openai import OpenAI
 from scipy.spatial import KDTree
 import numpy as np
+from pathlib import Path
 
-from rag_book_recommender import get_book_description_by_title, EmbeddingsStore, get_authors, get_embeddings
+with open(Path("assets", "title_to_description.json"), 'r') as file:
+    DESCRIPTIONS = json.load(file)
 
+with open(Path("assets", "author_to_title.json"), 'r') as file:
+    AUTHOR_TITLES = json.load(file)
+
+
+def load_embeddings_file():
+    """Load the pre-computed embeddings of description column
+    The data is in the format title: embedding
+    """
+    file_path = os.path.join('assets', 'embeddings.json')
+    with open(file_path, "r", encoding="utf-8") as file:
+        embeddings_json = json.load(file)
+    return embeddings_json
 
 client = OpenAI()
 
 pn.extension()
 
-store = EmbeddingsStore()
-all_authors = get_authors()
+
+def get_embedding_from_text(text):
+    """Generate embedding for a text"""
+    try:
+        response = client.embeddings.create(input=text, model="text-embedding-3-small")
+        embedding = response.data[0].embedding
+        return embedding
+    except Exception:
+        return []
+
+
+def get_book_description_by_title(title):
+    """Return description of a book title"""
+    return DESCRIPTIONS[title.upper()]
 
 
 def detect_author(user_query):
@@ -50,17 +79,16 @@ def detect_author(user_query):
         n=1,
     )
     author = response.choices[0].message.content.upper()
-    return author if author in all_authors else ""
+    return author if author in AUTHOR_TITLES else ""
 
 
 def book_recommender_agent(user_query, verbose=False):
     """An agent that can recommend books to the user based on input"""
-    # determine the topic based on the query
-    embeddings_json = get_embeddings()
+    embeddings_json = load_embeddings_file()
     author = detect_author(user_query)
     titles = []
     if author:
-        titles = all_authors[author]
+        titles = AUTHOR_TITLES[author]
         if verbose:
             print(f"Found these titles: {titles} by author: {author}")
 
@@ -79,7 +107,7 @@ def book_recommender_agent(user_query, verbose=False):
             titles.append(key)
             embeddings.append(value)
     kdtree = KDTree(np.array(embeddings))
-    _, indexes = kdtree.query(store.get_one(user_query), k=min(len(titles), 3))
+    _, indexes = kdtree.query(get_embedding_from_text(user_query), k=min(len(titles), 5))
 
     if isinstance(indexes, np.int64):
         indexes = [indexes]
