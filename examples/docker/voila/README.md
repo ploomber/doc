@@ -1,4 +1,4 @@
-# Custom Voila app
+# Scotch data visualisation
 
 A dashboard for visualising different properties of the type of scotch selected by the user.
 
