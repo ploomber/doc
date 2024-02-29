@@ -3,6 +3,8 @@ import duckdb
 import os
 import pandas as pd
 import requests 
+from datetime import datetime
+
 
 # Database file path
 db_file = "stockdata.duckdb"
@@ -28,11 +30,23 @@ def get_stock_data(ticker, start_date, end_date):
     - start_date: Start date as a 'YYYY-MM-DD' string or datetime object.
     - end_date: End date as a 'YYYY-MM-DD' string or datetime object.
     """
-    start_date_str = start_date.value.strftime('%Y-%m-%d')
-    end_date_str = end_date.value.strftime('%Y-%m-%d')
+    try:
+        # Check if start_date and end_date are datetime.date objects and convert to strings
+        if isinstance(start_date, datetime):
+            start_date_str = start_date.strftime('%Y-%m-%d')
+        else:
+            start_date_str = start_date  # Assume it's already a string
 
-    data = yf.download(ticker, start=start_date_str, end=end_date_str)
-    return data
+        if isinstance(end_date, datetime):
+            end_date_str = end_date.strftime('%Y-%m-%d')
+        else:
+            end_date_str = end_date  # Assume it's already a string
+
+        data = yf.download(ticker, start=start_date_str, end=end_date_str)
+        return data
+    except Exception as e:
+        print(f"Error fetching data for '{ticker}': {e}")
+        return pd.DataFrame()
 
 def store_data_in_duckdb(tickers, start_date, end_date, db_file="stockdata.duckdb"):
     """
@@ -75,21 +89,19 @@ def get_data_from_duckdb(nl_query, tickers, start_date, end_date, db_file="stock
     """
     combined_data = pd.DataFrame()
     for ticker in tickers:
-        try:
-            sql_query = """SELECT {nl_query}, Date
-                            FROM {ticker}
-                            WHERE Date >= '{start_date}' AND Date <= '{end_date}'""".format(nl_query=nl_query, 
-                                                                                            ticker=ticker, 
-                                                                                            start_date=start_date, 
-                                                                                            end_date=end_date)
+        print("Fetching data for", ticker)
+        sql_query = """SELECT {nl_query}, Date
+                        FROM {ticker}
+                        WHERE Date >= '{start_date}' AND Date <= '{end_date}'""".format(nl_query=nl_query, 
+                                                                                        ticker=ticker, 
+                                                                                        start_date=start_date, 
+                                                                                        end_date=end_date)
 
-            conn = duckdb.connect(db_file)
-            data = conn.execute(sql_query).fetchdf()
-            conn.close()
-            # Optionally, add a column to identify the ticker symbol in the combined DataFrame
-            data['Ticker'] = ticker
-            combined_data = pd.concat([combined_data, data], ignore_index=True)
-        except Exception as e:
-            pass 
-    
+        conn = duckdb.connect(db_file)
+        data = conn.execute(sql_query).fetchdf()
+        conn.close()
+        # Optionally, add a column to identify the ticker symbol in the combined DataFrame
+        data['Ticker'] = ticker
+        combined_data = pd.concat([combined_data, data], ignore_index=True)
+
     return combined_data

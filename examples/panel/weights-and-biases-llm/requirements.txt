@@ -4,4 +4,7 @@ ploomber-cloud
 wandb==0.16.3
 ipython
 selenium
+seaborn
+ipywidgets-bokeh
+
 #conda install -c conda-forge firefox geckodriver

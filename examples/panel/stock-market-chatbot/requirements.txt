@@ -10,3 +10,5 @@ bokeh==3.3.4
 python-dotenv
 selenium==4.18.1
 webdriver-manager==4.0.1
+nbformat>=4.2.0
+kaleido==0.2.1
