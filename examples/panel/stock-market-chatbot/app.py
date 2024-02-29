@@ -1,7 +1,7 @@
 import panel as pn
 import pandas as pd
 from chat import  analyze_image_with_text
-from dotenv import load_dotenv
+
 import os
 from imagekitio import ImageKit
 import nest_asyncio
@@ -13,7 +13,6 @@ from bokeh.io import curdoc
 import plotly.express as px
 pd.options.plotting.backend = "plotly"
 
-load_dotenv(".env")
 img_private = os.getenv("image_private_key")
 img_public = os.getenv("image_public_key")
 img_endpoint = os.getenv("image_url_endpoint")

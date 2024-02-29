@@ -1,9 +1,7 @@
 from openai import OpenAI
 import os
-from dotenv import load_dotenv
 import pandas as pd
 
-load_dotenv(".env")
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
