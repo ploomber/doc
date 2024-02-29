@@ -8,3 +8,5 @@ holoviews==1.18.3
 duckdb==0.10.0
 bokeh==3.3.4
 python-dotenv
+selenium==4.18.1
+webdriver-manager==4.0.1
