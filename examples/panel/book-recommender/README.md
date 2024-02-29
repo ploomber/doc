@@ -1,5 +1,7 @@
 # Book Recommender
 
+A chat assistant for recommending books to the user based on inputs.
+
 ## Set key
 
 To run this example you need to set the `OPENAI_API_KEY` environment variable.
