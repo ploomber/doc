@@ -14,8 +14,6 @@ The app will store the plot generated and save it to ImageKit.io, and then use t
 To run the app, you need to install the following packages:
 
 ```bash
-conda create -n stock-market-chatbot python=3.10
-conda activate stock-market-chatbot
 pip install -r requirements.txt
 ```
 
