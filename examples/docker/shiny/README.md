@@ -1,6 +1,8 @@
 # Model monitoring application
 
-This app is built on Shiny and allows you to visualize model training accuracy scores in realtime in 2 steps:
+A Shiny app to visualize model training accuracy scores in realtime.
+
+## Steps
 
 * Train multiple models with different parameters locally, and store the accuracy scores to a remote database at the end of every epoch.
 * The visualisation application dynamically detects changes in the remote database and generates a plot as the training progresses.
