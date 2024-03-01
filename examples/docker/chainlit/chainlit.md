@@ -1,1 +1,0 @@
-This app is hosted in [Ploomber Cloud!](https://ploomber.io/)

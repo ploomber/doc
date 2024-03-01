@@ -7,7 +7,7 @@ To deploy a [Shiny](https://shiny.posit.co/py/docs/overview.html) Python applica
 
 ## `Dockerfile`
 
-Use this [template](https://github.com/ploomber/doc/blob/main/examples/docker/shiny/Dockerfile) `Dockerfile`:
+Use this [template](https://github.com/ploomber/doc/blob/main/examples/shiny/basic-app/Dockerfile) `Dockerfile`:
 
 ```Dockerfile
 FROM python:3.11

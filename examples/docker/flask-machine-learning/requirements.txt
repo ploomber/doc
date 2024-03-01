@@ -1,5 +1,0 @@
-seaborn
-joblib
-numpy
-pandas
-scikit-learn
