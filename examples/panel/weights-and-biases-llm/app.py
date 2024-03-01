@@ -356,7 +356,7 @@ def callback(input_text, user, instance: pn.chat.ChatInterface):
     This function is called when the user sends a message
     """
     
-    if "tell me more about" in input_text:
+    if "tell me more about" in input_text.lower() or "tell me about" in input_text.lower():
         return handle_detailed_repository_query(input_text)
     else:
         return github_url_generator(input_text)

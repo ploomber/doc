@@ -172,4 +172,3 @@ cython_debug/
 .DS_Store
 *.bkp
 *.dtmp
-wandb/
