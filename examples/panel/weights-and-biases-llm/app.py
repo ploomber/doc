@@ -190,9 +190,7 @@ def github_url_generator(query):
         # Determine which pattern was matched to decide on the action
         if "search/repositories" in url:
             return search_github_repositories(url)
-        # elif "repos" in url and "readme" in url:
-        #     document_store = run_indexing_pipeline(url)
-        #     return run_retrieval_pipeline(document_store, query)
+        
         else:
             return "URL matched but did not fit expected patterns."
     else:
