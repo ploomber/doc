@@ -10,6 +10,11 @@ To run this example you need to set the `OPENAI_API_KEY` environment variable.
 export OPENAI_API_KEY=<your_api_key> 
 ```
 
+## Dataset
+
+Download the [dataset](https://www.kaggle.com/datasets/cristaliss/ultimate-book-collection-top-100-books-up-to-2023) to the `book-recommender/` folder, and rename it as `goodreads.csv`. 
+
+
 ## Generate lookup files
 
 Generate lookup files by running the following script:
@@ -31,5 +36,5 @@ Here `-n 100` will generate embeddings for first 100 rows. If `-n` option is not
 
 ## Deployment
 
-Create a zip of `app.py`, `requirements.txt` and `assets/` folder, and follow the instructions for deploying a [Panel](https://docs.cloud.ploomber.io/en/latest/apps/panel.html) application.
+Create a zip of `app.py`, `util.py`, `requirements.txt` and `assets/` folder, and follow the instructions for deploying a [Panel](https://docs.cloud.ploomber.io/en/latest/apps/panel.html) application.
 You also need to set `OPENAI_API_KEY` as an [environment variable](https://docs.cloud.ploomber.io/en/latest/user-guide/env-vars.html) while deploying the application.

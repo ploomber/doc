@@ -24,6 +24,8 @@ from scipy.spatial import KDTree
 import numpy as np
 from pathlib import Path
 
+from util import get_embedding_from_text
+
 with open(Path("assets", "title_to_description.json"), 'r') as file:
     DESCRIPTIONS = json.load(file)
 
@@ -43,16 +45,6 @@ def load_embeddings_file():
 client = OpenAI()
 
 pn.extension()
-
-
-def get_embedding_from_text(text):
-    """Generate embedding for a text"""
-    try:
-        response = client.embeddings.create(input=text, model="text-embedding-3-small")
-        embedding = response.data[0].embedding
-        return embedding
-    except Exception:
-        return []
 
 
 def get_book_description_by_title(title):

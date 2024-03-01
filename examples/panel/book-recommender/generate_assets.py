@@ -4,11 +4,11 @@ import pandas as pd
 from pathlib import Path
 from openai import OpenAI
 
-from app import get_embedding_from_text
+from util import get_embedding_from_text
 
 # Download the dataset from:
 # https://www.kaggle.com/datasets/cristaliss/ultimate-book-collection-top-100-books-up-to-2023
-df = pd.read_csv(Path("assets", "goodreads.csv"))
+df = pd.read_csv(Path("goodreads.csv"))
 
 client = OpenAI()
 
@@ -56,6 +56,9 @@ if __name__ == "__main__":
     parser.add_argument('--embeddings', action='store_true', help='Generate embeddings')
     parser.add_argument("-n", "--rows", required=False, help="Number of rows to limit for generating embeddings")
     args = parser.parse_args()
+    assets_path = Path("assets")
+    if not assets_path.exists():
+        Path("assets").mkdir()
     generate_lookup(args.verbose)
     if args.embeddings:
         generate_embeddings(int(args.rows), args.verbose)
