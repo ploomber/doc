@@ -35,4 +35,12 @@
 
 ### Ploomber Cloud Enterprise
 
-Customized plan to suit your needs. Send us an email to [contact@ploomber.io](mailto:contact@ploomber.io).
+- All features from "Professional"
+- Support SLA
+- IP whitelisting
+- Advanced logging
+- Faster app builds
+- VPC or Cloud deployment
+
+
+Send us an email to [contact@ploomber.io](mailto:contact@ploomber.io).
