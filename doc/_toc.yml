@@ -36,13 +36,16 @@ parts:
       - file: apps/docker
       - file: apps/chalk-it
 
+  - caption: APIs
+    chapters:
+      - file: features/serverless-fns
+      - file: features/scheduled-fns
+      - file: features/document-processing
+      - file: features/notebook-sharing
+
   - caption: App examples
     chapters:
       - file: examples/voila
-
-  - caption: Sharing notebooks
-    chapters:
-      - file: nb-share/notebook-sharing
 
   - caption: Pricing
     chapters:
