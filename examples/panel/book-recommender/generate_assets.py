@@ -60,6 +60,7 @@ if __name__ == "__main__":
     if not assets_path.exists():
         Path("assets").mkdir()
     generate_lookup(args.verbose)
+    rows = int(args.rows) if args.rows else None
     if args.embeddings:
-        generate_embeddings(int(args.rows), args.verbose)
+        generate_embeddings(rows, args.verbose)
 

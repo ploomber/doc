@@ -20,13 +20,12 @@ Download the [dataset](https://www.kaggle.com/datasets/cristaliss/ultimate-book-
 Generate lookup files by running the following script:
 
 ```bash
-python generate_assets.py
+python generate_assets.py --embeddings --verbose
 ```
 
-Running this command should generate `author_to_title.json` and `title_to_description.json` files in the `assets/` folder.
+Running this command should generate `author_to_title.json`, `title_to_description.json` and `embeddings.json` files in the `assets/` folder.
 
-The `assets/embeddings.json` file contains embeddings of the description column of the dataset.
-If you want to re-generate the `embeddings.json` file you can run:
+If you want to generate embedding for the first N rows only run the below command (here N=100):
 
 ```bash
 python generate_assets.py -n 100 --embeddings --verbose
