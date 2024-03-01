@@ -71,6 +71,15 @@ Before deploying the application, you will need to add the secret variables to y
 - WANDB_ENTITY
 - OPENAI_API_KEY
 
+You can export them on bash as follows:
+
+```bash
+export WANDB_API_KEY=your_api_key
+export WANDB_PROJECT=your_project_name
+export WANDB_ENTITY=your_user_name
+export OPENAI_API_KEY=your_api_key
+```
+
 That's it! You can follow the deployment progress on the Ploomber Cloud dashboard. Once the deployment is complete, you can visit the application by clicking on the link provided in the dashboard. You can monitor the metrics in the Weights and Biases dashboard by visiting the project page in the Weights and Biases website.
 
 ![](./images/wandb.png)
