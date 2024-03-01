@@ -10,7 +10,8 @@ import re
 import os 
 from IPython.display import Markdown
 from dotenv import load_dotenv
-from rag import run_indexing_pipeline, run_retrieval_pipeline
+from rag import vectorize_json, save_index
+from bs4 import BeautifulSoup
 
 last_action = {"type": None, "data": None}
 # Load environment variables from a .env file
@@ -28,6 +29,8 @@ wandb.init(project=os.getenv("WANDB_PROJECT"),
 # Initialize the OpenAI client and create an assistant
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 model_name = "gpt-3.5-turbo"
+
+search_results = {}
 
 def as_json(obj):
     """
@@ -67,7 +70,7 @@ def wait_on_run(run, thread):
             thread_id=thread.id,
             run_id=run.id,
         )
-        time.sleep(0.5)
+        time.sleep(0.00001)
     return run
     
 def start_assistant(query):
@@ -187,9 +190,9 @@ def github_url_generator(query):
         # Determine which pattern was matched to decide on the action
         if "search/repositories" in url:
             return search_github_repositories(url)
-        elif "repos" in url and "readme" in url:
-            document_store = run_indexing_pipeline(url)
-            return run_retrieval_pipeline(document_store, query)
+        # elif "repos" in url and "readme" in url:
+        #     document_store = run_indexing_pipeline(url)
+        #     return run_retrieval_pipeline(document_store, query)
         else:
             return "URL matched but did not fit expected patterns."
     else:
@@ -200,6 +203,8 @@ def search_github_repositories(url):
     This function takes a url and uses the GitHub API to search for repositories
     sorted by the number of stars
     """
+    global search_results  
+    search_results.clear()
 
     url += "&sort=stars&order=desc"
     headers = {
@@ -210,17 +215,38 @@ def search_github_repositories(url):
     json_response = response.json()
 
     if response.status_code == 200:
+        
         if len(json_response['items']) < 1:
             return "No repositories found for the given search criteria.\
                 Please try a different search."
         if len(json_response['items']) > 15:
             repo_list = "Here are top 15 repositories (by number of stars) related to your search:\n"
             top_repos = json_response['items'][:15]  # Get the top 15 repositories
+
+            for repo in top_repos:
+                repo_name = repo['name']
+                search_results[repo_name] = {
+                    'full_name': repo['full_name'],
+                    'html_url': repo['html_url'],
+                    'description': repo['description'],
+                    'stargazers_count': repo['stargazers_count']
+                }
+
             repo_list += "\n".join([f"- <a href='{repo['html_url']}' target='_blank'>{repo['html_url'].split('/')[-1]}</a>: {repo['description']} - Stargazer count ⭐: {repo['stargazers_count']}" for repo in top_repos])
             return Markdown(repo_list)
         else:
             repo_list = "Here are the repositories related to your search:\n"
             repos = json_response['items']
+
+            for repo in repos:
+                repo_name = repo['name']
+                search_results[repo_name] = {
+                    'full_name': repo['full_name'],
+                    'html_url': repo['html_url'],
+                    'description': repo['description'],
+                    'stargazers_count': repo['stargazers_count']
+                }
+
             repo_list += "\n".join([f"- <a href='{repo['html_url']}' target='_blank'>{repo['html_url'].split('/')[-1]}</a>: '{repo['description']}' - Stargazer count ⭐: {repo['stargazers_count']}" for repo in repos])
             return Markdown(repo_list)
             
@@ -230,31 +256,99 @@ def search_github_repositories(url):
             If the problem persists and I cannot connect to the GitHub API,\
             please try again later."
 
+
 def fetch_readme_details(url):
     """
-    Fetch the README.md file from a specific repository using GitHub API with authorization.
-    
+    Fetch the README.md file from a specific repository using GitHub API with authorization,
+    assuming the content is in HTML format, and extract only the text content.
     """
     headers = {
-        "Accept": "application/vnd.github+json",
+        "Accept": "application/vnd.github.VERSION.html",
         "Authorization": f"Bearer {GITHUB_TOKEN}",
-        "X-GitHub-Api-Version": "2022-11-28"
     }
 
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
-        readme_data = response.json()
-        # Fetch the raw README content using the download_url from the README metadata
-        readme_content_response = requests.get(readme_data['download_url'], headers=headers)
-        if readme_content_response.status_code == 200:
-            return readme_content_response.text
-        else:
-            print(f"Failed to fetch raw README content: {readme_content_response.status_code}")
-            return None
+        html_content = response.text
+        soup = BeautifulSoup(html_content, "html.parser")
+
+        # Remove all script and style elements
+        for script_or_style in soup(["script", "style"]):
+            script_or_style.decompose()  # Remove these elements
+
+        # Get text
+        text = soup.get_text()
+
+        # Break into lines and remove leading and trailing space on each
+        lines = (line.strip() for line in text.splitlines())
+        # Break multi-headlines into a line each
+        chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+        # Drop blank lines
+        text = '\n'.join(chunk for chunk in chunks if chunk)
+
+        return text
     else:
         print(f"Failed to fetch README.md: {response.status_code}")
         return None
+    
+def summarize_readme(readme_content):
+    """
+    Use OpenAI API to generate a summary of the README content.
+    """
+    # Ensure the content is not too large for the API request
+    if len(readme_content) > 4000:
+        readme_content = readme_content[:4000] + "... (Content truncated for summarization)"
+    prompt=f"Summarize this README content:\n\n{readme_content}"
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",  
+        
+        messages=[
+            {"role": "system", "content": "Your task is to review the README content and provide a summary."},
+            {"role": "user", "content": "Can you summarize this README content?"},
+            {"role": "assistant", "content": prompt},
+            ]
+    )
+    answer = response.choices[0].message.content
+    return answer 
 
+def preprocess_readme_content(content):
+    # Remove Markdown tables: Look for lines starting with pipe characters as simple table indicators
+    content = re.sub(r'\n\|.*\|\n', '\n', content)
+    
+    # Remove URLs
+    content = re.sub(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', '', content)
+
+    # Convert line breaks to spaces
+    content = content.replace('\n', ' ')
+
+    # Remove special characters, except periods and commas
+    content = re.sub(r'[^a-zA-Z0-9 .,]', ' ', content)
+
+    # Replace multiple spaces with a single space
+    content = re.sub(r'\s+', ' ', content)
+
+    return content
+
+def handle_detailed_repository_query(query):
+    """
+    Handle detailed queries for a specific repository.
+    """
+    global search_results
+
+    # Extract the repository name from the query
+    match = re.search(r"tell me more about ([\w-]+)", query, re.IGNORECASE)
+    if not match:
+        return "Please start your questions with 'tell me more about <name or url of repo>."
+
+    repo_name = match.group(1)  # The name of the repository
+    if repo_name in search_results:
+        repo_full_name = search_results[repo_name]['full_name']
+        readme_url = f"https://api.github.com/repos/{repo_full_name}/readme"
+        raw_readme_content = fetch_readme_details(readme_url)
+        cleaned_readme_content = preprocess_readme_content(raw_readme_content)
+        return summarize_readme(cleaned_readme_content)
+    else:
+        return f"I couldn't find details about '{repo_name}'. Please make sure the repository name is correct or perform another search."
 
 
 def callback(input_text, user, instance: pn.chat.ChatInterface):
@@ -262,7 +356,10 @@ def callback(input_text, user, instance: pn.chat.ChatInterface):
     This function is called when the user sends a message
     """
     
-    return github_url_generator(input_text)
+    if "tell me more about" in input_text:
+        return handle_detailed_repository_query(input_text)
+    else:
+        return github_url_generator(input_text)
 
 
 chat_interface = pn.chat.ChatInterface(callback=callback)
