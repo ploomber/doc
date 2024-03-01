@@ -10,7 +10,6 @@ import re
 import os 
 from IPython.display import Markdown
 from dotenv import load_dotenv
-from rag import vectorize_json, save_index
 from bs4 import BeautifulSoup
 
 last_action = {"type": None, "data": None}
@@ -84,10 +83,13 @@ def start_assistant(query):
         For example, if a user asks for repositories for llm monitoring, you will form a query as follows\
         https://api.github.com/search/repositories?q=llm+monitoring\
         \
-        If a user asks you to tell them more about a specific repository, the user should specify the complete GitHub URL \
-        For example, if a user asks 'tell me more about https://github.com/WenjieDu/PyPOTS', you will form a query as follows \
-        https://api.github.com/repos/WenjieDu/PyPOTS/readme\
-        Any inquiries outside of this should be responded with \
+        Users can ask about repositories in a wide variety of ways, \
+        for example 'tell me about repositories about <topic>', \
+        or 'show me repositories for <topic>'.\
+        or simply the topic itself. \
+        Use reasonable judgement to interpret the user's request.\
+        If the user clearly asks about something not related to GitHub repositories, \
+        should be responded with \
         'I can help you find GitHub repositories only. Tell me a topic you are interested in.'"
     
     assistant = client.beta.assistants.create(
@@ -368,8 +370,8 @@ chat_interface.send(
         I can help you find repositories on GitHub. \
         Tell me a topic and I will use the GitHub API to suggest a few \
         repositories for you. I can also provide more information about a specific repository. \
-        You can provide the complete URL to a repository and I can provide a high level overview of its purpose.\
-        \nFor example, you can ask me 'tell me more about https://github.com/ploomber/jupysql' or 'show me repositories for llm monitoring'.",
+        Sample questions: 'show me repositories for llm monitoring'.\
+        After you receive a response, you can get more information by saying 'tell me more about <name of repository>' from a repository from the list.",
     user="System",
     respond=False,
 )
