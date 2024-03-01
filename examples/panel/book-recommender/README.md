@@ -31,8 +31,6 @@ If you want to generate embedding for the first N rows only run the below comman
 python generate_assets.py -n 100 --embeddings --verbose
 ```
 
-Here `-n 100` will generate embeddings for first 100 rows. If `-n` option is not provided the script will generate embeddings of all rows.
-
 ## Deployment
 
 Create a zip of `app.py`, `util.py`, `requirements.txt` and `assets/` folder, and follow the instructions for deploying a [Panel](https://docs.cloud.ploomber.io/en/latest/apps/panel.html) application.
