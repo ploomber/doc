@@ -2,6 +2,8 @@
 
 A RAG application for summarizing the latest news.
 
+![](screenshot.png)
+
 To download today's news and compute the embeddings you first need to set the OpenAI key:
 
 ```bash
