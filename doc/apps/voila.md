@@ -1,17 +1,26 @@
 # Voilà
 
-```{tip}
-If you haven't deployed your first application, check out the [quickstart guide.](../quickstart/app.md)
+## Deploy an example
+
+To download and deploy an example Voila application simply run:
+
+```sh
+pip install ploomber-cloud
+ploomber-cloud key YOUR-KEY
+ploomber-cloud examples voila/chat-with-csv
+cd basic-app
+ploomber-cloud init
+ploomber-cloud deploy --watch
 ```
+
+## Deploy your own app
 
 To deploy a application you need two files:
 
 1. A Jupyter notebook file (`.ipynb`)
 2. A dependencies file (`requirements.txt`)
 
-## Voilà
-
-Currently, Ploomber Cloud supports `Voilà` for deploying Jupyter notebooks as applications. For information on how to write Voilà applications, [please check the documentation](https://voila.readthedocs.io/en/stable/).
+For information on how to write Voilà applications, [please check the documentation](https://voila.readthedocs.io/en/stable/).
 
 Click here to see [some examples.](../examples/voila.md)
 
