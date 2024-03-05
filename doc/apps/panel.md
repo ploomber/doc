@@ -22,6 +22,14 @@ pandas
 matplotlib
 ```
 
+## Testing locally
+
+To test your Panel app, you can run the following command locally:
+
+```bash
+panel serve app.py
+```
+
 ## Deploy
 
 To deploy a Panel app from the deployment menu, follow these instructions:

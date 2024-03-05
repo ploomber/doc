@@ -22,6 +22,14 @@ pandas
 numpy
 ```
 
+## Testing locally
+
+To test your Streamlit app, you can run the following command locally:
+
+```bash
+streamlit run app.py
+```
+
 ## Deploy
 
 To deploy a Streamlit app from the deployment menu, follow these instructions:
