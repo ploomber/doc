@@ -1,19 +1,9 @@
-import requests
-import json
+import openai
 import panel as pn
 
 pn.extension(design="material")
 
-
-url = ""
-
-headers = {
-    "accept": "application/json",
-    "Content-Type": "application/json",
-}
-
-
-# print the response (if you want to see it)
+client = openai.OpenAI()
 
 
 def echo(contents, user, instance):
@@ -23,8 +13,10 @@ def echo(contents, user, instance):
             {"content": contents, "role": "user"},
         ]
     }
-    response = requests.post(url, headers=headers, data=json.dumps(data))
-    return response.json()["choices"][0]["message"]["content"]
+    response = openai.chat.completions.create(
+        model="gpt-3.5-turbo", messages=data["messages"]
+    )
+    return response.choices[0].message.content
 
 
 chat_interface = pn.chat.ChatInterface(
@@ -32,6 +24,6 @@ chat_interface = pn.chat.ChatInterface(
 )
 
 pn.Column(
-    "# Echo Bot",
+    "# Simple Panel chat app",
     chat_interface,
 ).servable()
