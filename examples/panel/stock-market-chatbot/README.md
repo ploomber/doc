@@ -2,6 +2,8 @@
 
 This application downloads stock market data from Yahoo Finance, populates a duckdb instance, generates a time series plot of the selected stocks. It also allows the user to ask a natural language question about the plot and get a response using the LLM model.
 
+![](screenshot.png)
+
 The app is built using Python Yahoo Finance [yfinance](https://pypi.org/project/yfinance/), [Panel](https://panel.holoviz.org/),[DuckDB](https://duckdb.org/), OpenAI's [Vision Model preview API](https://platform.openai.com/docs/guides/vision) and [ImageKit](https://docs.imagekit.io/getting-started/quickstart-guides/python/python_app). The app can be hosted on [Ploomber Cloud](https://www.platform.ploomber.io/).
 
 The app will store the plot generated and save it to ImageKit.io, and then use the OpenAI API to generate a response to the user's question about the plot. 
