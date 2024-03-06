@@ -67,6 +67,33 @@ Then, execute:
 ploomber-cloud deploy
 ```
 
+## Deploying an example
+
+Ploomber Cloud hosts example applications for many different frameworks. To download and deploy one, run `ploomber-cloud examples`:
+
+```sh
+ploomber-cloud examples
+```
+
+Follow the prompts to choose a framework and specific example name. You may also specify a directory in which to download the example.
+
+Once the application is downloaded, it's ready to deploy! For example, if you downloaded the `basic-app` example for `Flask` in the current directory:
+
+```sh
+ploomber-cloud key YOUR-KEY
+cd basic-app
+ploomber-cloud init
+ploomber-cloud deploy --watch
+```
+
+If you already know which example you want, you can download it while avoiding prompts with `ploomber-cloud examples framework/example-name`:
+
+```sh
+ploomber-cloud examples flask/basic-app
+```
+
+A full list of example applications is available [here](https://github.com/bryannho/doc/tree/main/examples)
+
 ## Defining environment variables
 
 If your project uses environment variables, you can define them in an `.env` file.
