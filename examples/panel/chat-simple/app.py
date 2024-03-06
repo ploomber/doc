@@ -1,29 +1,32 @@
-import openai
+from openai import AsyncOpenAI
 import panel as pn
 
 pn.extension(design="material")
 
-client = openai.OpenAI()
+aclient = AsyncOpenAI()
 
 
-def echo(contents, user, instance):
-    data = {
-        "messages": [
-            {"content": "You are a helpful assistant.", "role": "system"},
-            {"content": contents, "role": "user"},
-        ]
-    }
-    response = openai.chat.completions.create(
-        model="gpt-3.5-turbo", messages=data["messages"]
+async def callback(contents, user, instance):
+    response = await aclient.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": contents}],
+        stream=True,
     )
-    return response.choices[0].message.content
+    message = ""
+    async for chunk in response:
+        part = chunk.choices[0].delta.content
+        if part is not None:
+            message += part
+            yield message
 
 
 chat_interface = pn.chat.ChatInterface(
-    callback=echo,
+    callback=callback,
 )
 
-pn.Column(
-    "# Simple Panel chat app",
-    chat_interface,
+pn.template.FastListTemplate(
+    main=[chat_interface],
+    sidebar=[],
+    busy_indicator=pn.indicators.BooleanStatus(value=False),
+    title="Chat with LLaMA (powered by Ploomber Cloud)",
 ).servable()

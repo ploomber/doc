@@ -1,0 +1,10 @@
+# server
+fastapi
+python-multipart
+uvicorn
+
+# inference
+transformers
+timm
+einops
+accelerate
