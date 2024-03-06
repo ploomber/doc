@@ -8,4 +8,4 @@ bokeh==3.3.4
 nbformat>=4.2.0
 kaleido==0.2.1
 plotly==5.18.0
-nest-asyncio
+nest-asyncio==1.6.0

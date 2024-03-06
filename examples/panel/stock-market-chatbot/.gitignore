@@ -2,3 +2,4 @@
 !examples/panel/stock-market-chatbot/nasdaq_symbols.csv
 
 *.duckdb
+*.png
