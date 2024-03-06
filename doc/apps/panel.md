@@ -22,6 +22,20 @@ pandas
 matplotlib
 ```
 
+## Testing locally
+
+To test your Panel app, create a virtual environment and install the packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+Then run the following command to start the application:
+
+```bash
+panel serve app.py
+```
+
 ## Deploy
 
 To deploy a Panel app from the deployment menu, follow these instructions:
