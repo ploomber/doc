@@ -40,6 +40,7 @@ To deploy a Voilà app from the deployment menu, follow these instructions:
 To download and deploy an example Voila application start by installing Ploomber Cloud and setting your API key:
 
 `pip install ploomber-cloud`
+
 `ploomber-cloud key YOUR-KEY`
 
 Now, download an example. It will prompt you for a location to download the app. To download in the current directory, just press enter.
@@ -52,7 +53,10 @@ You should see a confirmation with instructions on deploying your app. Now, navi
 
 ### Deploy from the CLI
 
+Now, initialize and deploy your app with:
+
 `ploomber-cloud init`
+
 `ploomber-cloud deploy --watch`
 
 ```
