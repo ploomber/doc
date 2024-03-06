@@ -39,33 +39,33 @@ To deploy a Voilà app from the deployment menu, follow these instructions:
 
 To download and deploy an example Voila application start by installing Ploomber Cloud and setting your API key:
 
-```sh
+``sh
 pip install ploomber-cloud
 ploomber-cloud key YOUR-KEY
-```
+``
 
-```{tip}
+``{tip}
 To get an API key, follow [these instructions.](../quickstart/apikey.md)
-```
+``
 
 Now, download an example. It will prompt you for a location to download the app. To download in the current directory, just press enter.
 
-```sh
+``sh
 ploomber-cloud examples voila/chat-with-csv
-```
+``
 
 You should see a confirmation with instructions on deploying your app. Now, navigate to your application:
 
-```sh
+``sh
 cd location-you-entered/chat-with-csv
-```
+``
 
 ### Deploy from the CLI
 
-```sh
+``sh
 ploomber-cloud init
 ploomber-cloud deploy --watch
-```
+``
 
 ```
 ````
