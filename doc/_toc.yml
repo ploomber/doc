@@ -14,6 +14,7 @@ parts:
       - file: user-guide/env-vars
       - file: user-guide/password
       - file: user-guide/resources
+      - file: user-guide/gpu
       - file: user-guide/custom-domains
       - file: user-guide/managing-apps
 
