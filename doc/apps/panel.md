@@ -24,7 +24,13 @@ matplotlib
 
 ## Testing locally
 
-To test your Panel app, you can run the following command locally:
+To test your Panel app, create a virtual environment and install the packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+Then run the following command to start the application:
 
 ```bash
 panel serve app.py

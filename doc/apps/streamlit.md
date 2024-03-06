@@ -24,7 +24,13 @@ numpy
 
 ## Testing locally
 
-To test your Streamlit app, you can run the following command locally:
+To test your Streamlit app, create a virtual environment and install the packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+Then run the following command to start the application:
 
 ```bash
 streamlit run app.py
