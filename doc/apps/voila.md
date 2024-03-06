@@ -24,40 +24,46 @@ matplotlib
 
 ## Deploy
 
-````{tab-set}
+`````{tab-set}
 
-```{tab-item} UI
-### Deploy from the menu
+````{tab-item} UI
+__Deploy from the menu__
 
 To deploy a Voilà app from the deployment menu, follow these instructions:
 
 ![](../static/voila.png)
-```
+````
 
-```{tab-item} CLI
-### Try an example
+````{tab-item} CLI
+__Try an example__
 
 To download and deploy an example Voila application start by installing Ploomber Cloud and setting your API key:
 
-`pip install ploomber-cloud`
-
-`ploomber-cloud key YOUR-KEY`
+```sh
+pip install ploomber-cloud
+ploomber-cloud key YOUR-KEY
+```
 
 Now, download an example. It will prompt you for a location to download the app. To download in the current directory, just press enter.
 
-`ploomber-cloud examples voila/chat-with-csv`
+```sh
+ploomber-cloud examples voila/chat-with-csv
+```
 
 You should see a confirmation with instructions on deploying your app. Now, navigate to your application:
 
-`cd location-you-entered/chat-with-csv`
+```sh
+cd location-you-entered/chat-with-csv
+```
 
-### Deploy from the CLI
+__Deploy from the CLI__
 
 Now, initialize and deploy your app with:
 
-`ploomber-cloud init`
-
-`ploomber-cloud deploy --watch`
-
+```sh
+ploomber-cloud init
+ploomber-cloud deploy --watch
 ```
+
 ````
+`````
