@@ -60,7 +60,7 @@ ploomber-cloud examples shiny-r/shiny-r-data-visualization
 ```
 
 ```{note}
-A full list of Solara example apps is available [here.](https://github.com/ploomber/doc/tree/main/examples/shiny-r)
+A full list of Shiny-R example apps is available [here.](https://github.com/ploomber/doc/tree/main/examples/shiny-r)
 ```
 
 You should see a confirmation with instructions on deploying your app. Now, navigate to your application:
