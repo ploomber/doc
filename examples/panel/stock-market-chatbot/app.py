@@ -1,8 +1,12 @@
+import os
+from datetime import date, timedelta
+
+
 import panel as pn
 import pandas as pd
 from chat import analyze_image_with_text
 
-import os
+
 from imagekitio import ImageKit
 import nest_asyncio
 
@@ -10,7 +14,6 @@ from stock import store_data_in_duckdb, get_data_from_duckdb, get_stock_symbols
 from bokeh.themes import Theme
 from bokeh.io import curdoc
 
-import plotly.express as px
 
 pd.options.plotting.backend = "plotly"
 
@@ -89,7 +92,7 @@ def update_visualization(ticker, start, end, data_instruction, question):
     except Exception as e:
         print(f"Error generating plot: {e}")
 
-    interpretation_area.object = "LLM is generating plot interpretation, please wait..."
+    interpretation_area.object = "Generating plot interpretation, please wait..."
 
     # Save the plot
     save_plot(plot, "plot_image.png")
@@ -176,9 +179,9 @@ ticker_input = pn.widgets.MultiChoice(
     name="Stock Symbol", options=stock_symbols, value=["AAPL", "GOOGL", "AMZN"]
 )
 start_date = pn.widgets.DatePicker(
-    name="Start Date", value=pd.to_datetime("2022-01-01")
+    name="Start Date", value=date.today() - timedelta(days=7)
 )
-end_date = pn.widgets.DatePicker(name="End Date", value=pd.to_datetime("2024-02-27"))
+end_date = pn.widgets.DatePicker(name="End Date", value=date.today())
 instruction_input = pn.widgets.Select(name="Value", options=stat, value="Close")
 question = pn.widgets.TextAreaInput(
     name="Ask a natural language question",
@@ -189,7 +192,7 @@ question = pn.widgets.TextAreaInput(
 
 # Visualization area where the plot will be displayed
 visualization_area = pn.pane.Plotly()
-interpretation_area = pn.pane.Markdown("", width=800)
+interpretation_area = pn.pane.Markdown("", width=600, styles={"font-size": "1.2em"})
 
 submit_button = pn.widgets.Button(name="Submit", button_type="primary")
 reset_button = pn.widgets.Button(name="Reset", button_type="danger")
