@@ -82,4 +82,4 @@ def Page():
             solara.SpinnerSolara(size="100px")
         elif output:
             with solara.Card():
-                solara.Text(output)
+                solara.Text(output, style={"font-size": "20px"})
