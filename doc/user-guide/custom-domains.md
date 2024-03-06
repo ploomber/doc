@@ -1,4 +1,4 @@
-# Custom domains and subdomains
+# Custom domains/subdomains
 
 By default, applications are available under `project-id.ploomberapp.io`, where `project-id` is a randomly generated string.
 

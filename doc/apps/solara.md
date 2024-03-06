@@ -23,6 +23,20 @@ pandas
 matplotlib
 ```
 
+## Testing locally
+
+To test your Solara app, create a virtual environment and install the packages:
+
+```bash
+pip install -r requirements.txt
+```
+
+Then run the following command to start the application:
+
+```bash
+solara run app.py
+```
+
 ## Deploy
 
 `````{tab-set}
