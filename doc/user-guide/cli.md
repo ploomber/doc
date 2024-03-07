@@ -1,7 +1,7 @@
 # Command-line interface
 
 ```{note}
-Currently, Voila deployments are unsupported by the CLI. Environment variables and authentication are also unsupported. Expect support to be added soon.
+Currently, authentication is unsupported by the CLI. Expect support to be added soon.
 ```
 
 You can deploy applications using the command-line interface. First, install the package:
