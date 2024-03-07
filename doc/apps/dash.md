@@ -67,7 +67,7 @@ ploomber-cloud examples dash/clinical-analytics
 ```
 
 ```{note}
-A full list of Voila example apps is available [here.](https://github.com/ploomber/doc/tree/main/examples/dash)
+A full list of Dash example apps is available [here.](https://github.com/ploomber/doc/tree/main/examples/dash)
 ```
 
 You should see a confirmation with instructions on deploying your app. Now, navigate to your application:
