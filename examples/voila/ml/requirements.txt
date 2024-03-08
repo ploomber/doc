@@ -4,3 +4,4 @@ scikit-learn
 pandas
 sklearn-evaluation
 ipywidgets
+voila
