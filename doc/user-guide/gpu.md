@@ -1,8 +1,8 @@
 # GPUs
 
 ```{note}
-GPUs are a beta feature only available to PRO users. If you want access, email us:
-[contact@ploomber.io](mailto:contact@ploomber.io)
+We're giving way free CPUs for a week to test our system. Email us at
+[contact@ploomber.io](mailto:contact@ploomber.io) if you want access.
 ```
 
 To deploy an application that requires a GPU, select `1 GPU` in the `Advanced` section
