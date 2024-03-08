@@ -2,7 +2,7 @@
 
 A chat assistant for recommending books to the user based on inputs.
 
-![](screenshot.png)
+![](screenshot.webp)
 
 ## Set key
 
