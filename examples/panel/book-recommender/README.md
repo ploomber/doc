@@ -2,6 +2,8 @@
 
 A chat assistant for recommending books to the user based on inputs.
 
+![](screenshot.webp)
+
 ## Set key
 
 To run this example you need to set the `OPENAI_API_KEY` environment variable.

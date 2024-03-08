@@ -2,6 +2,8 @@
 
 This example demonstrates how to connect your Panel app to Weights and Biases. We will use the [Weights and Biases](https://www.wandb.com/) API to track several metrics when making prompts against a GPT model from OpenAI. The final application enables you to monitor token usage, prompt length, and the number of tokens generated during a user session of the application running while it is deployed. 
 
+![](screenshot.webp)
+
 ## Account setup
 
 ### Weights and Biases
