@@ -6,3 +6,4 @@ requests
 jupysql
 duckdb-engine
 matplotlib
+voila
