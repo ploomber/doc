@@ -2,6 +2,8 @@
 
 A Django polls application, as seen in the introductory [tutorial.](https://docs.djangoproject.com/en/5.0/intro/tutorial01/)
 
+![](screenshot.webp)
+
 ## Running locally
 
 ```sh
