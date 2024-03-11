@@ -80,3 +80,22 @@ ploomber-cloud deploy --watch
 
 ````
 `````
+
+## Troubleshooting
+
+Some R packages depend on C libraries, which are not installed by default. For example,
+the [`igraph` R package](https://r.igraph.org/) depends on the
+[GLPK](https://www.gnu.org/software/glpk/) library. If you try to run `library(igraph)`
+without installing GLPK, you'll see this error:
+
+```
+Error: package or namespace load failed for ‘igraph’ in dyn.load(file, DLLpath = DLLpath, ...):
+unable to load shared object '/usr/local/lib/R/site-library/igraph/libs/igraph.so':
+libglpk.so.40: cannot open shared object file: No such file or directory
+```
+
+To fix this, you can use the Docker deployment option and install GLPK, here's
+an [example](https://github.com/ploomber/doc/tree/main/examples/shiny-r/igraph). To
+learn more, see the [Docker deployment instructions.](docker.md)
+
+If you need help installing certain libraries, email us at [contact@ploomber.io](mailto:contact@ploomber.io)
