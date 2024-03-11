@@ -23,8 +23,15 @@ from openai import OpenAI
 from scipy.spatial import KDTree
 import numpy as np
 from pathlib import Path
+from _wandb import WeightsBiasesTracking
+import datetime
 
 from util import get_embedding_from_text
+
+WEIGHTS_AND_BIASES_TRACKING = True
+
+if WEIGHTS_AND_BIASES_TRACKING:
+    wandb_client = WeightsBiasesTracking()
 
 with open(Path("assets", "title_to_description.json"), 'r') as file:
     DESCRIPTIONS = json.load(file)
@@ -73,7 +80,7 @@ def detect_author(user_query):
     return author if author in AUTHOR_TITLES else ""
 
 
-def book_recommender_agent(user_query, verbose=False):
+def book_recommender_agent(user_query, verbose=False, tracking=False):
     """An agent that can recommend books to the user based on input"""
     embeddings_json = load_embeddings_file()
 
@@ -131,6 +138,8 @@ Please do not suggest any books outside this list.
     if verbose:
         print(f"System prompt: {system_prompt}")
 
+    start_time_ms = datetime.datetime.now().timestamp() * 1000
+
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
@@ -141,11 +150,16 @@ Please do not suggest any books outside this list.
         n=1,
     )
 
+    end_time_ms = round(datetime.datetime.now().timestamp() * 1000)
+
+    if tracking:
+        wandb_client.create_trace(system_prompt, response, user_query, start_time_ms, end_time_ms)
+
     return response.choices[0].message.content
 
 
 def callback(contents: str, user: str, instance: pn.chat.ChatInterface):
-    return book_recommender_agent(contents)
+    return book_recommender_agent(contents, tracking=WEIGHTS_AND_BIASES_TRACKING)
 
 
 chat_interface = pn.chat.ChatInterface(callback=callback)
