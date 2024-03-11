@@ -28,7 +28,7 @@ import datetime
 
 from util import get_embedding_from_text
 
-WEIGHTS_AND_BIASES_TRACKING = True
+WEIGHTS_AND_BIASES_TRACKING = False
 
 if WEIGHTS_AND_BIASES_TRACKING:
     wandb_client = WeightsBiasesTracking()
