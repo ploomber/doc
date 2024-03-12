@@ -23,6 +23,7 @@ parts:
       - file: apps/flask
       - file: apps/fastapi
       - file: apps/streamlit
+      - file: apps/hyperdiv
       - file: apps/voila
       - file: apps/solara
       - file: apps/panel
