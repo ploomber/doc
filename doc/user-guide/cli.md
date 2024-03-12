@@ -1,9 +1,5 @@
 # Command-line interface
 
-```{note}
-Currently, authentication is unsupported by the CLI. Expect support to be added soon.
-```
-
 You can deploy applications using the command-line interface. First, install the package:
 
 ```sh
@@ -14,6 +10,10 @@ Then, set your API key ([learn how to get it](../quickstart/apikey.md)):
 
 ```sh
 ploomber-cloud key YOURKEY
+```
+
+```{tip}
+`pc` is a shortcut for `ploomber-cloud`. Example: `pc key`
 ```
 
 (init)=
@@ -105,7 +105,7 @@ MY_ENV_VAR_1=value_1
 MY_ENV_VAR_2=value_2
 ```
 
-Now make sure your project has been [initialized](#init), and deploy it:
+Now make sure your project has been [initialized](init), and deploy it:
 
 ```sh
 ploomber-cloud deploy
