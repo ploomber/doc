@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM pytorch/pytorch:2.2.0-cuda12.1-cudnn8-devel
 
 RUN pip install jupyter_kernel_gateway ipykernel --no-cache-dir
 
