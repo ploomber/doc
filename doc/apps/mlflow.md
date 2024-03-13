@@ -12,8 +12,8 @@ To deploy MLflow download the Dockerfile from the
 Once the deployment finishes, open the app by clicking on `VIEW APPLICATION`, if all
 went well you'll be prompted for a user and a password:
 
-Use: admin
-Password: password
+- User: admin
+- Password: password
 
 ## Changing the default password
 
@@ -69,11 +69,10 @@ export MLFLOW_TRACKING_USERNAME=admin
 export MLFLOW_TRACKING_PASSWORD=yourpassword
 ```
 
-And run the following (replace the first line with your host!):
+And run the following (replace the `set_tracking_uri` call with your host!):
 
 ```python
 import mlflow
-
 mlflow.set_tracking_uri(uri="https://someid.ploomberapp.io")
 
 mlflow.set_experiment("first-experiment")
