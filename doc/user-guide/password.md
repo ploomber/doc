@@ -16,3 +16,7 @@ To enable password protection for Chainlit apps, see [here.](../apps/chainlit.md
 To enable it, simply turn the option on and set a user and a password:
 
 ![](../static/password/deployment.gif)
+
+```{important}
+Your password isn't visible after deployment so write it down!
+```
