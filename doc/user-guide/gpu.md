@@ -21,3 +21,4 @@ Here are some examples:
 
 - [FastAPI app](https://github.com/ploomber/doc/tree/main/examples/fastapi/describe-image-backend) that uses moondream2 so you can ask questions about an uploaded image
 - [llama-cpp server](https://github.com/ploomber/doc/tree/main/examples/docker/llama-cpp-server) a web server that allows using Llama 2
+- [Remote Jupyter kernels](jupyter-remote-gpu) with GPUs
