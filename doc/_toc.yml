@@ -35,6 +35,7 @@ parts:
       - file: apps/dash
       - file: apps/django
       - file: apps/jupyterlab
+      - file: apps/mlflow
       - file: apps/quarto
       - file: apps/docker
       - file: apps/chalk-it

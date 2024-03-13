@@ -2,15 +2,15 @@
 
 
 ```{important}
-If you're on a free account, always back up your work because your app can be terminated due to inactivity. If you need JupyterLab deployed with production settings, contact us [contact@ploomber.io](mailto:contact.ploomber.io)
+If you're on a free account, always back up your work because your app can be terminated if inactive. If you need JupyterLab deployed with production settings, contact us [contact@ploomber.io](mailto:contact.ploomber.io)
 ```
 
 You can deploy JupyterLab to Ploomber Cloud and use it as a development environment.
 
-
 To do so, download the files from the
-[example](https://github.com/ploomber/doc/tree/main/examples/docker/jupyterlab),
-and follow the instructions for [Docker deployments.](docker.md)
+[example](https://github.com/ploomber/doc/tree/main/examples/docker/jupyterlab), create a `.zip` file and deploy it using the Docker option:
+
+![](../static/docker.png)
 
 Once the deployment finishes, go to `WEBSERVICE LOGS` and copy the token:
 
