@@ -71,3 +71,13 @@ pip freeze > requirements.txt
 
 This will produce a new `requirements.txt` file with specific versions
 for each package, ensuring that upgrades to the dependencies don't break your app.
+
+## Displaying Chinese characters
+
+If you're using matplotlib and want to display Chinese characters in your plots,
+you might encounter issues. Most likely, you're missing a font that allows you
+to display the characters. Check out this
+[example](https://github.com/ploomber/doc/tree/main/examples/docker/matplotlib-chinese),
+to test it, deploy it using the [Docker option.](../apps/docker.md)
+
+![](../static/faq/matplotlib-chinese.png)
