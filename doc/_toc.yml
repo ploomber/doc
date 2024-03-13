@@ -58,4 +58,4 @@ parts:
 
   - caption: FAQ
     chapters:
-      - file: faq/docker-error
+      - file: faq/faq

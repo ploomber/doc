@@ -46,3 +46,8 @@ Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.
 To deploy the app from the deployment menu, follow these instructions:
 
 ![](../static/docker.png)
+
+
+```{tip}
+To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
+```

@@ -42,6 +42,11 @@ To deploy a Chainlit app from the deployment menu, follow these instructions:
 
 ![](../static/docker.png)
 
+
+```{tip}
+To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
+```
+
 ## Password protection
 
 Currently, our [password authentication](../user-guide/password.md) feature doesn't work with Chainlit, however,

@@ -55,6 +55,11 @@ To deploy a Hyperdiv app from the deployment menu, follow these instructions:
 
 ![](../static/docker.png)
 
+
+```{tip}
+To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
+```
+
 ## Environment Variables
 
 In the example above, Hyperdiv's environment variables are set directly in the `Dockerfile`. Optionally, you can set these environment variables in the Ploomber UI when you configure a deployment.

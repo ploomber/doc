@@ -87,3 +87,7 @@ ploomber-cloud deploy --watch
 
 ````
 `````
+
+```{tip}
+To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
+```

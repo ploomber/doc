@@ -1,4 +1,4 @@
-# Debugging Docker build errors
+# FAQ
 
 ## Installing PyTorch
 
@@ -45,3 +45,29 @@ The caveat of this method is that the bundled GDAL is not fully-featured and omi
 many GDAL's optional drivers. If you require a full-fledged GDAL version on your
 application, you can do it by using the Docker deployment option and installing
 GDAL in your Docker image. [Here's a sample app.](https://github.com/ploomber/doc/tree/main/examples/voila/gdal)
+
+(pin-dependencies)=
+## Pinning dependencies
+
+When deploying an app, you need to add your dependencies in a `requirements.txt` file,
+here's an example:
+
+```
+pandas
+numpy
+matplotlib
+```
+
+However, this `requirements.txt` might break your app during a re-deployment if any of
+the packages changes their API. To prevent that, you can
+pin your dependencies once your app is running locally.
+
+Rename `requirements.txt` to `requirements.unpinned.txt`, and
+then generate a new `requirements.txt` with:
+
+```sh
+pip freeze > requirements.txt
+```
+
+This will produce a new `requirements.txt` file with specific versions
+for each package, ensuring that upgrades to the dependencies don't break your app.

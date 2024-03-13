@@ -43,3 +43,8 @@ Once you have all your files, create a zip file.
 To deploy a Gradio app from the deployment menu, follow these instructions:
 
 ![](../static/docker.png)
+
+
+```{tip}
+To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
+```

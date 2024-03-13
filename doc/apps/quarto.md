@@ -133,3 +133,8 @@ To deploy the app from the deployment menu, zip everything (the `Dockerfile` and
 the `myproject/` directory) and follow these instructions:
 
 ![](../static/docker.png)
+
+
+```{tip}
+To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
+```
