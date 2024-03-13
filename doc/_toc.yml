@@ -34,6 +34,7 @@ parts:
       - file: apps/shiny-express
       - file: apps/dash
       - file: apps/django
+      - file: apps/jupyterlab
       - file: apps/quarto
       - file: apps/docker
       - file: apps/chalk-it
