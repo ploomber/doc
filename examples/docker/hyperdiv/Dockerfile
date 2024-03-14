@@ -3,7 +3,7 @@ FROM python:3.11
 # Copy the app code into the image
 COPY app.py app.py
 # Install Hyperdiv
-RUN pip install hyperdiv
+RUN pip install hyperdiv --no-cache-dir
 
 # Put Hyperdiv in production mode,
 # Running on 0.0.0.0:80

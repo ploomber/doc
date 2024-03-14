@@ -1,6 +1,6 @@
 FROM python:3.11-slim
 
-RUN pip install mlflow
+RUN pip install mlflow --no-cache-dir
 
 
 
