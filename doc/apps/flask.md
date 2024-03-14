@@ -2,8 +2,10 @@
 
 To deploy a Flask application in Ploomber Cloud you need:
 
+- A [Ploomber Cloud](https://platform.ploomber.io/register) account
 - A `Dockerfile`
 - Your code
+
 ## `Dockerfile`
 
 You need to provide a `Dockerfile`, you can use this [template](https://github.com/ploomber/doc/blob/main/examples/flask/basic-app/Dockerfile) to get started. The template contains the minimal steps needed for a deployment but you need to modify so it installs any required dependencies and copies your code into the Docker image.
