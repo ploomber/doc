@@ -2,6 +2,8 @@
 
 A Shiny app to visualize model training accuracy scores in realtime.
 
+![](screenshot.webp)
+
 ## Steps
 
 * Train multiple models with different parameters locally, and store the accuracy scores to a remote database at the end of every epoch.

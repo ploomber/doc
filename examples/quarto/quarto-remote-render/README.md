@@ -1,7 +1,10 @@
 # Quarto
 
-Sample Quarto website with `Dockerfile` for Ploomber Cloud deployment. This example
-does not require you to run `quarto render`, your documents will be rendered on
+Sample Quarto website with `Dockerfile` for Ploomber Cloud deployment.
+
+![](screenshot.webp)
+
+This example does not require you to run `quarto render`, your documents will be rendered on
 Ploomber Cloud, you don't even need to have quarto installed!
 
 To deploy:
