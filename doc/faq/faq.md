@@ -99,3 +99,8 @@ You can also start your application from the dashboard:
 
 
 ![](../static/faq/start-app-dashboard.png)
+
+```{note}
+If you see an error after restarting, wait for a few seconds. If the issue still
+persists, contact us at [contact@ploomber.io](mailto:contact@ploomber.io)
+```
