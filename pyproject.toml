@@ -1,0 +1,3 @@
+[tool.pkgmt.utm]
+medium = "documentation"
+base_url = "https://www.platform.ploomber.io"
