@@ -15,10 +15,6 @@ If you would like a custom `ploomberapp.io` subdomain, like `my-custom-app.ploom
 
 ![](../static/custom-domains/custom-names.png)
 
-```{warning}
-The custom name is **only visible** during setup, so write it down. We're working on a fix.
-```
-
 
 (custom-domain)=
 ## Adding a custom domain/subdomain
