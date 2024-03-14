@@ -31,7 +31,7 @@ Now select `ALLOW ACCESS FROM ANYWHERE` and confirm to allow all IP addresses to
 ![](./static/ip-access.png)
 
 Once you have completed the access rules setup, select the `CONNECT` button on the `Overview` page to get the connection details. Specifically, copy the connection URI and set it in an environment variable `MONGODB_CONNECTION_URI`:
-    z
+
 ```bash
 export MONGODB_CONNECTION_URI="connection_uri"
 ```
