@@ -81,3 +81,21 @@ to display the characters. Check out this
 to test it, deploy it using the [Docker option.](../apps/docker.md)
 
 ![](../static/faq/matplotlib-chinese.png)
+
+(stopping-apps)=
+## Stopping applications
+
+If you're a community user (or a Pro user with >3 apps) you apps will be stopped if
+they don't receive traffic.
+
+When this happens, your app will show a screen like this:
+
+![](../static/faq/start-app-public.png)
+
+When clicking on `Spin up your application` your app will restart and be available
+in ~1 minute.
+
+You can also start your application from the dashboard:
+
+
+![](../static/faq/start-app-dashboard.png)

@@ -7,7 +7,7 @@
 *Free, no credit card required*
 
 - 2 concurrent apps max
-- Apps are stopped every 12 hours if they receive no traffic (users can restart them)
+- Apps are [stopped](stopping-apps) every 12 hours if they receive no traffic (users can restart them)
 - If an app remains stopped for 36 hours, it's cleaned up
 - 2 vCPU per app max
 - 4 GiB RAM per app max
