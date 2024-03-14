@@ -2,6 +2,8 @@
 
 A Shiny app to visualize model training accuracy scores in realtime.
 
+![](screenshot.webp)
+
 ## Steps
 
 * Train multiple models with different parameters locally, and store the accuracy scores to a remote database at the end of every epoch.
@@ -29,7 +31,7 @@ Now select `ALLOW ACCESS FROM ANYWHERE` and confirm to allow all IP addresses to
 ![](./static/ip-access.png)
 
 Once you have completed the access rules setup, select the `CONNECT` button on the `Overview` page to get the connection details. Specifically, copy the connection URI and set it in an environment variable `MONGODB_CONNECTION_URI`:
-
+    z
 ```bash
 export MONGODB_CONNECTION_URI="connection_uri"
 ```
