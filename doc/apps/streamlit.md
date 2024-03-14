@@ -2,6 +2,8 @@
 
 Ploomber Cloud supports [Streamlit](https://streamlit.io/). For information on how to develop Streamlit apps, [please check the documentation](https://docs.streamlit.io/).
 
+First, create an [account](https://platform.ploomber.io/register).
+
 To deploy a Streamlit app you need at least two files:
 
 1. Your application file (`app.py`)

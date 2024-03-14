@@ -2,6 +2,7 @@
 
 To deploy a [Shiny Express](https://shiny.posit.co/blog/posts/shiny-express/) application to Ploomber Cloud you need:
 
+- A [Ploomber Cloud](https://platform.ploomber.io/register) account
 - A `Dockerfile`
 - A Shiny Express project
 

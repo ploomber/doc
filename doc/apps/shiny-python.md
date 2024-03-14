@@ -2,6 +2,7 @@
 
 To deploy a [Shiny](https://shiny.posit.co/py/docs/overview.html) Python application to Ploomber Cloud you need:
 
+- A [Ploomber Cloud](https://platform.ploomber.io/register) account
 - A `Dockerfile`
 - A Shiny Python project
 

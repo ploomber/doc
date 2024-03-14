@@ -1,6 +1,6 @@
 # Dash
 
-To deploy a [Dash](https://dash.plotly.com/) application to Ploomber Cloud you need at least two files zipped up:
+To deploy a [Dash](https://dash.plotly.com/) application you need a [Ploomber Cloud](https://platform.ploomber.io/register) account and at least two files zipped up:
 
 1. Your application file (`app.py`)
 2. A dependencies file (`requirements.txt`)

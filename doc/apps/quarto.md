@@ -1,6 +1,9 @@
 # Quarto
 
-You can deploy [Quarto](https://quarto.org/) projects to Ploomber Cloud. We currently
+You can deploy [Quarto](https://quarto.org/) projects to Ploomber Cloud. First, create an [account](https://platform.ploomber.io/register).
+
+
+We currently
 support the following types of projects: website, blog, manuscript, and confluence.
 
 Let's create a new website and put it under `myproject/` (you can use an existing project as well):

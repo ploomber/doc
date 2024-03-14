@@ -1,5 +1,8 @@
 # Voilà
 
+To deploy an app first create an [account](https://platform.ploomber.io/register).
+
+
 ## Voila applications
 
 To deploy an application you need two files:

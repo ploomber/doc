@@ -2,7 +2,9 @@
 
 Ploomber Cloud supports [Panel](https://github.com/holoviz/panel). For information on how to develop Panel apps, [please check the documentation](https://panel.holoviz.org/).
 
-To deploy a Panel app you need at least two files:
+To deploy an app, first create an [account](https://platform.ploomber.io/register).
+
+Once you have an account, you need at least two files:
 
 1. Your application file (`app.py`)
 2. A dependencies file (`requirements.txt`)
