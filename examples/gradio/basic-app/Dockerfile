@@ -1,7 +1,7 @@
 FROM python:3.11
 
 COPY app.py app.py
-RUN pip install gradio
+RUN pip install gradio --no-cache-dir
 
 ENV GRADIO_SERVER_PORT=80
 ENV GRADIO_SERVER_NAME=0.0.0.0
