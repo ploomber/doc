@@ -1,7 +1,7 @@
 # GPUs
 
 ```{note}
-We're giving way free CPUs for a week to test our system. Email us at
+We're giving way free GPUs for a week to test our system. Email us at
 [contact@ploomber.io](mailto:contact@ploomber.io) if you want access.
 ```
 
