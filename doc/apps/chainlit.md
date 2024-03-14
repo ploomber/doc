@@ -2,7 +2,7 @@
 
 To deploy a Chainlit application in Ploomber Cloud you need:
 
-- A [Ploomber Cloud](https://platform.ploomber.io/register) account
+- A [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=chainlit&utm_medium=documentation) account
 - A `Dockerfile`
 - Your code
 

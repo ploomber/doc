@@ -2,7 +2,7 @@
 
 To deploy a Hyperdiv application in Ploomber Cloud you need:
 
-- A [Ploomber Cloud](https://platform.ploomber.io/register) account
+- A [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=hyperdiv&utm_medium=documentation) account
 - A `Dockerfile`
 - Your code
 

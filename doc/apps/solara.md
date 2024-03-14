@@ -2,7 +2,7 @@
 
 Ploomber Cloud supports [Solara](https://solara.dev/). For information on how to develop Solara apps, [please check the documentation](https://solara.dev/docs).
 
-First, create an [account](https://platform.ploomber.io/register).
+First, create an [account](https://platform.ploomber.io/register?utm_source=solara&utm_medium=documentation).
 
 To deploy a Solara app you need at least two files zipped up:
 

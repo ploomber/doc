@@ -1,6 +1,6 @@
 # Voilà
 
-To deploy an app first create an [account](https://platform.ploomber.io/register).
+To deploy an app first create an [account](https://platform.ploomber.io/register?utm_source=voila&utm_medium=documentation).
 
 
 ## Voila applications

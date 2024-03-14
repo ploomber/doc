@@ -2,7 +2,7 @@
 
 To deploy a [Shiny](https://shiny.posit.co/py/docs/overview.html) R application to Ploomber Cloud you need:
 
-- A [Ploomber Cloud](https://platform.ploomber.io/register) account
+- A [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=shiny-r&utm_medium=documentation) account
 - A `startApp.R` file (a script to start the App)
 - An `install.R` file (a script to install dependencies)
 - An `app.R` file (your Shiny code)

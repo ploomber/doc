@@ -1,6 +1,6 @@
 # Quarto
 
-You can deploy [Quarto](https://quarto.org/) projects to Ploomber Cloud. First, create an [account](https://platform.ploomber.io/register).
+You can deploy [Quarto](https://quarto.org/) projects to Ploomber Cloud. First, create an [account](https://platform.ploomber.io/register?utm_source=quarto&utm_medium=documentation).
 
 
 We currently

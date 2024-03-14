@@ -4,7 +4,7 @@
 If you're on a free account, always back up your work because your app can be terminated if inactive. If you need MLflow deployed with production settings, contact us [contact@ploomber.io](mailto:contact.ploomber.io)
 ```
 
-To deploy MLflow, create an [account](https://platform.ploomber.io/register).
+To deploy MLflow, create an [account](https://platform.ploomber.io/register?utm_source=mlflow&utm_medium=documentation).
 
 Then, download the Dockerfile from the
 [example](https://github.com/ploomber/doc/tree/main/examples/docker/mlflow), create a `.zip` file and deploy it using the Docker option:

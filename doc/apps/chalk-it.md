@@ -2,7 +2,7 @@
 
 To deploy a [Chalk'it](https://github.com/ifpen/chalk-it) application in Ploomber Cloud you need:
 
-- A [Ploomber Cloud](https://platform.ploomber.io/register) account
+- A [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=chalk-it&utm_medium=documentation) account
 - A `Dockerfile`
 - A Chalk'it projet definition JSON file renamed to `application.xprjson`
 

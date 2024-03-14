@@ -2,7 +2,7 @@
 
 To deploy a Django application in Ploomber Cloud you need:
 
-- A [Ploomber Cloud](https://platform.ploomber.io/register) account
+- A [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=django&utm_medium=documentation) account
 - A `Dockerfile`
 - A Django project ([example](https://github.com/ploomber/doc/blob/main/examples/django/basic-app))
 

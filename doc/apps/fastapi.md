@@ -2,7 +2,7 @@
 
 To deploy a FastAPI application in Ploomber Cloud you need:
 
-- A [Ploomber Cloud](https://platform.ploomber.io/register) account
+- A [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=fastapi&utm_medium=documentation) account
 - A `Dockerfile`
 - Your code
 

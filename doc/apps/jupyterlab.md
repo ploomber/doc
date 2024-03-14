@@ -5,7 +5,7 @@
 If you're on a free account, always back up your work because your app can be terminated if inactive. If you need JupyterLab deployed with production settings, contact us [contact@ploomber.io](mailto:contact.ploomber.io)
 ```
 
-You can deploy JupyterLab to Ploomber Cloud and use it as a development environment. First, create an [account](https://platform.ploomber.io/register).
+You can deploy JupyterLab to Ploomber Cloud and use it as a development environment. First, create an [account](https://platform.ploomber.io/register?utm_source=jupyterlab&utm_medium=documentation).
 
 Then, download the files from the
 [example](https://github.com/ploomber/doc/tree/main/examples/docker/jupyterlab) (GPU version [available here](https://github.com/ploomber/doc/tree/main/examples/docker/jupyterlab-gpu)), create a `.zip` file and deploy it using the Docker option:
