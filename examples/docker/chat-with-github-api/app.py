@@ -11,6 +11,9 @@ from llama_index.readers.github import GithubClient, GithubRepositoryReader
 from database import db_session
 from models import RepoModel
 
+from pathlib import Path
+import pickle
+
 app = FastAPI() # <- the ASGI entrypoint
 
 class Repo(BaseModel):
@@ -32,11 +35,11 @@ def scrape(repo: Repo) -> dict[str, Any]: # maybe change repo from str
     # Enter into DB
     id = f"{repo.owner}-{repo.name}-{repo.branch}"
     status = "pending"
-    path = f"/indexes/{repo.owner}/index_{repo.name}_{repo.branch}.pickle"
+    path = f"index_{repo.owner}_{repo.branch}.pickle" # /indexes/{repo.owner}/
     repoModel = RepoModel(id=id, status=status, path=path)
     db_session.add(repoModel)
 
-    # If repo has already been entered, exception
+    # If repo has already been entered, except
     try:
         db_session.commit()
     except Exception as e:
@@ -44,8 +47,10 @@ def scrape(repo: Repo) -> dict[str, Any]: # maybe change repo from str
         db_session.rollback()
         raise HTTPException(status_code=500, detail="Repo already exists") from e
 
-    print(f"Repos: {RepoModel.show_all()}")
+    # Show current repos
+    show()
 
+    # Send download task to celery
     task.download_repo.delay(id=id, owner=repo.owner, name=repo.name, branch=repo.branch, path=path)
     
     return {'id': id, 'status': status, 'path': path}
@@ -63,10 +68,32 @@ def status(repo_id) -> dict[str, Any]:
 
 @app.post('/ask')
 def ask(question: Question) -> dict[str, Any]: # maybe change repo from str
-    return {'question': question, 'answer': 'some answer'}
+    answer = answer_question(question.repo_id, question.question)
+    return {'question': question, 'answer': answer}
 
 
 @app.get('/clear')
-def clear(exception=None):
+def clear():
     deleted = RepoModel.query.delete()
     return {'deleted': deleted}
+
+
+def answer_question(repo_id, question):
+    try:
+        path = RepoModel.get_repo_path(repo_id)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Repo not found") from e
+
+    with open(path, "rb") as f:
+        index = pickle.load(f)
+
+    chat_engine = index.as_chat_engine(chat_mode="context", verbose=True)
+
+    response = chat_engine.chat(question)
+    print(response)
+    
+    return response.response
+
+
+def show():
+    print(RepoModel.show_all())

@@ -32,6 +32,9 @@ def download_repo(id, owner, name, branch, path):
             repo=name,
             use_parser=False,
             verbose=True,
+            timeout=None,
+            retries=2,
+            concurrent_requests=2,
             # ignore_directories=None,
             # ignore_file_extensions=None
         )
@@ -39,8 +42,10 @@ def download_repo(id, owner, name, branch, path):
     docs = loader.load_data(branch=branch)
     index = VectorStoreIndex.from_documents(docs)
 
-    with Path(path).open("wb") as f:
-            pickle.dump(index, f, pickle.HIGHEST_PROTOCOL)
+    Path(path).touch()
+
+    with open(path, "wb") as f:
+        pickle.dump(index, f, pickle.HIGHEST_PROTOCOL)
 
     status = RepoModel.update_repo_status(id, "finished")
     db_session.commit()

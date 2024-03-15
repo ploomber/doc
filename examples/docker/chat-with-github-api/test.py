@@ -55,7 +55,7 @@ def status(repo_id):
 @click.argument("repo_id")
 @click.argument("q")
 def ask(repo_id, q):
-    """Set your API key"""
+    q = "what is this repo about?"
     response = requests.post(
             f"{API_ROOT}/ask",
             headers={

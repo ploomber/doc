@@ -36,6 +36,11 @@ class RepoModel(ModelMixin, Base):
         return repo.status
     
     @classmethod
+    def get_repo_path(cls, repo_id):
+        repo = cls.query.filter_by(id=repo_id).first()
+        return repo.path
+    
+    @classmethod
     def show_all(cls):
         return cls.query.filter().all()
 
