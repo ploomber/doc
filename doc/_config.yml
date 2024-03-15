@@ -22,3 +22,4 @@ html:
   use_issues_button: true
   use_repository_button: true
   announcement: 'Do you need help? <a href="https://ploomber.io/community" target="_blank" rel="noopener noreferrer">Join our Slack!</a>'
+  google_analytics_id: G-W7L4GFHF78
