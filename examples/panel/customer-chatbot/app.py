@@ -18,160 +18,138 @@ provides the top 5 recommendations.
 """
 
 import json
-
 import panel as pn
 from openai import OpenAI
-from scipy.spatial import KDTree
-import numpy as np
 import pandas as pd
-from pathlib import Path
-from _wandb import WeightsBiasesTracking
 import datetime
 
-from util import get_embedding_from_text
-
-ORDER_CANCEL = False
-
-WEIGHTS_AND_BIASES_TRACKING = False
-
-if WEIGHTS_AND_BIASES_TRACKING:
-    wandb_client = WeightsBiasesTracking()
-
+ORDER_CANCEL = None
 
 client = OpenAI()
 
 df = pd.read_csv("orders.csv")
 
 
-def detect_order_number(user_query):
-    system_prompt = f"""
-    You're a system that determines the invoice number or the order number in the user query. 
+def is_ready_for_cancellation():
+    return ORDER_CANCEL
 
-    You need to return only the order number.If no invoice number or order number is found 
-    return the string None.
-"""
+
+def detect_order_number_and_intent(user_query):
+    """Function to detect Order ID (Invoice number) and intent in the
+    user query"""
+
+    system_prompt = f"""
+        You're a system that determines the invoice number (order number) and the intent in the user query. 
+
+        You need to return only the order number. If no invoice number or order number is found 
+        return the string None.
+        
+        You need to return only the intent and no additional sentences.
+        If relevant intent is not found then return the string None.
+
+        Valid intents = ["TOTAL_ORDER_COST", "CANCEL", "NUMBER_OF_ITEMS", "ORDER_ITEM_DETAILS"]
+        
+        You should return the response as a JSON.
+    """
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": "What were the items in order 536365?"},
-            {"role": "system", "content": "536365"},
-            {"role": "user", "content": user_query},
-        ],
-        seed=42,
-        n=1,
-    )
-    invoice_number = response.choices[0].message.content
-    print(f"invoice_number: {invoice_number}")
-    return invoice_number if invoice_number != "None" else ""
-
-
-def detect_intent(user_query):
-    system_prompt = f"""
-    You're a system that determines the intent of the user query. 
-
-    You need to return only the intent and no additional sentences.
-    If relevant intent is not found then return the string None.
-
-    Valid intents = ["TOTAL_ORDER_COST", "CANCEL", "NUMBER_OF_ITEMS", "ORDER_ITEM_DETAILS", "CUSTOMER_ORDERS"]
-"""
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        response_format={"type": "json_object"},
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": "What is the total cost of the order 536365"},
-            {"role": "system", "content": "TOTAL_ORDER_COST"},
+            {"role": "system", "content": "{\"OrderID\":\"536365\", \"Intent\":\"TOTAL_ORDER_COST\"}"},
             {"role": "user", "content": "total cost of all items in the order 536365"},
-            {"role": "system", "content": "TOTAL_ORDER_COST"},
+            {"role": "system", "content": "{\"OrderID\":\"536365\", \"Intent\":\"TOTAL_ORDER_COST\"}"},
             {"role": "user", "content": "Which items were ordered in 536364"},
-            {"role": "system", "content": "ORDER_ITEM_DETAILS"},
+            {"role": "system", "content": "{\"OrderID\":\"536364\", \"Intent\":\"ORDER_ITEM_DETAILS\"}"},
             {"role": "user", "content": "Can i cancel the order 458891"},
-            {"role": "system", "content": "CANCEL"},
+            {"role": "system", "content": "{\"OrderID\":\"458891\", \"Intent\":\"CANCEL\"}"},
             {"role": "user", "content": "How many items were ordered in Invoice 558420"},
-            {"role": "system", "content": "NUMBER_OF_ITEMS"},
-            {"role": "user", "content": "Purchases made by Customer ID 17850"},
-            {"role": "system", "content": "CUSTOMER_ORDERS"},
-            {"role": "user", "content": user_query},
+            {"role": "system", "content": "{\"OrderID\":\"558420\", \"Intent\":\"NUMBER_OF_ITEMS\"}"},
+            {"role": "user", "content": "Order ID 17850"},
+            {"role": "system", "content": "{\"OrderID\":\"17850\", \"Intent\":\"None\"}"},
+            {"role": "user", "content": "all products"},
+            {"role": "system", "content": "{\"OrderID\":\"None\", \"Intent\":\"None\"}"},
+            {"role": "user", "content": user_query}
         ],
         seed=42,
         n=1,
     )
-    intent = response.choices[0].message.content
-    return intent if intent != None else ""
+    output = response.choices[0].message.content
+    print(f"JSON Output: {output}")
+    return json.loads(output)
 
 
 def cancel_order(invoice_number):
+    global ORDER_CANCEL
     cancel = {}
     print(df.head())
     invoice_details = df.loc[df['InvoiceNo'] == invoice_number]
     print(len(invoice_details))
     if len(invoice_details) == 0:
+        #invoice_details = df.loc[df['InvoiceNo'] == 'C'+invoice_number]
         cancel['eligible'] = False
-        cancel['reason'] = f"Order not found: {invoice_number}"
-        ORDER_CANCEL = False
+        cancel['reason'] = f"Sorry! We couldn't find order: {invoice_number}. Please try another Order ID"
+        ORDER_CANCEL = None
         return cancel
 
     invoice_date = invoice_details.iloc[0]['InvoiceDate']
     print(f"invoice_date: {invoice_date}")
-    date_object = datetime.datetime.strptime(invoice_date.split()[0], "%d/%m/%y")
+    date_object = datetime.datetime.strptime(invoice_date.split()[0], "%m/%d/%y")
     print(date_object)
     start_date = datetime.datetime(2010, 11, 1)
     end_date = datetime.datetime(2010, 12, 2)
+
     if start_date < date_object < end_date:
+        print("eligible")
         cancel['eligible'] = True
-        ORDER_CANCEL = True
+        ORDER_CANCEL = invoice_number
         return cancel
     else:
         cancel['eligible'] = False
         cancel['reason'] = f"Order {invoice_number} not eligible for cancellation."
-        ORDER_CANCEL = False
+        ORDER_CANCEL = None
         return cancel
 
 
 def customer_chatbot_agent(user_query, verbose=False, tracking=False):
     """An agent that can respond to customer's queries regarding orders"""
 
-    if ORDER_CANCEL and "yes" in user_query:
-        ORDER_CANCEL = False
-        return f"Order successfully cancelled"
+    output = detect_order_number_and_intent(user_query)
 
-    invoice_number = detect_order_number(user_query)
-    if not invoice_number:
+    global ORDER_CANCEL
+
+    if ORDER_CANCEL:
+        if "yes" in user_query.lower():
+            msg = f"Order {ORDER_CANCEL} successfully cancelled. Is there anything else we can help you with?"
+            ORDER_CANCEL = None
+            return msg
+        else:
+            return "Order not cancelled. Is there anything else we can help you with?"
+
+    invoice_number = output["OrderID"]
+    intent = output["Intent"]
+
+    if invoice_number == "None":
         return "Please provide an Order ID"
-    intent = detect_intent(user_query)
-    print(intent)
-    if not intent:
+
+    if intent == "None":
         return "Please provide more details regarding the action you want to take on the order."
 
     if intent != "CANCEL":
-        return "We only support order cancellation requests. "
-
-    return cancel_order(invoice_number)
+        return "We only support order cancellation requests. Please help us with the Order ID you want to cancel"
+    else:
+        cancellation = cancel_order(invoice_number)
+        if cancellation["eligible"]:
+            return "Please confirm that you want to cancel the order (Yes/No)"
+        else:
+            return cancellation['reason']
 
     return "Sorry, we couldn't understand your query!"
 
-    # start_time_ms = datetime.datetime.now().timestamp() * 1000
-    #
-    # response = client.chat.completions.create(
-    #     model="gpt-3.5-turbo",
-    #     messages=[
-    #         {"role": "system", "content": system_prompt},
-    #         {"role": "user", "content": user_query},
-    #     ],
-    #     seed=42,
-    #     n=1,
-    # )
-    #
-    # end_time_ms = round(datetime.datetime.now().timestamp() * 1000)
-    #
-    # if tracking:
-    #     wandb_client.create_trace(system_prompt, response, user_query, start_time_ms, end_time_ms)
-
-    # return response.choices[0].message.content
-
 
 def callback(contents: str, user: str, instance: pn.chat.ChatInterface):
-    return customer_chatbot_agent(contents, tracking=WEIGHTS_AND_BIASES_TRACKING)
+    return customer_chatbot_agent(contents)
 
 
 chat_interface = pn.chat.ChatInterface(callback=callback, callback_exception='verbose')

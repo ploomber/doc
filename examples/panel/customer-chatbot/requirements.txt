@@ -1,5 +1,2 @@
 panel
 openai
-scipy
-numpy
-wandb
