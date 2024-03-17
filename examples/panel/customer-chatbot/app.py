@@ -2,19 +2,14 @@
 Customer chatbot.
 
 Input:
-Users can submit queries that describe the type of books they are looking for, e.g., suggest fiction novels.
-Users can also ask the chat assistant for books by specific author, e.g., recommend books by Dan Brown.
-Answers to user's queries will be based on the Goodreads dataset:
-https://www.kaggle.com/datasets/cristaliss/ultimate-book-collection-top-100-books-up-to-2023
-
-Application logic:
-The app determines the closest matches by comparing user query's embedding to the available
-book embeddings. Embeddings of books are pre-computed on the description column of every book
-and stored in the assets/ folder.
+Users can submit queries by specifying a certain action that they want the chat assistant to perform
+on a particular Order ID.
+Answers to user's queries will be based on the Online Retail dataset:
+https://archive.ics.uci.edu/dataset/352/online+retail
 
 Response:
-The chat assistant then determines the top relevant answers shortlisted by comparing embeddings and
-provides the top 5 recommendations.
+Currently the chat assistant can perform only order cancellations. Given an Order ID it determines
+if the Order ID exists and is eligible for cancellation. If so, it helps the customer cancel the order.
 """
 
 import json
@@ -23,7 +18,7 @@ from openai import OpenAI
 import pandas as pd
 import datetime
 
-ORDER_CANCEL = None
+CONTEXT_DATA = {"OrderId": None, "CustomerId": None}
 
 client = OpenAI()
 
@@ -87,10 +82,9 @@ def cancel_order(invoice_number):
     invoice_details = df.loc[df['InvoiceNo'] == invoice_number]
     print(len(invoice_details))
     if len(invoice_details) == 0:
-        #invoice_details = df.loc[df['InvoiceNo'] == 'C'+invoice_number]
         cancel['eligible'] = False
         cancel['reason'] = f"Sorry! We couldn't find order: {invoice_number}. Please try another Order ID"
-        ORDER_CANCEL = None
+        CONTEXT_DATA["OrderId"] = None
         return cancel
 
     invoice_date = invoice_details.iloc[0]['InvoiceDate']
@@ -103,37 +97,41 @@ def cancel_order(invoice_number):
     if start_date < date_object < end_date:
         print("eligible")
         cancel['eligible'] = True
-        ORDER_CANCEL = invoice_number
+        CONTEXT_DATA["OrderId"] = invoice_number
         return cancel
     else:
         cancel['eligible'] = False
         cancel['reason'] = f"Order {invoice_number} not eligible for cancellation."
-        ORDER_CANCEL = None
+        CONTEXT_DATA["OrderId"] = None
         return cancel
 
 
-def customer_chatbot_agent(user_query, verbose=False, tracking=False):
+def customer_chatbot_agent(user_query, verbose=False):
     """An agent that can respond to customer's queries regarding orders"""
 
     output = detect_order_number_and_intent(user_query)
 
-    global ORDER_CANCEL
+    invoice_number = output["OrderID"]
+    intent = output["Intent"]
 
-    if ORDER_CANCEL:
+    global CONTEXT_DATA
+
+    if not CONTEXT_DATA["CustomerId"]:
+        return "Please provide your CustomerID first"
+
+    if not CONTEXT_DATA["CustomerId"] 
+    if CONTEXT_DATA["OrderId"]:
         if "yes" in user_query.lower():
-            msg = f"Order {ORDER_CANCEL} successfully cancelled. Is there anything else we can help you with?"
-            ORDER_CANCEL = None
+            msg = f"Order {CONTEXT_DATA['OrderId']} successfully cancelled. " \
+                  f"Is there anything else we can help you with?"
+            CONTEXT_DATA["OrderId"] = None
             return msg
         else:
             return "Order not cancelled. Is there anything else we can help you with?"
 
-    invoice_number = output["OrderID"]
-    intent = output["Intent"]
-
     if invoice_number == "None":
         return "Please provide an Order ID"
-
-    if intent == "None":
+    elif intent == "None":
         return "Please provide more details regarding the action you want to take on the order."
 
     if intent != "CANCEL":
@@ -145,8 +143,6 @@ def customer_chatbot_agent(user_query, verbose=False, tracking=False):
         else:
             return cancellation['reason']
 
-    return "Sorry, we couldn't understand your query!"
-
 
 def callback(contents: str, user: str, instance: pn.chat.ChatInterface):
     return customer_chatbot_agent(contents)
@@ -154,8 +150,7 @@ def callback(contents: str, user: str, instance: pn.chat.ChatInterface):
 
 chat_interface = pn.chat.ChatInterface(callback=callback, callback_exception='verbose')
 chat_interface.send(
-    "I am a customer chat assistant! "
-    "Currently we support only order cancellations. Please mention Order ID in your request."
+    "I am a customer chat assistant and I'll help you perform actions on your order!\n"
     "You can deploy your own by signing up at https://ploomber.io",
     user="System",
     respond=False,
