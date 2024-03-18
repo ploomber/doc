@@ -2,6 +2,8 @@
 
 Chat with a CSV file using natural language.
 
+![](screenshot.webp)
+
 ## Getting Started
 
 To get started with this app, follow these steps:
