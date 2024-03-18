@@ -16,6 +16,8 @@ import pickle
 
 app = FastAPI() # <- the ASGI entrypoint
 
+INDEXES = Path("indexes")
+
 class Repo(BaseModel):
     owner: str
     name: str
@@ -34,18 +36,32 @@ def index() -> Dict:
 def scrape(repo: Repo) -> dict[str, Any]: # maybe change repo from str
     # Enter into DB
     id = f"{repo.owner}-{repo.name}-{repo.branch}"
-    status = "pending"
-    path = f"index_{repo.owner}_{repo.branch}.pickle" # /indexes/{repo.owner}/
-    repoModel = RepoModel(id=id, status=status, path=path)
-    db_session.add(repoModel)
+    status = None
+    path = None
 
-    # If repo has already been entered, except
+    # Check if repo has been entered
     try:
-        db_session.commit()
-    except Exception as e:
-        print(e)
-        db_session.rollback()
-        raise HTTPException(status_code=500, detail="Repo already exists") from e
+        status = RepoModel.get_repo_status(id)
+    except:
+        pass
+
+    if status == "pending":
+        raise HTTPException(status_code=500, detail="Repo is being parsed.")
+    elif status == "finished":
+         raise HTTPException(status_code=500, detail="Repo already parsed successfully.")
+    elif status == "failed":
+        path = RepoModel.get_repo_path(id)
+        status = "pending"
+    else: # status == None
+        path = f"{repo.owner}_{repo.name}_{repo.branch}.pickle"
+        status = "pending"
+        repoModel = RepoModel(id=id, status=status, path=path)
+        db_session.add(repoModel)
+        try:
+            db_session.commit()
+        except Exception as e:
+            db_session.rollback()
+            raise HTTPException(status_code=500, detail="Repo already exists.") from e
 
     # Show current repos
     show()
@@ -61,7 +77,7 @@ def status(repo_id) -> dict[str, Any]:
     try:
         stat = RepoModel.get_repo_status(repo_id)
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Repo not found") from e
+        raise HTTPException(status_code=500, detail="Repo not found.") from e
     
     return {'id': repo_id, 'status': stat}
 
@@ -80,9 +96,12 @@ def clear():
 
 def answer_question(repo_id, question):
     try:
-        path = RepoModel.get_repo_path(repo_id)
+        path = INDEXES / RepoModel.get_repo_path(repo_id)
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Repo not found") from e
+        raise HTTPException(status_code=500, detail="Repo not found.") from e
+    
+    if not Path(path).exists():
+        raise HTTPException(status_code=500, detail="Could not load index")
 
     with open(path, "rb") as f:
         index = pickle.load(f)

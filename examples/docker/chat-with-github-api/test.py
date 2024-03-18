@@ -10,7 +10,6 @@ def cli():
 
 @cli.command()
 def index():
-    """Set your API key"""
     response = requests.get(
             f"{API_ROOT}/",
             headers={
@@ -20,12 +19,12 @@ def index():
 
     return click.echo(response.content)
 
+
 @cli.command()
 @click.argument("owner")
 @click.argument("name")
 @click.argument("branch")
 def scrape(owner, name, branch):
-    """Set your API key"""
     response = requests.post(
             f"{API_ROOT}/scrape",
             headers={
@@ -40,7 +39,6 @@ def scrape(owner, name, branch):
 @cli.command()
 @click.argument("repo_id")
 def status(repo_id):
-    """Set your API key"""
     response = requests.get(
             f"{API_ROOT}/status/{repo_id}",
             headers={
@@ -55,7 +53,6 @@ def status(repo_id):
 @click.argument("repo_id")
 @click.argument("q")
 def ask(repo_id, q):
-    q = "what is this repo about?"
     response = requests.post(
             f"{API_ROOT}/ask",
             headers={
