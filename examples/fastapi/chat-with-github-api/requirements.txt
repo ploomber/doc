@@ -8,3 +8,4 @@ sqlalchemy
 llama-index-core
 llama-index-readers-github
 llama_index
+humanize

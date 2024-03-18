@@ -1,7 +1,8 @@
 import click
 import requests
 
-API_ROOT = "http://localhost:8000"
+# Testing with deployed app. If testing locally, use "http://localhost:8000"
+API_ROOT = "https://plain-violet-6921.ploomberapp.io" 
 
 @click.group()
 def cli():
