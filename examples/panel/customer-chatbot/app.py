@@ -18,7 +18,7 @@ from openai import OpenAI
 import pandas as pd
 import datetime
 
-CONTEXT_DATA = {"CancelOrderId": None}
+CONTEXT_DATA = {"CancelOrderId": None, "CancelConfirmationPending": False, "CancelledOrders": []}
 
 client = OpenAI()
 
@@ -78,8 +78,12 @@ def cancel_order(invoice_number):
     3. Order should be a valid existing order
     """
 
-    global ORDER_CANCEL
     cancel = {}
+    if invoice_number in CONTEXT_DATA["CancelledOrders"]:
+        cancel['eligible'] = False
+        cancel['reason'] = f"Order {invoice_number} already cancelled. Please try another Order ID"
+        return cancel
+
     invoice_details = df.loc[df['InvoiceNo'] == invoice_number]
     if len(invoice_details) == 0:
         cancel['eligible'] = False
@@ -128,19 +132,23 @@ def customer_chatbot_agent(user_query, verbose=False):
     if not customerid_input.value:
         return "Please provide your CustomerID first"
 
-    if CONTEXT_DATA["CancelOrderId"]:
+    if CONTEXT_DATA["CancelConfirmationPending"]:
         if "yes" in user_query.lower():
             msg = f"Order {CONTEXT_DATA['CancelOrderId']} successfully cancelled. " \
                   f"Is there anything else we can help you with?"
+            CONTEXT_DATA["CancelledOrders"].append(CONTEXT_DATA['CancelOrderId'])
             CONTEXT_DATA["CancelOrderId"] = None
+            CONTEXT_DATA["CancelConfirmationPending"] = False
             return msg
         else:
+            CONTEXT_DATA["CancelConfirmationPending"] = False
             return "Order not cancelled. Is there anything else we can help you with?"
 
     if invoice_number == "None":
         return "Please provide an Order ID"
     elif intent == "None":
-        return "Please provide more details regarding the action you want to take on the order."
+        return "Please provide more details regarding the action you want to take on the order. " \
+               "Currently we support order cancellations only."
 
     if intent != "CANCEL":
         return "We only support order cancellation requests. " \
@@ -148,8 +156,9 @@ def customer_chatbot_agent(user_query, verbose=False):
     else:
         cancellation = cancel_order(invoice_number)
         if cancellation["eligible"]:
+            CONTEXT_DATA["CancelConfirmationPending"] = True
             return "Please confirm that you want to cancel the order (Yes/No)"
-            return confirm_cancel
+
         else:
             return cancellation['reason']
 
