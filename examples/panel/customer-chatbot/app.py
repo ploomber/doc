@@ -18,15 +18,11 @@ from openai import OpenAI
 import pandas as pd
 import datetime
 
-CONTEXT_DATA = {"OrderId": None, "CustomerId": None}
+CONTEXT_DATA = {"CancelOrderId": None}
 
 client = OpenAI()
 
 df = pd.read_csv("orders.csv")
-
-
-def is_ready_for_cancellation():
-    return ORDER_CANCEL
 
 
 def detect_order_number_and_intent(user_query):
@@ -71,60 +67,72 @@ def detect_order_number_and_intent(user_query):
         n=1,
     )
     output = response.choices[0].message.content
-    print(f"JSON Output: {output}")
     return json.loads(output)
 
 
 def cancel_order(invoice_number):
+    """Function to determine whether an order is eligible for cancellation.
+    Eligibility criteria:
+    1. Order should belong to the Customer ID provided as input
+    2. Order should have been placed in the last 14 days from the date input
+    3. Order should be a valid existing order
+    """
+
     global ORDER_CANCEL
     cancel = {}
-    print(df.head())
     invoice_details = df.loc[df['InvoiceNo'] == invoice_number]
-    print(len(invoice_details))
     if len(invoice_details) == 0:
         cancel['eligible'] = False
         cancel['reason'] = f"Sorry! We couldn't find order: {invoice_number}. Please try another Order ID"
-        CONTEXT_DATA["OrderId"] = None
+        CONTEXT_DATA["CancelOrderId"] = None
+        return cancel
+
+    customerId = str(int(invoice_details.iloc[0]['CustomerID']))
+
+    if customerId.strip() != customerid_input.value.strip():
+        cancel['eligible'] = False
+        cancel['reason'] = f"Sorry! The order {invoice_number} belongs to a different customer"
+        CONTEXT_DATA["CancelOrderId"] = None
         return cancel
 
     invoice_date = invoice_details.iloc[0]['InvoiceDate']
-    print(f"invoice_date: {invoice_date}")
-    date_object = datetime.datetime.strptime(invoice_date.split()[0], "%m/%d/%y")
-    print(date_object)
-    start_date = datetime.datetime(2010, 11, 1)
-    end_date = datetime.datetime(2010, 12, 2)
 
-    if start_date < date_object < end_date:
-        print("eligible")
+    date_object = datetime.datetime.strptime(invoice_date.split()[0], "%m/%d/%y").date()
+    date_difference = date_picker.value - date_object
+
+    if date_difference.days <= 14:
         cancel['eligible'] = True
-        CONTEXT_DATA["OrderId"] = invoice_number
+        CONTEXT_DATA["CancelOrderId"] = invoice_number
         return cancel
     else:
         cancel['eligible'] = False
-        cancel['reason'] = f"Order {invoice_number} not eligible for cancellation."
-        CONTEXT_DATA["OrderId"] = None
+        cancel['reason'] = f"Order {invoice_number} not eligible for cancellation. " \
+                           f"We can only cancel orders placed in the last 14 days"
+        CONTEXT_DATA["CancelOrderId"] = None
         return cancel
 
 
 def customer_chatbot_agent(user_query, verbose=False):
     """An agent that can respond to customer's queries regarding orders"""
 
+    global CONTEXT_DATA
+
     output = detect_order_number_and_intent(user_query)
 
     invoice_number = output["OrderID"]
     intent = output["Intent"]
 
-    global CONTEXT_DATA
+    if verbose:
+        print(f"OrderID: {invoice_number}, Intent: {intent}")
 
-    if not CONTEXT_DATA["CustomerId"]:
+    if not customerid_input.value:
         return "Please provide your CustomerID first"
 
-    if not CONTEXT_DATA["CustomerId"] 
-    if CONTEXT_DATA["OrderId"]:
+    if CONTEXT_DATA["CancelOrderId"]:
         if "yes" in user_query.lower():
-            msg = f"Order {CONTEXT_DATA['OrderId']} successfully cancelled. " \
+            msg = f"Order {CONTEXT_DATA['CancelOrderId']} successfully cancelled. " \
                   f"Is there anything else we can help you with?"
-            CONTEXT_DATA["OrderId"] = None
+            CONTEXT_DATA["CancelOrderId"] = None
             return msg
         else:
             return "Order not cancelled. Is there anything else we can help you with?"
@@ -135,11 +143,13 @@ def customer_chatbot_agent(user_query, verbose=False):
         return "Please provide more details regarding the action you want to take on the order."
 
     if intent != "CANCEL":
-        return "We only support order cancellation requests. Please help us with the Order ID you want to cancel"
+        return "We only support order cancellation requests. " \
+               "Please help us with the Order ID you want to cancel."
     else:
         cancellation = cancel_order(invoice_number)
         if cancellation["eligible"]:
             return "Please confirm that you want to cancel the order (Yes/No)"
+            return confirm_cancel
         else:
             return cancellation['reason']
 
@@ -151,12 +161,18 @@ def callback(contents: str, user: str, instance: pn.chat.ChatInterface):
 chat_interface = pn.chat.ChatInterface(callback=callback, callback_exception='verbose')
 chat_interface.send(
     "I am a customer chat assistant and I'll help you perform actions on your order!\n"
+    "Please enter your customer ID and current date before further processing.\n\n"
     "You can deploy your own by signing up at https://ploomber.io",
     user="System",
     respond=False,
 )
 
-pn.template.MaterialTemplate(
+customerid_input = pn.widgets.TextInput(name='Customer ID', placeholder='Enter your Customer ID')
+date_picker = pn.widgets.DatePicker(name="Today's Date", value=datetime.datetime(2011, 12, 9))
+
+
+pn.template.FastListTemplate(
     title="Customer Chatbot",
+    sidebar=[customerid_input, date_picker],
     main=[chat_interface],
 ).servable()
