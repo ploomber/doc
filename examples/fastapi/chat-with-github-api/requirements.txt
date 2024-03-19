@@ -1,0 +1,11 @@
+uvicorn==0.21.1
+fastapi==0.95.0 
+redis==4.5.4
+celery==5.2.7
+watchdog
+python-dotenv==1.0.0
+sqlalchemy
+llama-index-core
+llama-index-readers-github
+llama_index
+humanize
