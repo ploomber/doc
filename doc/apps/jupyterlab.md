@@ -52,6 +52,8 @@ ploomber-cloud init
 ploomber-cloud deploy --watch
 ```
 
+You can view the deployed application by logging in to your Ploomber Cloud account.
+
 ````
 `````
 
