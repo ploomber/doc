@@ -19,9 +19,8 @@ Then, download the files from the
 ````
 
 ````{tab-item} Command-line
-__Try an example__
 
-To download and deploy Jupyter start by installing Ploomber Cloud and setting your API key:
+To download and deploy JupyterLab start by installing Ploomber Cloud and setting your API key:
 
 ```sh
 pip install ploomber-cloud
@@ -32,7 +31,7 @@ ploomber-cloud key YOUR-KEY
 If you don't have an API key yet, follow the [instructions here.](../quickstart/apikey.md)
 ```
 
-Now, download the Jupyterlab example. It will prompt you for a location to download the app. To download in the current directory, just press enter.
+Now, download the JupyterLab example. It will prompt you for a location to download the app. To download in the current directory, just press enter.
 
 ```sh
 ploomber-cloud examples docker/jupyterlab
