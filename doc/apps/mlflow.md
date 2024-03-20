@@ -4,12 +4,59 @@
 If you're on a free account, always back up your work because your app can be terminated if inactive. If you need MLflow deployed with production settings, contact us [contact@ploomber.io](mailto:contact.ploomber.io)
 ```
 
+`````{tab-set}
+
+````{tab-item} Web
+__Deploy from the menu__
+
 To deploy MLflow, create an [account](https://platform.ploomber.io/register?utm_source=mlflow&utm_medium=documentation).
 
 Then, download the Dockerfile from the
 [example](https://github.com/ploomber/doc/tree/main/examples/docker/mlflow), create a `.zip` file and deploy it using the Docker option:
 
 ![](../static/docker.png)
+````
+
+````{tab-item} Command-line
+
+To download and deploy MLflow start by installing Ploomber Cloud and setting your API key:
+
+```sh
+pip install ploomber-cloud
+ploomber-cloud key YOUR-KEY
+```
+
+```{tip}
+If you don't have an API key yet, follow the [instructions here.](../quickstart/apikey.md)
+```
+
+Now, download the MLflow example. It will prompt you for a location to download the app. To download in the current directory, just press enter.
+
+```sh
+ploomber-cloud examples docker/mlflow
+```
+
+You should see a confirmation with instructions on deploying your app. Now, navigate to your application:
+
+```sh
+cd location-you-entered/mlflow/
+```
+
+__Deploy from the CLI__
+
+Initialize and deploy your app with:
+
+```sh
+ploomber-cloud init
+ploomber-cloud deploy --watch
+```
+
+You can view the deployed application by logging in to your Ploomber Cloud account.
+
+````
+
+`````
+
 
 Once the deployment finishes, open the app by clicking on `VIEW APPLICATION`, if all
 went well you'll be prompted for a user and a password:
