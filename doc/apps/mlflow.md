@@ -15,6 +15,7 @@ Then, download the Dockerfile from the
 [example](https://github.com/ploomber/doc/tree/main/examples/docker/mlflow), create a `.zip` file and deploy it using the Docker option:
 
 ![](../static/docker.png)
+````
 
 ````{tab-item} Command-line
 
