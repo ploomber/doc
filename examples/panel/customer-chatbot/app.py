@@ -139,10 +139,17 @@ def cancel_order(invoice_number):
         CONTEXT_DATA["CancelOrderId"] = None
         return cancel
 
-    invoice_date = invoice_details.iloc[0]["InvoiceDate"]
-
-    date_object = datetime.datetime.strptime(invoice_date.split()[0], "%m/%d/%y").date()
-    date_difference = date_picker.value - date_object
+    try:
+        invoice_date = invoice_details.iloc[0]["InvoiceDate"]
+        date_object = datetime.datetime.strptime(
+            invoice_date.split()[0], "%m/%d/%y"
+        ).date()
+        date_difference = date_picker.value - date_object
+    except Exception as e:
+        cancel["eligible"] = False
+        cancel["reason"] = f"Failed to process Invoice date for order {invoice_number}"
+        CONTEXT_DATA["CancelOrderId"] = None
+        return cancel
 
     if date_difference.days <= 14:
         cancel["eligible"] = True
@@ -164,6 +171,11 @@ def customer_chatbot_agent(user_query, verbose=False):
     global CONTEXT_DATA
 
     output = detect_order_number_and_intent(user_query)
+    if verbose:
+        print(output)
+
+    if not isinstance(output, dict):
+        return "We faced some issue processing your query. Please try again!"
 
     if "OrderID" not in output or "Intent" not in output:
         return (
@@ -183,6 +195,7 @@ def customer_chatbot_agent(user_query, verbose=False):
     elif customerid_input.value not in all_customers:
         return "Please provide a valid CustomerID"
 
+    # Check if user has requested for order cancellation and confirm the same
     if CONTEXT_DATA["CancelConfirmationPending"]:
         if "yes" in user_query.lower():
             msg = (
@@ -198,7 +211,10 @@ def customer_chatbot_agent(user_query, verbose=False):
             return "Order not cancelled. Is there anything else we can help you with?"
 
     if invoice_number == "None":
-        return "Please provide an Order ID"
+        return (
+            "Please provide an Order ID along with the action you need to perform on the order. "
+            "Note that we only support cancellations currently."
+        )
     elif intent == "None":
         return (
             "Please provide more details regarding the action you want to take on the order. "
@@ -211,13 +227,18 @@ def customer_chatbot_agent(user_query, verbose=False):
             "Please help us with the Order ID you want to cancel."
         )
     else:
-        cancellation = cancel_order(invoice_number)
-        if cancellation["eligible"]:
-            CONTEXT_DATA["CancelConfirmationPending"] = True
-            return "Please confirm that you want to cancel the order (Yes/No)"
+        try:
+            cancellation = cancel_order(invoice_number)
+            if cancellation["eligible"]:
+                CONTEXT_DATA["CancelConfirmationPending"] = True
+                return "Please confirm that you want to cancel the order (Yes/No)"
 
-        else:
-            return cancellation["reason"]
+            else:
+                return cancellation["reason"]
+        except Exception as e:
+            if verbose:
+                print(str(e))
+            return "We faced some issues in cancelling your order. Please try again!"
 
 
 def callback(contents: str, user: str, instance: pn.chat.ChatInterface):
