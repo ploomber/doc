@@ -13,16 +13,26 @@ if the Order ID exists and is eligible for cancellation. If so, it helps the cus
 """
 
 import json
+import math
 import panel as pn
 from openai import OpenAI
 import pandas as pd
 import datetime
 
-CONTEXT_DATA = {"CancelOrderId": None, "CancelConfirmationPending": False, "CancelledOrders": []}
+CONTEXT_DATA = {
+    "CancelOrderId": None,
+    "CancelConfirmationPending": False,
+    "CancelledOrders": [],
+}
 
 client = OpenAI()
 
 df = pd.read_csv("orders.csv")
+all_customers = [
+    str(int(customer))
+    for customer in df["CustomerID"].tolist()
+    if not math.isnan(customer)
+]
 
 
 def detect_order_number_and_intent(user_query):
@@ -48,20 +58,35 @@ def detect_order_number_and_intent(user_query):
         messages=[
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": "What is the total cost of the order 536365"},
-            {"role": "system", "content": "{\"OrderID\":\"536365\", \"Intent\":\"TOTAL_ORDER_COST\"}"},
+            {
+                "role": "system",
+                "content": '{"OrderID":"536365", "Intent":"TOTAL_ORDER_COST"}',
+            },
             {"role": "user", "content": "total cost of all items in the order 536365"},
-            {"role": "system", "content": "{\"OrderID\":\"536365\", \"Intent\":\"TOTAL_ORDER_COST\"}"},
+            {
+                "role": "system",
+                "content": '{"OrderID":"536365", "Intent":"TOTAL_ORDER_COST"}',
+            },
             {"role": "user", "content": "Which items were ordered in 536364"},
-            {"role": "system", "content": "{\"OrderID\":\"536364\", \"Intent\":\"ORDER_ITEM_DETAILS\"}"},
+            {
+                "role": "system",
+                "content": '{"OrderID":"536364", "Intent":"ORDER_ITEM_DETAILS"}',
+            },
             {"role": "user", "content": "Can i cancel the order 458891"},
-            {"role": "system", "content": "{\"OrderID\":\"458891\", \"Intent\":\"CANCEL\"}"},
-            {"role": "user", "content": "How many items were ordered in Invoice 558420"},
-            {"role": "system", "content": "{\"OrderID\":\"558420\", \"Intent\":\"NUMBER_OF_ITEMS\"}"},
+            {"role": "system", "content": '{"OrderID":"458891", "Intent":"CANCEL"}'},
+            {
+                "role": "user",
+                "content": "How many items were ordered in Invoice 558420",
+            },
+            {
+                "role": "system",
+                "content": '{"OrderID":"558420", "Intent":"NUMBER_OF_ITEMS"}',
+            },
             {"role": "user", "content": "Order ID 17850"},
-            {"role": "system", "content": "{\"OrderID\":\"17850\", \"Intent\":\"None\"}"},
+            {"role": "system", "content": '{"OrderID":"17850", "Intent":"None"}'},
             {"role": "user", "content": "all products"},
-            {"role": "system", "content": "{\"OrderID\":\"None\", \"Intent\":\"None\"}"},
-            {"role": "user", "content": user_query}
+            {"role": "system", "content": '{"OrderID":"None", "Intent":"None"}'},
+            {"role": "user", "content": user_query},
         ],
         seed=42,
         n=1,
@@ -80,38 +105,55 @@ def cancel_order(invoice_number):
 
     cancel = {}
     if invoice_number in CONTEXT_DATA["CancelledOrders"]:
-        cancel['eligible'] = False
-        cancel['reason'] = f"Order {invoice_number} already cancelled. Please try another Order ID"
+        cancel["eligible"] = False
+        cancel[
+            "reason"
+        ] = f"Order {invoice_number} already cancelled. Please try another Order ID"
         return cancel
 
-    invoice_details = df.loc[df['InvoiceNo'] == invoice_number]
+    invoice_details = df.loc[df["InvoiceNo"] == invoice_number]
     if len(invoice_details) == 0:
-        cancel['eligible'] = False
-        cancel['reason'] = f"Sorry! We couldn't find order: {invoice_number}. Please try another Order ID"
+        cancel["eligible"] = False
+        cancel[
+            "reason"
+        ] = f"Sorry! We couldn't find order: {invoice_number}. Please try another Order ID"
         CONTEXT_DATA["CancelOrderId"] = None
         return cancel
 
-    customerId = str(int(invoice_details.iloc[0]['CustomerID']))
+    customerId = invoice_details.iloc[0]["CustomerID"]
+    if not math.isnan(customerId):
+        customerId = str(int(customerId))
+    else:
+        cancel["eligible"] = False
+        cancel[
+            "reason"
+        ] = f"There is no information on the Customer ID for this order. Please try another Order ID"
+        CONTEXT_DATA["CancelOrderId"] = None
+        return cancel
 
     if customerId.strip() != customerid_input.value.strip():
-        cancel['eligible'] = False
-        cancel['reason'] = f"Sorry! The order {invoice_number} belongs to a different customer"
+        cancel["eligible"] = False
+        cancel[
+            "reason"
+        ] = f"Sorry! The order {invoice_number} belongs to a different customer"
         CONTEXT_DATA["CancelOrderId"] = None
         return cancel
 
-    invoice_date = invoice_details.iloc[0]['InvoiceDate']
+    invoice_date = invoice_details.iloc[0]["InvoiceDate"]
 
     date_object = datetime.datetime.strptime(invoice_date.split()[0], "%m/%d/%y").date()
     date_difference = date_picker.value - date_object
 
     if date_difference.days <= 14:
-        cancel['eligible'] = True
+        cancel["eligible"] = True
         CONTEXT_DATA["CancelOrderId"] = invoice_number
         return cancel
     else:
-        cancel['eligible'] = False
-        cancel['reason'] = f"Order {invoice_number} not eligible for cancellation. " \
-                           f"We can only cancel orders placed in the last 14 days"
+        cancel["eligible"] = False
+        cancel["reason"] = (
+            f"Order {invoice_number} not eligible for cancellation. "
+            f"We can only cancel orders placed in the last 14 days"
+        )
         CONTEXT_DATA["CancelOrderId"] = None
         return cancel
 
@@ -123,6 +165,13 @@ def customer_chatbot_agent(user_query, verbose=False):
 
     output = detect_order_number_and_intent(user_query)
 
+    if "OrderID" not in output or "Intent" not in output:
+        return (
+            "Please provide a valid request. You need to "
+            "enter CustomerID in the left sidebar. "
+            "Please enter a valid OrderID that you need to cancel."
+        )
+
     invoice_number = output["OrderID"]
     intent = output["Intent"]
 
@@ -131,12 +180,16 @@ def customer_chatbot_agent(user_query, verbose=False):
 
     if not customerid_input.value:
         return "Please provide your CustomerID first"
+    elif customerid_input.value not in all_customers:
+        return "Please provide a valid CustomerID"
 
     if CONTEXT_DATA["CancelConfirmationPending"]:
         if "yes" in user_query.lower():
-            msg = f"Order {CONTEXT_DATA['CancelOrderId']} successfully cancelled. " \
-                  f"Is there anything else we can help you with?"
-            CONTEXT_DATA["CancelledOrders"].append(CONTEXT_DATA['CancelOrderId'])
+            msg = (
+                f"Order {CONTEXT_DATA['CancelOrderId']} successfully cancelled. "
+                f"Is there anything else we can help you with?"
+            )
+            CONTEXT_DATA["CancelledOrders"].append(CONTEXT_DATA["CancelOrderId"])
             CONTEXT_DATA["CancelOrderId"] = None
             CONTEXT_DATA["CancelConfirmationPending"] = False
             return msg
@@ -147,12 +200,16 @@ def customer_chatbot_agent(user_query, verbose=False):
     if invoice_number == "None":
         return "Please provide an Order ID"
     elif intent == "None":
-        return "Please provide more details regarding the action you want to take on the order. " \
-               "Currently we support order cancellations only."
+        return (
+            "Please provide more details regarding the action you want to take on the order. "
+            "Currently we support order cancellations only."
+        )
 
     if intent != "CANCEL":
-        return "We only support order cancellation requests. " \
-               "Please help us with the Order ID you want to cancel."
+        return (
+            "We only support order cancellation requests. "
+            "Please help us with the Order ID you want to cancel."
+        )
     else:
         cancellation = cancel_order(invoice_number)
         if cancellation["eligible"]:
@@ -160,14 +217,14 @@ def customer_chatbot_agent(user_query, verbose=False):
             return "Please confirm that you want to cancel the order (Yes/No)"
 
         else:
-            return cancellation['reason']
+            return cancellation["reason"]
 
 
 def callback(contents: str, user: str, instance: pn.chat.ChatInterface):
     return customer_chatbot_agent(contents)
 
 
-chat_interface = pn.chat.ChatInterface(callback=callback, callback_exception='verbose')
+chat_interface = pn.chat.ChatInterface(callback=callback, callback_exception="verbose")
 chat_interface.send(
     "I am a customer chat assistant and I'll help you perform actions on your order!\n"
     "Please enter your customer ID and current date before further processing.\n\n"
@@ -176,8 +233,12 @@ chat_interface.send(
     respond=False,
 )
 
-customerid_input = pn.widgets.TextInput(name='Customer ID', placeholder='Enter your Customer ID')
-date_picker = pn.widgets.DatePicker(name="Today's Date", value=datetime.datetime(2011, 12, 9))
+customerid_input = pn.widgets.TextInput(
+    name="Customer ID", placeholder="Enter your Customer ID"
+)
+date_picker = pn.widgets.DatePicker(
+    name="Today's Date", value=datetime.datetime(2011, 12, 9)
+)
 
 
 pn.template.FastListTemplate(
