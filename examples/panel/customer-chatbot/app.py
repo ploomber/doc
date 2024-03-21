@@ -180,7 +180,7 @@ def customer_chatbot_agent(user_query, verbose=False):
     if "OrderID" not in output or "Intent" not in output:
         return (
             "Please provide a valid request. You need to "
-            "enter CustomerID in the left sidebar. "
+            "enter CustomerID in the left sidebar if not done already. "
             "Please enter a valid OrderID that you need to cancel."
         )
 
@@ -191,7 +191,7 @@ def customer_chatbot_agent(user_query, verbose=False):
         print(f"OrderID: {invoice_number}, Intent: {intent}")
 
     if not customerid_input.value:
-        return "Please provide your CustomerID first"
+        return "Please provide your CustomerID first in the left sidebar"
     elif customerid_input.value not in all_customers:
         return "Please provide a valid CustomerID"
 
