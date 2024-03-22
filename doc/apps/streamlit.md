@@ -3,7 +3,7 @@ myst:
   html_meta:
     description: Deploy Streamlit apps for free
     keywords: streamlit, deployment, hosting
-    property=:og:image: https://docs.cloud.ploomber.io/en/latest/_images/streamlit1.png
+    property=og:image: https://docs.cloud.ploomber.io/en/latest/_images/streamlit1.png
 ---
 
 
