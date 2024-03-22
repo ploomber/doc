@@ -1,3 +1,14 @@
+---
+myst:
+  html_meta:
+    description: Deploy a Shiny (Python) app on Ploomber in seconds with this guide.
+    keywords: shiny, python, deployment, hosting
+    property=og:title: Shiny (Python) | Ploomber Docs
+    property=og:description: Deploy a Shiny (Python) app on Ploomber in seconds with this guide.
+    property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/shiny-python.html
+---
+
+
 # Shiny (Python)
 
 To deploy a [Shiny](https://shiny.posit.co/py/docs/overview.html) Python application to Ploomber Cloud you need:

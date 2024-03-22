@@ -1,3 +1,14 @@
+---
+myst:
+  html_meta:
+    description: Deploy a Chainlit app on Ploomber in seconds with this guide.
+    keywords: chainlit, deployment, hosting
+    property=og:title: Chainlit | Ploomber Docs
+    property=og:description: Deploy a Chainlit app on Ploomber in seconds with this guide.
+    property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/chainlit.html
+---
+
+
 # Chainlit
 
 To deploy a Chainlit application in Ploomber Cloud you need:

@@ -1,3 +1,14 @@
+---
+myst:
+  html_meta:
+    description: Deploy a Django app on Ploomber in seconds with this guide.
+    keywords: django, deployment, hosting
+    property=og:title: Django | Ploomber Docs
+    property=og:description: Deploy a Django app on Ploomber in seconds with this guide.
+    property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/django.html
+---
+
+
 # Django
 
 To deploy a Django application in Ploomber Cloud you need:

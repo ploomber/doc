@@ -1,3 +1,14 @@
+---
+myst:
+  html_meta:
+    description: Deploy a Gradio app on Ploomber in seconds with this guide.
+    keywords: gradio, deployment, hosting
+    property=og:title: Gradio | Ploomber Docs
+    property=og:description: Deploy a Gradio app on Ploomber in seconds with this guide.
+    property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/gradio.html
+---
+
+
 # Gradio
 
 To deploy a Gradio application in Ploomber Cloud you need:

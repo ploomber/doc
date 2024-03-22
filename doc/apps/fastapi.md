@@ -1,3 +1,14 @@
+---
+myst:
+  html_meta:
+    description: Deploy a FastAPI app on Ploomber in seconds with this guide.
+    keywords: fastapi, deployment, hosting
+    property=og:title: FastAPI | Ploomber Docs
+    property=og:description: Deploy a FastAPI app on Ploomber in seconds with this guide.
+    property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/fastapi.html
+---
+
+
 # FastAPI
 
 To deploy a FastAPI application in Ploomber Cloud you need:

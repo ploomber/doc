@@ -1,3 +1,14 @@
+---
+myst:
+  html_meta:
+    description: Deploy a Flask app on Ploomber in seconds with this guide.
+    keywords: flask, deployment, hosting
+    property=og:title: Flask | Ploomber Docs
+    property=og:description: Deploy a Flask app on Ploomber in seconds with this guide.
+    property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/flask.html
+---
+
+
 # Flask
 
 To deploy a Flask application in Ploomber Cloud you need:

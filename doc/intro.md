@@ -1,10 +1,10 @@
 ---
 myst:
   html_meta:
-    description: Ploomber is a cloud platform to deploy AI, Machine Learning and data applications. Drag and drop to deploy or via Git.
+    description: Ploomber is a cloud platform to deploy AI, Machine Learning and data applications. Deploy with drag and drop, or via Git.
     keywords: hosting, deployment, ai, machine learning, data
     property=og:title: Ploomber Docs
-    property=og:description: Ploomber is a cloud platform to deploy AI, Machine Learning and data applications. Drag and drop to deploy or via Git.
+    property=og:description: Ploomber is a cloud platform to deploy AI, Machine Learning and data applications. Deploy with drag and drop, or via Git.
     property=og:image: https://docs.cloud.ploomber.io/en/latest/_static/opengraph-images-root.png
     property=og:url: https://docs.cloud.ploomber.io/en/latest
 ---
