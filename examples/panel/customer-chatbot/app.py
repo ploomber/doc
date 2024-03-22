@@ -191,7 +191,7 @@ def customer_chatbot_agent(user_query, verbose=False):
         print(f"OrderID: {invoice_number}, Intent: {intent}")
 
     if not customerid_input.value:
-        return "Please provide your CustomerID first in the left sidebar"
+        customerid_input.value = "15574"
     elif customerid_input.value not in all_customers:
         return "Please provide a valid CustomerID"
 
@@ -254,16 +254,34 @@ chat_interface.send(
     respond=False,
 )
 
+
+app_description = pn.pane.Markdown(
+    """
+### How does it work?
+This app allows users to perform actions on their orders. Currently the chat assistant only supports order cancellations. This applies to orders in the dataset: https://archive.ics.uci.edu/dataset/352/online+retail
+
+1. Input a valid CustomerID. An user is only allowed to cancel their own orders. Default CustomerID is 15574.
+2. Input today's date. This field is required since orders in the mentioned dataset have all been placed between 2010 to 2011. 
+Based on the input date the chatbot determines if the order requested for cancellation has been placed within the last 14 days. If so, it is eligible for cancellation, else not.
+3. Users can enter queries like "Please cancel Order ID 556878".
+3. Let's see an example: Customer ID 15574 has placed orders 556878 (15.6.2011), 539215 (16.12.2010) and 536796 (2.12.2010).
+Since the default today's is 20.6.2011 it is possible to cancel order 556878, but not the rest of the orders since they are more than 14 days old.
+In order to cancel order 539215 change today's date to some relevant date that is not more than 14 days from 16.12.2010 like 18.12.2010. Similarly for order ID 536796.
+""",
+    margin=(0, 0, 10, 0),
+)
+
 customerid_input = pn.widgets.TextInput(
-    name="Customer ID", placeholder="Enter your Customer ID"
+    name="Customer ID", placeholder="15574"
 )
 date_picker = pn.widgets.DatePicker(
-    name="Today's Date", value=datetime.datetime(2011, 12, 9)
+    name="Today's Date", value=datetime.datetime(2011, 6, 20)
 )
 
 
 pn.template.FastListTemplate(
     title="Customer Chatbot",
-    sidebar=[customerid_input, date_picker],
+    sidebar=[app_description, customerid_input, date_picker],
     main=[chat_interface],
+    sidebar_width=450
 ).servable()
