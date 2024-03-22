@@ -1,3 +1,14 @@
+---
+myst:
+  html_meta:
+    description: Deploy a Voilà app on Ploomber in seconds with this guide.
+    keywords: voila, deployment, hosting
+    property=og:title: Voilà | Ploomber Docs
+    property=og:description: Deploy a Voilà app on Ploomber in seconds with this guide.
+    property=og:image: https://docs.cloud.ploomber.io/en/latest/_static/opengraph-images-voila.png
+    property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/voila.html
+---
+
 # Voilà
 
 To deploy an app first create an [account](https://platform.ploomber.io/register?utm_source=voila&utm_medium=documentation).

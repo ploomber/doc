@@ -17,8 +17,8 @@ sphinx:
     html_theme_options:
       navigation_with_keys: true
 
-    ogp_site_url: https://docs.cloud.ploomber.io/en/latest/
-
+    html_static_path:
+      - static/opengraph
 html:
   favicon: static/favicon.png
   use_issues_button: true

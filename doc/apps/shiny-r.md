@@ -1,3 +1,14 @@
+---
+myst:
+  html_meta:
+    description: Deploy a Shiny app on Ploomber in seconds with this guide.
+    keywords: shiny, deployment, hosting
+    property=og:title: Shiny | Ploomber Docs
+    property=og:description: Deploy a Shiny app on Ploomber in seconds with this guide.
+    property=og:image: https://docs.cloud.ploomber.io/en/latest/_static/opengraph-images-shiny-r.png
+    property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/shiny-r.html
+---
+
 # Shiny (R)
 
 To deploy a [Shiny](https://shiny.posit.co/py/docs/overview.html) R application to Ploomber Cloud you need:

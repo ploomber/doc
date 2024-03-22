@@ -1,3 +1,15 @@
+---
+myst:
+  html_meta:
+    description: Deploy a Dash app on Ploomber in seconds with this guide.
+    keywords: dash, deployment, hosting
+    property=og:title: Dash | Ploomber Docs
+    property=og:description: Deploy a Dash app on Ploomber in seconds with this guide.
+    property=og:image: https://docs.cloud.ploomber.io/en/latest/_static/opengraph-images-dash.png
+    property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/dash.html
+---
+
+
 # Dash
 
 To deploy a [Dash](https://dash.plotly.com/) application you need a [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=dash&utm_medium=documentation) account and at least two files zipped up:

@@ -5,7 +5,7 @@ myst:
     keywords: panel, deployment, hosting
     property=og:title: Panel | Ploomber Docs
     property=og:description: Deploy a Panel app on Ploomber in seconds with this guide.
-    property=og:image: https://docs.cloud.ploomber.io/en/latest/_images/panel-logo.png
+    property=og:image: https://docs.cloud.ploomber.io/en/latest/_static/opengraph-images-panel.png
     property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/panel.html
 ---
 

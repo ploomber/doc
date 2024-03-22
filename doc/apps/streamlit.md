@@ -5,7 +5,7 @@ myst:
     keywords: streamlit, deployment, hosting
     property=og:title: Streamlit | Ploomber Docs
     property=og:description: Deploy a Streamlit app on Ploomber in seconds with this guide.
-    property=og:image: https://docs.cloud.ploomber.io/en/latest/_images/streamlit-logo.png
+    property=og:image: https://docs.cloud.ploomber.io/en/latest/_static/opengraph-images-streamlit.png
     property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/streamlit.html
 ---
 
