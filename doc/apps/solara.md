@@ -1,3 +1,13 @@
+---
+myst:
+  html_meta:
+    description: Deploy a Solara app on Ploomber in seconds with this guide.
+    keywords: solara, deployment, hosting
+    property=og:image: https://docs.cloud.ploomber.io/en/latest/_images/solara-logo.png
+    property=og:title: Solara | Ploomber Docs
+---
+
+
 # Solara
 
 Ploomber Cloud supports [Solara](https://solara.dev/). For information on how to develop Solara apps, [please check the documentation](https://solara.dev/docs).

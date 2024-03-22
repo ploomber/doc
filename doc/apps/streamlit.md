@@ -1,15 +1,15 @@
 ---
 myst:
   html_meta:
-    description: Deploy Streamlit apps for free
+    description: Deploy a Streamlit app on Ploomber in seconds with this guide.
     keywords: streamlit, deployment, hosting
-    property=og:image: https://docs.cloud.ploomber.io/en/latest/_images/streamlit1.png
+    property=og:image: https://docs.cloud.ploomber.io/en/latest/_images/streamlit-logo.png
+    property=og:title: Streamlit | Ploomber Docs
 ---
-
 
 # Streamlit
 
-Ploomber Cloud supports [Streamlit](https://streamlit.io/). For information on how to develop Streamlit apps, [please check the documentation](https://docs.streamlit.io/).
+Deploy a [Streamlit](https://streamlit.io/) app on Ploomber in seconds with this guide.
 
 First, create an [account](https://platform.ploomber.io/register?utm_source=streamlit&utm_medium=documentation).
 
