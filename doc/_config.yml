@@ -19,9 +19,6 @@ sphinx:
 
     ogp_site_url: https://docs.cloud.ploomber.io/en/latest/
 
-  extra_extensions:
-    - sphinxext.opengraph
-
 html:
   favicon: static/favicon.png
   use_issues_button: true

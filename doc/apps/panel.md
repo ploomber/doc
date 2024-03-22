@@ -3,13 +3,13 @@ myst:
   html_meta:
     description: Deploy a Panel app on Ploomber in seconds with this guide.
     keywords: panel, deployment, hosting
-    property=og:image: https://docs.cloud.ploomber.io/en/latest/_images/panel-logo.png
     property=og:title: Panel | Ploomber Docs
+    property=og:description: Deploy a Panel app on Ploomber in seconds with this guide.
+    property=og:image: https://docs.cloud.ploomber.io/en/latest/_images/panel-logo.png
+    property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/panel.html
 ---
 
-
 # Panel
-
 
 Ploomber Cloud supports [Panel](https://github.com/holoviz/panel). For information on how to develop Panel apps, [please check the documentation](https://panel.holoviz.org/).
 

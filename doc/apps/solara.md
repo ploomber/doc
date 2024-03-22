@@ -3,8 +3,10 @@ myst:
   html_meta:
     description: Deploy a Solara app on Ploomber in seconds with this guide.
     keywords: solara, deployment, hosting
-    property=og:image: https://docs.cloud.ploomber.io/en/latest/_images/solara-logo.png
     property=og:title: Solara | Ploomber Docs
+    property=og:description: Deploy a Solara app on Ploomber in seconds with this guide.
+    property=og:image: https://docs.cloud.ploomber.io/en/latest/_images/solara-logo.png
+    property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/solara.html
 ---
 
 
