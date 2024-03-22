@@ -1,11 +1,11 @@
-# Ploomber Cloud
+---
+myst:
+  html_meta:
+    description: Ploomber is a cloud platform to deploy AI, Machine Learning and data applications. Deploy from a UI or Git.
+    keywords: hosting, deployment, ai, machine learning, data
+---
 
-```{eval-rst}
-.. meta::
-   :description: A platform to deploy data and AI apps
-   :keywords: apps, data, AI, hosting, deployment
-   :author: Ploomber
-```
+# Ploomber Cloud
 
 Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn more:
 

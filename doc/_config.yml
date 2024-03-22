@@ -1,4 +1,4 @@
-title: Ploomber Cloud documentation
+title: Ploomber Documentation
 author: Ploomber
 copyright: "2024"
 logo: static/logo.png
@@ -23,6 +23,7 @@ sphinx:
     - sphinxext.opengraph
 
 html:
+  favicon: static/favicon.png
   use_issues_button: true
   use_repository_button: true
   announcement: 'Do you need help? <a href="https://ploomber.io/community" target="_blank" rel="noopener noreferrer">Join our Slack!</a>'
