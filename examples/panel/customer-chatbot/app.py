@@ -257,16 +257,16 @@ chat_interface.send(
 
 app_description = pn.pane.Markdown(
     """
-### How does it work?
-This app allows users to perform actions on their orders. Currently the chat assistant only supports order cancellations. This applies to orders in the dataset: https://archive.ics.uci.edu/dataset/352/online+retail
+This app allows users to perform cancellations on their [orders](https://archive.ics.uci.edu/dataset/352/online+retail).
 
-1. Input a valid CustomerID. An user is only allowed to cancel their own orders. Default CustomerID is 15574.
-2. Input today's date. This field is required since orders in the mentioned dataset have all been placed between 2010 to 2011. 
-Based on the input date the chatbot determines if the order requested for cancellation has been placed within the last 14 days. If so, it is eligible for cancellation, else not.
-3. Users can enter queries like "Please cancel Order ID 556878".
-3. Let's see an example: Customer ID 15574 has placed orders 556878 (15.6.2011), 539215 (16.12.2010) and 536796 (2.12.2010).
-Since the default today's is 20.6.2011 it is possible to cancel order 556878, but not the rest of the orders since they are more than 14 days old.
-In order to cancel order 539215 change today's date to some relevant date that is not more than 14 days from 16.12.2010 like 18.12.2010. Similarly for order ID 536796.
+1. Input **Customer ID**, default provided.
+2. Input **Today's Date**, default provided. Only orders in the past 14 days can be cancelled.
+3. Users can enter queries like *Please cancel Order ID 556878*.
+3. CustomerID *15574* has the following orders (using *2011-06-20* as Today's Date):
+   a. 556878 (5 days old, you can cancel this one)
+   b. 539215 (182 days old, you cannot cancel)
+   c. 536796 (200 days old, you cannot cancel)
+   In order to cancel 539215 set date as 2010-12-18. To cancel 536796 try setting date as 2010-12-05.
 """,
     margin=(0, 0, 10, 0),
 )
@@ -283,5 +283,5 @@ pn.template.FastListTemplate(
     title="Customer Chatbot",
     sidebar=[app_description, customerid_input, date_picker],
     main=[chat_interface],
-    sidebar_width=450
+    sidebar_width=400
 ).servable()
