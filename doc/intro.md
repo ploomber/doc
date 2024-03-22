@@ -1,5 +1,12 @@
 # Ploomber Cloud
 
+```{eval-rst}
+.. meta::
+   :description: A platform to deploy data and AI apps
+   :keywords: apps, data, AI, hosting, deployment
+   :author: Ploomber
+```
+
 Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn more:
 
 
