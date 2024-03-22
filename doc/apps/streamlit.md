@@ -1,6 +1,8 @@
 # Streamlit
 
 ```{eval-rst}
+:og:image: _images/streamlit1.png
+
 .. meta::
    :description: Deploy Streamlit apps for free
    :keywords: streamlit, deployment, hosting
