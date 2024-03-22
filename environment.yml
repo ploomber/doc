@@ -8,4 +8,5 @@ dependencies:
   - pip
   - pip:
     - jupyter-book
+    - sphinxext-opengraph
     - invoke

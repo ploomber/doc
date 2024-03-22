@@ -17,6 +17,10 @@ sphinx:
     html_theme_options:
       navigation_with_keys: true
 
+    ogp_site_url: https://docs.cloud.ploomber.io/en/latest/
+
+  extra_extensions:
+    - sphinxext.opengraph
 
 html:
   use_issues_button: true
