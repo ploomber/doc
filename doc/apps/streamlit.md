@@ -1,5 +1,12 @@
 # Streamlit
 
+```{eval-rst}
+.. meta::
+   :description: Deploy Streamlit apps for free
+   :keywords: streamlit, deployment, hosting
+   :author: Ploomber
+```
+
 Ploomber Cloud supports [Streamlit](https://streamlit.io/). For information on how to develop Streamlit apps, [please check the documentation](https://docs.streamlit.io/).
 
 First, create an [account](https://platform.ploomber.io/register?utm_source=streamlit&utm_medium=documentation).

@@ -1,5 +1,12 @@
 # Panel
 
+```{eval-rst}
+.. meta::
+   :description: Deploy Panel apps for free
+   :keywords: panel, holoviews, deployment, hosting
+   :author: Ploomber
+```
+
 Ploomber Cloud supports [Panel](https://github.com/holoviz/panel). For information on how to develop Panel apps, [please check the documentation](https://panel.holoviz.org/).
 
 To deploy an app, first create an [account](https://platform.ploomber.io/register?utm_source=panel&utm_medium=documentation).
