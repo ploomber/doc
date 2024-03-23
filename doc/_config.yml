@@ -16,9 +16,12 @@ sphinx:
   config:
     html_theme_options:
       navigation_with_keys: true
-
     html_static_path:
       - static/opengraph
+
+  extra_extensions:
+    - notfound.extension
+
 html:
   favicon: static/favicon.png
   use_issues_button: true

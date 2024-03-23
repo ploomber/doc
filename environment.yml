@@ -9,3 +9,4 @@ dependencies:
   - pip:
     - jupyter-book
     - invoke
+    - sphinx-notfound-page
