@@ -23,7 +23,6 @@ To deploy an application you need two files:
 
 For information on how to write Voilà applications, [please check the documentation](https://voila.readthedocs.io/en/stable/).
 
-Click here to see [some examples.](../examples/voila.md)
 
 ## Dependencies
 
