@@ -83,24 +83,26 @@ Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn
 
 
 :::{grid-item-card} Chatbots
-:link: https://github.com/ploomber/doc/tree/main/examples/panel/book-recommender
-![](https://github.com/ploomber/doc/raw/main/examples/panel/book-recommender/screenshot.webp)
+[![](../examples/panel/book-recommender/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/panel/book-recommender)
++++
+[Live demo](https://gentle-frost-8296.ploomberapp.io)
 :::
 
-
 :::{grid-item-card} Analytical dashboards
-:link: https://github.com/ploomber/doc/tree/main/examples/dash/clinical-analytics
-![](../examples/dash/clinical-analytics/screenshot.webp)
+[![](../examples/dash/clinical-analytics/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/dash/clinical-analytics)
++++
+[Live demo](https://delicate-cake-9107.ploomberapp.io)
 :::
 
 :::{grid-item-card} REST API
-:link: https://github.com/ploomber/doc/tree/main/examples/flask/login
-![](https://github.com/ploomber/doc/raw/main/examples/flask/login/screenshot.webp)
+[![](../examples/flask/login/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/flask/login)
++++
+[Live demo](https://empty-haze-3369.ploomberapp.io)
 :::
 
 :::{grid-item-card} Machine Learning inference
 :link: https://github.com/ploomber/doc/tree/main/examples/flask/machine-learning
-![](https://github.com/ploomber/doc/raw/main/examples/flask/machine-learning/screenshot.webp)
+![](../examples/flask/machine-learning/screenshot.webp)
 :::
 
 :::{grid-item-card} Machine Learning monitoring
