@@ -70,10 +70,6 @@ Now, download an example. It will prompt you for a location to download the app.
 ploomber-cloud examples voila/chat-with-csv
 ```
 
-```{note}
-A full list of Voila example apps is available [here.](https://github.com/ploomber/doc/tree/main/examples/voila)
-```
-
 You should see a confirmation with instructions on deploying your app. Now, navigate to your application:
 
 ```sh
