@@ -77,8 +77,50 @@ Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn
 
 ## Use cases
 
-### Dashboards
+::::{grid} 2 2 3 3
+:class-container: text-center
+:gutter: 2
 
-Use Ploomber Cloud to develop dashboards, [here's an example](https://github.com/ploomber/doc/tree/main/examples/dash/clinical-analytics) using Dash.
 
+:::{grid-item-card} Chatbots
+:link: https://github.com/ploomber/doc/tree/main/examples/panel/book-recommender
+![](https://github.com/ploomber/doc/raw/main/examples/panel/book-recommender/screenshot.webp)
+:::
+
+
+:::{grid-item-card} Analytical dashboards
+:link: https://github.com/ploomber/doc/tree/main/examples/dash/clinical-analytics
 ![](../examples/dash/clinical-analytics/screenshot.webp)
+:::
+
+:::{grid-item-card} REST API
+:link: https://github.com/ploomber/doc/tree/main/examples/flask/login
+![](https://github.com/ploomber/doc/raw/main/examples/flask/login/screenshot.webp)
+:::
+
+:::{grid-item-card} Machine Learning inference
+:link: https://github.com/ploomber/doc/tree/main/examples/flask/machine-learning
+![](https://github.com/ploomber/doc/raw/main/examples/flask/machine-learning/screenshot.webp)
+:::
+
+:::{grid-item-card} Machine Learning monitoring
+:link: https://github.com/ploomber/doc/tree/main/examples/shiny/ml-monitoring
+![](../examples/shiny/ml-monitoring/screenshot.webp)
+:::
+
+:::{grid-item-card} Computer Vision
+:link: https://github.com/ploomber/doc/tree/main/examples/solara/describe-image-frontend
+![](../examples/solara/describe-image-frontend/screenshot.webp)
+:::
+
+:::{grid-item-card} Geospatial analysis
+:link: https://github.com/ploomber/doc/tree/main/examples/voila/gdal
+![](../examples/voila/gdal/screenshot.webp)
+:::
+
+
+::::
+
+
+
+

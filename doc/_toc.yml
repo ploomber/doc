@@ -47,10 +47,6 @@ parts:
       - file: features/document-processing
       - file: features/notebook-sharing
 
-  - caption: App examples
-    chapters:
-      - file: examples/voila
-
   - caption: Pricing
     chapters:
       - file: pricing/overview
