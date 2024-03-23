@@ -20,25 +20,25 @@ parts:
 
   - caption: Apps
     chapters:
+      - file: apps/panel
+      - file: apps/streamlit
       - file: apps/flask
       - file: apps/fastapi
-      - file: apps/streamlit
-      - file: apps/hyperdiv
       - file: apps/voila
       - file: apps/solara
-      - file: apps/panel
-      - file: apps/chainlit
+      - file: apps/dash
+      - file: apps/shiny-r
       - file: apps/gradio
       - file: apps/shiny-python
-      - file: apps/shiny-r
       - file: apps/shiny-express
-      - file: apps/dash
       - file: apps/django
       - file: apps/jupyterlab
       - file: apps/mlflow
       - file: apps/quarto
       - file: apps/docker
+      - file: apps/chainlit
       - file: apps/chalk-it
+      - file: apps/hyperdiv
 
   - caption: APIs
     chapters:
