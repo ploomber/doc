@@ -21,10 +21,10 @@
 
 *Starting at $10/month*
 
-- 10 concurrent apps max
-- 3 apps running 24/7 max (the rest are stopped, but can be restarted)
-- 2 vCPU per app (can upgrade hardware with [on-demand resources](compute.md))
-- 4 GiB RAM per app (can upgrade hardware with [on-demand resources](compute.md))
+- 10 concurrent apps (more available with [on-demand pricing](compute.md))
+- 3 apps running 24/7 (7 are stopped when inactive. You can keep them on with [on-demand pricing](compute.md))
+- 2 vCPU per app (can upgrade hardware with [on-demand pricing](compute.md))
+- 4 GiB RAM per app (can upgrade hardware with [on-demand pricing](compute.md))
 - Unlimited deployment rate
 - Custom app name (e.g., `my-cool-app.ploomberapp.io`)
 - Custom domains (i.e., serve your app from `my-cool-app.com`)
