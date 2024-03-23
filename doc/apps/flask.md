@@ -61,3 +61,26 @@ To deploy a Flask app from the deployment menu, follow these instructions:
 ```{tip}
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
 ```
+
+## Examples
+
+::::{grid} 2 2 3 3
+:class-container: text-center
+:gutter: 2
+
+:::{grid-item-card} Basic app
+:link: https://github.com/ploomber/doc/tree/main/examples/flask/basic-app
+A basic Flask app.
+:::
+
+:::{grid-item-card} User auth
+:link: https://github.com/ploomber/doc/tree/main/examples/flask/login
+![](https://github.com/ploomber/doc/raw/main/examples/flask/login/screenshot.webp)
+:::
+
+:::{grid-item-card} ML inference
+:link: https://github.com/ploomber/doc/tree/main/examples/flask/machine-learning
+![](https://github.com/ploomber/doc/raw/main/examples/flask/machine-learning/screenshot.webp)
+:::
+
+::::

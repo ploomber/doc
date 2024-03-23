@@ -62,3 +62,28 @@ To deploy a FastAPI app from the deployment menu, follow these instructions:
 ```{tip}
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
 ```
+
+
+## Examples
+
+::::{grid} 2 2 3 3
+:class-container: text-center
+:gutter: 2
+
+:::{grid-item-card} Basic app
+:link: https://github.com/ploomber/doc/tree/main/examples/fastapi/basic-app
+A basic FastAPI app.
+:::
+
+:::{grid-item-card} Chat with GitHub repository
+:link: https://github.com/ploomber/doc/tree/main/examples/fastapi/chat-with-github-api
+An API to index a GitHub repo and then ask questions.
+:::
+
+:::{grid-item-card} Describe image
+:link: https://github.com/ploomber/doc/tree/main/examples/fastapi/describe-image-backend
+An API to ask questions about an image.
+:::
+
+
+::::

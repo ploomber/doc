@@ -103,3 +103,21 @@ ploomber-cloud deploy --watch
 ```{tip}
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
 ```
+
+## Examples
+
+::::{grid} 2 2 3 3
+:class-container: text-center
+:gutter: 2
+
+:::{grid-item-card} Basic app
+:link: https://github.com/ploomber/doc/tree/main/examples/dash/simple-app
+![](https://github.com/ploomber/doc/raw/main/examples/dash/simple-app/screenshot.webp)
+:::
+
+:::{grid-item-card} Clinical analytics
+:link: https://github.com/ploomber/doc/tree/main/examples/dash/clinical-analytics
+![](https://github.com/ploomber/doc/raw/main/examples/dash/clinical-analytics/screenshot.webp)
+:::
+
+::::

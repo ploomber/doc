@@ -111,3 +111,38 @@ ploomber-cloud deploy --watch
 ```{tip}
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
 ```
+
+## Examples
+
+::::{grid} 2 2 3 3
+:class-container: text-center
+:gutter: 2
+
+
+:::{grid-item-card} Arxiv chat
+:link: https://github.com/ploomber/doc/tree/main/examples/solara/arxiv-chat
+![](https://github.com/ploomber/doc/raw/main/examples/solara/arxiv-chat/screenshot.webp)
+:::
+
+:::{grid-item-card} Chat with CSV
+:link: https://github.com/ploomber/doc/tree/main/examples/solara/chat-with-csv
+![](https://github.com/ploomber/doc/raw/main/examples/solara/chat-with-csv/screenshot.webp)
+:::
+
+:::{grid-item-card} Describe image
+:link: https://github.com/ploomber/doc/tree/main/examples/solara/describe-image-frontend
+![](https://github.com/ploomber/doc/raw/main/examples/solara/describe-image-frontend/screenshot.webp)
+:::
+
+:::{grid-item-card} Keyword extraction
+:link: https://github.com/ploomber/doc/tree/main/examples/solara/keyword-extraction
+![](https://github.com/ploomber/doc/raw/main/examples/solara/keyword-extraction/screenshot.webp)
+:::
+
+:::{grid-item-card} OCR
+:link: https://github.com/ploomber/doc/tree/main/examples/solara/ocr
+![](https://github.com/ploomber/doc/raw/main/examples/solara/ocr/screenshot.webp)
+:::
+
+
+::::

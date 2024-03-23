@@ -96,3 +96,49 @@ ploomber-cloud deploy --watch
 ```{tip}
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
 ```
+
+
+## Examples
+
+::::{grid} 2 2 3 3
+:class-container: text-center
+:gutter: 2
+
+:::{grid-item-card} Animated visualization
+:link: https://github.com/ploomber/doc/tree/main/examples/voila/animated-viz
+![](https://github.com/ploomber/doc/raw/main/examples/voila/animated-viz/screenshot.webp)
+:::
+
+:::{grid-item-card} Chat with CSV
+:link: https://github.com/ploomber/doc/tree/main/examples/voila/chat-with-csv
+![](https://github.com/ploomber/doc/raw/main/examples/voila/chat-with-csv/screenshot.webp)
+:::
+
+:::{grid-item-card} GDAL + geopandas
+:link: https://github.com/ploomber/doc/tree/main/examples/voila/gdal
+![](https://github.com/ploomber/doc/raw/main/examples/voila/gdal/screenshot.webp)
+:::
+
+:::{grid-item-card} Image mask generator
+:link: https://github.com/ploomber/doc/tree/main/examples/voila/image-mask-generator
+![](https://github.com/ploomber/doc/raw/main/examples/voila/image-mask-generator/screenshot.webp)
+:::
+
+:::{grid-item-card} ML predictions
+:link: https://github.com/ploomber/doc/tree/main/examples/voila/ml
+![](https://github.com/ploomber/doc/raw/main/examples/voila/ml/screenshot.webp)
+:::
+
+
+:::{grid-item-card} Interactive data viz
+:link: https://github.com/ploomber/doc/tree/main/examples/voila/mosaic
+![](https://github.com/ploomber/doc/raw/main/examples/voila/mosaic/screenshot.webp)
+:::
+
+:::{grid-item-card} Object removal
+:link: https://github.com/ploomber/doc/tree/main/examples/voila/object-removal
+![](https://github.com/ploomber/doc/raw/main/examples/voila/object-removal/screenshot.webp)
+:::
+
+
+::::

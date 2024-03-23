@@ -111,3 +111,23 @@ an [example](https://github.com/ploomber/doc/tree/main/examples/shiny-r/igraph).
 learn more, see the [Docker deployment instructions.](docker.md)
 
 If you need help installing certain libraries, email us at [contact@ploomber.io](mailto:contact@ploomber.io)
+
+
+
+## Examples
+
+::::{grid} 2 2 3 3
+:class-container: text-center
+:gutter: 2
+
+:::{grid-item-card} App with igraph
+:link: https://github.com/ploomber/doc/tree/main/examples/shiny-r/igraph
+:::
+
+:::{grid-item-card} Data visualization
+:link: https://github.com/ploomber/doc/tree/main/examples/shiny-r/shiny-r-data-visualization
+![](https://github.com/ploomber/doc/raw/main/examples/shiny-r/shiny-r-data-visualization/screenshot.webp)
+:::
+
+
+::::
