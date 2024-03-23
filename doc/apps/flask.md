@@ -74,8 +74,9 @@ A basic Flask app.
 :::
 
 :::{grid-item-card} User auth
-:link: https://github.com/ploomber/doc/tree/main/examples/flask/login
-![](https://github.com/ploomber/doc/raw/main/examples/flask/login/screenshot.webp)
+[![](../../examples/flask/login/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/flask/login)
++++
+[Live demo](https://empty-haze-3369.ploomberapp.io)
 :::
 
 :::{grid-item-card} ML inference

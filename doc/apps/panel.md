@@ -119,8 +119,9 @@ To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin
 :gutter: 2
 
 :::{grid-item-card} Book recommender
-:link: https://github.com/ploomber/doc/tree/main/examples/panel/book-recommender
-![](https://github.com/ploomber/doc/raw/main/examples/panel/book-recommender/screenshot.webp)
+[![](../../examples/panel/book-recommender/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/panel/book-recommender)
++++
+[Live demo](https://gentle-frost-8296.ploomberapp.io)
 :::
 
 :::{grid-item-card} Chat with PDF

@@ -115,9 +115,11 @@ To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin
 ![](https://github.com/ploomber/doc/raw/main/examples/dash/simple-app/screenshot.webp)
 :::
 
+
 :::{grid-item-card} Clinical analytics
-:link: https://github.com/ploomber/doc/tree/main/examples/dash/clinical-analytics
-![](https://github.com/ploomber/doc/raw/main/examples/dash/clinical-analytics/screenshot.webp)
+[![](../../examples/dash/clinical-analytics/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/dash/clinical-analytics)
++++
+[Live demo](https://delicate-cake-9107.ploomberapp.io)
 :::
 
 ::::
