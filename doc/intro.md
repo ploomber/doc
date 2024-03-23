@@ -17,7 +17,7 @@ Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn
 
 ::::{grid} 2 2 3 3
 :class-container: text-center
-:gutter: 1
+:gutter: 2
 
 :::{grid-item-card}
 :link: apps/streamlit
@@ -37,6 +37,20 @@ Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn
 :link-type: doc
 ![](static/logos/panel-logo.png)
 :::
+
+:::{grid-item-card}
+:link: apps/fastapi
+:link-type: doc
+![](static/logos/fastapi-logo.png)
+:::
+
+
+:::{grid-item-card}
+:link: apps/flask
+:link-type: doc
+![](static/logos/flask-logo.png)
+:::
+
 
 :::{grid-item-card}
 :link: apps/dash

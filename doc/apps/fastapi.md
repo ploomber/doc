@@ -5,6 +5,7 @@ myst:
     keywords: fastapi, deployment, hosting
     property=og:title: FastAPI | Ploomber Docs
     property=og:description: Deploy a FastAPI app on Ploomber in seconds with this guide.
+    property=og:image: https://docs.cloud.ploomber.io/en/latest/_static/opengraph-images-fastapi.png
     property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/fastapi.html
 ---
 

@@ -111,3 +111,27 @@ ploomber-cloud deploy --watch
 ```{tip}
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
 ```
+
+## Examples
+
+::::{grid} 2 2 3 3
+:class-container: text-center
+:gutter: 2
+
+:::{grid-item-card} Book recommender
+:link: https://github.com/ploomber/doc/tree/main/examples/panel/book-recommender
+![](https://github.com/ploomber/doc/raw/main/examples/panel/book-recommender/screenshot.webp)
+:::
+
+:::{grid-item-card} Chat with PDF
+:link: https://github.com/ploomber/doc/tree/main/examples/panel/chat-with-pdf
+![](https://github.com/ploomber/doc/raw/main/examples/panel/chat-with-pdf/screenshot.webp)
+:::
+
+:::{grid-item-card} Stock interpreget
+:link: https://github.com/ploomber/doc/tree/main/examples/panel/stock-market-chatbot
+![](https://github.com/ploomber/doc/raw/main/examples/panel/stock-market-chatbot/screenshot.webp)
+:::
+
+
+::::
