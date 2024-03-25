@@ -2,7 +2,7 @@ import click
 import requests
 
 # Testing with deployed app. If testing locally, use "http://localhost:8000"
-API_ROOT = "https://plain-violet-6921.ploomberapp.io" 
+API_ROOT = "http://0.0.0.0:8765" 
 
 @click.group()
 def cli():
@@ -20,6 +20,16 @@ def index():
 
     return click.echo(response.content)
 
+@cli.command()
+def show():
+    response = requests.get(
+            f"{API_ROOT}/repos",
+            headers={
+                "Content-Type": "application/json",
+            },
+        )
+
+    return click.echo(response.content)
 
 @cli.command()
 @click.argument("owner")
