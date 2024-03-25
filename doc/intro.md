@@ -128,6 +128,8 @@ Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn
 
 ::::
 
-
-
+```{tip}
+See more examples from the community in our
+[explore page.](https://www.platform.ploomber.io/explore)
+```
 
