@@ -134,5 +134,11 @@ To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin
 ![](https://github.com/ploomber/doc/raw/main/examples/panel/stock-market-chatbot/screenshot.webp)
 :::
 
+:::{grid-item-card} Customer Chatbot
+[![](../../examples/panel/customer-chatbot/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/panel/customer-chatbot)
++++
+[Live demo](https://black-poetry-5215.ploomberapp.io)
+:::
+
 
 ::::
