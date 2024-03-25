@@ -8,4 +8,3 @@ jupysql
 duckdb-engine
 matplotlib
 voila
-ipylab
