@@ -51,6 +51,17 @@ Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn
 ![](static/logos/flask-logo.png)
 :::
 
+:::{grid-item-card}
+:link: apps/solara
+:link-type: doc
+![](static/logos/solara-logo.png)
+:::
+
+:::{grid-item-card}
+:link: apps/chainlit
+:link-type: doc
+![](static/logos/chainlit-logo.png)
+:::
 
 :::{grid-item-card}
 :link: apps/dash
@@ -63,12 +74,6 @@ Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn
 :link: apps/voila
 :link-type: doc
 ![](static/logos/voila-logo.png)
-:::
-
-:::{grid-item-card}
-:link: apps/solara
-:link-type: doc
-![](static/logos/solara-logo.png)
 :::
 
 
