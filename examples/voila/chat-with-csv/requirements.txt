@@ -1,4 +1,5 @@
 # requirements for chat-with-csv
+sqlalchemy==2.0.28
 openai==0.28
 ipywidgets
 ipython
