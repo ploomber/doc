@@ -5,6 +5,7 @@ myst:
     keywords: chainlit, deployment, hosting
     property=og:title: Chainlit | Ploomber Docs
     property=og:description: Deploy a Chainlit app on Ploomber in seconds with this guide.
+    property=og:image: https://docs.cloud.ploomber.io/en/latest/_static/opengraph-images-chainlit.png
     property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/chainlit.html
 ---
 
