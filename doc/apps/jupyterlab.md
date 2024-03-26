@@ -91,6 +91,7 @@ Collaboration is configured by default! Share your `id.ploomberapp.io` URL with 
 
 ![](../static/docker/jupyterlab/jupyter-collab.gif)
 
+(remote-kernel)=
 ## Remote kernel
 
 In the previous example, we showed how to run JupyterLab in Ploomber Cloud, this implies
@@ -147,7 +148,7 @@ Note that the files listed on the left bar won't match what  your notebook sees,
 (jupyter-remote-gpu)=
 ## Remote GPUs
 
-If you want to connect to [GPUs](../user-guide/gpu.md), use [this example](https://github.com/ploomber/doc/tree/main/examples/docker/jupyter-kernel-gateway-gpu), follow the instructions from the previous section, and add GPUs to your app when deploying it.
+If you want to connect to [GPUs](../user-guide/gpu.md), use [this example](https://github.com/ploomber/doc/tree/main/examples/docker/jupyter-kernel-gateway-gpu), follow the instructions from [the Remote Kernel](remote-kernel) section, and add GPUs to your app when deploying it.
 
 If all went well, you'll be able to execute `!nvidia-smi` to see the available GPU and `torch` with CUDA:
 
