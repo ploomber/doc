@@ -1,7 +1,10 @@
 # Document processing
 
 ```{important}
-The document processing API is experimental and only available for PRO users
+The document processing API is in beta and only available for PRO users. The API will
+remain **free** during the beta period with a rate limit of 50 requests per day. If you
+need a higher rate for your account, email us
+[contact@ploomber.io](mailto:contact@ploomber.io)
 ```
 
 You can use Ploomber Cloud's API to process PDFs and have them ready for LLM

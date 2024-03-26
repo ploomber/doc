@@ -42,9 +42,9 @@ parts:
 
   - caption: APIs
     chapters:
+      - file: features/document-processing
       - file: features/serverless-fns
       - file: features/scheduled-fns
-      - file: features/document-processing
       - file: features/notebook-sharing
 
   - caption: Pricing
