@@ -15,17 +15,17 @@ In the `Source code` section, drop a `.zip` file with your code. Or use oen of t
 :class-container: text-center
 :gutter: 2
 
-:::{grid-item-card} Image Q&A
+:::{grid-item-card} 🌔 Image Q&A
 :link: https://github.com/ploomber/doc/tree/main/examples/fastapi/describe-image-backend
 FastAPI app that uses moondream2 to answer questions about an uploaded image.
 :::
 
-:::{grid-item-card} llama-cpp server
+:::{grid-item-card} 🦙 llama-cpp server
 :link: https://github.com/ploomber/doc/tree/main/examples/docker/llama-cpp-server
 A a web server that allows using Llama 2
 :::
 
-:::{grid-item-card} JupyterLab
+:::{grid-item-card} 🪐 JupyterLab
 :link: jupyter-remote-gpu
 :link-type: ref
 Connect to a remote Jupyter server to fine-tune LLMs.
