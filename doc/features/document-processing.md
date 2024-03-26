@@ -17,6 +17,7 @@ pip install ploomber-cloud --upgrade
 Ensure you set your [API key](../quickstart/apikey.md), and then you'll be able to use
 the API:
 
+
 ```python
 from ploomber_cloud import functions
 
