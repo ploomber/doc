@@ -5,7 +5,7 @@ We're giving way free GPUs for a week to test our system. Email us at
 [contact@ploomber.io](mailto:contact@ploomber.io) if you want access.
 ```
 
-To deploy a GPU, first, [create an account.](https://platform.ploomber.io/register?utm_source=gpu&utm_medium=documentation). Then, select the `Docker` option:
+To deploy a GPU, first, [create an account](https://platform.ploomber.io/register?utm_source=gpu&utm_medium=documentation). Then, select the `Docker` option:
 
 ![](../static/docker.png)
 
