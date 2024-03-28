@@ -5,7 +5,7 @@ myst:
     keywords: jupyter, jupyterlab, notebooks, deployment, hosting
     property=og:title: JupyterLab | Ploomber Docs
     property=og:description: Deploy JupyterLab on Ploomber in seconds with this guide.
-    property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/gradio.html
+    property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/jupyterlab.html
 ---
 
 

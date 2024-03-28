@@ -69,13 +69,17 @@ Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn
 ![](static/logos/dash-logo.png)
 :::
 
+:::{grid-item-card}
+:link: apps/vllm
+:link-type: doc
+![](static/logos/vllm-logo.png)
+:::
 
 :::{grid-item-card}
 :link: apps/voila
 :link-type: doc
 ![](static/logos/voila-logo.png)
 :::
-
 
 ::::
 

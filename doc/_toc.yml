@@ -33,6 +33,7 @@ parts:
       - file: apps/shiny-express
       - file: apps/django
       - file: apps/jupyterlab
+      - file: apps/vllm
       - file: apps/mlflow
       - file: apps/quarto
       - file: apps/docker
