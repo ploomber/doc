@@ -44,6 +44,11 @@ Finally, ensure you select a GPU.
 
 Deployment will take ~10 minutes since Ploomber has to build your Docker image, deploy the server and download the model.
 
+The server will be ready to take requests when the `WEBSERVICE LOGS` show something like this:
+
+```
+2024-03-28T01:09:58.367000 - INFO: Uvicorn running on http://0.0.0.0:80 (Press CTRL+C to quit)
+```
 
 ## Testing
 
