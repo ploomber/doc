@@ -71,7 +71,7 @@ def Page():
     with solara.Column(margin=10):
         solara.Markdown("# GPT-4 token encoder and decoder")
         solara.Markdown("This is a sample solara educational tool for understanding how tokenization works.")
-        solara.Markdown("Created by [Ploomber Cloud](https://ploomber.io)")
+        solara.Markdown("Hosted on [Ploomber Cloud](https://ploomber.io)")
 
         solara.InputText("Enter text to tokenize it:", value=sentence, continuous_update=True)
         tokens = tokenizer.encode(sentence.value)
