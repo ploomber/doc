@@ -64,16 +64,24 @@ Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn
 :::
 
 :::{grid-item-card}
-:link: apps/dash
+:link: apps/jupyterlab
 :link-type: doc
-![](static/logos/dash-logo.png)
+![](static/logos/jupyterlab-logo.png)
 :::
+
 
 :::{grid-item-card}
 :link: apps/vllm
 :link-type: doc
 ![](static/logos/vllm-logo.png)
 :::
+
+:::{grid-item-card}
+:link: apps/dash
+:link-type: doc
+![](static/logos/dash-logo.png)
+:::
+
 
 :::{grid-item-card}
 :link: apps/voila
