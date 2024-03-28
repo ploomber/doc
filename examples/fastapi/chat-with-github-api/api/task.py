@@ -40,14 +40,11 @@ def download_repo(self, id, owner, name, branch, path):
                 verbose=True,
                 timeout=None,
                 retries=2,
-                concurrent_requests=2,
-                # ignore_directories=None,
-                # ignore_file_extensions=None
+                concurrent_requests=1,
             )
         docs = loader.load_data(branch=branch)
         index = VectorStoreIndex.from_documents(docs)
     except Exception as er:
-        print('ERROR!!!')
         RepoModel.update_repo_status(id, "failed")
         db_session.commit()
         self.update_state(state='FAILURE', meta={'exc': er})
@@ -65,4 +62,3 @@ def download_repo(self, id, owner, name, branch, path):
 
     RepoModel.update_repo_status(id, "finished")
     db_session.commit()
-    print("----Committed finished.----")

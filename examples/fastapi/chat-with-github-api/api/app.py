@@ -6,9 +6,6 @@ from api import task
 import shutil
 import os
 
-from llama_index.core import VectorStoreIndex
-from llama_index.readers.github import GithubClient, GithubRepositoryReader
-
 from api.database import db_session
 from api.models import RepoModel
 
@@ -44,7 +41,7 @@ def index() -> Dict:
     return {'repos': repos}
 
 @app.post('/scrape')
-def scrape(repo: Repo) -> dict[str, Any]: # maybe change repo from str
+def scrape(repo: Repo) -> dict[str, Any]:
     # Enter into DB
     id = f"{repo.owner}-{repo.name}-{repo.branch}"
     status = None
@@ -78,8 +75,7 @@ def scrape(repo: Repo) -> dict[str, Any]: # maybe change repo from str
     show()
 
     # Send download task to celery
-    t = task.download_repo.delay(id=id, owner=repo.owner, name=repo.name, branch=repo.branch, path=path)
-    print(t.state)
+    task.download_repo.delay(id=id, owner=repo.owner, name=repo.name, branch=repo.branch, path=path)
     return {'id': id, 'status': status, 'path': path}
 
 
@@ -99,18 +95,6 @@ def ask(question: Question) -> dict[str, Any]: # maybe change repo from str
     answer = answer_question(question.repo_id, question.question)
     return {'question': question, 'answer': answer}
 
-
-@app.get('/clear')
-def clear():
-    deleted = RepoModel.query.delete()
-    print(os.listdir())
-    if INDEXES.exists():
-        print("Deleting")
-        shutil.rmtree(INDEXES)
-
-    return {'deleted': deleted}
-
-
 def answer_question(repo_id, question):
     try:
         path = INDEXES / RepoModel.get_repo_path(repo_id)
@@ -129,5 +113,19 @@ def answer_question(repo_id, question):
     print(response)
     
     return response.response
+
+
+@app.get('/clear')
+def clear():
+    deleted = RepoModel.query.delete()
+    print(os.listdir())
+    if INDEXES.exists():
+        print("Deleting")
+        shutil.rmtree(INDEXES)
+
+    return {'deleted': deleted}
+
+
+
 
 

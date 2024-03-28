@@ -1,10 +1,8 @@
 import solara as sl
 from dataclasses import dataclass
 import time
-import threading
 import time
 from llm import get_repo_id
-import schedule
 from services import status_color, repos, status, ask, scrape, reset
 
 
@@ -81,61 +79,18 @@ def Chat():
     branch, set_branch = sl.use_state("master")
     error_msg, set_error_msg = sl.use_state("")
     chat_error, set_chat_error = sl.use_state(False)
-    # scheduled, set_scheduled = sl.use_state(False)
-    # loaded_repos, set_loaded_repos = sl.use_state_or_update([])
     loaded_repos = sl.use_reactive([Repository(rp['id'], rp['status']) for rp in all_repos])
     num_finished, set_num_finished = sl.use_state(len([rp for rp in loaded_repos.value if rp.status == "finished"]))
     disabled, set_disabled = sl.use_state(num_finished < 1)
 
     def update_statuses():
         print("Updating statuses...")
-        # _loaded_repos = list(loaded_repos.value)
-        # for i, lr in enumerate(loaded_repos.value):
-        #     if lr.status != "pending":
-        #         continue
-        #     new_status = status(lr.id)
-        #     _loaded_repos[i].status = new_status
-        #     print(f"Updated {lr.id}: {new_status}")
-        # _loaded_repos.append(Repository("wee", "woo"))
-        
-        # set_loaded_repos([rp for rp in _loaded_repos])
-        # loaded_repos.set([Repository("", "") for _ in _loaded_repos])
-        # loaded_repos.set(_loaded_repos)
-
         current_repos = repos()
         loaded_repos.set([Repository(rp.id, "") for rp in loaded_repos.value])
         loaded_repos.set([Repository(rp['id'], rp['status']) for rp in current_repos])
         set_num_finished(len([rp for rp in loaded_repos.value if rp.status == "finished"]))
         set_disabled(num_finished < 1)
-        print(loaded_repos)
 
-    
-    # def schedule_updates():
-    #     if scheduled:
-    #         return
-        
-    #     set_scheduled(True)
-    #     print(f"Scheduling, {scheduled}")
-    #     schedule.every(10).seconds.do(update_statuses)
-    #     while True:
-    #         schedule.run_pending()
-    #         time.sleep(1)
-
-    # sl.use_thread(schedule_updates, dependencies=[scheduled])
-
-    # def render():
-    #     """Infinite loop regularly mutating counter state"""
-    #     while True:
-    #         time.sleep(10)
-    #         print("Looping...")
-    #         for lr in loaded_repos:
-    #             lr.status = "finished"
-    #             # print(lr.id, lr.status)
-    #         print(loaded_repos.value)
-
-    # result: sl.Result[bool] = sl.use_thread(render)
-    # if result.error:
-    #     raise result.error
 
     def ask_chatgpt(input):
         set_disabled(True)
@@ -156,32 +111,15 @@ return that ID. If it is unclear which repository the user is asking about, resp
 """
 
         repo_id = get_repo_id(prompt)
-        print(repo_id)
-        # content = index()
         content, err = ask(repo_id, input)
         set_chat_error(err)
         set_messages(_messages + [Message(role="assistant", content=content)])
-
         set_disabled(False)
-
-    # def check_status():
-    #     try:
-    #         id = f"{owner}-{repo}-{branch}"
-    #         stat = status(id)
-    #         print(f"{id} status: {stat}")
-    #     except:
-    #         print(f"{id} status: Not found")
     
     def load_repo():
         current_repos = repos()
         loaded_repos.set([Repository("", "") for _ in loaded_repos.value])
         loaded_repos.set([Repository(rp['id'], rp['status']) for rp in current_repos])
-
-        # this_id = f"{owner}-{repo}-{branch}"
-        # for rp in loaded_repos.value:
-        #     if this_id == rp.id:
-        #         return
-
 
         set_error_msg("")
         id = None
@@ -269,60 +207,3 @@ return that ID. If it is unclear which repository the user is asking about, resp
             
             sl.lab.ChatInput(send_callback=ask_chatgpt, disabled=disabled)
 
-
-
-
-# def background_job():
-#     print('Hello from the background thread')
-#     # _loaded_repos = list(loaded_repos.value)
-#     print(loaded_repos.value)
-#     for lr in loaded_repos.value:
-#         print(lr.status)
-#         if lr.status == "pending":
-#             # new_status = status(lr.id)
-#             lr.status = "finished"
-            # _loaded_repos[i].status = "finished"
-    # loaded_repos.value = _loaded_repos
-
-
-
-
-
-
-# def run_continuously(interval=1):
-#     """Continuously run, while executing pending jobs at each
-#     elapsed time interval.
-#     @return cease_continuous_run: threading. Event which can
-#     be set to cease continuous run. Please note that it is
-#     *intended behavior that run_continuously() does not run
-#     missed jobs*. For example, if you've registered a job that
-#     should run every minute and you set a continuous run
-#     interval of one hour then your job won't be run 60 times
-#     at each interval but only once.
-#     """
-#     cease_continuous_run = threading.Event()
-
-#     class ScheduleThread(threading.Thread):
-#         @classmethod
-#         def run(cls):
-#             while not cease_continuous_run.is_set():
-#                 schedule.run_pending()
-#                 time.sleep(interval)
-
-#     continuous_thread = ScheduleThread()
-#     continuous_thread.start()
-#     return cease_continuous_run
-
-
-
-# # Start the background thread
-# stop_run_continuously = run_continuously()
-
-
-
-
-# # Do some other things...
-# time.sleep(10)
-
-# # Stop the background thread
-# stop_run_continuously.set()

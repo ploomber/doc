@@ -11,5 +11,3 @@ llama_index
 humanize
 solara==1.29.1
 openai
-schedule
-openai
