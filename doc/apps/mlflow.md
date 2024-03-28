@@ -5,6 +5,7 @@ myst:
     keywords: mlflow, deployment, hosting
     property=og:title: MLflow | Ploomber Docs
     property=og:description: Deploy MLflow on Ploomber in seconds with this guide.
+    property=og:image: https://docs.cloud.ploomber.io/en/latest/_static/opengraph-images-mlflow.png
     property=og:url: https://docs.cloud.ploomber.io/en/latest/apps/mlflow.html
 ---
 

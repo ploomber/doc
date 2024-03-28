@@ -15,7 +15,7 @@ myst:
 Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn more:
 
 
-::::{grid} 2 2 3 3
+::::{grid} 3 3 4 4
 :class-container: text-center
 :gutter: 2
 
@@ -75,6 +75,13 @@ Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn
 :link-type: doc
 ![](static/logos/vllm-logo.png)
 :::
+
+:::{grid-item-card}
+:link: apps/mlflow
+:link-type: doc
+![](static/logos/mlflow-logo.png)
+:::
+
 
 :::{grid-item-card}
 :link: apps/dash
