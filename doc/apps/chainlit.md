@@ -68,7 +68,7 @@ we can still use Chainlit's authentication feature.
 First, download the [sample code](https://github.com/ploomber/doc/tree/main/examples/chainlit/chainlit-with-password).
 The `Dockerfile` remains the same, the only change happens in the `app.py`.
 
-During deployment, you need to provide three [environment variables](../user-guide/env-vars.md):
+During deployment, you need to provide three [secrets](../user-guide/secrets.md):
 
 ```sh
 CHAINTLIT_USERNAME="user"
