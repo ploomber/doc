@@ -119,7 +119,7 @@ following locally (you can define an alternative token, but this is more secure)
 python -c 'import secrets; print(secrets.token_urlsafe())'
 ```
 
-Copy the printed value (store it somewhere safe) and save it as a [secret](../user-guide/env-vars.md), with
+Copy the printed value (store it somewhere safe) and save it as a [secret](../user-guide/secrets.md), with
 the name `KG_AUTH_TOKEN`, now click on `CREATE`.
 
 Once the application is running, copy the URL (the `someid.ploomberapp.io` URL):
