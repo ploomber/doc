@@ -1,4 +1,4 @@
-# Chat with Github repo API - Instructions incomplete
+# Chat with Github - FastAPI + Solara
 
 ## Running the app
 

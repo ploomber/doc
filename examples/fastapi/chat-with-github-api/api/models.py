@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, desc
 from sqlalchemy.orm import relationship
 import humanize
 
-from database import Base, engine
+from api import database
 
 
 class ModelMixin:
@@ -14,7 +14,7 @@ class ModelMixin:
         return humanize.naturaltime(datetime.utcnow() - self.created)
 
 
-class RepoModel(ModelMixin, Base):
+class RepoModel(ModelMixin, database.Base):
     __tablename__ = "repos"
 
     id = Column(String, primary_key=True)
@@ -47,4 +47,4 @@ class RepoModel(ModelMixin, Base):
 
 if __name__ == "__main__":
     print("Creating tables...")
-    Base.metadata.create_all(bind=engine)
+    database.Base.metadata.create_all(bind=database.engine)

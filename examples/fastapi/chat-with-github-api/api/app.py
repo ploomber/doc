@@ -2,14 +2,12 @@ from fastapi import FastAPI, HTTPException
 from typing import Dict 
 from typing import Any
 from pydantic import BaseModel
-import task
+from api import task
+import shutil
 import os
 
-from llama_index.core import VectorStoreIndex
-from llama_index.readers.github import GithubClient, GithubRepositoryReader
-
-from database import db_session
-from models import RepoModel
+from api.database import db_session
+from api.models import RepoModel
 
 from pathlib import Path
 import pickle
@@ -27,13 +25,23 @@ class Question(BaseModel):
     repo_id: str
     question: str
 
+def show():
+    print(RepoModel.show_all())
+
+show()
+
 @app.get('/')
 def index() -> Dict:
     return {'hello': 'world'}
 
 
+@app.get('/repos')
+def index() -> Dict:
+    repos = RepoModel.show_all()
+    return {'repos': repos}
+
 @app.post('/scrape')
-def scrape(repo: Repo) -> dict[str, Any]: # maybe change repo from str
+def scrape(repo: Repo) -> dict[str, Any]:
     # Enter into DB
     id = f"{repo.owner}-{repo.name}-{repo.branch}"
     status = None
@@ -61,14 +69,13 @@ def scrape(repo: Repo) -> dict[str, Any]: # maybe change repo from str
             db_session.commit()
         except Exception as e:
             db_session.rollback()
-            raise HTTPException(status_code=500, detail="Repo already exists.") from e
+            raise HTTPException(status_code=500, detail="Error submitting to database.") from e
 
     # Show current repos
     show()
 
     # Send download task to celery
     task.download_repo.delay(id=id, owner=repo.owner, name=repo.name, branch=repo.branch, path=path)
-    
     return {'id': id, 'status': status, 'path': path}
 
 
@@ -79,6 +86,7 @@ def status(repo_id) -> dict[str, Any]:
     except Exception as e:
         raise HTTPException(status_code=500, detail="Repo not found.") from e
     
+    print(f"{repo_id}, {stat}")
     return {'id': repo_id, 'status': stat}
 
 
@@ -86,13 +94,6 @@ def status(repo_id) -> dict[str, Any]:
 def ask(question: Question) -> dict[str, Any]: # maybe change repo from str
     answer = answer_question(question.repo_id, question.question)
     return {'question': question, 'answer': answer}
-
-
-@app.get('/clear')
-def clear():
-    deleted = RepoModel.query.delete()
-    return {'deleted': deleted}
-
 
 def answer_question(repo_id, question):
     try:
@@ -114,5 +115,17 @@ def answer_question(repo_id, question):
     return response.response
 
 
-def show():
-    print(RepoModel.show_all())
+@app.get('/clear')
+def clear():
+    deleted = RepoModel.query.delete()
+    print(os.listdir())
+    if INDEXES.exists():
+        print("Deleting")
+        shutil.rmtree(INDEXES)
+
+    return {'deleted': deleted}
+
+
+
+
+

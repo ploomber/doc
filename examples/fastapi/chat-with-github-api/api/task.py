@@ -8,8 +8,8 @@ import pickle
 from llama_index.core import VectorStoreIndex
 from llama_index.readers.github import GithubClient, GithubRepositoryReader
 
-from database import db_session
-from models import RepoModel
+from api.database import db_session
+from api.models import RepoModel
 
 INDEXES = Path("indexes")
 
@@ -24,8 +24,8 @@ def dummy_task(repo_name):
     print(f"Done! {repo_name}")
 
 
-@app.task
-def download_repo(id, owner, name, branch, path):
+@app.task(bind=True)
+def download_repo(self, id, owner, name, branch, path):
     RepoModel.update_repo_status(id, "pending")
     db_session.commit()
 
@@ -40,16 +40,16 @@ def download_repo(id, owner, name, branch, path):
                 verbose=True,
                 timeout=None,
                 retries=2,
-                concurrent_requests=2,
-                # ignore_directories=None,
-                # ignore_file_extensions=None
+                concurrent_requests=1,
             )
         docs = loader.load_data(branch=branch)
         index = VectorStoreIndex.from_documents(docs)
-    except Exception:
+    except Exception as er:
         RepoModel.update_repo_status(id, "failed")
         db_session.commit()
+        self.update_state(state='FAILURE', meta={'exc': er})
         raise
+            
 
     if not INDEXES.exists():
         Path.mkdir("indexes", exist_ok=True)
