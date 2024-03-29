@@ -39,9 +39,5 @@ def Page():
         Chat()
     
     return ch
-    # with sl.Column(align="start", classes=["plug"]):
-    #     with sl.HBox(align_items="center"):
-    #         sl.Image(f"static/system-logo.png", classes=["logo"])
-    #         sl.HTML(tag="a", unsafe_innerHTML="Built by Ploomber", attributes={"href": "https://ploomber.io", "target": "_blank"}, classes=["link"])
 
 Page()
