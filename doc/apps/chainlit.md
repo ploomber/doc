@@ -12,6 +12,10 @@ myst:
 
 # Chainlit
 
+```{tip}
+Ploomber Cloud is a great platform to host your Chainlit apps, even [Chainlit recommends us!](https://docs.chainlit.io/deployment/tutorials)
+```
+
 To deploy a Chainlit application in Ploomber Cloud you need:
 
 - A [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=chainlit&utm_medium=documentation) account
