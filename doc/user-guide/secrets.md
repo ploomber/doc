@@ -40,4 +40,4 @@ else:
 ```
 
 
-A complete example is available [here.](https://github.com/ploomber/doc/blob/main/examples/voila/env-variable/app.ipynb)
+A complete example is available [here.](https://github.com/ploomber/doc/blob/main/examples/voila/secret/app.ipynb)
