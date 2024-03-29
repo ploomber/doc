@@ -11,7 +11,7 @@ parts:
     chapters:
       - file: user-guide/cli
       - file: user-guide/github
-      - file: user-guide/env-vars
+      - file: user-guide/secrets
       - file: user-guide/password
       - file: user-guide/resources
       - file: user-guide/gpu

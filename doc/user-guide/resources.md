@@ -16,4 +16,4 @@ If you want to increase or reduce the resources provisioned for an existing appl
 
 ![](../static/resources/redeploy.png)
 
-You'll need to provide the source code and environment variables again. In the last section, you'll be able to choose the resources to provision.
+You'll need to provide the source code again. In the last section, you'll be able to choose the resources to provision.

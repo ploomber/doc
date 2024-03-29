@@ -94,15 +94,15 @@ ploomber-cloud examples flask/basic-app
 
 A full list of example applications is available [here](https://github.com/bryannho/doc/tree/main/examples)
 
-## Defining environment variables
+## Defining secrets
 
-If your project uses environment variables, you can define them in an `.env` file.
+If your project uses secrets, you can define them in an `.env` file.
 
-In your main project directory, create an `.env` file. Open it in your code editor, and enter your environment variables. It should look like this:
+In your main project directory, create an `.env` file. Open it in your code editor, and enter your secrets. It should look like this:
 
 ```
-MY_ENV_VAR_1=value_1
-MY_ENV_VAR_2=value_2
+MY_SECRET_1=value_1
+MY_SECRET_2=value_2
 ```
 
 Now make sure your project has been [initialized](init), and deploy it:
@@ -111,7 +111,7 @@ Now make sure your project has been [initialized](init), and deploy it:
 ploomber-cloud deploy
 ```
 
-The command-line interface will automatically read and encrypt your environment variables and include them in the deployment.
-For security reasons, your `.env` file is replaced with an empty file at runtime. Ploomber only stores your encrypted environment variables.
+The command-line interface will automatically read and encrypt your secrets and include them in the deployment.
+For security reasons, your `.env` file is replaced with an empty file at runtime. Ploomber only stores your encrypted secrets.
 
-To learn how to read your environment variables from within your application, see [Reading variables.](./env-vars.md)
+To learn how to read your secrets from within your application, see [Reading secrets.](./secrets.md)
