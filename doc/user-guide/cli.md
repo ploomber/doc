@@ -101,8 +101,8 @@ If your project uses secrets, you can define them in an `.env` file.
 In your main project directory, create an `.env` file. Open it in your code editor, and enter your secrets. It should look like this:
 
 ```
-MY_ENV_VAR_1=value_1
-MY_ENV_VAR_2=value_2
+MY_SECRET_1=value_1
+MY_SECRET_2=value_2
 ```
 
 Now make sure your project has been [initialized](init), and deploy it:
