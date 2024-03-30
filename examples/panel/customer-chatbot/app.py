@@ -8,8 +8,10 @@ Answers to user's queries will be based on the Online Retail dataset:
 https://archive.ics.uci.edu/dataset/352/online+retail
 
 Response:
-Currently the chat assistant can perform only order cancellations. Given an Order ID it determines
-if the Order ID exists and is eligible for cancellation. If so, it helps the customer cancel the order.
+Currently the chat assistant can perform the following actions:
+1. Get ID of all orders placed by customer
+2. Cancel a particular order if it is eligible for cancellation
+3. Get order details
 """
 
 import json
@@ -28,11 +30,10 @@ CONTEXT_DATA = {
 client = OpenAI()
 
 df = pd.read_csv("orders.csv")
-all_customers = [
-    str(int(customer))
-    for customer in df["CustomerID"].tolist()
-    if not math.isnan(customer)
-]
+df["CustomerID"] = df["CustomerID"].apply(
+    lambda x: str(int(x)) if not pd.isna(x) else ""
+)
+all_customers = df["CustomerID"].tolist()
 
 
 def detect_order_number_and_intent(user_query):
@@ -48,7 +49,7 @@ def detect_order_number_and_intent(user_query):
         You need to return only the intent and no additional sentences.
         If relevant intent is not found then return the string None.
 
-        Valid intents = ["TOTAL_ORDER_COST", "CANCEL", "NUMBER_OF_ITEMS", "ORDER_ITEM_DETAILS"]
+        Valid intents = ["CANCEL", "GET_ORDERS", "ORDER_ITEM_DETAILS"]
         
         You should return the response as a JSON.
     """
@@ -57,16 +58,6 @@ def detect_order_number_and_intent(user_query):
         response_format={"type": "json_object"},
         messages=[
             {"role": "system", "content": system_prompt},
-            {"role": "user", "content": "What is the total cost of the order 536365"},
-            {
-                "role": "system",
-                "content": '{"OrderID":"536365", "Intent":"TOTAL_ORDER_COST"}',
-            },
-            {"role": "user", "content": "total cost of all items in the order 536365"},
-            {
-                "role": "system",
-                "content": '{"OrderID":"536365", "Intent":"TOTAL_ORDER_COST"}',
-            },
             {"role": "user", "content": "Which items were ordered in 536364"},
             {
                 "role": "system",
@@ -74,14 +65,10 @@ def detect_order_number_and_intent(user_query):
             },
             {"role": "user", "content": "Can i cancel the order 458891"},
             {"role": "system", "content": '{"OrderID":"458891", "Intent":"CANCEL"}'},
-            {
-                "role": "user",
-                "content": "How many items were ordered in Invoice 558420",
-            },
-            {
-                "role": "system",
-                "content": '{"OrderID":"558420", "Intent":"NUMBER_OF_ITEMS"}',
-            },
+            {"role": "user", "content": "Which orders have I placed"},
+            {"role": "system", "content": '{"OrderID":"None", "Intent":"GET_ORDERS"}'},
+            {"role": "user", "content": "Please get my orders"},
+            {"role": "system", "content": '{"OrderID":"None", "Intent":"GET_ORDERS"}'},
             {"role": "user", "content": "Order ID 17850"},
             {"role": "system", "content": '{"OrderID":"17850", "Intent":"None"}'},
             {"role": "user", "content": "all products"},
@@ -93,6 +80,17 @@ def detect_order_number_and_intent(user_query):
     )
     output = response.choices[0].message.content
     return json.loads(output)
+
+
+def get_orders():
+    """Function to fetch all orders of given customer"""
+
+    customerId = customerid_input.value.strip()
+    print(customerId)
+    customer_orders = df.loc[df["CustomerID"] == customerId]
+    print(customer_orders)
+    order_ids = customer_orders["InvoiceNo"].unique().tolist()
+    return ", ".join(order_ids)
 
 
 def cancel_order(invoice_number):
@@ -121,9 +119,7 @@ def cancel_order(invoice_number):
         return cancel
 
     customerId = invoice_details.iloc[0]["CustomerID"]
-    if not math.isnan(customerId):
-        customerId = str(int(customerId))
-    else:
+    if math.isnan(customerId):
         cancel["eligible"] = False
         cancel[
             "reason"
@@ -187,6 +183,8 @@ def customer_chatbot_agent(user_query, verbose=False):
     invoice_number = output["OrderID"]
     intent = output["Intent"]
 
+    print(f"Intent: {intent}")
+
     if verbose:
         print(f"OrderID: {invoice_number}, Intent: {intent}")
 
@@ -210,23 +208,17 @@ def customer_chatbot_agent(user_query, verbose=False):
             CONTEXT_DATA["CancelConfirmationPending"] = False
             return "Order not cancelled. Is there anything else we can help you with?"
 
-    if invoice_number == "None":
-        return (
-            "Please provide an Order ID along with the action you need to perform on the order. "
-            "Note that we only support cancellations currently."
-        )
+    if invoice_number == "None" and intent != "GET_ORDERS":
+        return "Please provide an Order ID along with the action you need to perform on the order."
     elif intent == "None":
         return (
             "Please provide more details regarding the action you want to take on the order. "
             "Currently we support order cancellations only."
         )
 
-    if intent != "CANCEL":
-        return (
-            "We only support order cancellation requests. "
-            "Please help us with the Order ID you want to cancel."
-        )
-    else:
+    if intent not in ["CANCEL", "GET_ORDERS", "ORDER_ITEM_DETAILS"]:
+        return "Invalid request. We support the below actions:\n1. Order cancellation\n2. Get orders\n3. Get order details"
+    if intent == "CANCEL":
         try:
             cancellation = cancel_order(invoice_number)
             if cancellation["eligible"]:
@@ -239,6 +231,9 @@ def customer_chatbot_agent(user_query, verbose=False):
             if verbose:
                 print(str(e))
             return "We faced some issues in cancelling your order. Please try again!"
+    elif intent == "GET_ORDERS":
+        all_orders = get_orders()
+        return f"Here are the orders placed by you: {all_orders}"
 
 
 def callback(contents: str, user: str, instance: pn.chat.ChatInterface):
@@ -257,7 +252,7 @@ chat_interface.send(
 
 app_description = pn.pane.Markdown(
     """
-This app allows users to perform cancellations on their [orders](https://archive.ics.uci.edu/dataset/352/online+retail).
+This app allows users to perform actions on their [orders](https://archive.ics.uci.edu/dataset/352/online+retail).
 
 1. Input **Customer ID**, default provided.
 2. Input **Today's Date**, default provided. Only orders in the past 14 days can be cancelled.
@@ -271,9 +266,7 @@ This app allows users to perform cancellations on their [orders](https://archive
     margin=(0, 0, 10, 0),
 )
 
-customerid_input = pn.widgets.TextInput(
-    name="Customer ID", placeholder="15574"
-)
+customerid_input = pn.widgets.TextInput(name="Customer ID", placeholder="15574")
 date_picker = pn.widgets.DatePicker(
     name="Today's Date", value=datetime.datetime(2011, 6, 20)
 )
@@ -283,5 +276,5 @@ pn.template.FastListTemplate(
     title="Customer Chatbot",
     sidebar=[app_description, customerid_input, date_picker],
     main=[chat_interface],
-    sidebar_width=400
+    sidebar_width=400,
 ).servable()
