@@ -79,3 +79,8 @@ The previous snippet is using the `openai` Python package since vLLM exposes a s
 that mimics OpenAI's API; however, you don't have to use it. You can also use an http
 library like `requests`.
 ```
+
+## Using outlines
+
+We also support serving [`outlines`](https://github.com/outlines-dev/outlines) via
+vLLM, the `Dockerfile` is slightly different, [you can see the example here.](https://github.com/ploomber/doc/tree/main/examples/docker/vllm-outlines-gpu)
