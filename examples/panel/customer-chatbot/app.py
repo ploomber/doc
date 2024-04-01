@@ -229,6 +229,9 @@ def customer_chatbot_agent(user_query, verbose=False):
             CANCELLATION_CONTEXT_DATA["CancelConfirmationPending"] = False
             return "Order not cancelled. Is there anything else we can help you with?"
 
+    if invoice_number == "None" and intent != "GET_ORDERS":
+        return "Please provide an Order ID along with the action you need to perform on the order."
+
     if intent == "None":
         return (
             "Please provide the action you need to perform. We support:\n"
@@ -236,8 +239,6 @@ def customer_chatbot_agent(user_query, verbose=False):
             "2. Get specific order details\n"
             "3. Cancel an order"
         )
-    if invoice_number == "None" and intent != "GET_ORDERS":
-        return "Please provide an Order ID along with the action you need to perform on the order."
 
     if intent == "CANCEL":
         try:
