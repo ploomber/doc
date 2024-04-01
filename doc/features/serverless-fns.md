@@ -1,9 +1,7 @@
 # Serveless functions
 
 ```{important}
-The serverless functions API is experimental and only available for certain customers,
-if you want to get on the waitlist, send us an email
-[contact@ploomber.io](mailto:contact@ploomber.io)
+The serverless functions is in beta and only available to PRO customers.
 ```
 
 In many applications, keeping hardware running 24/7 is wasteful (and expensive!) since
@@ -38,13 +36,13 @@ bill significantly. Let's revisit the example:
 
 ```python
 from flask import Flask, request, jsonify
-from ploomber_cloud import serverless
+from ploomber_cloud import functions
 
 
 app = Flask(__name__)
 
-# pass resources needed and pip packages
-@serverless(n_cpus=4, memory="16GB", requirements=["scikit-learn"])
+
+@functions.remote(requirements=["scikit-learn"])
 def predict(input_data):
     from my_project import load_model
     model = load_model()
@@ -62,14 +60,30 @@ Since Flask doesn't consume lots of resources, you can deploy this app with 0.5 
 and 1GB, then, whenever the `/predict` endpoint gets a request, the `predict` function
 will run in an ephemeral container.
 
-Assuming the model takes 1s to perform a prediction, you can do 14,000 predictions
-for $1!
+Assuming the model takes a few seconds to perform a prediction, you can do thousands
+of predictions for $1!
 
 Since the resources are ephemeral, this will impact prediction time, as there is some
 start overhead, but in most cases, this is an acceptable tradeoff.
 
+## data types
+
+TODO: show an example where if we return a numpy array, we should have the
+same version in the client so it can be unserialized
 
 ## Task queues
+
+```python
+from ploomber_cloud import functions
+
+@functions.remote(requirements=["numpy"])
+def return_x(x):
+    return x
+
+job_id = return_x.background(10)
+functions.get_job_status(job_id)
+functions.get_result_from_remote_function(job_id)
+```
 
 ## Resources
 
