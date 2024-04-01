@@ -10,18 +10,20 @@ https://archive.ics.uci.edu/dataset/352/online+retail
 Response:
 Currently the chat assistant can perform the following actions:
 1. Get ID of all orders placed by customer
-2. Cancel a particular order if it is eligible for cancellation
-3. Get order details
+2. Allowing cancellation of a particular order if it has been placed
+   in the last 14 days
+3. Get specific order details
 """
 
 import json
-import math
+import datetime
+import pandas as pd
 import panel as pn
 from openai import OpenAI
-import pandas as pd
-import datetime
 
-CONTEXT_DATA = {
+pn.extension("tabulator")
+
+CANCELLATION_CONTEXT_DATA = {
     "CancelOrderId": None,
     "CancelConfirmationPending": False,
     "CancelledOrders": [],
@@ -86,11 +88,42 @@ def get_orders():
     """Function to fetch all orders of given customer"""
 
     customerId = customerid_input.value.strip()
-    print(customerId)
     customer_orders = df.loc[df["CustomerID"] == customerId]
-    print(customer_orders)
     order_ids = customer_orders["InvoiceNo"].unique().tolist()
     return ", ".join(order_ids)
+
+
+def get_order_details(invoice_number):
+    """Function to fetch order details"""
+
+    order_details = df.loc[df["InvoiceNo"] == invoice_number]
+    order_details = order_details.reset_index(drop=True)
+    if len(order_details) == 0:
+        return {
+            "Found": False,
+            "Reason": "This Order ID doesn't exist. Please input a valid order ID",
+        }
+    customerId = order_details.iloc[0]["CustomerID"]
+    if not customerId:
+        return {
+            "Found": False,
+            "Reason": "There is no information on the Customer  "
+            "ID for this order. Please try another Order ID",
+        }
+
+    if customerId.strip() != customerid_input.value.strip():
+        return {
+            "Found": False,
+            "Reason": "Sorry! The order "
+            f"{invoice_number} belongs to a different customer",
+        }
+    return {"Found": True, "Data": order_details}
+
+
+def create_cancellation_details(reason):
+    cancel = {"eligible": False, "reason": reason}
+    CANCELLATION_CONTEXT_DATA["CancelOrderId"] = None
+    return cancel
 
 
 def cancel_order(invoice_number):
@@ -102,7 +135,7 @@ def cancel_order(invoice_number):
     """
 
     cancel = {}
-    if invoice_number in CONTEXT_DATA["CancelledOrders"]:
+    if invoice_number in CANCELLATION_CONTEXT_DATA["CancelledOrders"]:
         cancel["eligible"] = False
         cancel[
             "reason"
@@ -111,29 +144,22 @@ def cancel_order(invoice_number):
 
     invoice_details = df.loc[df["InvoiceNo"] == invoice_number]
     if len(invoice_details) == 0:
-        cancel["eligible"] = False
-        cancel[
-            "reason"
-        ] = f"Sorry! We couldn't find order: {invoice_number}. Please try another Order ID"
-        CONTEXT_DATA["CancelOrderId"] = None
-        return cancel
+        return create_cancellation_details(
+            f"Sorry! We couldn't find order: "
+            f"{invoice_number}. Please try another Order ID"
+        )
 
     customerId = invoice_details.iloc[0]["CustomerID"]
-    if math.isnan(customerId):
-        cancel["eligible"] = False
-        cancel[
-            "reason"
-        ] = f"There is no information on the Customer ID for this order. Please try another Order ID"
-        CONTEXT_DATA["CancelOrderId"] = None
-        return cancel
+    if not customerId:
+        return create_cancellation_details(
+            f"There is no information on the Customer "
+            f"ID for this order. Please try another Order ID"
+        )
 
     if customerId.strip() != customerid_input.value.strip():
-        cancel["eligible"] = False
-        cancel[
-            "reason"
-        ] = f"Sorry! The order {invoice_number} belongs to a different customer"
-        CONTEXT_DATA["CancelOrderId"] = None
-        return cancel
+        return create_cancellation_details(
+            f"Sorry! The order " f"{invoice_number} belongs to a different customer"
+        )
 
     try:
         invoice_date = invoice_details.iloc[0]["InvoiceDate"]
@@ -141,30 +167,26 @@ def cancel_order(invoice_number):
             invoice_date.split()[0], "%m/%d/%y"
         ).date()
         date_difference = date_picker.value - date_object
-    except Exception as e:
-        cancel["eligible"] = False
-        cancel["reason"] = f"Failed to process Invoice date for order {invoice_number}"
-        CONTEXT_DATA["CancelOrderId"] = None
-        return cancel
+    except Exception:
+        return create_cancellation_details(
+            f"Failed to process " f"Invoice date for order {invoice_number}"
+        )
 
-    if date_difference.days <= 14:
-        cancel["eligible"] = True
-        CONTEXT_DATA["CancelOrderId"] = invoice_number
+    if 14 >= date_difference.days >= 0:
+        cancel = {"eligible": True}
+        CANCELLATION_CONTEXT_DATA["CancelOrderId"] = invoice_number
         return cancel
     else:
-        cancel["eligible"] = False
-        cancel["reason"] = (
+        return create_cancellation_details(
             f"Order {invoice_number} not eligible for cancellation. "
             f"We can only cancel orders placed in the last 14 days"
         )
-        CONTEXT_DATA["CancelOrderId"] = None
-        return cancel
 
 
 def customer_chatbot_agent(user_query, verbose=False):
     """An agent that can respond to customer's queries regarding orders"""
 
-    global CONTEXT_DATA
+    global CANCELLATION_CONTEXT_DATA
 
     output = detect_order_number_and_intent(user_query)
     if verbose:
@@ -177,13 +199,10 @@ def customer_chatbot_agent(user_query, verbose=False):
         return (
             "Please provide a valid request. You need to "
             "enter CustomerID in the left sidebar if not done already. "
-            "Please enter a valid OrderID that you need to cancel."
         )
 
     invoice_number = output["OrderID"]
     intent = output["Intent"]
-
-    print(f"Intent: {intent}")
 
     if verbose:
         print(f"OrderID: {invoice_number}, Intent: {intent}")
@@ -194,35 +213,37 @@ def customer_chatbot_agent(user_query, verbose=False):
         return "Please provide a valid CustomerID"
 
     # Check if user has requested for order cancellation and confirm the same
-    if CONTEXT_DATA["CancelConfirmationPending"]:
+    if CANCELLATION_CONTEXT_DATA["CancelConfirmationPending"]:
         if "yes" in user_query.lower():
             msg = (
-                f"Order {CONTEXT_DATA['CancelOrderId']} successfully cancelled. "
+                f"Order {CANCELLATION_CONTEXT_DATA['CancelOrderId']} successfully cancelled. "
                 f"Is there anything else we can help you with?"
             )
-            CONTEXT_DATA["CancelledOrders"].append(CONTEXT_DATA["CancelOrderId"])
-            CONTEXT_DATA["CancelOrderId"] = None
-            CONTEXT_DATA["CancelConfirmationPending"] = False
+            CANCELLATION_CONTEXT_DATA["CancelledOrders"].append(
+                CANCELLATION_CONTEXT_DATA["CancelOrderId"]
+            )
+            CANCELLATION_CONTEXT_DATA["CancelOrderId"] = None
+            CANCELLATION_CONTEXT_DATA["CancelConfirmationPending"] = False
             return msg
         else:
-            CONTEXT_DATA["CancelConfirmationPending"] = False
+            CANCELLATION_CONTEXT_DATA["CancelConfirmationPending"] = False
             return "Order not cancelled. Is there anything else we can help you with?"
 
+    if intent == "None":
+        return (
+            "Please provide the action you need to perform. We support:\n"
+            "1. Get all orders\n"
+            "2. Get specific order details\n"
+            "3. Cancel an order"
+        )
     if invoice_number == "None" and intent != "GET_ORDERS":
         return "Please provide an Order ID along with the action you need to perform on the order."
-    elif intent == "None":
-        return (
-            "Please provide more details regarding the action you want to take on the order. "
-            "Currently we support order cancellations only."
-        )
 
-    if intent not in ["CANCEL", "GET_ORDERS", "ORDER_ITEM_DETAILS"]:
-        return "Invalid request. We support the below actions:\n1. Order cancellation\n2. Get orders\n3. Get order details"
     if intent == "CANCEL":
         try:
             cancellation = cancel_order(invoice_number)
             if cancellation["eligible"]:
-                CONTEXT_DATA["CancelConfirmationPending"] = True
+                CANCELLATION_CONTEXT_DATA["CancelConfirmationPending"] = True
                 return "Please confirm that you want to cancel the order (Yes/No)"
 
             else:
@@ -231,9 +252,31 @@ def customer_chatbot_agent(user_query, verbose=False):
             if verbose:
                 print(str(e))
             return "We faced some issues in cancelling your order. Please try again!"
+
     elif intent == "GET_ORDERS":
         all_orders = get_orders()
         return f"Here are the orders placed by you: {all_orders}"
+
+    elif intent == "ORDER_ITEM_DETAILS":
+        order_details = get_order_details(invoice_number)
+        if order_details["Found"]:
+            table = pn.widgets.Tabulator(order_details["Data"])
+            if invoice_number in CANCELLATION_CONTEXT_DATA["CancelledOrders"]:
+                return pn.Column(
+                    pn.widgets.StaticText(
+                        name="Note", value="This order has been cancelled"
+                    ),
+                    table,
+                )
+            return table
+        else:
+            return order_details["Reason"]
+
+    else:
+        return (
+            "Invalid request. We support the below actions:\n1. "
+            "Order cancellation\n2. Get orders\n3. Get order details"
+        )
 
 
 def callback(contents: str, user: str, instance: pn.chat.ChatInterface):
@@ -256,8 +299,11 @@ This app allows users to perform actions on their [orders](https://archive.ics.u
 
 1. Input **Customer ID**, default provided.
 2. Input **Today's Date**, default provided. Only orders in the past 14 days can be cancelled.
-3. Users can enter queries like *Please cancel Order ID 556878*.
-3. CustomerID *15574* has the following orders (using *2011-06-20* as Today's Date):
+3. Users can enter queries like:
+   a. Which orders have I placed
+   b. I want to know details of order 556878
+   c. Please cancel Order ID 556878
+4. CustomerID *15574* has the following orders (using *2011-06-20* as Today's Date):
    a. 556878 (5 days old, you can cancel this one)
    b. 539215 (182 days old, you cannot cancel)
    c. 536796 (200 days old, you cannot cancel)
