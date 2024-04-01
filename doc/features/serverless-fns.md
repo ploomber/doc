@@ -68,13 +68,12 @@ for $1!
 Since the resources are ephemeral, this will impact prediction time, as there is some
 start overhead, but in most cases, this is an acceptable tradeoff.
 
-## Secrets
 
-If your serverless function requires secrets, you can manage them from the CLI.
-They are available to your function via `os.environ`
+## Task queues
 
-```bash
-ploomber-cloud secrets --list
-ploomber-cloud secrets --add NAME=VALUE
-ploomber-cloud secrets --remove NAME
-```
+## Resources
+
+Serverless functions are currently limited to a maximum of 6GB and 10 minutes of
+runtime. The output of each function is also limited to 100MB. If you need to increase
+this quota, contact us at [contact@ploomber.io](mailto:contact@ploomber.io).
+
