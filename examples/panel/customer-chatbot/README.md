@@ -2,6 +2,12 @@
 
 A chat assistant that helps customers perform actions on their orders.
 
+The following actions are supported:
+
+1. Get all orders placed by given customer
+2. Get order details of a specific order
+3. Allow cancellation of a particular order if has been placed in the last 14 days
+
 ![](screenshot.webp)
 
 ## Set key
