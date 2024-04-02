@@ -1,14 +1,15 @@
 # Serveless functions
 
 ```{important}
-The serverless functions is in beta and only available to PRO customers.
+The serverless functions is in beta and only available to PRO customers. Usage is
+free while in beta.
 ```
 
 In many applications, keeping hardware running 24/7 is wasteful (and expensive!) since
 it's likely that some of your CPUs and memory are idle most of the time. In such cases,
 you can save money by using serverless functions: you deploy an application with
-small/medium resources (say 0.5 CPU and 1GB of RAM) and delegate compute-intensive
-operations to a serverless function, which are billed per second.
+small resources (say 0.5 CPU and 1GB of RAM) and delegate compute-intensive
+operations to a serverless function.
 
 ## Use case: ML model predictions
 
@@ -66,10 +67,53 @@ of predictions for $1!
 Since the resources are ephemeral, this will impact prediction time, as there is some
 start overhead, but in most cases, this is an acceptable tradeoff.
 
-## data types
+## User guide
 
-TODO: show an example where if we return a numpy array, we should have the
-same version in the client so it can be unserialized
+### Data types
+
+```python
+from ploomber_cloud import functions
+
+@functions.remote(requirements=["numpy"])
+def random_array(size):
+    import numpy as np
+    return np.random.rand(size)
+
+# this will fail if numpy is not installed locally
+arr = random_array(100)
+```
+
+To fix it, either install numpy locally or return an object that doesn't require it:
+
+```python
+from ploomber_cloud import functions
+
+@functions.remote(requirements=["numpy"])
+def random_array(size):
+    import numpy as np
+    # no need to install numpy anymore!
+    return [float(x) for x in np.random.rand(size)]
+
+arr = random_array(100)
+```
+
+### Imports
+
+All imports must be inside the function, even if that causes duplicates:
+
+
+```python
+from ploomber_cloud import functions
+import numpy as np
+
+@functions.remote(requirements=["numpy"])
+def random_array(size):
+    import numpy as np
+    return np.random.rand(size)
+
+arr = random_array(100) + np.random.rand(100)
+```
+
 
 ## Task queues
 
