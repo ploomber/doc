@@ -69,7 +69,12 @@ start overhead, but in most cases, this is an acceptable tradeoff.
 
 ## User guide
 
-This section will cover the basics of using serverless functions.
+This section will cover the basics of using serverless functions. Before continuing,
+install the client package:
+
+```sh
+pip install ploomber-cloud --upgrade
+```
 
 ### Decorating functions
 
