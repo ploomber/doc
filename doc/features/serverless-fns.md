@@ -1,8 +1,8 @@
 # Serveless functions
 
 ```{important}
-The serverless functions is in beta and only available to PRO customers. Usage is
-free while in beta.
+The serverless functions is free while in beta. Community users get 10 calls per day,
+PRO users get 100 calls per day.
 ```
 
 In many applications, keeping hardware running 24/7 is wasteful (and expensive!) since
@@ -14,7 +14,7 @@ operations to a serverless function.
 ## Use case: ML model predictions
 
 Assume you're developing a Flask application to make predictions from a ML model
-(assume the model requires 8CPUs and 16GB of RAM), your code might look like this:
+(assume the model requires 2CPUs and 6GB of RAM), your code might look like this:
 
 ```python
 from flask import Flask, request, jsonify
@@ -30,8 +30,8 @@ def predict():
     return jsonify({'prediction': model.predict(input_data)})
 ```
 
-For this app to work, you'd need to deploy an app with 8 CPUs and 16 GB, which costs
-$313.34 monthly! Moving the heavy workload into a serverless function can reduce your
+For this app to work, you'd need to deploy an app with 2 CPUs and 6 GB, which costs
+$85.4 monthly! Moving the heavy workload into a serverless function can reduce your
 bill significantly. Let's revisit the example:
 
 
@@ -43,7 +43,7 @@ from ploomber_cloud import functions
 app = Flask(__name__)
 
 
-@functions.remote(requirements=["scikit-learn"])
+@functions.serverless(requirements=["scikit-learn==1.4.0"])
 def predict(input_data):
     from my_project import load_model
     model = load_model()
@@ -53,28 +53,49 @@ def predict(input_data):
 def predict():
     data = request.get_json()
     input_data = data['input_data']
-    return jsonify({'prediction': predict(input_data)})
+    # predict runs in an ephemeral container and shuts down after it's done
+    prediction = predict(input_data)
+    return jsonify({'prediction': prediction})
 ```
 
 The code changes are minimal, but this new architecture can save you a lot of money.
 Since Flask doesn't consume lots of resources, you can deploy this app with 0.5 CPU
 and 1GB, then, whenever the `/predict` endpoint gets a request, the `predict` function
-will run in an ephemeral container.
-
-Assuming the model takes a few seconds to perform a prediction, you can do thousands
-of predictions for $1!
+will run in an ephemeral container. Assuming the model takes a few seconds to perform a
+prediction, you can do thousands of predictions for $1!
 
 Since the resources are ephemeral, this will impact prediction time, as there is some
 start overhead, but in most cases, this is an acceptable tradeoff.
 
 ## User guide
 
-### Data types
+This section will cover the basics of using serverless functions.
+
+### Decorating functions
+
+To convert your function into a serverless function, add the `@functions.serverless`
+decorator, and pass any `requirements`, they'll be installed when your function is
+executed:
 
 ```python
 from ploomber_cloud import functions
 
-@functions.remote(requirements=["numpy"])
+@functions.serverless(requirements=["numpy==1.26.4"])
+def random_array(size):
+    import numpy as np
+    return np.random.rand(size)
+```
+
+### Data types
+
+If your function returns a data type that requires a third-party package (for example,
+a numpy array), then, the environment that receives the resuslts must also have the
+same package and version of such package:
+
+```python
+from ploomber_cloud import functions
+
+@functions.serverless(requirements=["numpy==1.26.4"])
 def random_array(size):
     import numpy as np
     return np.random.rand(size)
@@ -83,12 +104,12 @@ def random_array(size):
 arr = random_array(100)
 ```
 
-To fix it, either install numpy locally or return an object that doesn't require it:
+To fix it, install `numpy` locally or return an object that doesn't require it:
 
 ```python
 from ploomber_cloud import functions
 
-@functions.remote(requirements=["numpy"])
+@functions.serverless(requirements=["numpy==1.26.4"])
 def random_array(size):
     import numpy as np
     # no need to install numpy anymore!
@@ -99,15 +120,16 @@ arr = random_array(100)
 
 ### Imports
 
-All imports must be inside the function, even if that causes duplicates:
+All packages that your serverless function uses must be imported inside the function:
 
 
 ```python
 from ploomber_cloud import functions
 import numpy as np
 
-@functions.remote(requirements=["numpy"])
+@functions.serverless(requirements=["numpy==1.26.4"])
 def random_array(size):
+    # need to add all imports here!
     import numpy as np
     return np.random.rand(size)
 
@@ -117,16 +139,32 @@ arr = random_array(100) + np.random.rand(100)
 
 ## Task queues
 
+If your application performs long-running tasks, it's a good idea to run them in the
+background. You can run background tasks by calling `.background()` in decorated
+functions:
+
 ```python
 from ploomber_cloud import functions
 
-@functions.remote(requirements=["numpy"])
-def return_x(x):
-    return x
+@functions.serverless(requirements=["numpy==1.26.4"])
+def random_array(size):
+    # need to add all imports here!
+    import numpy as np
+    return np.random.rand(size)
 
-job_id = return_x.background(10)
-functions.get_job_status(job_id)
+
+# run function in the background, returns immediately with a job_id
+job_id = random_array.background(10)
+
+# get job status
+status = functions.get_job_status(job_id)
+
+# if status == 'SUCCEEDED', you can retrieve the output
 functions.get_result_from_remote_function(job_id)
+
+# if status == 'SUBMITTED', the function is running
+# if status == 'FAILED', you can see the error message
+print(status["traceback"])
 ```
 
 ## Resources
