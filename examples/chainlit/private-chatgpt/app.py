@@ -4,7 +4,7 @@ import os
 
 # Enter the personal API key that you set for the host, 
 # or leave it blank if you didn't set one
-vllm_key = os.environ.get("VLLM_KEY") or ""
+vllm_key = os.environ.get("VLLM_API_KEY") or ""
 
 # Modify this value to match your host, remember to add /v1 at the end
 api_base = "https://aged-math-3623.ploomberapp.io/v1"

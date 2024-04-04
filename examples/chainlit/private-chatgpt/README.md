@@ -9,7 +9,7 @@ Ensure your LLM has already been deployed.
 If you configured a private API key on the backend, set it here via a secret or `.env` file:
 
 ```sh
-export VLLM_KEY=your_key
+export VLLM_API_KEY=your_key
 ```
 
 Note down the host URL. In `app.py`, modify `api_base` with your host URL.
