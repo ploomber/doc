@@ -161,14 +161,14 @@ def random_array(size):
 # run function in the background, returns immediately with a job_id
 job_id = random_array.background(10)
 
-# get job status
+# returns a dictionary with 'status' and 'traceback'
 status = functions.get_job_status(job_id)
 
-# if status == 'SUCCEEDED', you can retrieve the output
-functions.get_result_from_remote_function(job_id)
+# if status['status'] == 'SUCCEEDED', you can retrieve the output
+result = functions.get_result_from_remote_function(job_id)
 
-# if status == 'SUBMITTED', the function is running
-# if status == 'FAILED', you can see the error message
+# if status['status'] == 'SUBMITTED', the function is running
+# if status['status'] == 'FAILED', you can see the error message
 print(status["traceback"])
 ```
 
