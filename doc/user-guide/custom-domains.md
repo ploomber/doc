@@ -52,7 +52,7 @@ These are the three records you need to add:
 ### Updating DNS records
 
 ```{note}
-If you have issues modifying your DNS records, send us an email ([contact@ploomber.io](mailto:contact@ploomber.io)) and we'll help you
+If you have issues modifying your DNS records, send us an email ([contact@ploomber.io](mailto:contact@ploomber.io)) and we'll help you. You might also check the [troubleshooting](troubleshooting-dns) section.
 ```
 
 To modify your DNS records, follow these instructions (they apply to Namecheap but they're similar for other DNS providers):
@@ -107,7 +107,7 @@ If you don't see your main domain in there, it means something went wrong and yo
 ```
 
 
-1. Select the domain, type your subdomain (e.g., `app.example.com`), and click connect
+1. Select the domain, type your subdomain (e.g., `app.example.com`), and click connect:
 
 ![](../static/custom-domains/subdomain-settings-selected.png)
 
@@ -148,3 +148,25 @@ As you can see, the domain has been created, and there is no attached applicatio
 To make the domain availble via SSL, we need to add one DNS record as described in the information panel.
 
 Please follow these instructions on how to [update your DNS records](update-dns-records).
+
+(troubleshooting-dns)=
+### Troubleshooting DNS errors
+
+These are the most common errors.
+
+#### Server Not Found
+
+![](../static/custom-domains/domains-server-not-found.png)
+
+You'll see this error if you're missing the DNAME record that points from your domain (or subdomain) to the `ID.ploomberapp.io` URL, ensure you add it. Give it some time since DNS records take some time to update. If issues persist, contact us at [contact@ploomber.io](mailto:contact@ploomber.io).
+
+
+#### Potential Security Risk Ahead
+
+![](../static/custom-domains/domains-ssl-error.png)
+
+If you see this error (or a related one), it's most likely because you're missing the CNAME record to emit the SSL certificate:
+
+![](../static/custom-domains/ssl-cname-record.png)
+
+Ensure you add it and give it some time since DNS records take some time to update. If issues persist, contact us at [contact@ploomber.io](mailto:contact@ploomber.io).
