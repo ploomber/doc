@@ -6,6 +6,7 @@ parts:
       - file: quickstart/signup
       - file: quickstart/app
       - file: quickstart/apikey
+      - file: quickstart/support
 
   - caption: User Guide
     chapters:
