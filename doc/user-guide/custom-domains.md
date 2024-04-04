@@ -17,7 +17,6 @@ If you would like a custom `ploomberapp.io` subdomain, like `my-custom-app.ploom
 
 
 (custom-domain)=
-
 ## Adding a custom domain/subdomain
 
 (new-custom-domain-with-app)=
@@ -35,16 +34,7 @@ Go to the application settings page by clicking on the **SETTINGS** button. Next
 
 ![](../static/custom-domains/custom-domains-section.png)
 
-There are two ways to connect a custom domain. Depending on where you want to store your DNS records, choose the method that suits you:
-
-* **CNAME record** (default) - You add a CNAME and ALIAS record in your DNS provider
-* **Nameservers** - We host your DNS records
-
-
-
-#### Method 1: CNAME record
-
-After typing your domain and clicking on **CONNECT**, a window like this will display:
+Once you click on **CONNECT**, a window like this will display:
 
 ![](../static/custom-domains/pointing-change-dns-records.png)
 
@@ -58,6 +48,12 @@ These are the three records you need to add:
 ![](../static/custom-domains/ssl-cname-record.png)
 
 (update-dns-records)=
+### Updating DNS records
+
+```{note}
+If you have issues modifying your DNS records, send us an email ([contact@ploomber.io](mailto:contact@ploomber.io)) and we'll help you
+```
+
 To modify your DNS records, follow these instructions (they apply to Namecheap but they're similar for other DNS providers):
 
 1. Log in to your [Namecheap account](https://www.namecheap.com/)
@@ -81,47 +77,10 @@ You should be able to see something like this:
 DNS record changes might take up to 48 hours to take effect. In the meantime, your application will be accessible from the `ploomberapp.io` URL
 ```
 
-#### Method 2: Nameservers
-
-First, let's change the connection method to nameservers, by clicking `nameservers`.
-
-![](../static/custom-domains/change-to-nameservers.png)
-
-
-Now, update the name server settings for your domain in your hosting account with the newly provided name servers.
-
-![](../static/custom-domains/nameservers.png)
-
-
-#### How to change your domain's nameservers?
-
-In most cases, changing your nameserver is a simple and easy process. 
-
-We will cover the instructions for changing your nameservers on Namecheap. While it may be a slightly different process, the basic steps remain the same for any other domain registrar.
-
-1. Log in to your [Namecheap account](https://www.namecheap.com/)
-
-2. Click `Domain List` tab and then click `Manage` button next to your domain
-
-![](../static/custom-domains/namecheap-domains.png)
-
-3. Scroll down to the `Nameservers` section and select `Custom DNS`
-
-![](../static/custom-domains/namecheap-select-custom-dns.png)
-
-4. Add your nameservers and click `Save`
-
-![](../static/custom-domains/namecheap-save-nameservers.png)
-
 
 ### Adding a custom subdomain
 
-To deploy an app at `subdomain.yourdomain.com`, you first need to ensure the main domain you want to link to (e.g., `yourdomain.com`) is registered properly. 
-
-There are 2 ways to register the main domain:
-
-1. [Connect to a running app](new-custom-domain-with-app)
-2. [Create a global domain that is not connected to any app](new-custom-domain-no-app)
+To deploy an app at `subdomain.yourdomain.com`, you first need to ensure the main domain you want to link to (e.g., `yourdomain.com`) is [registered properly](new-custom-domain-no-app).
 
 Once we have the main domain registered, we can go to the application settings page by clicking on the **SETTINGS** button. 
 
@@ -148,7 +107,7 @@ If you don't see your main domain in there, it means something went wrong and yo
 
 
 (new-custom-domain-no-app)=
-#### New custom domain without an app 
+### New custom domain without an app 
 
 Users have the option to create custom domains without associating them directly with any specific application. This option allows users to host multiple applications under different subdomains, such as `app1.example.com`, `app2.example.com`, and `app3.example.com`, while the main domain, `example.com`, remains independent of any hosted application.
 
@@ -178,12 +137,4 @@ First, open the information panel by clicking this icon next to your domain: ![]
 As you can see, the domain has been created, and there is no attached application.
 To make the domain availble via SSL, we need to add one DNS record as described in the information panel.
 
-Please follow these instructions on how to [update your DNS records](update-dns-records)
-
-
-### HTTPS and SSL
-
-Once your custom domain/subdomain has been verified, you'll be able to see it under Registered domains as `ISSUED`, and your custom domain will have an SSL certification.
-
-![](../static/custom-domains/verified.png)
-
+Please follow these instructions on how to [update your DNS records](update-dns-records).
