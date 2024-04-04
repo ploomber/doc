@@ -47,6 +47,7 @@ These are the three records you need to add:
 
 ![](../static/custom-domains/ssl-cname-record.png)
 
+
 (update-dns-records)=
 ### Updating DNS records
 
@@ -71,6 +72,15 @@ To modify your DNS records, follow these instructions (they apply to Namecheap b
 You should be able to see something like this:
 
 ![](../static/custom-domains/namecheap-updated-dns-records.png)
+
+
+```{important}
+Depending on your DNS provider (e.g. namecheap), you might need to modify the CNAME
+record displayed for the SSL certificate. You'll see something like this
+in the CNAME name: `LONGSTRING.example.com.` or `LONGSTRING.subdomain.example.com.`,
+if you encounter errors, remove the root domain from the value. (see this
+[stack overflow](https://stackoverflow.com/a/63246970/709975) question to learn more)
+```
 
 
 ```{important}
