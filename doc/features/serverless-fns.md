@@ -1,6 +1,10 @@
 # Serveless functions
 
 ```{important}
+Currently, `@functions.serverless` is only compatible with Python 3.11
+```
+
+```{important}
 The serverless functions is free while in beta. Community users get 10 calls per day,
 PRO users get 100 calls per day.
 ```
@@ -141,7 +145,7 @@ def random_array(size):
 arr = random_array(100) + np.random.rand(100)
 ```
 
-
+(task-queues)=
 ## Task queues
 
 If your application performs long-running tasks, it's a good idea to run them in the

@@ -98,6 +98,13 @@ Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn
 
 ::::
 
+## APIs
+
+
+- [Document processing](features/document-processing.md) (convert PDF to text, parse tables from PDF)
+- [Serverless functions](features/serverless-fns.md) (execute functions remotely)
+- [Task queues](task-queues) (Run jobs in the background)
+
 
 ## Use cases
 
