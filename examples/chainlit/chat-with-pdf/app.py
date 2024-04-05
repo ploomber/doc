@@ -3,7 +3,6 @@ from typing import List
 import shutil
 
 import lancedb
-import pyarrow as pa
 
 from openai import OpenAI
 
@@ -21,12 +20,12 @@ from langchain.memory import ChatMessageHistory, ConversationBufferMemory
 import chainlit as cl
 
 from ploomber_cloud import functions
-from aiutils.cache import APICache
 
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 
 client = OpenAI()
+
 
 @cl.on_chat_start
 async def on_chat_start():
@@ -81,10 +80,10 @@ async def on_chat_start():
     memory = ConversationBufferMemory(
         memory_key="chat_history",
         output_key="answer",
+        chat_memory=message_history,
         return_messages=True,
     )
 
-    # Create a chain that uses the Chroma vector store
     chain = ConversationalRetrievalChain.from_llm(
         ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0, streaming=True),
         chain_type="stuff",
