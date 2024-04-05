@@ -80,6 +80,11 @@ install the client package:
 pip install ploomber-cloud --upgrade
 ```
 
+```{important}
+Ensure you're running the latest version of `ploomber-cloud` since the API will change
+over the beta period.
+```
+
 ### Decorating functions
 
 To convert your function into a serverless function, add the `@functions.serverless`
@@ -93,6 +98,12 @@ from ploomber_cloud import functions
 def random_array(size):
     import numpy as np
     return np.random.rand(size)
+```
+
+
+```{important}
+The first execution is likely to take more time since dependencies must be installed,
+subsequent executions will use the cache.
 ```
 
 ### Data types

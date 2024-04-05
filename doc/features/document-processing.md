@@ -1,10 +1,8 @@
 # Document processing
 
 ```{important}
-The document processing API is in beta and only available for PRO users. The API will
-remain **free** during the beta period with a rate limit of 50 requests per day. If you
-need a higher rate for your account, email us
-[contact@ploomber.io](mailto:contact@ploomber.io)
+The serverless functions is free while in beta. Community users get 10 calls per day,
+PRO users get 100 calls per day.
 ```
 
 You can use Ploomber Cloud's API to process PDFs and have them ready for LLM
@@ -12,6 +10,11 @@ processing. First, install the client:
 
 ```sh
 pip install ploomber-cloud --upgrade
+```
+
+```{important}
+Ensure you're running the latest version of `ploomber-cloud` since the API will change
+over the beta period.
 ```
 
 Ensure you set your [API key](../quickstart/apikey.md), and then you'll be able to use
