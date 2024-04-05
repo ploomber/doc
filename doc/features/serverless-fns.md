@@ -1,7 +1,7 @@
 # Serveless functions
 
 ```{important}
-Currently, `@functions.serverless` is only compatible with Python 3.11
+`@functions.serverless` supports Python 3.9, 3.10, and 3.11
 ```
 
 ```{important}
