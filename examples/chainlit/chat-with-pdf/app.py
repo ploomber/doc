@@ -1,3 +1,4 @@
+import PyPDF2
 from pathlib import Path
 from typing import List
 import shutil
@@ -21,18 +22,18 @@ import chainlit as cl
 
 from ploomber_cloud import functions
 
-
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
-
 client = OpenAI()
+embeddings = OpenAIEmbeddings()
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 
 
 @cl.on_chat_start
 async def on_chat_start():
+
     files = None
 
     # Wait for the user to upload a file
-    while files == None:
+    while files is None:
         files = await cl.AskFileMessage(
             content="Please upload a PDF file to begin!",
             accept=["application/pdf"],
@@ -45,16 +46,24 @@ async def on_chat_start():
     msg = cl.Message(content=f"Processing `{file.name}`...", disable_feedback=True)
     await msg.send()
 
-    result = None
-    jobid = functions.pdf_to_text(file.path, block=False)
-    while not isinstance(result, list):
-        try:
-            result = functions.get_result(jobid)
-        except Exception:
-            pass
-    print(result)
+    # result = None
+    # jobid = functions.pdf_to_text(file.path, block=False)
+    # while not isinstance(result, list):
+    #     try:
+    #         result = functions.get_result(jobid)
+    #     except Exception:
+    #         pass
+    # print(result)
+    # pdf_text = "".join(result)
 
-    pdf_text = "".join(result)
+    # Read the PDF file
+    pdf = PyPDF2.PdfReader(file.path)
+    pdf_text = ""
+    for page in pdf.pages:
+        pdf_text += page.extract_text()
+
+    page_count = int(0.1 * len(pdf.pages))
+
     # Split the text into chunks
     texts = text_splitter.split_text(pdf_text)
     # Create a metadata for each chunk
@@ -62,18 +71,22 @@ async def on_chat_start():
 
     directory_path = Path(file.path).parent
     path_to_vector_db = Path(directory_path, "vector-db")
-    print(path_to_vector_db)
+
     if path_to_vector_db.exists():
         shutil.rmtree(path_to_vector_db)
 
-    embeddings = OpenAIEmbeddings()
-
     db = lancedb.connect(path_to_vector_db)
-    table = db.create_table("pdf", data=[
-        {"vector": embeddings.embed_query("Hello World"), "text": "Hello World", "id": "1"}
-    ], mode="overwrite")
-    docsearch = LanceDB.from_texts(texts, embeddings, connection=table)
+    table = db.create_table(
+        "pdf",
+        data=[
+            {"vector": embeddings.embed_query(texts[0]), "text": texts[0], "id": "1"}
+        ],
+        mode="overwrite",
+    )
 
+    docsearch = LanceDB.from_texts(
+        texts[1:], embeddings, metadatas=metadatas, connection=table
+    )
 
     message_history = ChatMessageHistory()
 
@@ -87,7 +100,7 @@ async def on_chat_start():
     chain = ConversationalRetrievalChain.from_llm(
         ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0, streaming=True),
         chain_type="stuff",
-        retriever=docsearch.as_retriever(),
+        retriever=docsearch.as_retriever(search_kwargs={"k": min(page_count, 5)}),
         memory=memory,
         return_source_documents=True,
     )
@@ -101,7 +114,7 @@ async def on_chat_start():
 
 @cl.on_message
 async def main(message: cl.Message):
-    chain = cl.user_session.get("chain")  # type: ConversationalRetrievalChain
+    chain = cl.user_session.get("chain")
     cb = cl.AsyncLangchainCallbackHandler()
 
     res = await chain.acall(message.content, callbacks=[cb])
@@ -112,7 +125,7 @@ async def main(message: cl.Message):
 
     if source_documents:
         for source_idx, source_doc in enumerate(source_documents):
-            source_name = f"source_{source_idx}"
+            source_name = f"source {source_idx+1}"
             # Create the text element referenced in the message
             text_elements.append(
                 cl.Text(content=source_doc.page_content, name=source_name)

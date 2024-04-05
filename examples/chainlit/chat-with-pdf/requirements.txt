@@ -1,0 +1,6 @@
+openai
+langchain
+lancedb
+chainlit
+ploomber_cloud
+tiktoken
