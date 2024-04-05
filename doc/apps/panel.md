@@ -119,6 +119,7 @@ Ploomber Cloud supports many features to help you build Panel applications quick
 - Integration with [GitHub](../user-guide/github.md)
 - Safely store [secrets](../user-guide/secrets.md) such as API keys
 - Add [password protection](../user-guide/password.md) to your app
+- Usage [analytics](../user-guide/analytics.md) such as unique visitors, total requests, etc.
 - Spin up [larger resources](../user-guide/resources.md) (CPUs and RAM)
 - Spin up [GPUs](../user-guide/gpu.md)
 - Add custom [domains or subdomains](../user-guide/custom-domains.md) to your application
