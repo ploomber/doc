@@ -1,8 +1,15 @@
+from pathlib import Path
 from typing import List
+import shutil
 
-from langchain.embeddings.openai import OpenAIEmbeddings
+import lancedb
+import pyarrow as pa
+
+from openai import OpenAI
+
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import Chroma
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores import LanceDB
 from langchain.chains import (
     ConversationalRetrievalChain,
 )
@@ -14,10 +21,12 @@ from langchain.memory import ChatMessageHistory, ConversationBufferMemory
 import chainlit as cl
 
 from ploomber_cloud import functions
+from aiutils.cache import APICache
 
 
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
 
+client = OpenAI()
 
 @cl.on_chat_start
 async def on_chat_start():
@@ -45,25 +54,33 @@ async def on_chat_start():
         except Exception:
             pass
     print(result)
-    
+
     pdf_text = "".join(result)
     # Split the text into chunks
     texts = text_splitter.split_text(pdf_text)
     # Create a metadata for each chunk
     metadatas = [{"source": f"{i}-pl"} for i in range(len(texts))]
 
-    # Create a Chroma vector store
+    directory_path = Path(file.path).parent
+    path_to_vector_db = Path(directory_path, "vector-db")
+    print(path_to_vector_db)
+    if path_to_vector_db.exists():
+        shutil.rmtree(path_to_vector_db)
+
     embeddings = OpenAIEmbeddings()
-    docsearch = await cl.make_async(Chroma.from_texts)(
-        texts, embeddings, metadatas=metadatas
-    )
+
+    db = lancedb.connect(path_to_vector_db)
+    table = db.create_table("pdf", data=[
+        {"vector": embeddings.embed_query("Hello World"), "text": "Hello World", "id": "1"}
+    ], mode="overwrite")
+    docsearch = LanceDB.from_texts(texts, embeddings, connection=table)
+
 
     message_history = ChatMessageHistory()
 
     memory = ConversationBufferMemory(
         memory_key="chat_history",
         output_key="answer",
-        chat_memory=message_history,
         return_messages=True,
     )
 
