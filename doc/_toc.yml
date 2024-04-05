@@ -10,11 +10,12 @@ parts:
 
   - caption: User Guide
     chapters:
-      - file: user-guide/cli
-      - file: user-guide/github
-      - file: user-guide/secrets
       - file: user-guide/password
+      - file: user-guide/secrets
+      - file: user-guide/github
       - file: user-guide/resources
+      - file: user-guide/cli
+      - file: user-guide/analytics
       - file: user-guide/gpu
       - file: user-guide/custom-domains
       - file: user-guide/managing-apps
