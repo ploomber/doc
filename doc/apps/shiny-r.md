@@ -93,6 +93,18 @@ ploomber-cloud deploy --watch
 ````
 `````
 
+## Features
+
+Ploomber Cloud supports many features to help you build R Shiny applications quickly!
+
+- Integration with [GitHub](../user-guide/github.md)
+- Safely store [secrets](../user-guide/secrets.md) such as API keys
+- Add [password protection](../user-guide/password.md) to your app
+- Spin up [larger resources](../user-guide/resources.md) (CPUs and RAM)
+- Spin up [GPUs](../user-guide/gpu.md)
+- Add custom [domains or subdomains](../user-guide/custom-domains.md) to your application
+
+
 ## Troubleshooting
 
 Some R packages depend on C libraries, which are not installed by default. For example,

@@ -64,6 +64,19 @@ To deploy a Chainlit app from the deployment menu, follow these instructions:
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
 ```
 
+## Features
+
+Ploomber Cloud supports many features to help you build Streamlit applications quickly!
+
+- Integration with [GitHub](../user-guide/github.md)
+- Safely store [secrets](../user-guide/secrets.md) such as API keys
+- Add [password protection](chainlit-password) to your app
+- Spin up [larger resources](../user-guide/resources.md) (CPUs and RAM)
+- Spin up [GPUs](../user-guide/gpu.md)
+- Add custom [domains or subdomains](../user-guide/custom-domains.md) to your application
+- [Task queues](task-queues) to scale applications to more users
+
+(chainlit-password)=
 ## Password protection
 
 Currently, our [password authentication](../user-guide/password.md) feature doesn't work with Chainlit, however,

@@ -64,6 +64,19 @@ To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin
 ```
 
 
+## Features
+
+Ploomber Cloud supports many features to help you build FastAPI applications quickly!
+
+- Integration with [GitHub](../user-guide/github.md)
+- Safely store [secrets](../user-guide/secrets.md) such as API keys
+- Add [password protection](../user-guide/password.md) to your app
+- Spin up [larger resources](../user-guide/resources.md) (CPUs and RAM)
+- Spin up [GPUs](../user-guide/gpu.md)
+- Add custom [domains or subdomains](../user-guide/custom-domains.md) to your application
+- [Task queues](task-queues) to scale applications to more users
+
+
 ## Examples
 
 ::::{grid} 2 2 3 3
