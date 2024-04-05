@@ -28,6 +28,11 @@ from ploomber_cloud import functions
 result = functions.pdf_to_text("document.pdf")
 ```
 
+```{tip}
+`functions.pdf_to_text` only works with native PDFs, if you have a scanned PDF, use
+`functions.pdf_scanned_to_text` instead.
+```
+
 `result` will be a list (one per page in the PDF) with the text.
 
 By default, `functions.pdf_to_text` will wait until processing is done, you can pass
