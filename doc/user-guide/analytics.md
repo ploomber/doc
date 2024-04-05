@@ -13,6 +13,11 @@ in the app's detailed view:
 
 ![](../static/analytics/button.png)
 
+```{tip}
+If you are unable to see the dashboard, you'll need to re-deploy your app. If issues
+persist, [contact us.](../quickstart/support.md)
+```
+
 The report updates in real-time; try making some requests to your app to see it!
 
 ## Sections
