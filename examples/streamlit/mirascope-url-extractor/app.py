@@ -125,20 +125,14 @@ def extract():
     """Extracts a list of objects defined by the `query` from the `url`."""
     extractor = WebpageURLExtractor(url=url, query=query)
     with begin.status("Extracting information...") as status:
-        st.write("Generating schema based on user query...")
         try:
+            st.write("Generating schema based on user query...")
             extractor.generate_schema()
-        except Exception as e:
-            status.error(f"Error: {e}")
-            status.update(state="error")
-            return
-        st.write(f"Extracting data from {url}...")
-        try:
+            st.write(f"Extracting data from {url}...")
             st.session_state.extracted_items = extractor.extract(retries=3)
         except Exception as e:
             status.error(f"Error: {e}")
             status.update(state="error")
-            return
 
 
 begin.button("Extract", on_click=extract)
