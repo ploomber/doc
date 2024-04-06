@@ -44,8 +44,8 @@
 - Granular deployment permissions
 - IP whitelisting
 - Advanced logging
-- Extra seats with additional cost
 - Dedicated Slack channel
+- Extra seats with additional cost
 
 Send us an email to [contact@ploomber.io](mailto:contact@ploomber.io).
 
