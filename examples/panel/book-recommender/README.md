@@ -56,4 +56,4 @@ Now, just run your app and then navigate to the project page. You should see log
 ## Deployment
 
 Create a zip of `app.py`, `util.py`, `_wandb.py`, `requirements.txt` and `assets/` folder, and follow the instructions for deploying a [Panel](https://docs.cloud.ploomber.io/en/latest/apps/panel.html) application.
-You also need to set `OPENAI_API_KEY` as an [environment variable](https://docs.cloud.ploomber.io/en/latest/user-guide/env-vars.html) while deploying the application. If you have Weights and Biases tracking enabled, make sure you set those environment values as well.
+You also need to set `OPENAI_API_KEY` as an [environment variable](https://docs.cloud.ploomber.io/en/latest/user-guide/secrets.html) while deploying the application. If you have Weights and Biases tracking enabled, make sure you set those environment values as well.
