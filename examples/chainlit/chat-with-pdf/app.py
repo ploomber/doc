@@ -1,11 +1,10 @@
+import shutil
 from pathlib import Path
 from typing import List
-import shutil
 
 import lancedb
-
+import chainlit as cl
 from openai import OpenAI
-
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import LanceDB
@@ -13,11 +12,8 @@ from langchain.chains import (
     ConversationalRetrievalChain,
 )
 from langchain_community.chat_models import ChatOpenAI
-
 from langchain.docstore.document import Document
 from langchain.memory import ChatMessageHistory, ConversationBufferMemory
-
-import chainlit as cl
 
 from ploomber_cloud import functions
 
@@ -28,14 +24,13 @@ text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=20
 
 @cl.on_chat_start
 async def on_chat_start():
-
     files = None
 
     # Wait for the user to upload a file
     while files is None:
         files = await cl.AskFileMessage(
             content="Please upload a PDF file to begin!\n"
-                    "The processing of the file may require a few moments or minutes to complete",
+            "The processing of the file may require a few moments or minutes to complete",
             accept=["application/pdf"],
             max_size_mb=100,
             timeout=180,
