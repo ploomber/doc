@@ -2,7 +2,7 @@
 
 ## Plans
 
-### Ploomber Cloud Community
+### Community
 
 *Free, no credit card required*
 
@@ -17,7 +17,7 @@
 - [Public Slack](https://ploomber.io/community/) support
 
 
-### Ploomber Cloud Professional
+### Professional
 
 *Starting at $10/month*
 
@@ -31,15 +31,30 @@
 - App password protection
 - Faster app builds
 - Deployment artifact limited to 200MB
-- Email support, and optional, dedicated Slack channel
+- Email and Slack support
 
-### Ploomber Cloud Enterprise
+### Teams
 
-- All features from "Professional"
+*Starting at $100/month*
+
+- Everything from "Professional"
 - Support SLA
+- Application analytics
+- Status notifications
+- Granular deployment permissions
 - IP whitelisting
 - Advanced logging
-- Faster app builds
+- Extra seats with additional cost
+- Dedicated Slack channel
+
+Send us an email to [contact@ploomber.io](mailto:contact@ploomber.io).
+
+### Enterprise
+
+*Custom pricing*
+
+- All features from "Teams"
+- Custom SLA
 - VPC or Cloud deployment
 
 
