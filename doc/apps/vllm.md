@@ -13,7 +13,7 @@ myst:
 
 You can deploy a GPU-powered vLLM server on Ploomber Cloud with a few clicks.
 
-First, ensure you create a [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=vllm&utm_medium=documentation) account Then, download the files from the [vLLM example.](https://github.com/ploomber/doc/tree/main/examples/docker/vllm-gpu) and create a `.zip` file.
+First, ensure you create a [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=vllm&utm_medium=documentation) account. Then, download the files from the [vLLM example.](https://github.com/ploomber/doc/tree/main/examples/docker/vllm-gpu) and create a `.zip` file.
 
 ```{important}
 Modify the last line in the `Dockerfile` to serve whatever model you want.
@@ -68,9 +68,11 @@ client = OpenAI(
     api_key=openai_api_key,
     base_url=openai_api_base,
 )
-completion = client.completions.create(model="google/gemma-2b", # set the right model name
-                                      prompt="JupySQL is",
-                                      max_tokens=20)
+
+# NOTE: change model to the model you're using
+completion = client.completions.create(model="facebook/opt-125m",
+                                       prompt="JupySQL is",
+                                       max_tokens=20)
 print(completion.choices[0].text)
 ```
 
@@ -80,7 +82,30 @@ that mimics OpenAI's API; however, you don't have to use it. You can also use an
 library like `requests`.
 ```
 
-## Using outlines
+## Examples
 
-We also support serving [`outlines`](https://github.com/outlines-dev/outlines) via
-vLLM, the `Dockerfile` is slightly different, [you can see the example here.](https://github.com/ploomber/doc/tree/main/examples/docker/vllm-outlines-gpu)
+::::{grid} 2 2 3 3
+:class-container: text-center
+:gutter: 2
+
+:::{grid-item-card} Basic example
+:link: https://github.com/ploomber/doc/tree/main/examples/docker/vllm-outlines-gpu
+Basic example using a small model (`facebook/opt-125m`), doesn't need `HF_TOKEN`
+:::
+
+:::{grid-item-card} `gemma-2b-it`
+:link: https://github.com/ploomber/doc/tree/main/examples/docker/vllm-gpu-gemma-2b-it
+Deploys `google/gemma-2b-it`. It requires an `HF_TOKEN` associated with an account that has
+accepted the license for `google/gemma-2b-it`
+:::
+
+
+:::{grid-item-card} `gemma-2b-it` + `outlines`
+:link: https://github.com/ploomber/doc/tree/main/examples/docker/vllm-outlines-gpu-gemma-2b-it
+Deploys `google/gemma-2b-it` using
+[`outlines`](https://github.com/outlines-dev/outlines). It requires an `HF_TOKEN`
+associated with an account that has accepted the license for `google/gemma-2b-it`
+:::
+
+::::
+
