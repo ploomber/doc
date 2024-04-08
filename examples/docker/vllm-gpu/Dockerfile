@@ -8,6 +8,6 @@ RUN pip install -r requirements.txt --no-cache-dir
 
 COPY . /srv
 
-# NOTE: this requires HF_TOKEN so the model can be downloaded. The account associated
-# with the token must have access to the google/gemma-2b-it model.
-ENTRYPOINT ["python", "-m", "vllm.entrypoints.openai.api_server", "--host", "0.0.0.0", "--port", "80", "--model", "google/gemma-2b-it", "--dtype=half"]
+# NOTE: some models require accepting a license. If that's your case
+# ensure you pass your HF_TOKEN as a secret when deploying the project
+ENTRYPOINT ["python", "-m", "vllm.entrypoints.openai.api_server", "--host", "0.0.0.0", "--port", "80", "--model", "facebook/opt-125m", "--dtype=half"]
