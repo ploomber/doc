@@ -89,7 +89,7 @@ library like `requests`.
 :gutter: 2
 
 :::{grid-item-card} Basic example
-:link: https://github.com/ploomber/doc/tree/main/examples/docker/vllm-outlines-gpu
+:link: https://github.com/ploomber/doc/tree/main/examples/docker/vllm-gpu
 Basic example using a small model (`facebook/opt-125m`), doesn't need `HF_TOKEN`
 :::
 
