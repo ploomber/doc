@@ -77,8 +77,8 @@ A new window will display showing the DNS records you need to add ([see the upda
 
 You must add two records:
 
-1. `CNAME` record: theh subdomain you want to add as the (e.g., if you want to connect `subdomain.yourdomain.com`, then, you must enter `subdomain` as the host) and `yourapp.ploomberapp.io` as value (where `yourapp` is the ID assigned to your application)
-3. `CNAME` record: with the shown **CNAME name** and **CNAME value** (as displayed in the **SSL certification status** section)
+1. `CNAME` record: the subdomain you want to add as the host (e.g., if you want to connect `subdomain.yourdomain.com`, then, you must enter `subdomain`) and `yourapp.ploomberapp.io` as value (where `yourapp` is the ID assigned to your application)
+2. `CNAME` record: with the shown **CNAME name** and **CNAME value** (as displayed in the **SSL certification status** section)
 
 
 (update-dns-records)=
