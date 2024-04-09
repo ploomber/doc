@@ -1,5 +1,4 @@
 """A Streamlit App for Extracting structured information using Mirascope."""
-
 from typing import Dict, List, Literal, Optional, Type, Union
 from urllib.request import Request, urlopen
 
@@ -118,11 +117,13 @@ extracted_items: List[Dict[str, Union[str, int, float, bool]]] = []
 if "extracted_items" not in st.session_state:
     st.session_state.extracted_items = []
 
+
 begin = st.container()
 
 
 def extract():
     """Extracts a list of objects defined by the `query` from the `url`."""
+    begin.empty()
     extractor = WebpageURLExtractor(url=url, query=query)
     with begin.status("Extracting information...") as status:
         try:
@@ -133,11 +134,12 @@ def extract():
         except Exception as e:
             status.error(f"Error: {e}")
             status.update(state="error")
+            return
+    with begin.container():
+        for item in st.session_state.extracted_items:
+            st.write("-" * 20)
+            for key, value in item.model_dump().items():
+                st.write(f"{key}: {value}")
 
 
 begin.button("Extract", on_click=extract)
-
-for item in st.session_state.extracted_items:
-    begin.write("-" * 20)
-    for key, value in item.model_dump().items():
-        begin.write(f"{key}: {value}")
