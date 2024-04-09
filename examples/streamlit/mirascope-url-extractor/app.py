@@ -123,19 +123,20 @@ begin = st.container()
 
 def extract():
     """Extracts a list of objects defined by the `query` from the `url`."""
-    begin.empty()
+    status = begin.status("Extracting information...")
+    placeholder = begin.empty()
     extractor = WebpageURLExtractor(url=url, query=query)
-    with begin.status("Extracting information...") as status:
+    with status as s:
         try:
             st.write("Generating schema based on user query...")
             extractor.generate_schema()
             st.write(f"Extracting data from {url}...")
             st.session_state.extracted_items = extractor.extract(retries=3)
         except Exception as e:
-            status.error(f"Error: {e}")
-            status.update(state="error")
+            s.error(f"Error: {e}")
+            s.update(state="error")
             return
-    with begin.container():
+    with placeholder.container():
         for item in st.session_state.extracted_items:
             st.write("-" * 20)
             for key, value in item.model_dump().items():
