@@ -1,4 +1,5 @@
 import shutil
+import asyncio
 from pathlib import Path
 from typing import List
 
@@ -15,11 +16,22 @@ from langchain_community.chat_models import ChatOpenAI
 from langchain.docstore.document import Document
 from langchain.memory import ChatMessageHistory, ConversationBufferMemory
 
-from ploomber_cloud import functions
+from ploomber_cloud.functions import pdf_to_text, pdf_scanned_to_text, get_result
 
 client = OpenAI()
 embeddings = OpenAIEmbeddings()
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+
+
+async def process_pdf(file, pdf_to_text_func):
+    jobid = pdf_to_text_func(file.path, block=False)
+    result = None
+    while not isinstance(result, list):
+        try:
+            result = get_result(jobid)
+        except Exception:
+            await asyncio.sleep(1)
+    return "".join(result)
 
 
 @cl.on_chat_start
@@ -41,17 +53,11 @@ async def on_chat_start():
     msg = cl.Message(content=f"Processing `{file.name}`...", disable_feedback=True)
     await msg.send()
 
-    result = None
-    jobid = functions.pdf_to_text(file.path, block=False)
-    while not isinstance(result, list):
-        try:
-            result = functions.get_result(jobid)
-        except Exception:
-            pass
-    pdf_text = "".join(result)
+    pdf_text = await process_pdf(file, pdf_to_text)
 
     # Split the text into chunks
     texts = text_splitter.split_text(pdf_text)
+    print(texts)
     # Create a metadata for each chunk
     metadatas = [{"source": f"{i}-pl"} for i in range(len(texts))]
 
@@ -71,7 +77,7 @@ async def on_chat_start():
     )
 
     docsearch = LanceDB.from_texts(
-        texts[1:], embeddings, metadatas=metadatas, connection=table
+        texts, embeddings, metadatas=metadatas, connection=table
     )
 
     message_history = ChatMessageHistory()
