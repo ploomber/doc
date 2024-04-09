@@ -42,7 +42,7 @@ async def on_chat_start():
     while files is None:
         files = await cl.AskFileMessage(
             content="Please upload a PDF file to begin!\n"
-            "The processing of the file may require a few moments or minutes to complete",
+            "The processing of the file may require a few moments or minutes to complete.",
             accept=["application/pdf"],
             max_size_mb=100,
             timeout=180,
@@ -54,54 +54,72 @@ async def on_chat_start():
     await msg.send()
 
     pdf_text = await process_pdf(file, pdf_to_text)
+    if not pdf_text:
+        msg.content = (
+            f"This looks like a scanned document. Reprocessing `{file.name}`..."
+        )
+        await msg.update()
+        pdf_text = await process_pdf(file, pdf_scanned_to_text)
 
     # Split the text into chunks
     texts = text_splitter.split_text(pdf_text)
-    print(texts)
-    # Create a metadata for each chunk
-    metadatas = [{"source": f"{i}-pl"} for i in range(len(texts))]
 
-    directory_path = Path(file.path).parent
-    path_to_vector_db = Path(directory_path, "vector-db")
+    if not texts:
+        msg.content = (
+            f"Couldn't find any text in `{file.name}`. "
+            f"Click on `New Chat` for uploading another file."
+        )
+        await msg.update()
 
-    if path_to_vector_db.exists():
-        shutil.rmtree(path_to_vector_db)
+    else:
+        # Create a metadata for each chunk
+        metadatas = [{"source": f"{i}-pl"} for i in range(len(texts))]
 
-    db = lancedb.connect(path_to_vector_db)
-    table = db.create_table(
-        "pdf",
-        data=[
-            {"vector": embeddings.embed_query(texts[0]), "text": texts[0], "id": "1"}
-        ],
-        mode="overwrite",
-    )
+        directory_path = Path(file.path).parent
+        path_to_vector_db = Path(directory_path, "vector-db")
 
-    docsearch = LanceDB.from_texts(
-        texts, embeddings, metadatas=metadatas, connection=table
-    )
+        if path_to_vector_db.exists():
+            shutil.rmtree(path_to_vector_db)
 
-    message_history = ChatMessageHistory()
+        db = lancedb.connect(path_to_vector_db)
+        table = db.create_table(
+            "pdf",
+            data=[
+                {
+                    "vector": embeddings.embed_query(texts[0]),
+                    "text": texts[0],
+                    "id": "1",
+                }
+            ],
+            mode="overwrite",
+        )
 
-    memory = ConversationBufferMemory(
-        memory_key="chat_history",
-        output_key="answer",
-        chat_memory=message_history,
-        return_messages=True,
-    )
+        docsearch = LanceDB.from_texts(
+            texts, embeddings, metadatas=metadatas, connection=table
+        )
 
-    chain = ConversationalRetrievalChain.from_llm(
-        ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0, streaming=True),
-        chain_type="stuff",
-        retriever=docsearch.as_retriever(search_kwargs={"k": 3}),
-        memory=memory,
-        return_source_documents=True,
-    )
+        message_history = ChatMessageHistory()
 
-    # Let the user know that the system is ready
-    msg.content = f"Processing `{file.name}` done. You can now ask questions!"
-    await msg.update()
+        memory = ConversationBufferMemory(
+            memory_key="chat_history",
+            output_key="answer",
+            chat_memory=message_history,
+            return_messages=True,
+        )
 
-    cl.user_session.set("chain", chain)
+        chain = ConversationalRetrievalChain.from_llm(
+            ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0, streaming=True),
+            chain_type="stuff",
+            retriever=docsearch.as_retriever(search_kwargs={"k": 3}),
+            memory=memory,
+            return_source_documents=True,
+        )
+
+        # Let the user know that the system is ready
+        msg.content = f"Processing `{file.name}` done. You can now ask questions!"
+        await msg.update()
+
+        cl.user_session.set("chain", chain)
 
 
 @cl.on_message
