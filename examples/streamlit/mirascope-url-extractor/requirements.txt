@@ -1,0 +1,4 @@
+mirascope[anthropic]>=0.9.0
+streamlit
+pydantic-settings
+beautifulsoup4

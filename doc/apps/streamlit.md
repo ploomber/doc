@@ -138,5 +138,9 @@ Ploomber Cloud supports many features to help you build Streamlit applications q
 ![](https://github.com/ploomber/doc/raw/main/examples/streamlit/data-viz/screenshot.webp)
 :::
 
+:::{grid-item-card} Mirascope URL extractor
+:link: https://github.com/ploomber/doc/tree/main/examples/streamlit/mirascope-url-extractor
+:::
+
 
 ::::
