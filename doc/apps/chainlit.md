@@ -105,3 +105,27 @@ python -c 'from secrets import token_hex; print(token_hex(16))'
 ```{note}
 You can change `CHAINLIT_AUTH_SECRET`, but it'll log out all your users.
 ```
+
+## Examples
+
+::::{grid} 2 2 3 3
+:class-container: text-center
+:gutter: 2
+
+:::{grid-item-card} Basic app
+:link: https://github.com/ploomber/doc/tree/main/examples/chainlit/basic-app
+![](https://github.com/ploomber/doc/tree/main/examples/chainlit/basic-app/screenshot.webp)
+:::
+
+:::{grid-item-card} App with password
+:link: https://github.com/ploomber/doc/tree/main/examples/chainlit/chainlit-with-password
+![](https://github.com/ploomber/doc/tree/main/examples/chainlit/chainlit-with-password/screenshot.webp)
+:::
+
+:::{grid-item-card} Chat with PDF
+:link: https://github.com/ploomber/doc/tree/main/examples/chainlit/chat-with-pdf
+![](https://github.com/ploomber/doc/tree/main/examples/chainlit/chat-with-pdf/screenshot.webp)
+:::
+
+
+::::
