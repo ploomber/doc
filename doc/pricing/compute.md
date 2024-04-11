@@ -9,12 +9,15 @@ If your application requires more than 2vCPUs or 4GB of RAM, you can upgrade you
 
 ## On-demand prices
 
-|      | hour    | day     |
-|------|---------|---------|
-| vCPU | $0.0446 | $1.0704 |
-| GB   | $0.0049 | $0.1176 |
+|          | hour    | day      |
+|----------|---------|----------|
+| vCPU     | $0.0446 | $1.0704  |
+| GB       | $0.0049 | $0.1176  |
+| GPU (T4) | $0.6312 | $15.1488 |
 
 *Prices in US dollars. Billed per second.*
+
+*GPU instances have 1 NVIDIA T4, 4 vCPUs, and 16 GB of RAM.*
 
 ## Pricing examples
 
