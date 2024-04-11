@@ -114,17 +114,22 @@ You can change `CHAINLIT_AUTH_SECRET`, but it'll log out all your users.
 
 :::{grid-item-card} Basic app
 :link: https://github.com/ploomber/doc/tree/main/examples/chainlit/basic-app
-![](https://github.com/ploomber/doc/tree/main/examples/chainlit/basic-app/screenshot.webp)
+![](https://github.com/ploomber/doc/raw/main/examples/chainlit/basic-app/screenshot.webp)
 :::
 
 :::{grid-item-card} App with password
 :link: https://github.com/ploomber/doc/tree/main/examples/chainlit/chainlit-with-password
-![](https://github.com/ploomber/doc/tree/main/examples/chainlit/chainlit-with-password/screenshot.webp)
+![](https://github.com/ploomber/doc/raw/main/examples/chainlit/chainlit-with-password/screenshot.webp)
 :::
 
 :::{grid-item-card} Chat with PDF
 :link: https://github.com/ploomber/doc/tree/main/examples/chainlit/chat-with-pdf
-![](https://github.com/ploomber/doc/tree/main/examples/chainlit/chat-with-pdf/screenshot.webp)
+![](https://github.com/ploomber/doc/raw/main/examples/chainlit/chat-with-pdf/screenshot.webp)
+:::
+
+:::{grid-item-card} Private ChatGPT
+:link: https://github.com/ploomber/doc/tree/main/examples/chainlit/private-chatgpt
+![](https://github.com/ploomber/doc/raw/main/examples/chainlit/private-chatgpt/screenshot.webp)
 :::
 
 

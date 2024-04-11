@@ -2,6 +2,8 @@
 
 A basic Chainlit chat UI to be used with an LLM hosted and served via vLLM.
 
+![](screenshot.webp)
+
 ## Deployment instructions:
 
 Ensure your LLM has already been deployed.
