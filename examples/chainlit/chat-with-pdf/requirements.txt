@@ -1,0 +1,8 @@
+openai
+langchain
+langchain-community
+langchain-openai
+lancedb
+chainlit
+ploomber_cloud
+tiktoken
