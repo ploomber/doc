@@ -11,17 +11,95 @@ myst:
 
 # vLLM
 
-You can deploy a GPU-powered vLLM server on Ploomber Cloud with a few clicks.
+```{important}
+vLLM requires a GPU, which is only available to PRO users.
+```
 
-First, ensure you create a [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=vllm&utm_medium=documentation) account. Then, download the files from the [vLLM example.](https://github.com/ploomber/doc/tree/main/examples/docker/vllm-gpu) and create a `.zip` file.
+You can deploy a GPU-powered vLLM server on Ploomber Cloud quickly. First, ensure you create a [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=vllm&utm_medium=documentation) account. 
+
+## Deploy
+
+
+`````{tab-set}
+````{tab-item} Command-line
+__Use the CLI template__
+
+Install the Ploomber Cloud client and set your API key:
+
+```sh
+pip install ploomber-cloud --upgrade
+ploomber-cloud key YOUR-KEY
+```
+
+Then, start the template:
+
+```sh
+ploomber-cloud templates vllm
+```
+
+You'll be promped for a model. The default is `facebook/opt-125m`, which is a small
+model that you can use for testing. You can use other more powerful
+models such as `google/gemma-2b-it` or any other model compatible with vLLM.
+Check out the available options in [vLLM's documentation](https://docs.vllm.ai/en/latest/models/supported_models),
+and pass one of the values under the `Example HuggingFace Models` column.
+
+```
+Model to serve via vLLM [facebook/opt-125m]: google/gemma-2b-it
+```
+
+If your model is gated (i.e., requires accepting its license), you'll be prompted 
+for an HuggingFace token, the token should hace acccess to the model.
+
+```
+Model google/gemma-2b-it is gated! Provide an HF_TOKEN
+Enter your HF_TOKEN: hf_SOMETOKEN
+API KEY saved to .env file
+Generated API key: gJ647cZTyvMQvwIpJFpQZwFJg7d8amaHTn7PtvrBOEw
+Dockerfile and requirements.txt created
+Initializing new project...
+Your app 'some-id-1234' has been configured successfully!
+```
+
+You'll see an API key, keep this safe, you'll use this to access vLLM. Finally,
+you'll be asked to confirm the deployment:
+
+```
+Do you want to deploy now? [Y/n]: y
+test-vllm.py created, once vLLM is running, test it with python test-vllm.py
+...
+The deployment process started! Track its status at: https://www.platform.ploomber.io/applications/some-id-1234/another-id
+```
+
+Open the link to track progress, once the app is ready, test vLLM by running
+the sample script. This is an example output produced by `google/gemma-2b-it`:
+
+```sh
+python test-vllm.py
+```
+
+```txt
+Prompt: Python is...
+vLLM response:
+
+a) a computer programing language
+b) a financial instrument
+c
+```
+
+````
+
+
+````{tab-item} Web
+__Deploy from the menu__
+
+
+Download the files from the [vLLM example.](https://github.com/ploomber/doc/tree/main/examples/docker/vllm-gpu) and create a `.zip` file.
 
 ```{important}
 Modify the last line in the `Dockerfile` to serve whatever model you want.
 ```
 
-## Deploy
-
-To deploy a vLLM from the deployment menu, follow the Docker instructions:
+Then, follow the Docker deployment instructions:
 
 ![docker deployment menu](../static/docker.png)
 
@@ -49,6 +127,10 @@ The server will be ready to take requests when the `WEBSERVICE LOGS` show someth
 ```
 2024-03-28T01:09:58.367000 - INFO: Uvicorn running on http://0.0.0.0:80 (Press CTRL+C to quit)
 ```
+
+
+````
+`````
 
 ## Testing
 
