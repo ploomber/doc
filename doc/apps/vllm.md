@@ -77,7 +77,7 @@ the sample script. This is an example output produced by `google/gemma-2b-it`:
 python test-vllm.py
 ```
 
-```txt
+```
 Prompt: Python is...
 vLLM response:
 
