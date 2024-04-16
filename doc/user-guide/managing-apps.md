@@ -6,9 +6,11 @@ Labels can help you organize and identify your apps. You can add them during cre
 
 ![](../static/manage-apps/labels.png)
 
-Or add them from the application status page:
+Or add them from the application settings page:
 
-![](../static/manage-apps/add-label-from-status.png)
+![](../static/manage-apps/settings.png)
+
+![](../static/manage-apps/add-labels-settings.png)
 
 You may add as many labels as you want. Once you've added some labels, they will show up on the status page and the main Applications page:
 
