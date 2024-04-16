@@ -12,6 +12,12 @@ Then, set your API key ([learn how to get it](../quickstart/apikey.md)):
 ploomber-cloud key YOURKEY
 ```
 
+You can also set your API key by setting the environment variable:
+
+```sh
+export PLOOMBER_CLOUD_KEY=YOURKEY
+```
+
 ```{tip}
 `pc` is a shortcut for `ploomber-cloud`. Example: `pc key`
 ```
