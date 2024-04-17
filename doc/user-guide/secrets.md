@@ -21,7 +21,7 @@ To add more, click on the button below:
 
 
 ```{tip}
-You can also define secrets using the [command-line interface.](./cli.md)
+You can also define secrets using the [command-line interface.](./cli.md#defining-secrets)
 ```
 
 ## Reading secrets
