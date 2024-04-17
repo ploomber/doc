@@ -84,6 +84,8 @@ Then run the `init` command with the `--force` flag:
 ploomber-cloud init --force
 ```
 
+This will replace the existing `ploomber-cloud.json` with a new one, with a different `id` field.
+
 It can also be combined with the `--from-existing` for re-initializing from an existing project:
 
 ```sh
@@ -149,6 +151,28 @@ ploomber-cloud examples flask/basic-app
 A full list of example applications is available [here](https://github.com/bryannho/doc/tree/main/examples)
 
 
+## Monitor a deployment
+
+An application deployment can be monitored by using the `watch` command by passing a `project_id` and an optional `job_id`:
+
+```sh
+ploomber-cloud watch --project-id <project-id> --job-id <job-id>
+```
+
+You should be able to find the parameters from the deployment message. Here's an example:
+
+```
+The deployment process started! Track its status at: https://www.platform.ploomber.io/applications/muddy-art-3373/8d1067be
+```
+
+Here, `project-id` is `muddy-art-3373` and `job-id` is `8d1067be`.
+
+## Configure an application using a template
+
+You can configure an application using a pre-defined template by running the command `ploomber-cloud templates <template-name>`.
+Note that currently only the template `vllm` is supported. 
+This command should be run in an empty folder. [Click here](../apps/vllm.md) to learn more about deploying vLLM.
+
 ## Configure GitHub action
 
 If your project is hosted on GitHub, you can configure an action for triggering project deployment everytime code changes are pushed.
@@ -160,7 +184,7 @@ ploomber-cloud github
 ```
 
 On confirming with `y` the CLI will create a `ploomber-cloud.yaml` file in the path `.github/workflows`. 
-Click [here](../user-guide/github.md#configure-action-through-cli) to learn more about configuring a GitHub action.
+[Click here](../user-guide/github.md#configure-action-through-cli) to learn more about configuring a GitHub action.
 
 
 ## Defining secrets

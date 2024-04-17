@@ -9,7 +9,7 @@ To deploy a GPU, first, [create an account](https://platform.ploomber.io/registe
 
 ![](../static/docker.png)
 
-In the `Source code` section, drop a `.zip` file with your code. Or use oen of the examples (download them and zip them):
+In the `Source code` section, drop a `.zip` file with your code. Or use one of the examples (download them and zip them):
 
 ::::{grid} 2 2 3 3
 :class-container: text-center
