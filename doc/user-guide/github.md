@@ -79,6 +79,7 @@ Without `--watch`, the logs will look like this:
 
 A complete sample project is [available here.](https://github.com/edublancas/cloud-template)
 
+(configure-action-through-cli=)
 ## Configure action through CLI
 
 If your project is already hosted on GitHub, running `ploomber-cloud github` inside your repository folder will prompt configuring a GitHub action for project deployment.
