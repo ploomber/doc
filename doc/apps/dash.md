@@ -30,6 +30,12 @@ app = Dash(__name__)
 server = app.server
 ```
 
+```{note}
+Dash applications will run with Python 3.11. Refer [section](customize-deployment)
+```
+
+Dash applications will run with Python 3.11. Refer [section](customize-deployment)
+
 ## Testing locally
 
 To test the Dash application, you can run the following commands locally:
@@ -103,6 +109,28 @@ ploomber-cloud deploy --watch
 ```{tip}
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
 ```
+
+(customize-deployment)=
+## Customize deployment
+
+To customize the Python version or base image for deployment, you may use [Docker deployment](./docker.md).
+Here's a sample `Dockerfile` for deploying the application:
+
+```text
+FROM python:3.11-slim-bookworm
+
+WORKDIR /app
+
+COPY requirements.txt /app/
+
+RUN pip install -r requirements.txt --no-cache-dir
+
+COPY . /app
+
+CMD ["gunicorn", "app:server", "run", "--bind", "0.0.0.0:80"]
+```
+
+
 
 ## Features
 
