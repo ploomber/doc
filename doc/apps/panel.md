@@ -35,6 +35,10 @@ pandas
 matplotlib
 ```
 
+```{note}
+Panel applications will run with Python 3.11. Refer to this [section](customize-deployment) for customized deployments.
+```
+
 ## Testing locally
 
 To test your Panel app, create a virtual environment and install the packages:
@@ -110,6 +114,33 @@ ploomber-cloud deploy --watch
 
 ```{tip}
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
+```
+
+(customize-deployment)=
+## Customize deployment
+
+To customize the Python version or base image for deployment, you may use [Docker deployment](./docker.md).
+Here's a sample `Dockerfile` for deploying the application:
+
+```text
+FROM python:3.11-slim-bookworm
+
+RUN pip install panel --no-cache-dir
+
+WORKDIR /srv
+# Caching Introduced here
+COPY requirements.txt /srv/
+RUN pip install -r requirements.txt --no-cache-dir
+
+
+COPY . /srv
+# move the healthcheck.html to the directory expected by panel
+RUN mkdir -p assets-internal
+RUN cp healthcheck.html  assets-internal/healthcheck.html
+
+CMD ["panel", "serve", "app.py", "--port=80", "--address=0.0.0.0", "--allow-websocket-origin=*", "--static-dirs", "assets-internal=./assets-internal"]
+
+
 ```
 
 ## Features

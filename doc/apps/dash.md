@@ -31,10 +31,9 @@ server = app.server
 ```
 
 ```{note}
-Dash applications will run with Python 3.11. Refer [section](customize-deployment)
+Dash applications will run with Python 3.11. Refer to this [section](customize-deployment) for customized deployments.
 ```
 
-Dash applications will run with Python 3.11. Refer [section](customize-deployment)
 
 ## Testing locally
 
@@ -120,9 +119,8 @@ Here's a sample `Dockerfile` for deploying the application:
 FROM python:3.11-slim-bookworm
 
 WORKDIR /app
-
+# Caching Introduced here
 COPY requirements.txt /app/
-
 RUN pip install -r requirements.txt --no-cache-dir
 
 COPY . /app
