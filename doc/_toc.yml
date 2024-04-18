@@ -38,6 +38,7 @@ parts:
       - file: apps/vllm
       - file: apps/mlflow
       - file: apps/quarto
+      - file: apps/marimo
       - file: apps/docker
       - file: apps/chainlit
       - file: apps/chalk-it
