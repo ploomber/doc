@@ -1,4 +1,4 @@
-# Serveless functions
+# Serverless functions
 
 ```{important}
 `@functions.serverless` supports Python 3.9, 3.10, and 3.11
@@ -109,7 +109,7 @@ subsequent executions will use the cache.
 ### Data types
 
 If your function returns a data type that requires a third-party package (for example,
-a numpy array), then, the environment that receives the resuslts must also have the
+a numpy array), then, the environment that receives the results must also have the
 same package and version of such package:
 
 ```python
