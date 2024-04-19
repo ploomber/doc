@@ -17,6 +17,8 @@ To deploy a [Dash](https://dash.plotly.com/) application you need a [Ploomber Cl
 1. Your application file (`app.py`)
 2. A dependencies file (`requirements.txt`)
 
+Note that the application will run with Python 3.11. Refer to this [section](customize-deployment-dash) for customized deployments.
+
 ## Required files
 
 You can use this [template](https://github.com/ploomber/doc/blob/main/examples/dash) to get started. 
@@ -28,10 +30,6 @@ In the `requirements.txt` file, add all the dependencies that you need for your 
 app = Dash(__name__)
 # add this line below
 server = app.server
-```
-
-```{note}
-Dash applications will run with Python 3.11. Refer to this [section](customize-deployment) for customized deployments.
 ```
 
 
@@ -109,25 +107,19 @@ ploomber-cloud deploy --watch
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
 ```
 
-(customize-deployment)=
+(customize-deployment-dash)=
 ## Customize deployment
 
-To customize the Python version or base image for deployment, you may use [Docker deployment](./docker.md).
-Here's a sample `Dockerfile` for deploying the application:
+You may want to deploy you application using [Docker](./docker.md) for customizing the process. 
+Here's a few additional features that `Docker` deployment allows:
 
-```text
-FROM python:3.11-slim-bookworm
+* Installing packages that are not available via pip, e.g., `Shiny R`.
+* Downloading specific modules, e.g., `Spacy` models.
+* Changing the Python version.
+* Customizaing the Docker base image.
+* Copying files to specific directories as expected by the application framework.
 
-WORKDIR /app
-# Caching Introduced here
-COPY requirements.txt /app/
-RUN pip install -r requirements.txt --no-cache-dir
-
-COPY . /app
-
-CMD ["gunicorn", "app:server", "run", "--bind", "0.0.0.0:80"]
-```
-
+[Here](https://github.com/ploomber/doc/tree/main/examples/dash/docker-based) is a sample Docker based Dash application.
 
 
 ## Features
