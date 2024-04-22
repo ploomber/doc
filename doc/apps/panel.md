@@ -64,7 +64,7 @@ Here's a few additional features that `Docker` deployment allows:
 * Customizing the Docker base image.
 * Adding a cache layer
 
-[Here](https://github.com/ploomber/doc/tree/main/examples/solara/docker-based) is a sample Docker based `Panel` application.
+[Here](https://github.com/ploomber/doc/tree/main/examples/panel/docker-based) is a sample Docker based `Panel` application.
 
 
 ## Deploy

@@ -110,16 +110,17 @@ To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin
 (customize-deployment-dash)=
 ## Customize deployment
 
-You may want to deploy you application using [Docker](./docker.md) for customizing the process. 
+You may want to deploy your application using [Docker](./docker.md) for customizing the process. 
 Here's a few additional features that `Docker` deployment allows:
 
 * Installing packages that are not available via pip, e.g., `Shiny R`.
 * Downloading specific modules, e.g., `Spacy` models.
 * Changing the Python version.
-* Customizaing the Docker base image.
-* Copying files to specific directories as expected by the application framework.
+* Customizing the Docker base image.
+* Adding a cache layer
 
-[Here](https://github.com/ploomber/doc/tree/main/examples/dash/docker-based) is a sample Docker based Dash application.
+[Here](https://github.com/ploomber/doc/tree/main/examples/dash/docker-based) is a sample Docker based `Dash` application.
+
 
 
 ## Features
