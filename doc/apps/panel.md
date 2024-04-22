@@ -53,7 +53,6 @@ Then run the following command to start the application:
 panel serve app.py
 ```
 
-
 ## Deploy
 
 `````{tab-set}

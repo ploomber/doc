@@ -33,7 +33,6 @@ app = Dash(__name__)
 server = app.server
 ```
 
-
 ## Testing locally
 
 To test the Dash application, you can run the following commands locally:
