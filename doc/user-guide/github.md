@@ -28,6 +28,12 @@ And set the API key locally:
 ploomber-cloud key YOURKEY
 ```
 
+You can also set your API key by setting the environment variable:
+
+```sh
+export PLOOMBER_CLOUD_KEY=YOURKEY
+```
+
 Now, configure your project:
 
 ```sh
