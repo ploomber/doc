@@ -12,7 +12,7 @@ RAM you want to provide.
 
 ## Updating an existing application
 
-If you want to increase or reduce the resources provisioned for an existing application, open the detailed view, click on the three dots (`...`) next to the `ANALYTICS REPORT` button and then click on `Redeploy project`:
+If you want to increase or reduce the resources provisioned for an existing application, open the detailed view, click on the three dots (`...`) next to the `ANALYTICS REPORT` button and then click on `Redeploy Application`:
 
 ![](../static/resources/redeploy.png)
 
