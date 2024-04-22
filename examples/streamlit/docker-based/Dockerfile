@@ -1,9 +1,11 @@
 FROM continuumio/miniconda3
 
 WORKDIR /srv
-COPY . /srv
 
-RUN pip install streamlit --no-cache-dir
+COPY requirements.txt /srv/
+RUN pip install -r requirements.txt --no-cache-dir
+
+COPY . /srv
 
 ENTRYPOINT ["streamlit", "run", "app.py", \
             "--server.port=80", \
