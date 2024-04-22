@@ -108,7 +108,7 @@ persists, contact us at [contact@ploomber.io](mailto:contact@ploomber.io)
 (customize-deployment)=
 ## Customize deployment
 
-You may want to deploy your application using [Docker](./docker.md) for customizing the process. 
+You may want to deploy your application using [Docker](../apps/docker.md) for customizing the process. 
 Here's a few additional features that `Docker` deployment allows:
 
 * Installing packages that are not available via pip, e.g., `Shiny R`.
