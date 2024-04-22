@@ -17,6 +17,9 @@ To deploy a [Dash](https://dash.plotly.com/) application you need a [Ploomber Cl
 1. Your application file (`app.py`)
 2. A dependencies file (`requirements.txt`)
 
+Note that the application will run with Python 3.11. Refer to this [section](../faq/faq.md#customize-deployment) for customized deployments.
+[Here](https://github.com/ploomber/doc/tree/main/examples/dash/docker-based) is a sample Docker-based `Dash` application.
+
 ## Required files
 
 You can use this [template](https://github.com/ploomber/doc/blob/main/examples/dash) to get started. 
