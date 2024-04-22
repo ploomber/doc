@@ -21,7 +21,7 @@ To deploy a Streamlit app you need at least two files:
 2. A dependencies file (`requirements.txt`)
 
 Note that the application will run with Python 3.11. Refer to this [section](../faq/faq.md#customize-deployment) for customized deployments.
-[Here](https://github.com/ploomber/doc/tree/main/examples/streamlit/docker-based) is a sample Docker based `Streamlit` application.
+[Here](https://github.com/ploomber/doc/tree/main/examples/streamlit/docker-based) is a sample Docker-based `Streamlit` application.
 
 ## Application file
 

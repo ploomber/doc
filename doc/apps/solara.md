@@ -22,7 +22,7 @@ To deploy a Solara app you need at least two files zipped up:
 2. A dependencies file (`requirements.txt`)
 
 Note that the application will run with Python 3.11. Refer to this [section](../faq/faq.md#customize-deployment) for customized deployments.
-[Here](https://github.com/ploomber/doc/tree/main/examples/solara/docker-based) is a sample Docker based `Solara` application.
+[Here](https://github.com/ploomber/doc/tree/main/examples/solara/docker-based) is a sample Docker-based `Solara` application.
 
 
 ```{note}
