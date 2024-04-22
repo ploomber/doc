@@ -20,6 +20,10 @@ Once you have an account, you need at least two files:
 1. Your application file (`app.py`)
 2. A dependencies file (`requirements.txt`)
 
+Note that the application will run with Python 3.11. Refer to this [section](../faq/faq.md#customize-deployment) for customized deployments.
+[Here](https://github.com/ploomber/doc/tree/main/examples/panel/docker-based) is a sample Docker based `Panel` application.
+
+
 ## Application file
 
 Your `app.py` must be a Panel application. An example is available [here.](https://github.com/ploomber/doc/blob/main/examples/panel/data-viz/app.py)
@@ -34,9 +38,6 @@ jupysql
 pandas
 matplotlib
 ```
-
-Note that the application will run with Python 3.11. Refer to this [section](../faq/faq.md#customize-deployment) for customized deployments.
-[Here](https://github.com/ploomber/doc/tree/main/examples/panel/docker-based) is a sample Docker based `Panel` application.
 
 ## Testing locally
 
@@ -114,33 +115,6 @@ ploomber-cloud deploy --watch
 
 ```{tip}
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
-```
-
-(customize-deployment-panel)=
-## Customize deployment
-
-To customize the Python version or base image for deployment, you may use [Docker deployment](./docker.md).
-Here's a sample `Dockerfile` for deploying the application:
-
-```text
-FROM python:3.11-slim-bookworm
-
-RUN pip install panel --no-cache-dir
-
-WORKDIR /srv
-# Caching Introduced here
-COPY requirements.txt /srv/
-RUN pip install -r requirements.txt --no-cache-dir
-
-
-COPY . /srv
-# move the healthcheck.html to the directory expected by panel
-RUN mkdir -p assets-internal
-RUN cp healthcheck.html  assets-internal/healthcheck.html
-
-CMD ["panel", "serve", "app.py", "--port=80", "--address=0.0.0.0", "--allow-websocket-origin=*", "--static-dirs", "assets-internal=./assets-internal"]
-
-
 ```
 
 ## Features

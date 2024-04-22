@@ -20,7 +20,8 @@ To deploy a Streamlit app you need at least two files:
 1. Your application file (`app.py`)
 2. A dependencies file (`requirements.txt`)
 
-Note that the application will run with Python 3.11. Refer to this [section](customize-deployment-streamlit) for customized deployments.
+Note that the application will run with Python 3.11. Refer to this [section](../faq/faq.md#customize-deployment) for customized deployments.
+[Here](https://github.com/ploomber/doc/tree/main/examples/streamlit/docker-based) is a sample Docker based `Streamlit` application.
 
 ## Application file
 
@@ -50,21 +51,6 @@ Then run the following command to start the application:
 ```bash
 streamlit run app.py
 ```
-
-(customize-deployment-streamlit)=
-## Customize deployment
-
-You may want to deploy your application using [Docker](./docker.md) for customizing the process. 
-Here's a few additional features that `Docker` deployment allows:
-
-* Installing packages that are not available via pip, e.g., `Shiny R`.
-* Downloading specific modules, e.g., `Spacy` models.
-* Changing the Python version.
-* Customizing the Docker base image.
-* Adding a cache layer
-
-[Here](https://github.com/ploomber/doc/tree/main/examples/streamlit/docker-based) is a sample Docker based `Streamlit` application.
-
 
 ## Deploy
 
