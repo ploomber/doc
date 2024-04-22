@@ -104,3 +104,15 @@ You can also start your application from the dashboard:
 If you see an error after restarting, wait for a few seconds. If the issue still
 persists, contact us at [contact@ploomber.io](mailto:contact@ploomber.io)
 ```
+
+(customize-deployment)=
+## Customize deployment
+
+You may want to deploy your application using [Docker](./docker.md) for customizing the process. 
+Here's a few additional features that `Docker` deployment allows:
+
+* Installing packages that are not available via pip, e.g., `Shiny R`.
+* Downloading specific modules, e.g., `Spacy` models.
+* Changing the Python version.
+* Customizing the Docker base image.
+* Adding a cache layer
