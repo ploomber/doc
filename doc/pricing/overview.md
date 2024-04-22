@@ -22,7 +22,7 @@
 *Starting at $10/month*
 
 - 10 concurrent apps (more available with [on-demand pricing](compute.md))
-- 3 apps running 24/7 (7 are stopped when inactive. You can keep them on with [on-demand pricing](compute.md))
+- 1 app running 24/7 (others stopped when inactive. You can keep them on with [on-demand pricing](compute.md))
 - 2 vCPU per app (can upgrade hardware with [on-demand pricing](compute.md))
 - 4 GiB RAM per app (can upgrade hardware with [on-demand pricing](compute.md))
 - Unlimited deployment rate
