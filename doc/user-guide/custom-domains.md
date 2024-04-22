@@ -120,6 +120,41 @@ if you encounter errors, remove the root domain from the value. (see this
 DNS record changes might take up to 48 hours to take effect. In the meantime, your application will be accessible from the `ploomberapp.io` URL
 ```
 
+## Moving an existing domain/subdomain to another app
+
+If you configured an app with a custom domain/subdomain and you want to move to another
+app, follow these instructions.
+
+First, go to the app that has the domain/subdomain configured and click on the `+` button:
+
+![1-existing-config](../static/custom-domains/move-domain/1-existing-config.png)
+
+Click on `DELETE`:
+
+![2-delete](../static/custom-domains/move-domain/2-delete.png)
+
+Confirm deletion:
+
+![3-delete-confirm](../static/custom-domains/move-domain/3-delete-confirm.png)
+
+Now, go to the new app and register the domain/subdomain, this will display the DNS
+records:
+
+![4-new-dns-records](../static/custom-domains/move-domain/4-new-dns-records.png)
+
+Finally, update your DNS records. In this example, we've migrated a subdomain
+(`app.mydomain.com`), you
+can see that this requires me to add 2 DNS records. This is how my DNS records
+look:
+
+
+![5-existing-dns-records](../static/custom-domains/move-domain/5-existing-dns-records.png)
+
+
+Since I've configured the old app (`sweet-hall-4443`) with the given subdomain, I'll have to update the
+existing CNAME record where `Host=app` (the first record), so it matches the ID of my
+new app (`rough-base-8214`).
+
 (troubleshooting-dns)=
 ## Troubleshooting DNS errors
 
