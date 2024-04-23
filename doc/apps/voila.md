@@ -23,6 +23,8 @@ To deploy an application you need two files:
 
 For information on how to write Voilà applications, [please check the documentation](https://voila.readthedocs.io/en/stable/).
 
+Note that the application will run with Python 3.11. Refer to this [section](../faq/faq.md#customize-deployment) for customized deployments.
+[Here](https://github.com/ploomber/doc/tree/main/examples/voila/docker-based) is a sample Docker-based `Voila` application.
 
 ## Dependencies
 
