@@ -19,6 +19,7 @@ parts:
       - file: user-guide/gpu
       - file: user-guide/custom-domains
       - file: user-guide/managing-apps
+      - file: user-guide/dockerfile
 
   - caption: Apps
     chapters:
