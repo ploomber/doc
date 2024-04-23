@@ -20,10 +20,23 @@ You'll need to provide the source code again. In the last section, you'll be abl
 
 ## Configure via the CLI
 
-To configure resources via the command-line interface simply run:
+To configure resources via the command-line interface, first set your API key and initialize your project:
+
+```sh
+ploomber-cloud key YOURKEY
+ploomber-cloud init
+```
+
+Then simply run:
 
 ```sh
 ploomber-cloud resources
+```
+
+Finally deploy your project and see that your resources have been customized:
+
+```sh
+ploomber-cloud deploy --watch
 ```
 
 For more info on configuring resources in the CLI, [click here](../user-guide/cli.md#configure-resources)
