@@ -8,7 +8,7 @@ Here are some tips on writing a good `Dockerfile` for Python applications:
 * **Set the Working Directory**: Use the `WORKDIR` instruction to set the working directory inside the Docker image. This simplifies subsequent commands and ensures that relative paths are resolved correctly.
 * **Leverage layer caching**: Docker caches each step (or layer) to speed up subsequent builds. When a step changes, the cache will be invalidated not only for that particular step but all succeeding steps. It's important to keep the files that frequently change towards the end of the Dockerfile. Since the dependencies are unlikely to change very often, installing the dependencies step should be added before copying the application files. Here's an example:
 
-```text
+```Dockerfile
 COPY requirements.txt /srv/
 RUN pip install -r requirements.txt --no-cache-dir
 
