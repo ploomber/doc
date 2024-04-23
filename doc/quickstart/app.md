@@ -12,7 +12,9 @@ You can also deploy from the [terminal](../user-guide/cli.md) or [GitHub](../use
 ## 2. Fill out the form
 
 
-![](../static/applications-form.png)
+![](../static/applications-form-framework.png)
+
+![](../static/applications-form-create.png)
 
 ## 3. Wait for the deployment to finish
 
