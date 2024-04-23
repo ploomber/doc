@@ -33,6 +33,8 @@ Then simply run:
 ploomber-cloud resources
 ```
 
+You'll be prompted to select number of `GPUs`, `CPUs` and `RAM`.
+
 Finally deploy your project and see that your resources have been customized:
 
 ```sh
