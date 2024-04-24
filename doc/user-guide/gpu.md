@@ -40,3 +40,30 @@ Then, in the deployment form, select `1 GPU` in the `Advanced` section:
 
 Currently, only `1 GPU` is supported, which will deploy your application on a
 machine with an NVIDIA T4 (16GB), 4 CPUs and 16 GB of RAM.
+
+## Using the CLI
+
+You can also deploy your project with a GPU using the command-line interface. Set your API key and initialize your project:
+
+```sh
+ploomber-cloud key YOURKEY
+ploomber-cloud init
+```
+
+Now, configure your resources:
+
+```sh
+ploomber-cloud resources
+```
+
+When you select `1 GPU`, CPU and RAM are fixed at `4 CPUs` and `16 GB RAM`.
+
+Finally deploy your project:
+
+```sh
+ploomber-cloud deploy --watch
+```
+
+For more info on configuring resources in the CLI, [click here](../user-guide/cli.md#configure-resources)
+
+

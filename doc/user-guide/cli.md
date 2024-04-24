@@ -208,3 +208,33 @@ The command-line interface will automatically read and encrypt your secrets and 
 For security reasons, your `.env` file is replaced with an empty file at runtime. Ploomber only stores your encrypted secrets.
 
 To learn how to read your secrets from within your application, see [Reading secrets.](./secrets.md)
+
+
+## Configure resources
+
+You can customize the amount of `CPUs`, `RAM`, and `GPUs` that your project will use with this command:
+
+```sh
+ploomber-cloud resources
+```
+
+If your `ploomber-cloud.json` file already has a `resources` section, you can reconfigure with the `--force` flag:
+
+```sh
+ploomber-cloud resources --force
+```
+
+### Carrying over resources
+
+When you initialize a project using `--force` or `--from-existing`, your resources are carried over.
+
+`ploomber-cloud init --force` will carry over the resources from the `ploomber-cloud.json` file.
+
+`ploomber-cloud init --from-existing` and `ploomber-cloud init --from-existing --force` will carry over the resources that the project was most recently deployed with.
+
+If you run any of these commands, be sure to double check your resources by checking the `ploomber-cloud.json` or running `ploomber-cloud resources`.
+You can easily reconfigure them with:
+
+```sh
+ploomber-cloud resources --force
+```

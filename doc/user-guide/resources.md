@@ -17,3 +17,28 @@ If you want to increase or reduce the resources provisioned for an existing appl
 ![](../static/resources/redeploy.png)
 
 You'll need to provide the source code again. In the last section, you'll be able to choose the resources to provision.
+
+## Configure via the CLI
+
+To configure resources via the command-line interface, first set your API key and initialize your project:
+
+```sh
+ploomber-cloud key YOURKEY
+ploomber-cloud init
+```
+
+Then simply run:
+
+```sh
+ploomber-cloud resources
+```
+
+You'll be prompted to select number of `GPUs`, `CPUs` and `RAM`.
+
+Finally deploy your project and see that your resources have been customized:
+
+```sh
+ploomber-cloud deploy --watch
+```
+
+For more info on configuring resources in the CLI, [click here](../user-guide/cli.md#configure-resources)
