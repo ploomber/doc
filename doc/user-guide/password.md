@@ -25,7 +25,8 @@ Your password isn't visible after deployment so write it down!
 ## Auth0 authentication
 
 ```{important}
-The Auth0 integration is only available for customers in the Teams plan.
+The Auth0 integration is only available for customers in the Teams plan. If you're
+insterested in learning more, contact us at [contact@ploomber.io](mailto:contact@ploomber.io)
 ```
 
 The password protection feature allows a single set of credentials
@@ -34,4 +35,4 @@ an integration with [Auth0](https://auth0.com/). The authentication layer is
 transparent to your application (there is no need to modify your code), and you
 only need to supply your Auth0 configuration parameters.
 
-If you're insterested in learning more, contact us at [contact@ploomber.io](mailto:contact@ploomber.io)
+
