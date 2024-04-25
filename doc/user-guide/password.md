@@ -26,7 +26,7 @@ Your password isn't visible after deployment so write it down!
 
 ```{important}
 The Auth0 integration is only available for customers in the Teams plan. If you're
-insterested in learning more, contact us at [contact@ploomber.io](mailto:contact@ploomber.io)
+interested in learning more, contact us at [contact@ploomber.io](mailto:contact@ploomber.io)
 ```
 
 The password protection feature allows a single set of credentials
@@ -43,7 +43,7 @@ To configure Auth0 via the CLI, navigate to the folder where your project files 
 ploomber-cloud templates auth0
 ```
 
-The Auth0 template requires your project to be initialized. If it hasn't been initialized yet, you caninitialize it on the spot. You should see something like this:
+The Auth0 template requires your project to be initialized. If it hasn't been initialized yet, you can initialize it on the spot. You should see something like this:
 
 ```sh
 Project must be initialized to continue. Would you like to initialize? [y/N]: y
@@ -70,9 +70,13 @@ Once you've entered your credentials, you should see a confirmation like this:
 Successfully configured auth0. To deploy, run 'ploomber-cloud deploy'
 ```
 
-If you already created an `.env` file, these credentials have been be saved there (along with your other secrets). If you haven't, one has been be created for you.
+```{note}
+If you already created an `.env` file, these credentials have been be saved there (along with your other secrets). If you haven't, one has been be created for you with the credentials saved.
+```
 
 Now, run `ploomber-cloud deploy` to deploy your project.
+
+### Set /callback and /status URLs
 
 Almost done! We just need to set the `callback` and `logout` URLs for your Auth0 app. Navigate to your Ploomber project's application page and copy the application URL. It should look like `https://application-name-1999.ploomberapp.io`.
 
