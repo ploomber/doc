@@ -40,7 +40,15 @@ COPY . /srv
 :::
 
 :::{grid-item-card} Voila
-[![](../../examples/voila/voila/docker-based/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/voila/docker-based)
+[![](../../examples/voila/docker-based/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/voila/docker-based)
+:::
+
+:::{grid-item-card} Dash
+[![](../../examples/dash/docker-based/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/dash/docker-based)
+:::
+
+:::{grid-item-card} Shiny R
+[![](../../examples/shiny-r/igraph/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/shiny-r/igraph)
 :::
 
 
