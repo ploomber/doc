@@ -67,17 +67,10 @@ To configure resources for this project, run 'ploomber-cloud resources' or to de
 
 If your project has already been initialized, you won't see this. You'll then be prompted to enter three credentials from Auth0:
 
-1. `AUTH_SECRET`
-2. `AUTH_CLIENT_ID`
-3. `AUTH_ISSUER_BASE_URL`
+1. `AUTH_CLIENT_ID`
+2. `AUTH_ISSUER_BASE_URL`
 
-`AUTH_SECRET` is a random string used to sign the session tokens, you can generate one with the following command:
-
-```sh
-python -c "import secrets; print(secrets.token_urlsafe())"
-```
-
-The other two can be obtained from your Auth0 application page. If you haven't yet created an application, log into Auth0 and create one. Then find the credentials here:
+These can be obtained from your Auth0 application page. If you haven't yet created an application, log into Auth0 and create one. Then find the credentials here:
 
 ![](../static/password/auth0-credentials.png)
 
@@ -93,9 +86,14 @@ If you already created an `.env` file, these credentials have been be saved ther
 
 Now, run `ploomber-cloud deploy` to deploy your project.
 
-### Set /callback and /status URLs
+```{note}
+There is a third secret we automatically generate for you: `AUTH_SECRET`. You can
+edit it by updating the `.env` file. This secret is used to sign your session tokens.
+```
 
-Almost done! We just need to set the `callback` and `logout` URLs for your Auth0 app. Navigate to your Ploomber project's application page and copy the application URL. It should look like `https://application-name-1999.ploomberapp.io`.
+### Set `/callback` and `/status` URLs
+
+Almost done! We just need to set the `/callback` and `/status` URLs for your Auth0 app. Navigate to your Ploomber project's application page and copy the application URL. It should look like `https://application-name-1999.ploomberapp.io`.
 
 Now, go back to the Auth0 application page and scroll down to `Application URIs`. Set these values:
 
