@@ -71,7 +71,13 @@ If your project has already been initialized, you won't see this. You'll then be
 2. `AUTH_CLIENT_ID`
 3. `AUTH_ISSUER_BASE_URL`
 
-These can be obtained from your Auth0 application page. If you haven't yet created an application, log into Auth0 and create one. Then find the credentials here:
+`AUTH_SECRET` is a random string used to sign the session tokens, you can generate one with the following command:
+
+```sh
+python -c "import secrets; print(secrets.token_urlsafe())"
+```
+
+The other two can be obtained from your Auth0 application page. If you haven't yet created an application, log into Auth0 and create one. Then find the credentials here:
 
 ![](../static/password/auth0-credentials.png)
 
