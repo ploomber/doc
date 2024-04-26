@@ -35,9 +35,20 @@ an integration with [Auth0](https://auth0.com/). The authentication layer is
 transparent to your application (there is no need to modify your code), and you
 only need to supply your Auth0 configuration parameters.
 
-### Using the CLI
+### Deployment
 
-To configure Auth0 via the CLI, navigate to the folder where your project files are and make sure you've set your [API key.](../quickstart/apikey.md) Now run:
+You can get started by downloading the files from the sample [Streamlit app](https://github.com/ploomber/doc/tree/main/examples/streamlit/app-with-auth0). Ensure you have an [API key.](../quickstart/apikey.md) before continuing:
+
+```sh
+# ensure you set an API key before continuing
+ploomber-cloud key YOUR KEY
+
+ploomber-cloud examples streamlit/app-with-auth0
+# type enter
+cd app-with-auth0/
+```
+
+Now, let's add the Auth0 integration:
 
 ```sh
 ploomber-cloud templates auth0
@@ -97,7 +108,13 @@ You're all set! Once your application has finished deploying, click `View Applic
 
 ![](../static/password/auth0-login.png)
 
-Simply login and you'll be re-directed to your application.
+Simply sign up and then login and you'll be re-directed to your application.
 
+### Knowing who logged in
 
+To know which user logged in, you can read the following headers:
 
+- `X-Auth-Name`: returns the user's email
+- `X-Auth-Sub`: returns the user ID (as identified by Auth0)
+
+You can see some sample [Streamlit code here.](https://github.com/ploomber/doc/blob/main/examples/streamlit/app-with-auth0/app.py)
