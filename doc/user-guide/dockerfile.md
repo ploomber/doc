@@ -18,3 +18,30 @@ COPY . /srv
 * **Array Over String Syntax**: As per the [Docker documentation](https://docs.docker.com/compose/faq/#why-do-my-services-take-10-seconds-to-recreate-or-stop) make sure you're using the exec form of `CMD` and `ENTRYPOINT` in your Dockerfile. So, `CMD ["voila", "--port=80", "--no-browser", "app.ipynb", "--Voila.ip='0.0.0.0'"]` is preferable over `CMD "voila --port=80 --no-browser app.ipynb --Voila.ip='0.0.0.0'"`.
 * **CMD vs ENTRYPOINT**: Both these instructions define what command gets executed when running a container. The `ENTRYPOINT` specifies a command that will always be executed when the container starts. The `CMD` specifies arguments that will be fed to the `ENTRYPOINT`. For more details refer to the [documentation](https://docs.docker.com/reference/dockerfile/#understand-how-cmd-and-entrypoint-interact).
 * **Do not store secrets in images**: Do not add secrets to your Dockerfiles in plaintext, e.g., `ENV DATABASE_PASSWORD "SomethingSuperSecret"`. Refer to the guide on [secrets](./secrets.md) to learn about securely setting secrets.
+
+## Examples
+
+::::{grid} 2 2 3 3
+:class-container: text-center
+:gutter: 2
+
+:::{grid-item-card} Panel
+[![](../../examples/panel/docker-based/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/panel/docker-based)
+:::
+
+:::{grid-item-card} Streamlit
+:link: https://github.com/ploomber/doc/tree/main/examples/streamlit/docker-based
+![](https://github.com/ploomber/doc/raw/main/examples/streamlit/docker-based/screenshot.webp)
+:::
+
+:::{grid-item-card} Solara
+:link: https://github.com/ploomber/doc/tree/main/examples/solara/docker-based
+![](https://github.com/ploomber/doc/raw/main/examples/solara/docker-based/screenshot.webp)
+:::
+
+:::{grid-item-card} Voila
+[![](../../examples/voila/voila/docker-based/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/voila/docker-based)
+:::
+
+
+::::
