@@ -238,3 +238,52 @@ You can easily reconfigure them with:
 ```sh
 ploomber-cloud resources --force
 ```
+
+## Add labels
+
+You can add labels to your project by running: 
+
+```sh 
+ploomber-cloud labels --add label_1 -a label_2
+```
+
+The labels will be added to the `ploomber-cloud.json` file like so:
+
+```json
+{
+    "id": "broken-night-1393",
+    "type": "dash",
+    "labels": [
+        "dash",
+        "simple"
+    ]
+}
+```
+
+Labels can be added either after `ploomber-cloud init` or `ploomber-cloud deploy`. Once the project is deployed the labels will reflect in the UI:
+
+![](../static/labels.png)
+
+When you initialize a project using `--force`, the labels already configured will be carried over.
+
+### Delete labels
+
+To delete a label you can run:
+
+```sh 
+ploomber-cloud labels --delete label_1 -d label_2
+```
+
+You can also add and delete labels at the same time:
+
+```sh 
+ploomber-cloud labels --add label_1 --delete label_2
+```
+
+### View labels
+
+To view all labels added to your project simply run:
+
+```sh 
+ploomber-cloud labels
+```
