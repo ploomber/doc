@@ -47,10 +47,10 @@ add the `--watch` flag.
 ploomber-cloud deploy --watch
 ```
 
-You can also use the `--watch-incremental-logs` to view only the newly added logs with every polling.
+You can also use the `--watch-incremental` to view only the newly added logs with every polling.
 
 ```sh
-ploomber-cloud deploy --watch-incremental-logs
+ploomber-cloud deploy --watch-incremental
 ```
 
 ## Configure an existing project

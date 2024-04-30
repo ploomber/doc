@@ -67,19 +67,19 @@ Then, click on the most recent run, and you'll see the logs:
 In the logs, you will see updates on the progress of the deployment. You'll also see a URL to your application where you can check its status.
 Once the deployment has succeeded, it will return a URL to view your deployed project.
 
-If you would prefer to track progress only through the application, you can remove `--watch-incremental-logs` from the `deploy` command in your `ploomber-cloud.yaml`:
+If you would prefer to track progress only through the application UI, you can remove `--watch-incremental` from the `deploy` command in your `ploomber-cloud.yaml`:
 
 ```yaml
  - name: Deploy
         env:
           PLOOMBER_CLOUD_KEY: ${{ secrets.PLOOMBER_CLOUD_KEY }}
         run: |
-          ploomber-cloud deploy # removed '--watch-incremental-logs' here
+          ploomber-cloud deploy # removed '--watch-incremental' here
 ```
 
-Removing `--watch-incremental-logs` means deployment updates won't be output to the logs, but you will still be able to track its progress through the URL.
+Removing `--watch-incremental` means deployment updates won't be output to the logs, but you will still be able to track its progress through the URL.
 
-Without `--watch-incremental-logs`, the logs will look like this:
+Without `--watch-incremental`, the logs will look like this:
 
 ![](../static/github/logs.png)
 
