@@ -127,13 +127,12 @@ Please review the workflow file and update if needed.
 
 ## Secrets
 
-We generally advise users to define their secrets in an `.env` file. However, this isn't optimal in the case of Github deployment, since uploading an `.env` file would expose your plain secrets.
-
-As a result, we've created a workflow where the CLI can read secrets from your local environment. To take advantage of this, follow these steps:
+To avoid uploading an `.env` file to Github, you may define them in your `ploomber-cloud.json` and Ploomber Cloud will read them from your environment variables. Here are the steps:
 
 1. Set secrets as environment variables using `export key=value`
 2. Define secret keys in `ploomber-cloud.json` under `secret-keys`
-3. Push your code to deploy
+3. Define the secrets in your Github actions config `.yaml` file
+4. Push your code to deploy
 
 For example, if I had two secrets, `key1` and `key2`, I would first set them as environment variables:
 
@@ -148,6 +147,18 @@ Then I would edit my `ploomber-cloud.json` to look like this:
 "id": "project-id-1999",
 "type": "project-type",
 "secret-keys": ["key1", "key2"]
+```
+
+Finally, make sure to the secrets are stored as Github secrets in your `ploomber-cloud.yaml` file. Here's an example snippet:
+
+```yaml
+- name: Deploy
+    env:
+      PLOOMBER_CLOUD_KEY: ${{ secrets.PLOOMBER_CLOUD_KEY }}
+      key1: ${{ secrets.key1 }}
+      key2: ${{ secrets.key2 }}
+    run: |
+      ploomber-cloud deploy --watch
 ```
 
 Now, in your deployment logs, when `ploomber-cloud deploy` is ran, you should see the secrets included with this message:

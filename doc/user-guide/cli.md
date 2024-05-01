@@ -191,6 +191,10 @@ On confirming with `y` the CLI will create a `ploomber-cloud.yaml` file in the p
 
 If your project uses secrets, you can define them in an `.env` file.
 
+```{important}
+**Do not** upload your `.env` file to Github, this will expose your secrets. If you want to define secrets safely using Github, see [here.](../user-guide/github.md#secrets)
+```
+
 In your main project directory, create an `.env` file. Open it in your code editor, and enter your secrets. It should look like this:
 
 ```
@@ -210,7 +214,7 @@ For security reasons, your `.env` file is replaced with an empty file at runtime
 To learn how to read your secrets from within your application, see [Reading secrets.](../user-guide/secrets.md#reading-secrets)
 
 ```{note}
-We generally advise users to define secrets through an `.env` file. In the case this isn't possible, we've created an [alternative solution.](../user-guide/github.md#secrets)
+By default, secrets are read from an `.env` file, but they may also be read from your [environment variables.](../user-guide/github.md#secrets)
 ```
 
 ## Configure resources
