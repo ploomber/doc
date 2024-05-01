@@ -207,12 +207,11 @@ ploomber-cloud deploy
 The command-line interface will automatically read and encrypt your secrets and include them in the deployment.
 For security reasons, your `.env` file is replaced with an empty file at runtime. Ploomber only stores your encrypted secrets.
 
+To learn how to read your secrets from within your application, see [Reading secrets.](../user-guide/secrets.md#reading-secrets)
+
 ```{note}
-Ensure that you specify all the required secrets in the `.env` file whenever deploying or re-deploying an application. Secrets will not be carried over from the previous deployment.
+We generally advise users to define secrets through an `.env` file. In the case this isn't possible, we've created an [alternative solution.](../user-guide/github.md#secrets)
 ```
-
-To learn how to read your secrets from within your application, see [Reading secrets.](./secrets.md)
-
 
 ## Configure resources
 
