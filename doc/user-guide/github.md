@@ -149,7 +149,7 @@ Then I would edit my `ploomber-cloud.json` to look like this:
 "secret-keys": ["key1", "key2"]
 ```
 
-Finally, make sure to the secrets are stored as Github secrets in your `ploomber-cloud.yaml` file. Here's an example snippet:
+Finally, make sure the secrets are stored as Github secrets in your `ploomber-cloud.yaml` file. Here's an example snippet:
 
 ```yaml
 - name: Deploy
