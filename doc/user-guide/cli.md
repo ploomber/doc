@@ -197,6 +197,10 @@ On confirming with `y` the CLI will create a `ploomber-cloud.yaml` file in the p
 
 If your project uses secrets, you can define them in an `.env` file.
 
+```{important}
+If you are deploying using GitHub actions, **do not** upload your `.env` file to GitHub. Instead, follow the instructions [here.](../user-guide/github.md#secrets)
+```
+
 In your main project directory, create an `.env` file. Open it in your code editor, and enter your secrets. It should look like this:
 
 ```
@@ -213,12 +217,46 @@ ploomber-cloud deploy
 The command-line interface will automatically read and encrypt your secrets and include them in the deployment.
 For security reasons, your `.env` file is replaced with an empty file at runtime. Ploomber only stores your encrypted secrets.
 
-```{note}
-Ensure that you specify all the required secrets in the `.env` file whenever deploying or re-deploying an application. Secrets will not be carried over from the previous deployment.
+To learn how to read your secrets from within your application, see [Reading secrets.](../user-guide/secrets.md#reading-secrets)
+
+### Without an `.env` file
+
+You may also define secrets in your `ploomber-cloud.json` and Ploomber Cloud will read them from your environment variables. Here are the steps:
+
+1. Set secrets as environment variables using `export key=value`
+2. Define secret keys in `ploomber-cloud.json` under `secret-keys`
+3. Deploy via `ploomber-cloud deploy`
+
+For example, if I had two secrets, `key1` and `key2`, I would first set them as environment variables:
+
+```sh
+export key1=val1
+export key2=val2
 ```
 
-To learn how to read your secrets from within your application, see [Reading secrets.](./secrets.md)
+Then I would edit my `ploomber-cloud.json` to look like this:
 
+```json
+{
+    "id": "project-id-1999",
+    "type": "project-type",
+    "secret-keys": ["key1", "key2"]
+}
+```
+
+Now run `ploomber-cloud deploy`. You should see the secrets included with this message:
+
+```
+Adding the following secrets to the app: key1, key2,
+```
+
+Some important notes:
+
+- `secret-keys` should be defined as a list of strings that only includes the keys (not the values) of each secret
+- If your secrets are defined in both an `.env` and `secret-keys`, the deployment will fail. You may only use one method.
+- Make sure to define each secret as an environment variable AND in your `ploomber-cloud.json`. 
+    - If a secret is defined in `ploomber-cloud.json` but isn't set as an environment variable, the deployment will fail. 
+    - If a secret is set as an environment variable but isn't defined in `ploomber-cloud.json`, that secret won't be included in the deployment.
 
 ## Configure resources
 
