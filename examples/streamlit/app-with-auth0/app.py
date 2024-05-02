@@ -11,6 +11,8 @@ header_sub = headers.get("X-Auth-Sub")
 st.write(header_name)
 st.write(header_sub)
 
+# link to logout
+st.markdown("[Logout](/logout)")
 
 if st.button("Print Message"):
     st.write("Button clicked. Here is your message!")
