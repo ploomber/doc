@@ -43,9 +43,14 @@ A new window will display showing the DNS records you need to add ([see the upda
 
 You must add three DNS records:
 
-1. A `CNAME` record: `www` as host, and `yourapp.ploomberapp.io` as value (replace `yourapp` with your actual app ID)
-2. A `ALIAS` record: `@` as host, and `yourapp.ploomberapp.io` as value (replace `yourapp` with your actual app ID)
+1. A `ALIAS` record: `@` as host, and `yourapp.ploomberapp.io` as value (replace `yourapp` with your actual app ID)
+2. A `CNAME` record: `www` as host, and `yourapp.ploomberapp.io` as value (replace `yourapp` with your actual app ID)
 3. A `CNAME` record: with the shown **CNAME name** and **CNAME value** (as displayed in the **SSL certification status** section)
+
+```{important}
+Some DNS providers don't support `ALIAS` records. If that's your case, you might try adding a `CNAME` record. If you
+need assistance, [contact us](mailto:contact@ploomber.io)
+```
 
 (custom-subdomain)=
 ## Adding a custom subdomain
