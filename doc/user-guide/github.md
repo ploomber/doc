@@ -152,7 +152,7 @@ Set `key1` and `key2` as secrets in your GitHub repository using the same method
       key1: ${{ secrets.key1 }}
       key2: ${{ secrets.key2 }}
     run: |
-      ploomber-cloud deploy --watch
+      ploomber-cloud deploy --watch-incremental
 ```
 
 Finally, push your code. In your deployment logs, when `ploomber-cloud deploy` is ran, you should see the secrets included with this message:
