@@ -122,3 +122,12 @@ To know which user logged in, you can read the following headers:
 - `X-Auth-Sub`: returns the user ID (as identified by Auth0)
 
 You can see some sample [Streamlit code here.](https://github.com/ploomber/doc/blob/main/examples/streamlit/app-with-auth0/app.py)
+
+### Logging out
+
+To log out a user, you can create a link to the `/logout` endpoint, here's an example
+using Streamlit:
+
+```python
+st.markdown("[Logout](/logout)")
+```
