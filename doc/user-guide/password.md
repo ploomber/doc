@@ -21,7 +21,7 @@ To enable it, simply turn the option on and set a user and a password:
 Your password isn't visible after deployment so write it down!
 ```
 
-
+(auth0-integration)=
 ## Auth0 authentication
 
 ```{important}
