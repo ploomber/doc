@@ -41,7 +41,7 @@ ploomber-cloud deploy
 ```
 
 The `deploy` command will print a URL that you can visit to track deployment progress. If you would like to track progress in the command line,
-add the `--watch` flag.
+you can add the `--watch` flag or the `--watch-incremental` flag.
 
 ```sh
 ploomber-cloud deploy --watch
@@ -52,6 +52,8 @@ You can also use the `--watch-incremental` flag to view only the newly added log
 ```sh
 ploomber-cloud deploy --watch-incremental
 ```
+
+When deploying from the terminal, it's recommended to use the `--watch` option. This flag clears the terminal before printing updated logs, ensuring a clean display. Alternatively, if you're storing deployment output in a file, such as with GitHub Actions, opt for `--watch-incremental`. This option skips clearing the screen and only prints new logs and status updates.
 
 ## Configure an existing project
 
