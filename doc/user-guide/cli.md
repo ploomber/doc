@@ -335,3 +335,17 @@ To view all labels added to your project simply run:
 ```sh 
 ploomber-cloud labels
 ```
+
+## Switching the configuration file
+
+By default, the CLI reads and writes to a `ploomber-cloud.json` file, but you can customize it via the `--config` (or its short version, `-c`), switching the config file is useful when you need to manage multiple environments (for example, development and production).
+
+All commands that read or write the config file accept the `--config/-c` argument, for example:
+
+```sh
+# create the config file in ploomber-cloud.dev.json
+ploomber-cloud init --config ploomber-cloud.dev.json
+
+# deploy using the dev config
+ploomber-cloud deploy --config ploomber-cloud.dev.json
+```
