@@ -91,6 +91,7 @@ There is a third secret we automatically generate for you: `AUTH_SECRET`. You ca
 edit it by updating the `.env` file. This secret is used to sign your session tokens.
 ```
 
+(auth0-urls)=
 ### Set `/callback` and `/status` URLs
 
 Almost done! We just need to set the `/callback` and `/status` URLs for your Auth0 app. Navigate to your Ploomber project's application page and copy the application URL. It should look like `https://application-name-1999.ploomberapp.io`.
@@ -131,3 +132,11 @@ using Streamlit:
 ```python
 st.markdown("[Logout](/logout)")
 ```
+
+### Using a custom domain/subdomain
+
+If you want to serve your Auth0-protected app from a custom domain, or subdomain. Follow these steps:
+
+1. Follow the instructions to configure a custom [domain/subdomain](../user-guide/custom-domains.md)
+2. [Update your Auth0 configuration](auth0-urls) to match your domain/subdomain.
+3. Modify your `.env` file (must have been generated the first tiem you deployed), add a new `AUTH_BASE_URL` environment variable,  whose value should be the domain/subdomain you configured (e.g., `https://subdomain.example.com`), and re-deploy your project
