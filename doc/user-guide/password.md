@@ -126,11 +126,22 @@ You can see some sample [Streamlit code here.](https://github.com/ploomber/doc/b
 
 ### Logging out
 
-To log out a user, you can create a link to the `/logout` endpoint, here's an example
-using Streamlit:
+To log out a user, you can create a link to the `/logout` endpoint.
+
+Here's an example using **Streamlit**:
 
 ```python
+import streamlit as st
+
 st.markdown("[Logout](/logout)")
+```
+
+If using Panel:
+
+```python
+import panel as pn
+
+logout_link = pn.pane.Markdown("[Logout](/logout)")
 ```
 
 ### Using a custom domain/subdomain

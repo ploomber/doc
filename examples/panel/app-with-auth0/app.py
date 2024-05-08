@@ -58,10 +58,12 @@ pn.Column(widgets, bound_plot)
 
 
 name = pn.state.headers.get("X-Auth-Name") or "Anonymous"
+logout_link = pn.pane.Markdown("[Logout](/logout)")
+
 
 pn.template.MaterialTemplate(
     site="Panel",
     title=f"Hello, {name}",
-    sidebar=[variable_widget, window_widget, sigma_widget],
+    sidebar=[variable_widget, window_widget, sigma_widget, logout_link],
     main=[bound_plot],
 ).servable()
