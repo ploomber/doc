@@ -128,20 +128,25 @@ You can see some sample [Streamlit code here.](https://github.com/ploomber/doc/b
 
 To log out a user, you can create a link to the `/logout` endpoint.
 
-Here's an example using **Streamlit**:
+Here's an example using **Panel**:
 
-```python
-import streamlit as st
-
-st.markdown("[Logout](/logout)")
-```
-
-If using Panel:
 
 ```python
 import panel as pn
 
 logout_link = pn.pane.Markdown("[Logout](/logout)")
+```
+
+```{important}
+Streamlit manages the session in a way that prevents `/logout` to work. You can create
+a link to `/exit`, which fixes the issue:
+
+~~~python
+import streamlit as st
+
+st.markdown('<a href="/exit" target="_self">Logout</a>',
+            unsafe_allow_html=True)
+~~~
 ```
 
 ### Using a custom domain/subdomain
