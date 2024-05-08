@@ -156,6 +156,11 @@ ploomber-cloud examples flask/basic-app
 
 A full list of example applications is available [here](https://github.com/bryannho/doc/tree/main/examples)
 
+Note that the examples metadata is cached. If you are having trouble finding a recently added example you can invalidate the cache by passing the `--clear-cache` flag:
+
+```sh
+ploomber-cloud examples flask/some-new-app --clear-cache
+```
 
 ## Monitor a deployment
 
