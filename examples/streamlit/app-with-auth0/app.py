@@ -12,7 +12,7 @@ st.write(header_name)
 st.write(header_sub)
 
 # link to logout
-st.markdown("[Logout](/logout)")
+st.markdown('<a href="/exit" target="_self">Logout</a>', unsafe_allow_html=True)
 
 if st.button("Print Message"):
     st.write("Button clicked. Here is your message!")
