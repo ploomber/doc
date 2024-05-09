@@ -176,12 +176,12 @@ Some important notes:
 
 For simple scenarios you can opt for the basic deployment strategy outlined in [this section](monitor).
 If you need separate deployments environments with their own protection rules and secrets, you can use GitHub [environments](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment).
-Here's a step-by-step guide of configuring two environment `dev` and `prod`. `dev` deployments happen automatically whenever code changes are pushed to the `main` branch. However, `prod` deployments are started only when `dev` deployments are successful and the `prod` deployment has been approved by a reviewer.
+Here's a step-by-step guide of configuring two environments `dev` and `prod`. `dev` deployments happen automatically whenever code changes are pushed to the `main` branch. However, `prod` deployments are started only when `dev` deployments are successful and the deployment has been approved by a reviewer.
 
 
 ### Create environment
 
-Navigate to the application `Settings` page and then `Environments`. Click on `New Environment`:
+Navigate to the repository `Settings` page and then `Environments`. Click on `New Environment`:
 
 ![](../static/github/new-env.png)
 
