@@ -174,9 +174,9 @@ Some important notes:
 
 ## Deployment environments
 
-For simple scenarios you can opt for the basic deployment strategy outlined in [this section](monitor).
-If you need separate deployments environments with their own protection rules and secrets, you can use GitHub [environments](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment).
-Here's a step-by-step guide of configuring two environments `dev` and `prod`. `dev` deployments happen automatically whenever code changes are pushed to the `main` branch. However, `prod` deployments are started only when `dev` deployments are successful and the deployment has been approved by a reviewer.
+For simple scenarios, you can opt for the basic deployment strategy outlined in [this section](monitor).
+If you need separate deployment environments with their own protection rules and secrets, you can use GitHub [environments](https://docs.github.com/en/actions/deployment/targeting-different-environments/using-environments-for-deployment).
+Here's a step-by-step guide to configuring two environments `dev` and `prod`. `dev` deployments happen automatically whenever code changes are pushed to the `main` branch. However, `prod` deployments are started only when `dev` deployments are successful and the deployment has been approved by a reviewer.
 
 
 ### Create environment
@@ -224,10 +224,10 @@ To learn more about configuration files click [here](https://docs.cloud.ploomber
 ### Configure deployment
 
 Next, we will configure `dev` and `prod` deployments by adding a workflow file to the path `.github/workflows` in the repository's root folder. You can use this [template](https://github.com/edublancas/cloud-template/blob/main/.github/workflows/ploomber-cloud-env.yaml).
-We have added two jobs for `dev` and `prod` respectively for demonstration purpose. But you may add as many jobs as needed, one for each environment.
+We have added two jobs for `dev` and `prod` respectively for demonstration purposes. But you may add as many jobs as needed, one for each environment.
 If you create config files with different names ensure to pass them correctly using the `--config` flag.
 
-Once the workflow file has been pushed to GitHub, the `dev` deployment will be triggered. If the `dev` deployment completes successfully, the `prod` deployment will be marked for approval from reviewers.
+Once the workflow file has been pushed to GitHub, the `dev` deployment will be triggered. If the `dev` deployment is completed successfully, the `prod` deployment will be marked for approval from reviewers.
 
 ![](../static/github/review-pending.png)
 
