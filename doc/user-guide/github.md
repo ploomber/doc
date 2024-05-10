@@ -170,3 +170,4 @@ Some important notes:
 - Make sure to define each secret in GitHub, mention it in `ploomber-cloud.yaml`, AND mention it in `ploomber-cloud.json`. 
     - If a secret is defined in `ploomber-cloud.json` but isn't set as a GitHub secret, the deployment will fail. 
     - If a secret is set in GitHub but isn't defined in `ploomber-cloud.json`, that secret won't be included in the deployment.
+
