@@ -64,13 +64,23 @@ To deploy a Chainlit app from the deployment menu, follow these instructions:
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
 ```
 
+## Production deployments
+
+Ploomber has features to help you deploy production-ready Chainlit apps
+
+### Authentication
+
+Our [integration with Auth0](auth0-integration) allows you to easily add authentication
+to any Chainlit app. There's no need to modify your Chainlit app code, only pass your
+Auth0 configuration parameters. Check out the [sample app.](https://github.com/ploomber/doc/tree/main/examples/chainlit/app-with-auth0)
+In addition to the Auth0 parameters you also need to pass the `CHAINLIT_AUTH_SECRET` value. Refer to [this section](chainlit-password) to learn more.
+
 ## Features
 
 Ploomber Cloud supports many features to help you build Streamlit applications quickly!
 
 - Integration with [GitHub](../user-guide/github.md)
 - Safely store [secrets](../user-guide/secrets.md) such as API keys
-- Add [password protection](chainlit-password) to your app
 - Usage [analytics](../user-guide/analytics.md) such as unique visitors, total requests, etc.
 - Spin up [larger resources](../user-guide/resources.md) (CPUs and RAM)
 - Spin up [GPUs](../user-guide/gpu.md)
