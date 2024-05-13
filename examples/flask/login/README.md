@@ -18,8 +18,9 @@ export FLASK_SECRET_KEY=MYFLASKSECRETKEY
 
 ## Deployment
 
-1. [Create an account in Ploomber Cloud](https://platform.ploomber.io/register)
-2. [Follow this](https://docs.cloud.ploomber.io/en/latest/apps/flask.html)
+1. Create the database models by running `python models.py`
+2. [Create an account in Ploomber Cloud](https://platform.ploomber.io/register)
+3. [Follow this](https://docs.cloud.ploomber.io/en/latest/apps/flask.html)
 
 Remember to add the `FLASK_SECRET_KEY` environment variable.
 
