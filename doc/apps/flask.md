@@ -51,12 +51,59 @@ Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.
 
 ## Deploy
 
+`````{tab-set}
+
+````{tab-item} Web
+__Deploy from the menu__
+
 Once you have all your files, create a zip file.
 
 To deploy a Flask app from the deployment menu, follow these instructions:
 
-![](../static/docker.png)
+![](../static/flask.png)
+````
 
+````{tab-item} Command-line
+__Try an example__
+
+To download and deploy an example Flask application start by installing Ploomber Cloud and setting your API key:
+
+```sh
+pip install ploomber-cloud
+ploomber-cloud key YOUR-KEY
+```
+
+```{tip}
+If you don't have an API key yet, follow the [instructions here.](../quickstart/apikey.md)
+```
+
+Now, download an example. It will prompt you for a location to download the app. To download in the current directory, just press enter.
+
+```sh
+ploomber-cloud examples flask/basic-app
+```
+
+```{note}
+A full list of Flask example apps is available [here.](https://github.com/ploomber/doc/tree/main/examples/flask)
+```
+
+You should see a confirmation with instructions on deploying your app. Now, navigate to your application:
+
+```sh
+cd location-you-entered/basic-app
+```
+
+__Deploy from the CLI__
+
+Initialize and deploy your app with:
+
+```sh
+ploomber-cloud init
+ploomber-cloud deploy --watch
+```
+
+````
+`````
 
 ```{tip}
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
