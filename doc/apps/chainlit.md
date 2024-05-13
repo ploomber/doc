@@ -72,8 +72,8 @@ Ploomber has features to help you deploy production-ready Chainlit apps
 
 Our [integration with Auth0](auth0-integration) allows you to easily add authentication
 to any Chainlit app. There's no need to modify your Chainlit app code, only pass your
-Auth0 configuration parameters. Check out the [sample app.](https://github.com/ploomber/doc/tree/main/examples/chainlit/app-with-auth0).
-In addition to the Auth0 parameters you also need to pass the `CHAINLIT_AUTH_SECRET` value. Refer to [chainlit-pwd]((chainlit-password) to learn more.
+Auth0 configuration parameters. Check out the [sample app.](https://github.com/ploomber/doc/tree/main/examples/chainlit/app-with-auth0)
+In addition to the Auth0 parameters you also need to pass the `CHAINLIT_AUTH_SECRET` value. Refer to [chainlit-pwd](chainlit-password) to learn more.
 
 ## Features
 
