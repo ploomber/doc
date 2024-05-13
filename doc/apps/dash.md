@@ -107,13 +107,22 @@ ploomber-cloud deploy --watch
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
 ```
 
+## Production deployments
+
+Ploomber has features to help you deploy production-ready Dash apps
+
+### Authentication
+
+Our [integration with Auth0](auth0-integration) allows you to easily add authentication
+to any Dash app. There's no need to modify your Dash app code, only pass your
+Auth0 configuration parameters. Check out the [sample app.](https://github.com/ploomber/doc/tree/main/examples/dash/app-with-auth0)
+
 ## Features
 
 Ploomber Cloud supports many features to help you build Dash applications quickly!
 
 - Integration with [GitHub](../user-guide/github.md)
 - Safely store [secrets](../user-guide/secrets.md) such as API keys
-- Add [password protection](../user-guide/password.md) to your app
 - Usage [analytics](../user-guide/analytics.md) such as unique visitors, total requests, etc.
 - Spin up [larger resources](../user-guide/resources.md) (CPUs and RAM)
 - Spin up [GPUs](../user-guide/gpu.md)
