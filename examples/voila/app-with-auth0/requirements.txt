@@ -1,3 +1,4 @@
 voila
 ipykernel
 ipywidgets
+seaborn
