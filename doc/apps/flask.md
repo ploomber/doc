@@ -20,7 +20,7 @@ To deploy a Flask application in Ploomber Cloud you need:
 
 ## Testing locally
 
-To test your app, you can use `docker` locally:
+To test your app, you can use `gunicorn` locally:
 
 ```sh
 # Install requirements
