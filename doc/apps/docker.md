@@ -8,19 +8,19 @@ To deploy a Docker-based web application in Ploomber Cloud you need:
 
 ## `Dockerfile`
 
-You need to provide a `Dockerfile`, you can use this [flask-based template](https://github.com/ploomber/doc/blob/main/examples/flask/basic-app/Dockerfile) to get started.
+You need to provide a `Dockerfile`, you can use this [FastAPI-based template](https://github.com/ploomber/doc/blob/main/examples/fastapi/basic-app/Dockerfile) to get started.
 
 For a successful deployment, you app must run in port 80.
 
-Here's an example using flask:
+Here's an example using FastAPI:
 
 ```Dockerfile
 FROM python:3.11
 
 COPY app.py app.py
-RUN pip install flask gunicorn
+RUN pip install fastapi uvicorn --no-cache-dir
 
-ENTRYPOINT ["gunicorn", "app:app", "run", "--bind", "0.0.0.0:80"]
+ENTRYPOINT ["uvicorn", "app:app", "--host=0.0.0.0", "--port=80"]
 ```
 
 Once you have all your files, `.zip` them. For example, a simple app will contain two files:

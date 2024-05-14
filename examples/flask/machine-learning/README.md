@@ -30,7 +30,7 @@ Execute the `walmart_sales.ipynb` notebook.
 ploomber-engine walmart_sales.ipynb output.ipynb
 ```
 
-3. Create a zip file from `Dockerfile`, `app.py`, `walmart_sales_rf.joblib`, `static/` and `templates/`.
+3. Create a zip file from `app.py`, `walmart_sales_rf.joblib`, `static/` and `templates/`.
 
 4. Login to your [Ploomber Cloud](https://ploomber.io/) account.
 
