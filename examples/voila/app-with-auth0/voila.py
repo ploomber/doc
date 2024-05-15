@@ -1,11 +1,11 @@
-import nbformat
+import json
 
 
 def hook_function(req, notebook, cwd):
    headers = req.request.headers
-   notebook.metadata.user = headers.get('X-Auth-Name', 'Anonymous')
-   with open("app_updated.ipynb", 'w') as f:
-      nbformat.write(notebook, f)
+   user = headers.get('X-Auth-Name', 'Anonymous')
+   with open("authentication_data.json", 'w') as json_file:
+      json.dump({"user": user}, json_file)
    return notebook
 
 
