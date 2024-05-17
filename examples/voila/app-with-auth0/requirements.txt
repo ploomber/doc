@@ -1,0 +1,4 @@
+voila
+ipykernel
+ipywidgets
+seaborn
