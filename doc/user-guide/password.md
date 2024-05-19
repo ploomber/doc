@@ -153,7 +153,7 @@ If you want to serve your Auth0-protected app from a custom domain, or subdomain
 3. Modify your `.env` file (must have been generated the first tiem you deployed), add a new `AUTH_BASE_URL` environment variable,  whose value should be the domain/subdomain you configured (e.g., `https://subdomain.example.com`), and re-deploy your project
 
 
-## Examples
+### Examples
 
 ::::{grid} 2 2 3 3
 :class-container: text-center
