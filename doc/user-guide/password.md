@@ -151,3 +151,41 @@ If you want to serve your Auth0-protected app from a custom domain, or subdomain
 1. Follow the instructions to configure a custom [domain/subdomain](../user-guide/custom-domains.md)
 2. [Update your Auth0 configuration](auth0-urls) to match your domain/subdomain.
 3. Modify your `.env` file (must have been generated the first tiem you deployed), add a new `AUTH_BASE_URL` environment variable,  whose value should be the domain/subdomain you configured (e.g., `https://subdomain.example.com`), and re-deploy your project
+
+
+### Examples
+
+::::{grid} 2 2 3 3
+:class-container: text-center
+:gutter: 2
+
+
+:::{grid-item-card} Panel
+:link: https://github.com/ploomber/doc/tree/main/examples/panel/app-with-auth0
+:::
+
+:::{grid-item-card} Solara
+:link: https://github.com/ploomber/doc/tree/main/examples/solara/app-with-auth0
+:::
+
+:::{grid-item-card} Streamlit
+:link: https://github.com/ploomber/doc/tree/main/examples/streamlit/app-with-auth0
+:::
+
+:::{grid-item-card} Shiny R
+:link: https://github.com/ploomber/doc/tree/main/examples/shiny-r/app-with-auth0
+:::
+
+:::{grid-item-card} Chainlit
+:link: https://github.com/ploomber/doc/tree/main/examples/chainlit/app-with-auth0
+:::
+
+:::{grid-item-card} Dash
+:link: https://github.com/ploomber/doc/tree/main/examples/dash/app-with-auth0
+:::
+
+:::{grid-item-card} Voila
+:link: https://github.com/ploomber/doc/tree/main/examples/voila/app-with-auth0
+:::
+
+::::
