@@ -125,6 +125,34 @@ Auth0 configuration parameters. Check out the [sample app.](https://github.com/p
 
 ![auth0-login](../static/password/auth0-login.png)
 
+## Connecting to a DB
+
+You can use the [st.connection](https://docs.streamlit.io/develop/api-reference/connections/st.connection) API for connecting to a database from a Streamlit app.
+You can check out this [sample app](https://github.com/ploomber/doc/tree/main/examples/streamlit/db-connection) that demonstrates DB connection.
+
+You can set the SQLAlchemy URI of your DB as an environment variable `DB_URI` and pass it using the `url` argument:
+
+```python
+import streamlit as st
+from os import environ
+
+conn = st.connection(name="sqlite",
+                     type='sql',
+                     url=environ["DB_URI"])
+```
+
+When deploying on Ploomber Cloud the `DB_URI` value needs to be set as a [secret](https://docs.cloud.ploomber.io/en/latest/user-guide/secrets.html):
+
+![](../static/streamlit_db.png)
+
+Note that the database URI is a SQLAlchemy URI and should have the format:
+
+```python
+dialect+driver://username:password@host:port/database
+```
+
+To learn more about the URI format refer to the [documentation](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls).
+
 ## Other features
 
 Ploomber Cloud supports many features to help you build Streamlit applications quickly!
