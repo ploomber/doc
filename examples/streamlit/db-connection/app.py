@@ -2,7 +2,7 @@ import streamlit as st
 from sqlalchemy.sql import text
 from os import environ
 
-# Create the SQL connection to pets_db as specified in your secrets file.
+# Create the SQL connection to the numbers DB as specified in your secret.
 conn = st.connection(name="sqlite", type='sql', url=environ["DB_URI"])
 
 # Insert some data with conn.session.

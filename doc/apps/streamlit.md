@@ -128,7 +128,7 @@ Auth0 configuration parameters. Check out the [sample app.](https://github.com/p
 ## Connecting to a DB
 
 You can use the [st.connection](https://docs.streamlit.io/develop/api-reference/connections/st.connection) API for connecting to a database from a Streamlit app.
-You can check out this [sample app](https://github.com/ploomber/doc/tree/main/examples/streamlit/db-connection) that demonstrates DB connection.
+Check out this [sample app](https://github.com/ploomber/doc/tree/main/examples/streamlit/db-connection) that demonstrates DB connection.
 
 You can set the SQLAlchemy URI of your DB as an environment variable `DB_URI` and pass it using the `url` argument:
 
