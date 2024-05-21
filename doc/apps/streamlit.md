@@ -148,7 +148,13 @@ You can pass any relevant value as the `name` argument. When deploying on Ploomb
 Note that the database URI is a SQLAlchemy URI and should have the format:
 
 ```python
-dialect+driver://username:password@host:port/database
+dialect://username:password@host:port/database
+```
+
+Here's an example of a `Postgres` connection URI:
+
+```python
+postgresql://scott:tiger@localhost:5432/mydatabase
 ```
 
 To learn more about the URI format refer to the [documentation](https://docs.sqlalchemy.org/en/20/core/engines.html#database-urls).
