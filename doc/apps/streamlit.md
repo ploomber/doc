@@ -136,12 +136,12 @@ You can set the SQLAlchemy URI of your DB as an environment variable `DB_URI` an
 import streamlit as st
 from os import environ
 
-conn = st.connection(name="sqlite",
+conn = st.connection(name="db_connection",
                      type='sql',
                      url=environ["DB_URI"])
 ```
 
-When deploying on Ploomber Cloud the `DB_URI` value needs to be set as a [secret](https://docs.cloud.ploomber.io/en/latest/user-guide/secrets.html):
+You can pass any relevant value as the `name` argument. When deploying on Ploomber Cloud the `DB_URI` value needs to be set as a [secret](https://docs.cloud.ploomber.io/en/latest/user-guide/secrets.html):
 
 ![](../static/streamlit_db.png)
 
