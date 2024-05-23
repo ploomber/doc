@@ -25,7 +25,11 @@ In your app, you **must initialize your app like this**:
 # app.py: must assign the app to a variable named "app"!
 app = Flask(__name__)
 ~~~
+
+Furthermore, you **should not call** `app.run()`:
 ```
+
+See here a [basic Flask app example.](https://github.com/ploomber/doc/blob/main/examples/flask/basic-app/app.py)
 
 ## Testing locally
 
