@@ -18,6 +18,15 @@ To deploy a Flask application in Ploomber Cloud you need:
 - Your application file (`app.py`)
 - A dependencies file (`requirements.txt`)
 
+```{important}
+In your app, you **must initialize your app like this**:
+
+~~~python
+# app.py: must assign the app to a variable named "app"!
+app = Flask(__name__)
+~~~
+```
+
 ## Testing locally
 
 To test your app, you can use `gunicorn` locally:
@@ -27,7 +36,7 @@ To test your app, you can use `gunicorn` locally:
 pip install -r requirements.txt
 
 # Start the flask application
-gunicorn app:server run --bind 0.0.0.0:5000
+gunicorn app:app run --bind 0.0.0.0:5000
 ```
 
 Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.
