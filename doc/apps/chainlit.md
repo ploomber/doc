@@ -28,7 +28,7 @@ To test your app, you can use this command:
 
 ```sh
 pip install -r requirements.txt
-chainlit run app.py --host=0.0.0.0 --port=80 --headless
+chainlit run app.py --host=0.0.0.0 --port=5000 --headless
 ```
 
 Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.
