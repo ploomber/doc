@@ -18,46 +18,76 @@ Ploomber Cloud is a great platform to host your Chainlit apps, even [Chainlit re
 
 To deploy a Chainlit application in Ploomber Cloud you need:
 
-- A [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=chainlit&utm_medium=documentation) account
-- A `Dockerfile`
-- Your code
-
-## `Dockerfile`
-
-You need to provide a `Dockerfile`, you can use this [template](https://github.com/ploomber/doc/blob/main/examples/chainlit/basic-app/Dockerfile) to get started. The template contains the minimal steps needed for a deployment but you need to modify so it installs any required dependencies and copies your code into the Docker image.
-
-```Dockerfile
-FROM python:3.11
-
-COPY app.py app.py
-RUN pip install chainlit
-
-# do not change the arguments
-ENTRYPOINT ["chainlit", "run", "app.py", "--host=0.0.0.0", "--port=80", "--headless"]
-```
+- A [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=flask&utm_medium=documentation) account
+- Your application file (`app.py`)
+- A dependencies file (`requirements.txt`)
 
 ## Testing locally
 
-To test your app, you can use `docker` locally:
+To test your app, you can use this command:
 
 ```sh
-# build the docker image
-docker build . -t chainlit
-
-# run it
-docker run -p 5000:80 chainlit
+pip install -r requirements.txt
+chainlit run app.py --host=0.0.0.0 --port=5000 --headless
 ```
 
 Now, open [http://0.0.0.0:5000/](http://0.0.0.0:5000/) to see your app.
 
-
 ## Deploy
+
+`````{tab-set}
+
+````{tab-item} Web
+__Deploy from the menu__
 
 Once you have all your files, create a zip file.
 
 To deploy a Chainlit app from the deployment menu, follow these instructions:
 
-![](../static/docker.png)
+![](../static/chainlit.png)
+````
+
+````{tab-item} Command-line
+__Try an example__
+
+To download and deploy an example Chainlit application start by installing Ploomber Cloud and setting your API key:
+
+```sh
+pip install ploomber-cloud
+ploomber-cloud key YOUR-KEY
+```
+
+```{tip}
+If you don't have an API key yet, follow the [instructions here.](../quickstart/apikey.md)
+```
+
+Now, download an example. It will prompt you for a location to download the app. To download in the current directory, just press enter.
+
+```sh
+ploomber-cloud examples chainlit/basic-app
+```
+
+```{note}
+A full list of Chainlit example apps is available [here.](https://github.com/ploomber/doc/tree/main/examples/chainlit)
+```
+
+You should see a confirmation with instructions on deploying your app. Now, navigate to your application:
+
+```sh
+cd location-you-entered/basic-app
+```
+
+__Deploy from the CLI__
+
+Initialize and deploy your app with:
+
+```sh
+ploomber-cloud init
+ploomber-cloud deploy --watch
+```
+
+````
+`````
 
 
 ```{tip}
