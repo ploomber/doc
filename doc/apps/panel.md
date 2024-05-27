@@ -169,5 +169,9 @@ Ploomber Cloud supports many features to help you build Panel applications quick
 [Live demo](https://black-poetry-5215.ploomberapp.io)
 :::
 
+:::{grid-item-card} Multi Page App
+[![](../../examples/panel/multi-page-app/screenshot.png)](https://github.com/ploomber/doc/tree/main/examples/panel/multi-page-app)
+:::
+
 
 ::::
