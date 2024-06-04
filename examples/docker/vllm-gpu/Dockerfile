@@ -1,5 +1,5 @@
-# we need pyotrch==2.1.2 for vllm==0.3.3
-FROM pytorch/pytorch:2.1.2-cuda12.1-cudnn8-devel
+# we need pyotrch==2.3.0 for vllm==0.4.3
+FROM pytorch/pytorch:2.3.0-cuda12.1-cudnn8-devel
 
 WORKDIR /srv
 
