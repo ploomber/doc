@@ -74,7 +74,7 @@ Open the link to track progress, once the app is ready, test vLLM by running
 the sample script. This is an example output produced by `google/gemma-2b-it`:
 
 ```sh
-python test-vllm.py
+python test-vllm.py # Make sure the model you're testing is up to date, (defaults to facebook/opt-125m).
 ```
 
 ```
