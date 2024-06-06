@@ -42,7 +42,6 @@ parts:
       - file: apps/marimo
       - file: apps/docker
       - file: apps/chainlit
-      - file: apps/chalk-it
       - file: apps/hyperdiv
 
   - caption: APIs
