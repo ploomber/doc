@@ -68,7 +68,8 @@ To configure resources for this project, run 'ploomber-cloud resources' or to de
 If your project has already been initialized, you won't see this. You'll then be prompted to enter three credentials from Auth0:
 
 1. `AUTH_CLIENT_ID`
-2. `AUTH_ISSUER_BASE_URL`
+2. `AUTH_CLIENT_SECRET`
+3. `AUTH_ISSUER_BASE_URL`
 
 These can be obtained from your Auth0 application page. If you haven't yet created an application, log into Auth0 and create one. Then find the credentials here:
 
@@ -121,6 +122,8 @@ To know which user logged in, you can read the following headers:
 
 - `X-Auth-Name`: returns the user's email
 - `X-Auth-Sub`: returns the user ID (as identified by Auth0)
+- `X-Access-Token`: Auth0's access token
+- `X-Id-Token`: Auth0's ID token
 
 You can see some sample [Streamlit code here.](https://github.com/ploomber/doc/blob/main/examples/streamlit/app-with-auth0/app.py)
 
