@@ -22,6 +22,11 @@ To deploy a Chainlit application in Ploomber Cloud you need:
 - Your application file (`app.py`)
 - A dependencies file (`requirements.txt`)
 
+```{note}
+By default applications run with Python 3.11. Refer to this [section](../faq/faq.md#customize-deployment) for customized deployments.
+[Here](https://github.com/ploomber/doc/tree/main/examples/chainlit/docker-based) is a sample Docker-based `Chainlit` application.
+```
+
 ## Testing locally
 
 To test your app, you can use this command:
