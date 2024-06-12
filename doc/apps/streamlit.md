@@ -20,11 +20,6 @@ To deploy a Streamlit app you need at least two files:
 1. Your application file (`app.py`)
 2. A dependencies file (`requirements.txt`)
 
-```{note}
-By default applications run with Python 3.11. Refer to this [section](../faq/faq.md#customize-deployment) for customized deployments.
-[Here](https://github.com/ploomber/doc/tree/main/examples/streamlit/docker-based) is a sample Docker-based `Streamlit` application.
-```
-
 ## Application file
 
 Your `app.py` must be a Streamlit application. An example is available [here.](https://github.com/ploomber/doc/blob/main/examples/streamlit/data-viz/app.py)
@@ -172,6 +167,12 @@ Ploomber Cloud supports many features to help you build Streamlit applications q
 - Spin up [GPUs](../user-guide/gpu.md)
 - Add custom [domains or subdomains](../user-guide/custom-domains.md) to your application
 - [Task queues](task-queues) to scale applications to more users
+
+
+## Troubleshooting
+
+By default applications run with Python 3.11. Refer to this [section](../faq/faq.md#customize-deployment) for customized deployments.
+[Here](https://github.com/ploomber/doc/tree/main/examples/streamlit/docker-based) is a sample Docker-based `Streamlit` application.
 
 ## Examples
 
