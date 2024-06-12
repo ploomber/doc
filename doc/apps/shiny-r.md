@@ -18,10 +18,6 @@ To deploy a [Shiny](https://shiny.posit.co/py/docs/overview.html) R application 
 - An `install.R` file (a script to install dependencies)
 - An `app.R` file (your Shiny code)
 
-If you have specific requirements for your application you may also use [Docker](https://docs.cloud.ploomber.io/en/latest/apps/docker.html) for a customized deployment.
-This would enable you to use specific `Shiny` Docker image as well as run instructions specific for your application.
-[Here](https://github.com/ploomber/doc/tree/main/examples/shiny-r/igraph) is a sample Docker-based `Shiny R` application.
-
 ## Required files
 
 You can use this [template](https://github.com/ploomber/doc/blob/main/examples/shiny-r/shiny-r-data-visualization) to get started. The `startApp.R` will remain the same, but you need to modify `install.R` and `app.R`.
@@ -120,6 +116,10 @@ Ploomber Cloud supports many features to help you build R Shiny applications qui
 
 
 ## Troubleshooting
+
+If you have specific requirements for your application you may also use [Docker](https://docs.cloud.ploomber.io/en/latest/apps/docker.html) for a customized deployment.
+This would enable you to use specific `Shiny` Docker image as well as run instructions specific for your application.
+[Here](https://github.com/ploomber/doc/tree/main/examples/shiny-r/igraph) is a sample Docker-based `Shiny R` application.
 
 Some R packages depend on C libraries, which are not installed by default. For example,
 the [`igraph` R package](https://r.igraph.org/) depends on the

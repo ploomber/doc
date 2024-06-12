@@ -21,13 +21,6 @@ To deploy a Solara app you need at least two files zipped up:
 1. Your application file (`app.py`)
 2. A dependencies file (`requirements.txt`)
 
-
-```{note}
-By default applications run with Python 3.11. Refer to this [section](../faq/faq.md#customize-deployment) for customized deployments.
-[Here](https://github.com/ploomber/doc/tree/main/examples/solara/docker-based) is a sample Docker-based `Solara` application.
-```
-
-
 ```{note}
 We currently only support Solara deployments via a `app.py` file, not via `.ipynb` files
 ```
@@ -141,6 +134,11 @@ Ploomber Cloud supports many features to help you build Solara applications quic
 - Add custom [domains or subdomains](../user-guide/custom-domains.md) to your application
 - [Task queues](task-queues) to scale applications to more users
 
+
+## Troubleshooting
+
+By default applications run with Python 3.11. Refer to this [section](../faq/faq.md#customize-deployment) for customized deployments.
+[Here](https://github.com/ploomber/doc/tree/main/examples/solara/docker-based) is a sample Docker-based `Solara` application.
 
 ## Examples
 
