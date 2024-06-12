@@ -51,5 +51,9 @@ COPY . /srv
 [![](../../examples/shiny-r/igraph/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/shiny-r/igraph)
 :::
 
+:::{grid-item-card} Chainlit
+[![](../../examples/chainlit/docker-based/screenshot.png)](https://github.com/ploomber/doc/tree/main/examples/chainlit/docker-based)
+:::
+
 
 ::::
