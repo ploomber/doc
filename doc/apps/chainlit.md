@@ -177,5 +177,10 @@ By default applications run with Python 3.11. Refer to this [section](../faq/faq
 ![](https://github.com/ploomber/doc/raw/main/examples/chainlit/private-chatgpt/screenshot.webp)
 :::
 
+:::{grid-item-card} App with custom CSS
+:link: https://github.com/ploomber/doc/tree/main/examples/chainlit/app-with-custom-css
+![](https://github.com/ploomber/doc/raw/main/examples/chainlit/app-with-custom-css/screenshot.webp)
+:::
+
 
 ::::
