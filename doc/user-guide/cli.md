@@ -164,7 +164,7 @@ ploomber-cloud examples flask/some-new-app --clear-cache
 
 ## Monitor a deployment
 
-An application deployment can be monitored by using the `watch` command by passing a `project_id` and an optional `job_id`:
+An application deployment can be monitored by using the `watch` command by passing a `project-id` and an optional `job-id`:
 
 ```sh
 ploomber-cloud watch --project-id <project-id> --job-id <job-id>
@@ -177,6 +177,35 @@ The deployment process started! Track its status at: https://www.platform.ploomb
 ```
 
 Here, `project-id` is `muddy-art-3373` and `job-id` is `8d1067be`.
+
+## Retrieve application logs
+
+You can retrieve app logs during or after deployment using the `logs` command. You must pass a `project-id` or `job-id`. 
+
+For example, if your `project-id` was `lucky-sea-1234` and `job-id` was `0a2d4az5`, you could grab the logs using `--project-id`:
+
+```sh
+ploomber-cloud logs --project-id lucky-sea-1234
+```
+
+or using `--job-id`:
+
+```sh
+ploomber-cloud logs --job-id 0a2d4az5
+```
+
+Note that if you pass both `--project-id` and `--job-id`, the __job-id__ will be prioritized.
+
+By default the command will print both the `docker` logs and `webservice` logs, but you can specify a single set of logs using the `--type` option. Available types are: `docker` or `web`:
+
+```sh
+ploomber-cloud logs --project-id <project-id> --type docker
+```
+
+```sh
+ploomber-cloud logs --project-id <project-id> --type web
+```
+
 
 ## Configure an application using a template
 
