@@ -119,7 +119,7 @@ Ploomber Cloud supports many features to help you build R Shiny applications qui
 
 If you have specific requirements for your application you may also use [Docker](https://docs.cloud.ploomber.io/en/latest/apps/docker.html) for a customized deployment.
 This would enable you to use specific `Shiny` Docker image as well as run instructions specific for your application.
-[Here](https://github.com/ploomber/doc/tree/main/examples/shiny-r/igraph) is a sample Docker-based `Shiny R` application.
+[Here](https://github.com/ploomber/doc/tree/main/examples/shiny-r/docker-based) is a sample Docker-based `Shiny R` application.
 
 Some R packages depend on C libraries, which are not installed by default. For example,
 the [`igraph` R package](https://r.igraph.org/) depends on the
@@ -133,7 +133,7 @@ libglpk.so.40: cannot open shared object file: No such file or directory
 ```
 
 To fix this, you can use the Docker deployment option and install GLPK, here's
-an [example](https://github.com/ploomber/doc/tree/main/examples/shiny-r/igraph). To
+an [example](https://github.com/ploomber/doc/tree/main/examples/shiny-r/docker-based). To
 learn more, see the [Docker deployment instructions.](docker.md)
 
 If you need help installing certain libraries, email us at [contact@ploomber.io](mailto:contact@ploomber.io)
@@ -147,7 +147,7 @@ If you need help installing certain libraries, email us at [contact@ploomber.io]
 :gutter: 2
 
 :::{grid-item-card} App with igraph
-:link: https://github.com/ploomber/doc/tree/main/examples/shiny-r/igraph
+:link: https://github.com/ploomber/doc/tree/main/examples/shiny-r/docker-based
 :::
 
 :::{grid-item-card} Data visualization
