@@ -160,8 +160,15 @@ If you want to serve your Auth0-protected app from a custom domain, or subdomain
 2. [Update your Auth0 configuration](auth0-urls) to match your domain/subdomain.
 3. Modify your `.env` file (must have been generated the first tiem you deployed), add a new `AUTH_BASE_URL` environment variable,  whose value should be the domain/subdomain you configured (e.g., `https://subdomain.example.com`), and re-deploy your project
 
+### Optional features
 
-### Examples
+You can set the following variables in your `.env` file to customize behavior:
+
+- `AUTH_PARAMS_AUDIENCE` sets the audience in Auth0. If you pass this, users will be automatically logged out if they make a new HTTP request to the app with an expired access token.
+- `AUTH_PARAMS_SCOPE` sets the scope in Auth0
+- `AUTH_POST_LOGOUT_REDIRECT` sets the URL where users are redirected when they log out. If missing it'll take them to a `/status` page that only shows a message ("logged in" or "logged out"). If you set this, you must register this URL in the Auth0 console in the `Allowed Logout URLs` section.
+
+#### Examples
 
 ::::{grid} 2 2 3 3
 :class-container: text-center
