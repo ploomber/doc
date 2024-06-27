@@ -180,7 +180,9 @@ Here, `project-id` is `muddy-art-3373` and `job-id` is `8d1067be`.
 
 ## Retrieve application logs
 
-You can retrieve app logs during or after deployment using the `logs` command. You must pass a `project-id` or `job-id`. Here's an example using `--project-id`:
+You can retrieve app logs during or after deployment using the `logs` command. You must pass a `project-id` or `job-id`. 
+
+For example, if your `project-id` was `lucky-sea-1234` and `job-id` was `0a2d4az5`, you could grab the logs using `--project-id`:
 
 ```sh
 ploomber-cloud logs --project-id lucky-sea-1234
