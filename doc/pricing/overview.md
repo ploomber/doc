@@ -19,7 +19,7 @@
 
 ### Professional
 
-*Starting at $10/month*
+*Starting at $20/month*
 
 - 10 concurrent apps (more available with [on-demand pricing](compute.md))
 - 1 app running 24/7 (others stopped when inactive. You can keep them on with [on-demand pricing](compute.md))
@@ -35,7 +35,7 @@
 
 ### Teams
 
-*Starting at $100/month*
+*Starting at $200/month*
 
 - Everything from "Professional"
 - Support SLA
