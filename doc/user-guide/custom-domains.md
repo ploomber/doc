@@ -189,7 +189,7 @@ A Certification Authority Authorization ([CAA](https://docs.aws.amazon.com/acm/l
 
 Here are the records that you need to add:
 
-```yaml
+```text
 Type: CAA
 Name: @
 Flag: 0
@@ -198,7 +198,7 @@ CA domain: "amazon.com"
 TTL: 60
 ```
 
-```yaml
+```text
 Type: CAA
 Name: @
 Flag: 0
