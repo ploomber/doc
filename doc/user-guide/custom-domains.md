@@ -181,3 +181,28 @@ If you see this error (or a related one), it's most likely because you're missin
 ![](../static/custom-domains/ssl-cname-record.png)
 
 Ensure you add it and give it some time since DNS records take some time to update. If issues persist, contact us at [contact@ploomber.io](mailto:contact@ploomber.io).
+
+## Configuring a CAA record
+
+Note that Ploomber Cloud uses AWS for generating and issuing certificates. If you are using a DNS registrar that doesn't allow Amazon to issue certificates from their side (e.g., Hostinger), you need to configure Certification Authority Authorization (CAA) DNS records.
+A Certification Authority Authorization ([CAA](https://docs.aws.amazon.com/acm/latest/userguide/setup-caa.html)) DNS record specifies that AWS Certificate Manager (ACM) is allowed to issue a certificate for your domain or subdomain.
+
+Here are the records that you need to add:
+
+```yaml
+Type: CAA
+Name: @
+Flag: 0
+Tag: issue
+CA domain: "amazon.com"
+TTL: 60
+```
+
+```yaml
+Type: CAA
+Name: @
+Flag: 0
+Tag: issuewild
+CA domain: "amazon.com"
+TTL: 60
+```
