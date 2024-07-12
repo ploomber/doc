@@ -116,3 +116,7 @@ Here's a few additional features that `Docker` deployment allows:
 * Changing the Python version.
 * Customizing the Docker base image.
 * Adding a cache layer
+
+To unlock `Docker` deployment, [upgrade to Pro.](https://ploomber.io/pricing/)
+
+[Click here](../pricing/overview.md) to see all Pro, Teams, and Enterprise features.

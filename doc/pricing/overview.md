@@ -29,6 +29,7 @@
 - App password protection
 - Faster app builds
 - Deployment artifact limited to 200MB
+- Deploy Docker apps
 - Email and Slack support
 
 ### Teams
