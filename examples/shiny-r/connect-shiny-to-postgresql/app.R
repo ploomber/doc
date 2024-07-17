@@ -1,5 +1,7 @@
 library(shiny)
 library(DBI)
+library(bslib)
+library(dplyr)
 
 db <- "demo"
 db_host <- "ep-lively-credit-a52udj7x.us-east-2.aws.neon.tech"
@@ -18,37 +20,73 @@ conn <- dbConnect(
 
 tables <- dbListTables(conn)
 
-# Define UI for app that draws a histogram ----
-ui <- bootstrapPage(
-  titlePanel("PostgreSQL with R Shiny Demo"),
+ui <- page_sidebar(
+  title = "PostgreSQL with R Shiny Demo",
 
-  selectInput(inputId = "table",
-              label = "Select Table in Database",
-              choices = tables,
-              selected = tables[0]),
-
-  # Input: Slider for the number of bins ----
-  sliderInput(inputId = "bins",
-              label = "Number of bins:",
-              min = 1,
-              max = 50,
-              value = 30),
-  # Output: Histogram ----
-  plotOutput(outputId = "main_plot")
+  sidebar = sidebar(
+    accordion(
+      accordion_panel(
+        "Main Controls",
+        selectInput(inputId = "table",
+          label = "Select Table in Database",
+          choices = tables,
+          selected = tables[]),
+          accordion_panel(
+            "Histogram Controls",
+            selectInput(inputId = "hist_x",
+              label = "Variable",
+              choices = NULL)
+          ),
+          accordion_panel(
+            "Scatterplot Controls",
+            selectInput(inputId = "scatter_x",
+              label = "X Variable",
+              choices = NULL),
+            selectInput(inputId = "scatter_y",
+              label = "Y Variable",
+              choices = NULL)
+          )
+      )
+    )
+  ),
+  plotOutput(outputId = "hist"),
+  plotOutput(outputId = "scatter")
 )
 
-server <- function(input, output) {
+server <- function(input, output, session) {
 
-  output$main_plot <- renderPlot({
+  quant_vars <- reactive({
+    query <- sprintf("SELECT * FROM %s LIMIT 1", input$table)
+    df <- dbGetQuery(conn, query)
+    names(dplyr::select_if(df, is.numeric))
+  })
+
+  observe({
+    updateSelectInput(session, "hist_x", choices = quant_vars())
+    updateSelectInput(session, "scatter_x", choices = quant_vars())
+    updateSelectInput(session, "scatter_y", choices = quant_vars())
+  })
+
+  output$hist <- renderPlot({
     query <- sprintf("SELECT * FROM %s", input$table)
     df <- dbGetQuery(conn, query)
 
-    x    <- df$studytime
-    bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    x <- df[[input$hist_x]]
 
-    hist(x, breaks = bins, col = "#007bc2", border = "white",
-         xlab = "Waiting time to next eruption (in mins)",
-         main = "Histogram of waiting times")
+    hist(x, col = "#007bc2", border = "white",
+         xlab = sprintf("Distribution of %s", input$hist_x),
+         main = sprintf("Histogram of %s", input$hist_x))
+  })
+
+  output$scatter <- renderPlot({
+    query <- sprintf("SELECT * FROM %s", input$table)
+    df <- dbGetQuery(conn, query)
+
+    plot(x = df[[input$scatter_x]], 
+            y = df[[input$scatter_y]], 
+            xlab = input$scatter_x, 
+            ylab = input$scatter_y, 
+            main = sprintf("%s vs %s", input$scatter_y, input$scatter_x))
   })
 }
 

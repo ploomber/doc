@@ -1,3 +1,3 @@
-# Basic Network Graph
+# R Shiny App Connected to PostgreSQL Database
 
-Basic Network Graph with igraph and Bar Chart with highcharter.
+Interactive R Shiny dashboard, connected to Postgres database.

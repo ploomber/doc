@@ -1,6 +1,6 @@
-# R Shiny App Connected to PostgreSQL Database
+# Basic Network Graph
 
-Interactive EDA dashboard for 
+Basic Network Graph with igraph and Bar Chart with highcharter.
 
 ![](screenshot.webp)
 
