@@ -2,6 +2,7 @@ library(shiny)
 library(DBI)
 library(bslib)
 library(dplyr)
+library(ggplot2)
 
 db <- "demo"
 db_host <- "ep-lively-credit-a52udj7x.us-east-2.aws.neon.tech"
@@ -71,22 +72,22 @@ server <- function(input, output, session) {
     query <- sprintf("SELECT * FROM %s", input$table)
     df <- dbGetQuery(conn, query)
 
-    x <- df[[input$hist_x]]
-
-    hist(x, col = "#007bc2", border = "white",
-         xlab = sprintf("Distribution of %s", input$hist_x),
-         main = sprintf("Histogram of %s", input$hist_x))
+    ggplot(df, aes_string(x = input$hist_x)) + 
+      geom_histogram(fill = "turquoise") +
+      labs(title = sprintf("Distribution of %s", input$hist_x), 
+            x = input$hist_x,
+            y = "Frequency")
   })
 
   output$scatter <- renderPlot({
     query <- sprintf("SELECT * FROM %s", input$table)
     df <- dbGetQuery(conn, query)
 
-    plot(x = df[[input$scatter_x]], 
-            y = df[[input$scatter_y]], 
-            xlab = input$scatter_x, 
-            ylab = input$scatter_y, 
-            main = sprintf("%s vs %s", input$scatter_y, input$scatter_x))
+    ggplot(df, aes_string(x = input$scatter_x, y = input$scatter_y)) + 
+      geom_point(alpha = 0.5) + 
+      labs(title = sprintf("%s vs %s", input$scatter_y, input$scatter_x),
+            x = input$scatter_x,
+            y = input$scatter_y)
   })
 }
 

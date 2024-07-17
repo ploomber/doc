@@ -13,6 +13,3 @@ RUN Rscript install.R
 COPY . /app
 
 ENTRYPOINT ["Rscript", "startApp.R"]
-
-FROM postgres
-

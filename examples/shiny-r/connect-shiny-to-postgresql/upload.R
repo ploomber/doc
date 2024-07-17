@@ -15,19 +15,10 @@ conn <- dbConnect(
   password = db_pass
 )
 
-# math <- read.csv("data/student-mat.csv", sep=';')
-# por <- read.csv("data/student-por.csv", sep=';')
+math <- read.csv("data/student-mat.csv", sep=';')
+por <- read.csv("data/student-por.csv", sep=';')
 
-# print(conn)
+print(conn)
 
-# dbWriteTable(conn, "math", math, overwrite=TRUE)
-# dbWriteTable(conn, "portuguese", por, overwrite=TRUE)
-
-# res <- dbGetQuery(conn, "SELECT * FROM math LIMIT 5")
-# print(res)
-
-query <- sprintf("SELECT * FROM %s", "math")
-df <- dbGetQuery(conn, query)
-
-print(df)
-
+dbWriteTable(conn, "math", math, overwrite=TRUE)
+dbWriteTable(conn, "portuguese", por, overwrite=TRUE)
