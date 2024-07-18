@@ -22,3 +22,5 @@ print(conn)
 
 dbWriteTable(conn, "math", math, overwrite=TRUE)
 dbWriteTable(conn, "portuguese", por, overwrite=TRUE)
+
+dbDisconnect(conn)
