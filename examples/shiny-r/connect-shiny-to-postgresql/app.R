@@ -2,13 +2,12 @@ library(shiny)
 library(DBI)
 library(bslib)
 library(dplyr)
-library(ggplot2)
-
-db <- "demo"
-db_host <- "ep-lively-credit-a52udj7x.us-east-2.aws.neon.tech"
-db_port <- "5432"
-db_user <- "demo_owner"
-db_pass <- "7iAYbGmr8eOJ"
+library(ggplot2
+db <- "[DATABASE NAME]"
+db_host <- "[YOUR HOST ADDRESS]"
+db_port <- "[PORT NUMBER]"
+db_user <- "[DATABASE USERNAME]"
+db_pass <- "[DATABASE PASSWORD]"
 
 conn <- dbConnect(
   RPostgres::Postgres(),
