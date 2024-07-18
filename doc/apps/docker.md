@@ -1,5 +1,9 @@
 # Docker
 
+```{note}
+Docker deployment is only available to Pro, Teams, and Enterprise users.
+```
+
 To deploy a Docker-based web application in Ploomber Cloud you need:
 
 - A [Ploomber Cloud](https://platform.ploomber.io/register?utm_source=docker&utm_medium=documentation) account
