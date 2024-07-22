@@ -2,7 +2,8 @@ library(shiny)
 library(DBI)
 library(bslib)
 library(dplyr)
-library(ggplot2
+library(ggplot2)
+
 db <- "[DATABASE NAME]"
 db_host <- "[YOUR HOST ADDRESS]"
 db_port <- "[PORT NUMBER]"
