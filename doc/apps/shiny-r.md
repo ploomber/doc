@@ -150,10 +150,14 @@ If you need help installing certain libraries, email us at [contact@ploomber.io]
 :link: https://github.com/ploomber/doc/tree/main/examples/shiny-r/docker-based
 :::
 
-:::{grid-item-card} Data visualization
+:::{grid-item-card} Data Visualization
 :link: https://github.com/ploomber/doc/tree/main/examples/shiny-r/shiny-r-data-visualization
 ![](https://github.com/ploomber/doc/raw/main/examples/shiny-r/shiny-r-data-visualization/screenshot.webp)
 :::
 
+:::{grid-item-card} App Connected to Postgres
+:link: https://github.com/ploomber/doc/tree/main/examples/shiny-r/connect-shiny-to-postgresql
+![](https://github.com/ploomber/doc/tree/main/examples/shiny-r/connect-shiny-to-postgresql/screenshot.png)
+:::
 
 ::::
