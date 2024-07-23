@@ -148,6 +148,7 @@ If you need help installing certain libraries, email us at [contact@ploomber.io]
 
 :::{grid-item-card} App with igraph
 :link: https://github.com/ploomber/doc/tree/main/examples/shiny-r/docker-based
+![](https://github.com/ploomber/doc/raw/main/examples/shiny-r/docker-based/screenshot.webp)
 :::
 
 :::{grid-item-card} Data Visualization
