@@ -219,7 +219,7 @@ This command should be run in an empty folder.
 
 Currently only the `vllm` and `auth0` templates are supported.
 - To learn more about deploying vLLM, [click here.](../apps/vllm.md) 
-- To deploy an app with Auth0, [click here.](../user-guide/password.md#auth0-authentication)
+- To learn about adding Auth0 to your app, [click here.](../user-guide/password.md#auth0-authentication)
 
 ## Configure GitHub action
 
