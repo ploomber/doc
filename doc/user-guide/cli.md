@@ -209,9 +209,17 @@ ploomber-cloud logs --project-id <project-id> --type web
 
 ## Configure an application using a template
 
-You can configure an application using a pre-defined template by running the command `ploomber-cloud templates <template-name>`.
-Note that currently only the template `vllm` is supported. 
-This command should be run in an empty folder. [Click here](../apps/vllm.md) to learn more about deploying vLLM.
+You can configure an application using a pre-defined template by running the command:
+
+```sh
+ploomber-cloud templates <template-name>
+```
+ 
+This command should be run in an empty folder. 
+
+Currently only the `vllm` and `auth0` templates are supported.
+- To learn more about deploying vLLM, [click here.](../apps/vllm.md) 
+- To learn about adding Auth0 to your app, [click here.](../user-guide/password.md#auth0-authentication)
 
 ## Configure GitHub action
 
