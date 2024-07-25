@@ -1,4 +1,4 @@
 streamlit
 SQLAlchemy
-datasets
 psycopg2-binary
+ucimlrepo
