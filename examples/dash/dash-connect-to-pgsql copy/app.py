@@ -59,6 +59,7 @@ def update_dropdown(value):
     query = f"SELECT * FROM {value}"
     with engine.connect() as conn:
         df = pd.read_sql(query, conn)
+        conn.close()
     cols = list(df.columns)
     return cols, cols, cols, cols[0], cols[1], cols[0]
 
@@ -75,6 +76,7 @@ def update_graph(db_name, val_x, val_y):
     query = f"SELECT * FROM {db_name}"
     with engine.connect() as conn:
         df = pd.read_sql(query, conn)
+        conn.close()
     title = f"{val_x} vs {val_y}"
     return px.scatter(df, x=val_x, y=val_y, title=title)
 
@@ -89,6 +91,7 @@ def update_bar(db_name, val_x):
     query = f"SELECT {val_x}, COUNT({val_x}) FROM {db_name} GROUP BY {val_x}"
     with engine.connect() as conn:
         df = pd.read_sql(query, conn)
+        conn.close()
     title =f"Distribution of {val_x}"
     return px.bar(df, x=val_x, y="count", title=title)
 
