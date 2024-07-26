@@ -98,6 +98,27 @@ It can also be combined with the `--from-existing` for re-initializing from an e
 ploomber-cloud init --from-existing --force
 ```
 
+## Ignore a file or directory
+
+You can choose to ignore any file or directory by adding a list in the `ignore` field in `ploomber-cloud.json`. These files will not be included in the uploaded zip file. Format of ignored files or directories:
+- `name`: all files or folders with `name`
+- `dir/`: all files or folders in folder with name `dir`
+- `dir/file` and `dir/dir/`: all files/folders with the specified path relative to root
+
+Example:
+
+```json
+{
+    "id": "cool-tree-1860",
+    "type": "docker",
+    "ignore": [
+        "ignore.txt",
+        "ignore_dir/",
+        "dir/ignore2.txt"
+    ]
+}
+```
+
 ## Delete an app
 
 For deleting a particular app run the `delete` command with the `--project-id` flag:
