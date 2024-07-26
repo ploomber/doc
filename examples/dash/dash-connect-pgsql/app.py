@@ -17,9 +17,6 @@ connection_string = URL.create(
   database=os.getenv("PGDATABASE")
 )
 
-# Connect to PG and start a session
-engine = create_engine(connection_string, pool_size=10, max_overflow=20)
-
 DB_LIST = ['math', 'portuguese']
 
 app = Dash(__name__)
@@ -71,10 +68,12 @@ app.layout = html.Div(
 )
 def update_dropdown(value):
     """Updates dropdown list based on selected db."""
+    e = create_engine(connection_string)
     query = f"SELECT * FROM {value}"
-    with engine.connect() as conn:
+    with e.connect() as conn:
         df = pd.read_sql(query, conn)
         conn.close()
+    e.dispose()
     cols = list(df.columns)
     return cols[4:9], cols[9:], cols[1:4], cols[1:], cols[4], cols[9], cols[1], cols[1]
 
@@ -89,10 +88,12 @@ def update_dropdown(value):
 )
 def update_graph(db_name, val_x, val_y, val_facet):
     """Updates scatter plot based on selected x and y axis."""
+    e = create_engine(connection_string)
     query = f"SELECT * FROM {db_name}"
-    with engine.connect() as conn:
+    with e.connect() as conn:
         df = pd.read_sql(query, conn)
         conn.close()
+    e.dispose()
     title = f"Distribution of student {val_y} based on {val_x}, separated by student {val_facet}"
     return px.scatter(df, x=val_x, y=val_y, facet_col=val_facet, title=title)
 
@@ -104,10 +105,12 @@ def update_graph(db_name, val_x, val_y, val_facet):
     ]
 )
 def update_bar(db_name, val_x):
+    e = create_engine(connection_string)
     query = f"SELECT {val_x}, COUNT({val_x}) FROM {db_name} GROUP BY {val_x}"
-    with engine.connect() as conn:
+    with e.connect() as conn:
         df = pd.read_sql(query, conn)
         conn.close()
+    e.dispose()
     title =f"Number of students based on {val_x}"
     return px.bar(df, x=val_x, y="count", title=title)
 
