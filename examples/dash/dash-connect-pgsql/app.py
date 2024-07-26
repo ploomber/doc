@@ -3,10 +3,6 @@ import plotly.express as px
 import pandas as pd
 from sqlalchemy import URL, create_engine
 import os
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv(".env")
 
 # Connect to PostgreSQL database
 connection_string = URL.create(
