@@ -1,0 +1,11 @@
+.drop-wrapper {
+    display: flex;
+}
+
+.drop-list {
+    margin-left: 15px;
+    width: 150px;
+    white-space: pre;
+    text-overflow: ellipsis;
+    margin-top: 5px;
+}

@@ -3,6 +3,10 @@ import plotly.express as px
 import pandas as pd
 from sqlalchemy import URL, create_engine
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv(".env")
 
 # Connect to PostgreSQL database
 connection_string = URL.create(
@@ -28,14 +32,23 @@ app.layout = html.Div(
         html.H1(children="Dash Application with PostgreSQL Demo", style={"textAlign": "center"}),
         html.Div(
             [
-                html.P(children="database selection"),
-                dcc.Dropdown(DB_LIST, "math", id="db-selection"),
-                html.P(children="Select x axis for scatter plot"),
-                dcc.Dropdown(id="scatter-selection-x"),
-                html.P(children="Select y axis for scatter plot"),
-                dcc.Dropdown(id="scatter-selection-y"),
-                html.P(children="Select x axis for bar chart"),
-                dcc.Dropdown(id="bar-selection-x"),
+                html.Div([
+                    html.P(children="Database selection:"),
+                    dcc.Dropdown(
+                        DB_LIST, "math", id="db-selection", 
+                        className="drop-list"
+                    )
+                ], className="drop-wrapper"),
+                html.Div([
+                    html.P(children="Select x, y axis and facet for scatter plot:"),
+                    dcc.Dropdown(id="scatter-selection-x", className="drop-list"),
+                    dcc.Dropdown(id="scatter-selection-y", className="drop-list"),
+                    dcc.Dropdown(id="scatter-selection-facet", className="drop-list")
+                ], className="drop-wrapper"),
+                html.Div([
+                    html.P(children="Select x axis for bar chart:"),
+                    dcc.Dropdown(id="bar-selection-x", className="drop-list")
+                ], className="drop-wrapper")
             ]
         ),
         dcc.Graph(id="graph-content"),
@@ -47,9 +60,11 @@ app.layout = html.Div(
     [
         Output("scatter-selection-x", "options"), 
         Output("scatter-selection-y", "options"),
+        Output("scatter-selection-facet", "options"),
         Output("bar-selection-x", "options"),
         Output("scatter-selection-x", "value"),
         Output("scatter-selection-y", "value"),
+        Output("scatter-selection-facet", "value"),
         Output("bar-selection-x", "value"),
     ], 
     Input("db-selection", "value")
@@ -61,7 +76,7 @@ def update_dropdown(value):
         df = pd.read_sql(query, conn)
         conn.close()
     cols = list(df.columns)
-    return cols, cols, cols, cols[0], cols[1], cols[0]
+    return cols[4:9], cols[9:], cols[1:4], cols[1:], cols[4], cols[9], cols[1], cols[1]
 
 @callback(
     Output("graph-content", "figure"), 
@@ -69,16 +84,17 @@ def update_dropdown(value):
         Input("db-selection", "value"),
         Input("scatter-selection-x", "value"),
         Input("scatter-selection-y", "value"),
+        Input("scatter-selection-facet", "value"),
     ]
 )
-def update_graph(db_name, val_x, val_y):
+def update_graph(db_name, val_x, val_y, val_facet):
     """Updates scatter plot based on selected x and y axis."""
     query = f"SELECT * FROM {db_name}"
     with engine.connect() as conn:
         df = pd.read_sql(query, conn)
         conn.close()
-    title = f"{val_x} vs {val_y}"
-    return px.scatter(df, x=val_x, y=val_y, title=title)
+    title = f"Distribution of student {val_y} based on {val_x}, separated by student {val_facet}"
+    return px.scatter(df, x=val_x, y=val_y, facet_col=val_facet, title=title)
 
 @callback(
     Output("graph-bar", "figure"), 
@@ -92,8 +108,8 @@ def update_bar(db_name, val_x):
     with engine.connect() as conn:
         df = pd.read_sql(query, conn)
         conn.close()
-    title =f"Distribution of {val_x}"
+    title =f"Number of students based on {val_x}"
     return px.bar(df, x=val_x, y="count", title=title)
 
 if __name__ == '__main__':
-   app.run_server(debug=False)
+   app.run_server(debug=False, port=8000)
