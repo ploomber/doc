@@ -16,7 +16,7 @@ PGPASSWORD='your_password'
 Run `python -m pip install -r requirements.txt` to install all necessary packages.
 
 ## Upload dataset to your Postgres server
-We will upload the data in `student-mat-min.csv` and `student-por-min.csv` in the `data` folder. Run `python upload.py` locally to upload the dataset to your PostgreSQL.
+You can download the dataset I'm using [here](https://archive.ics.uci.edu/dataset/320/student+performance) and store them in the `data` folder. Next, `cd data` and run `python csv_mod.py` to obtain `student-mat-min.csv` and `student-por-min.csv`, the extracted dataset that we will be uploading. Run `python upload.py` locally to upload the dataset to your PostgreSQL.
 
 ## Local testing
 Add the below lines to your `app.py`
