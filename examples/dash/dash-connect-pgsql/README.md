@@ -19,6 +19,16 @@ Run `python -m pip install -r requirements.txt` to install all necessary package
 Run `python upload.py` locally to upload the datasets to your PostgreSQL.
 
 ## Local testing
+Add the below lines to your `app.py`
+```python
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv(".env")
+```
+
+You can remove them once you are done with local testing.
+
 Run `python app.py`. You should be able to access the app on your localhost at port 8000.
 
 ## Upload to Ploomber Cloud
