@@ -22,7 +22,7 @@ Run `python upload.py` locally to upload the datasets to your PostgreSQL.
 Run `python app.py`. You should be able to access the app on your localhost at port 8000.
 
 ## Upload to Ploomber Cloud
-Compress and upload the below files for deployment. Make sure to specify the above environment variables in your [secrets](https://docs.cloud.ploomber.io/en/latest/user-guide/secrets.html). For more details, please check our tutorial on how to deploy a [Dash application](https://docs.cloud.ploomber.io/en/latest/apps/dash.html)
+Compress and upload the below files for deployment. Make sure to specify the above environment variables in your [secrets](https://docs.cloud.ploomber.io/en/latest/user-guide/secrets.html). For more details, please refer to our [Dash deployment guide](https://docs.cloud.ploomber.io/en/latest/apps/dash.html)
 - app.py
 - assets/style.css
 - requirements.txt
