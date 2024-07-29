@@ -25,9 +25,13 @@ from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv(".env")
+
+# Add at the end
+if __name__ == '__main__':
+    app.run_server(debug=False, port=8000)
 ```
 
-You can remove them once you are done with local testing.
+You should remove them once you are done with local testing to avoid error.
 
 Run `python app.py`. You should be able to access the app on your localhost at port 8000.
 

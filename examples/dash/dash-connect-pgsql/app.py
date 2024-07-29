@@ -109,6 +109,3 @@ def update_bar(db_name, val_x):
     e.dispose()
     title =f"Number of students based on {val_x}"
     return px.bar(df, x=val_x, y="count", title=title)
-
-if __name__ == '__main__':
-   app.run_server(debug=False, port=8000)
