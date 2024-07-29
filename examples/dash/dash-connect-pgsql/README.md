@@ -25,15 +25,11 @@ from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv(".env")
-
-# Add at the end
-if __name__ == '__main__':
-    app.run_server(debug=False, port=8000)
 ```
 
 You should remove them once you are done with local testing to avoid error.
 
-Run `python app.py`. You should be able to access the app on your localhost at port 8000.
+Run `gunicorn app:server run --bind 0.0.0.0:80`. You should be able to access the app at `0.0.0.0:80`.
 
 ## Upload to Ploomber Cloud
 Compress and upload the below files for deployment. Make sure to specify the above environment variables in your [secrets](https://docs.cloud.ploomber.io/en/latest/user-guide/secrets.html). For more details, please refer to our [Dash deployment guide](https://docs.cloud.ploomber.io/en/latest/apps/dash.html)
