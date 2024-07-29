@@ -7,11 +7,11 @@ csv_mods = {
 
 for csv_cur, csv_conv in csv_mods.items():
     df = pd.read_csv(csv_cur, sep=";")
-    #print(df.columns)
+
+    # Select rows to keep
     df = df[["school", "sex", "romantic_status", "age", 
         "mother_occupation", "father_occupation", 
             "health", "study_time", "absences", "final_grade"]]
-    print(df.head())
     df.to_csv(csv_conv)
     
 
