@@ -1,5 +1,4 @@
 dash
-plotly
 pandas
 gunicorn
 sqlalchemy
