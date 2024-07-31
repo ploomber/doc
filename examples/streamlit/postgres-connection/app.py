@@ -17,17 +17,39 @@ def upload_data(DB_URI):
         print("Data successfully uploaded.")
     engine.dispose()
 
-DB_URI = "YOUR_DB_URI"
-
-# If deploying on Ploomber Cloud, add DB_URI as a secret. 
-conn_st = st.connection(name="postgres", type='sql', url = environ["DB_URI"])
-
-# If running locally
-# conn_st = st.connection(name="postgres", type='sql', url = DB_URI) 
-
-# App Creation
-st.title("Streamlit with Postgres Demo")
+cloud = False
+DB_URI = environ["DB_URI"] if cloud else "YOUR DB_URI"
+conn_st = st.connection(name="postgres", type='sql', url = DB_URI)
 iris_data = conn_st.query("SELECT * FROM iris")
+
+st.title("Streamlit with Postgres Demo")
+
+# Display Metrics
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.metric("Average Sepal Length (cm)", round(iris_data["sepal length"].mean(), 2))
+with col2:
+    st.metric("Average Sepal Width (cm)", round(iris_data["sepal width"].mean(), 2))
+with col3:
+    st.metric("Average Petal Length (cm)", round(iris_data["petal length"].mean(), 2))
+with col4:
+    st.metric("Average Petal Width (cm)", round(iris_data["petal width"].mean(), 2))
+
+# Displays Scatterplot
+st.header("Scatter Plot")
+
+c1, c2 = st.columns(2)
+
+with c1: 
+    x = st.selectbox("Select X-Variable", options=iris_data.select_dtypes("number").columns, index=0)
+with c2:
+    y = st.selectbox("Select Y-Variable", options=iris_data.select_dtypes("number").columns, index=1)
+
+scatter_chart = st.scatter_chart(iris_data, x=x, y=y, size=40, color='class')
+
+# Displays Dataframe
+st.dataframe(iris_data, use_container_width=True)
 
 # Creates sidebar to add data
 with st.sidebar:    
@@ -36,7 +58,7 @@ with st.sidebar:
     st.subheader("After submitting, a query is executed that inserts a new datapoint to the 'iris' table in our database.")
     with st.form(key='new_data'):
         sepal_length = st.text_input(label="Sepal Length (cm)", key=1)
-        sepal_width = st.text_input(label="Sepal Length (cm)", key=2)
+        sepal_width = st.text_input(label="Sepal Width (cm)", key=2)
         petal_length = st.text_input(label="Petal Length (cm)", key=3)
         petal_width = st.text_input(label="Petal Width (cm)", key=4)
         iris_class = st.selectbox(label="Iris Class (cm)", key=5, options=iris_data["class"].unique())
@@ -67,30 +89,3 @@ if submit:
     # Clears the cached data so that streamlit fetches new data when updated. 
     st.cache_data.clear()
     iris_data = conn_st.query("SELECT * FROM iris")
-
-# Display Metrics
-col1, col2, col3, col4 = st.columns(4)
-
-with col1:
-    st.metric("Average Sepal Length (cm)", round(iris_data["sepal length"].mean(), 2))
-with col2:
-    st.metric("Average Sepal Width (cm)", round(iris_data["sepal width"].mean(), 2))
-with col3:
-    st.metric("Average Petal Length (cm)", round(iris_data["petal length"].mean(), 2))
-with col4:
-    st.metric("Average Petal Width (cm)", round(iris_data["petal width"].mean(), 2))
-
-# Displays Scatterplot
-st.header("Scatter Plot")
-
-c1, c2 = st.columns(2)
-
-with c1: 
-    x = st.selectbox("Select X-Variable", options=iris_data.select_dtypes("number").columns, index=0)
-with c2:
-    y = st.selectbox("Select Y-Variable", options=iris_data.select_dtypes("number").columns, index=1)
-
-scatter_chart = st.scatter_chart(iris_data, x=x, y=y, size=40, color='class',)
-
-# Displays Dataframe
-st.dataframe(iris_data, use_container_width=True)
