@@ -1,7 +1,9 @@
 # Managing applications
 
 ## Labels
-
+```{tip}
+You can add labels to your app through the [CLI](./cli.md#add-labels)
+```
 Labels can help you organize and identify your apps. You can add them during creation:
 
 ![](../static/manage-apps/labels.png)
