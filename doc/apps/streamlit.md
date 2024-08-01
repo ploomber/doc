@@ -196,8 +196,8 @@ By default applications run with Python 3.11. Refer to this [section](../faq/faq
 :::
 
 :::{grid-item-card} Iris Dashboard Using PostgreSQL
-:link: https://github.com/ploomber/doc/tree/main/examples/streamlit/postgres-connection
-![](https://github.com/ploomber/doc/raw/main/examples/streamlit/postgres-connection/app.png)
+<!-- :link: https://github.com/ploomber/doc/tree/main/examples/streamlit/postgres-connection
+![](https://github.com/ploomber/doc/raw/main/examples/streamlit/postgres-connection/app.png) -->
 :::
 
 ::::
