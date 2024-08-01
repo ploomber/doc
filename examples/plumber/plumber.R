@@ -1,4 +1,4 @@
-#* @apiTitle Plumber Example API
+#* @apiTitle Iris Petal Length Prediction API
 #* @apiDescription This API allows users to interact with a linear regression model predicting iris petal length based on petal width, and optionally, sepal length, sepal width, and species.
 #* It provides endpoints for health checks, petal length predictions, and visualizations comparing actual to predicted lengths.
 
@@ -20,7 +20,7 @@ model_all <- lm(Petal.Length ~ Sepal.Length + Sepal.Width + Petal.Width + Specie
 # Train the model using only petal width on the training data
 model_petal_width <- lm(Petal.Length ~ Petal.Width, data = iris)
 
-#* Health Check - Returns the API status and the current server time
+#* Health check - Returns the API status and the current server time
 #* @get /health_check
 function() {
   list(
@@ -29,13 +29,17 @@ function() {
   )
 }
 
-#* Predict Petal Length - Returns a predicted petal length based on available parameters
+#* Predict petal length - Returns a predicted petal length based on available parameters
 #* @param petal_width Numeric: Width of the petal (required)
 #* @param sepal_length Numeric: Length of the sepal
 #* @param sepal_width Numeric: Width of the sepal
 #* @param species Character: Species of the iris (setosa, versicolor, virginica)
 #* @post /predict_petal_length
 function(petal_width, sepal_length = NA, sepal_width = NA, species = NA) {
+  # Validate petal_width
+  if (is.na(petal_width) || is.na(as.numeric(petal_width))) {
+    return(list(error = "Invalid or missing parameter: petal_width"))
+  }
   # Check which parameters are provided and create the input data frame accordingly
   if (!is.na(sepal_length) && !is.na(sepal_width) && !is.na(species)) {
     input_data <- data.frame(
@@ -49,11 +53,10 @@ function(petal_width, sepal_length = NA, sepal_width = NA, species = NA) {
     input_data <- data.frame(Petal.Width = as.numeric(petal_width))
     prediction <- predict(model_petal_width, input_data)
   }
-
   list(petal_width = petal_width, predicted_petal_length = prediction)
 }
 
-#* Plot Actual vs Predicted - Displays a plot comparing actual vs predicted petal lengths for model_all
+#* Plot actual vs predicted - Displays a plot comparing actual vs predicted petal lengths for model_all
 #* @serializer png
 #* @get /plot_actual_vs_predicted
 function() {
