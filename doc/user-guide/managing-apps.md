@@ -18,6 +18,9 @@ You may add as many labels as you want. Once you've added some labels, they will
 
 ![](../static/manage-apps/see-labels-main.png)
 
+```{tip}
+You can also add labels to your app through the [CLI](link-to-CLI-labels-section)
+```
 
 (stop-application)=
 ## Stop application
