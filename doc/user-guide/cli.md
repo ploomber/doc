@@ -372,7 +372,7 @@ ploomber-cloud labels
 
 ### Synchronize labels
 
-To update your local `ploomber-cloud.json` file with the labels from the UI:
+To overwrite the labels in your `ploomber-cloud.json` with the labels from the UI:
 
 ```sh
 ploomber-cloud labels --sync
