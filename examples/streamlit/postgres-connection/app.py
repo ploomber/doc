@@ -17,7 +17,7 @@ def upload_data(DB_URI):
         print("Data successfully uploaded.")
     engine.dispose()
 
-cloud = False
+cloud = True
 DB_URI = environ["DB_URI"] if cloud else "YOUR DB_URI"
 conn_st = st.connection(name="postgres", type='sql', url = DB_URI)
 iris_data = conn_st.query("SELECT * FROM iris")
@@ -68,7 +68,7 @@ with st.sidebar:
 if reset:
     upload_data(DB_URI)
     st.cache_data.clear()
-    iris_data = conn_st.query("SELECT * FROM iris")
+    st.rerun()
 
 # Inserts data into table
 if submit:
@@ -88,4 +88,4 @@ if submit:
         s.commit()
     # Clears the cached data so that streamlit fetches new data when updated. 
     st.cache_data.clear()
-    iris_data = conn_st.query("SELECT * FROM iris")
+    st.rerun()
