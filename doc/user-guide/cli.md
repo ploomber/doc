@@ -399,6 +399,14 @@ To view all labels added to your project simply run:
 ploomber-cloud labels
 ```
 
+### Synchronize labels
+
+To overwrite the labels in your `ploomber-cloud.json` with the labels from the UI:
+
+```sh
+ploomber-cloud labels --sync
+```
+
 ## Switching the configuration file
 
 By default, the CLI reads and writes to a `ploomber-cloud.json` file, but you can customize it via the `--config` (or its short version, `-c`), switching the config file is useful when you need to manage multiple environments (for example, development and production).

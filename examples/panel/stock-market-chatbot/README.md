@@ -8,7 +8,7 @@ The app is built using Python Yahoo Finance [yfinance](https://pypi.org/project/
 
 The app will store the plot generated and save it to ImageKit.io, and then use the OpenAI API to generate a response to the user's question about the plot. 
 
-### Pre-requisites
+### Prerequisites
 
 1. OpenAI API key. Visit their [Documentation](https://platform.openai.com/docs/api-reference/introduction)
 2. ImageKit.io url endpoint, public key, and private key. Visit their [Dashboard](https://imagekit.io/dashboard)
