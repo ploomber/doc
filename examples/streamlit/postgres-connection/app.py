@@ -17,7 +17,7 @@ def upload_data(DB_URI):
         print("Data successfully uploaded.")
     engine.dispose()
 
-cloud = True
+cloud = False
 DB_URI = environ["DB_URI"] if cloud else "YOUR DB_URI"
 conn_st = st.connection(name="postgres", type='sql', url = DB_URI)
 iris_data = conn_st.query("SELECT * FROM iris")
@@ -63,6 +63,7 @@ with st.sidebar:
         petal_width = st.text_input(label="Petal Width (cm)", key=4)
         iris_class = st.selectbox(label="Iris Class (cm)", key=5, options=iris_data["class"].unique())
         submit = st.form_submit_button('Add')
+    st.subheader("After filling in the data fields and pressing 'Add', you should see the metrics, scatterplot, and dataframe update to represent the new point.")
 
 # Replaces dataset in database with original 
 if reset:
@@ -86,6 +87,6 @@ if submit:
             'iris_class': iris_class
         })
         s.commit()
-    # Clears the cached data so that streamlit fetches new data when updated. 
+    # Clears the cached data so that Streamlit fetches new data when updated. 
     st.cache_data.clear()
     st.rerun()
