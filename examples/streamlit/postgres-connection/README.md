@@ -3,6 +3,8 @@ To showcase the power of using a database with Streamlit apps to display live da
 
 ![](app.png)
 
+You can try out the app [here](https://twilight-fog-4463.ploomberapp.io/).
+
 You can find the corresponding blog post [here](https://ploomber.io/blog/streamlit-postgres/). 
 
 ## Running the App
