@@ -1,0 +1,4 @@
+streamlit
+SQLAlchemy
+psycopg2-binary
+ucimlrepo
