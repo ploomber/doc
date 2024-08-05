@@ -4,7 +4,18 @@ Interactive Flask application, with Dash applications integrated using:
 - App context: By passing the Flask instance directly into each Dash app and incorporating them into the context of our Flask app, we allow the Dash apps to share data and other resources belonging to the Flask app. However, since each of these app is a component of the main Flask app, adding too many Dash app components may overload the Flask server. See `app_ctx.py` for implementation. For more information, see the [documentation](https://flask.palletsprojects.com/en/2.3.x/appcontext/).
 - Middleware: Using middleware decouples each Dash app from the Flask app and each other, meaning they will be considered independent apps. This allows better horizontal scaling if we need to add a large amount of Dash apps, but resource sharing between apps may take extra steps compared to using app context. See `app_middleware.py` for implementation. For more information, see the [documentation](https://flask.palletsprojects.com/en/2.3.x/patterns/appdispatch/).
 
-![](app.png)
+
+|![Main page](app.png)|
+|:--:| 
+| *Main page* |
+
+|![](app_dash1.png)|
+|:--:| 
+| *Dash App 1 (Simple App)* |
+
+|![](app_dash2.png)|
+|:--:| 
+|*Dash App 2 (Population App)*|
 
 ## Local testing
 
@@ -29,8 +40,6 @@ import pandas as pd
 from flask import g # If you want to use Flask context global value
 
 def init_app(url_path, server=None):
-    global df
-
     # Initialize Dash app with or without specifying flask server
     app =  Dash(server=server, url_base_pathname=url_path) if server else Dash(requests_pathname_prefix=url_path)
 
