@@ -21,10 +21,11 @@ with app.app_context():
         app = dash_app
 
 @app.route("/")
-def hello_world():
+def home():
     return render_template_string(f"""
-    <h1>Main Flask App</h1>
-    <h2>Select your Dash App</h2>
-    <ul>
-        {list_items}
-    </ul>""")
+        <h1>Main Flask App</h1>
+        <h2>Select your Dash App</h2>
+        <ul>
+            {list_items}
+        </ul>"""
+    )

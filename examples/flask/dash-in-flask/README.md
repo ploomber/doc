@@ -23,12 +23,28 @@ Run `gunicorn app_ctx:app run --bind 0.0.0.0:80`. Replace `app_ctx` with `app_mi
 
 ## Upload to Ploomber Cloud
 
-To run either application on Ploomber, first copy their content to `app.py`, For example
+To upload either application on Ploomber, first copy their content to `app.py`, For example
 ```bash
 cp app_ctx.py app.py
 ```
 
-Next, zip `app.py` together with `utils.py`, `requirements.txt` and `dash_apps` folder, and upload to Ploomber Cloud. For more details, please refer to our [Flask deployment guide](https://docs.cloud.ploomber.io/en/latest/apps/flask.html).
+### Command line
+
+Go to your app folder and set your API key: `ploomber-cloud key YOURKEY`. Next, initialize your app: `ploomber-cloud init`. Once `ploomber-cloud.json` is generated, add an `ignore` field for both `app_ctx.py` and `app_middleware.py`, as we already have an `app.py`.
+```json
+{
+    "ignore": [
+        "app_ctx.py",
+        "app_middleware.py"
+    ]
+}
+```
+
+We can now run `ploomber-cloud deploy` to deploy the app. For more details, please refer to our [documentation](https://docs.cloud.ploomber.io/en/latest/user-guide/cli.html).
+
+### GUI
+
+Zip `app.py` together with `utils.py`, `requirements.txt` and `dash_apps` folder, and upload to Ploomber Cloud. For more details, please refer to our [Flask deployment guide](https://docs.cloud.ploomber.io/en/latest/apps/flask.html).
 
 ## Adding your own Dash app
 
