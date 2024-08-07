@@ -3,23 +3,18 @@ Taken from Dash's documentation: https://dash.plotly.com/minimal-app
 """
 from dash import Dash, html, dcc, callback, Output, Input
 import plotly.express as px
-import pandas as pd
-import ssl
 from flask import g
+import ssl
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
-def init_app(url_path, server=None):
+def init_app(url_path):
     global df
 
-    # Initialize Dash app with or without specifying flask server
-    app =  Dash(server=server, url_base_pathname=url_path) if server else Dash(requests_pathname_prefix=url_path)
-
-    # Use data from server context if server is available
-    df = g.df if server else pd.read_csv(
-        "https://raw.githubusercontent.com/plotly/datasets/master/gapminder_unfiltered.csv"
-    )
-    server = app.server
+    # Initialize Dash app with specified URL
+    app =  Dash(requests_pathname_prefix=url_path)
+    
+    df = g.df
 
     app.title = "Population by country - Ploomber Cloud Dash Application"
 
@@ -33,7 +28,7 @@ def init_app(url_path, server=None):
     )
 
     init_callbacks(app)
-    return server
+    return app.server
 
 
 def update_graph(value):

@@ -1,9 +1,10 @@
-from dash import dcc, html, Input, Output, Dash
-from flask import request
-def init_app(url_path, server=None):
+from dash import dcc, html, Dash
+from flask import g
 
-    # Initialize Dash app with or without specifying flask server
-    app =  Dash(server=server, url_base_pathname=url_path) if server else Dash(requests_pathname_prefix=url_path)
+def init_app(url_path):
+
+    # Initialize Dash app with specified URL
+    app = Dash(server=g.cur_app, routes_pathname_prefix=url_path)
 
     app.layout = html.Div(children=[
         html.A(id="logout-link", children="Main page", href="/"),
