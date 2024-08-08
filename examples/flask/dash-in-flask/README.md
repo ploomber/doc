@@ -1,8 +1,8 @@
 # Integrating Dash apps into a Flask app
 
 Interactive Flask application, with Dash applications integrated using:
-- Direct hosting: A simple approach more fitting for smaller projects is passing the Flask instance directly into each Dash app. However, since each of these app is a component of the main Flask app, adding too many Dash app components may overload the Flask server. See `host/app.py` for implementation. For more information, see the [documentation](https://flask.palletsprojects.com/en/2.3.x/appcontext/).
-- Middleware: Using middleware decouples each Dash app from the Flask app and each other, meaning they will be considered independent apps. This allows better horizontal scaling if we need to add a large amount of Dash apps, but resource sharing between apps may take extra steps compared to using app context. See `middleware/app.py` for implementation. For more information, see the [documentation](https://flask.palletsprojects.com/en/2.3.x/patterns/appdispatch/).
+- Direct hosting: A simple approach more fitting for smaller projects is passing the Flask instance directly into each Dash app. However, since each of these app is a component of the main Flask app, adding too many Dash app components may overload the Flask server. See `host/app.py` for implementation. For more information, see the [Dash documentation](https://dash.plotly.com/reference#dash.dash).
+- Middleware: Using middleware decouples each Dash app from the Flask app and each other, meaning they will be considered independent apps. This allows better horizontal scaling if we need to add a large amount of Dash apps, but resource sharing between apps may take extra steps compared to using app context. See `middleware/app.py` for implementation. For more information, see the [Flask documentation](https://flask.palletsprojects.com/en/2.3.x/patterns/appdispatch/).
 
 
 |![Main page](static/app.png)|
