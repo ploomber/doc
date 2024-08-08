@@ -1,0 +1,4 @@
+flask
+dash
+pandas
+gunicorn
