@@ -6,4 +6,4 @@ hvplot
 sqlalchemy
 watchfiles
 ucimlrepo
-psycopg2
+psycopg2-binary
