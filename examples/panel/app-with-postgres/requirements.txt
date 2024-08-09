@@ -1,0 +1,8 @@
+pandas
+numpy
+panel
+holoviews
+hvplot
+sqlalchemy
+watchfiles
+ucimlrepo
