@@ -26,7 +26,11 @@ def upload_data(DB_URI):
         print("Data successfully uploaded.")
     engine.dispose()
 
-DB_URI = "postgresql://demo_owner:vnpjXDHdM16C@ep-lively-union-a5gh7z48.us-east-2.aws.neon.tech/demo?sslmode=require"
+# DB_URI = "YOUR DB_URI"
+
+# IF you are deploying with Ploomber Cloud, set DB_URI = environ["DB_URI"] instead
+
+DB_URI = environ["DB_URI"]
 
 engine = create_engine(DB_URI, pool_pre_ping=True)
 
@@ -62,10 +66,16 @@ def plotHist(wine_data, hist_var):
     )
     return hist
 
+def getAvg(wine_data, var):
+    avg = wine_data[var].mean()
+    return pn.indicators.Number(name = "Average Quality Score", value=round(avg, 2))
+
 def getQuantVars(wine_data):
     return wine_data.select_dtypes('number').columns.to_list()
 
 wine_data = pn.bind(get_data, engine=engine, table=table, limit=limit)
+
+qualityScore = pn.bind(getAvg, wine_data=wine_data, var="quality")
 
 quant_vars = pn.bind(getQuantVars, wine_data=wine_data)
 
@@ -79,45 +89,11 @@ scatter = pn.bind(plotScatter, wine_data=wine_data, x=scatter_x, y=scatter_y)
 
 hist = pn.bind(plotHist, wine_data=wine_data, hist_var=hist_var)
 
-
-# histogram = wine_data.hvplot.hist(
-#     "body_mass_g",
-#     by="species",
-#     color=hv.dim("species").categorize(colors),
-#     legend=False,
-#     alpha=0.5,
-#     responsive=True,
-#     min_height=300,
-# )
-
-# bars = penguins.hvplot.bar(
-#     "species",
-#     "index",
-#     c="species",
-#     cmap=colors,
-#     responsive=True,
-#     min_height=300,
-#     ylabel="",
-# ).aggregate(function=np.count_nonzero)
-
-# violin = penguins.hvplot.violin(
-#     "flipper_length_mm",
-#     by=["species", "sex"],
-#     cmap="Category20",
-#     responsive=True,
-#     min_height=300,
-#     legend="bottom_right",
-# ).opts(split="sex")
-
-
-# plots = pn.pane.HoloViews(
-#     scatter
-# ).servable(title="Wine Quality", target="main")
 scatterWidget = pn.WidgetBox('# Select Variables', scatter_x, scatter_y, max_width=350)
 row1= pn.Column(pn.Row(scatterWidget, scatter, sizing_mode="stretch_both"))
 row2= pn.Column(hist, hist_var, sizing_mode="stretch_both")
 
-template = pn.template.FastListTemplate(title="Wine Quality - PostgreSQL + Panel Ploomber Demo", main= [row1, row2],sidebar=[table, limit], sidebar_width=280)
+template = pn.template.FastListTemplate(title="Wine Quality - PostgreSQL + Panel Ploomber Demo", main= [row1, row2],sidebar=[table, limit, qualityScore], sidebar_width=280)
 
 
 
