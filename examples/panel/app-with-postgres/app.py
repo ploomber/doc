@@ -3,6 +3,7 @@ import pandas as pd
 import panel as pn
 
 import holoviews as hv
+import hvplot.pandas  # noqa
 from sqlalchemy import text, create_engine, MetaData
 from os import environ
 from ucimlrepo import fetch_ucirepo
@@ -26,11 +27,10 @@ def upload_data(DB_URI):
         print("Data successfully uploaded.")
     engine.dispose()
 
-# DB_URI = "YOUR DB_URI"
+DB_URI = "YOUR DB_URI"
 
 # IF you are deploying with Ploomber Cloud, set DB_URI = environ["DB_URI"] instead
-
-DB_URI = environ["DB_URI"]
+# DB_URI = environ["DB_URI"]
 
 engine = create_engine(DB_URI, pool_pre_ping=True)
 
@@ -40,11 +40,14 @@ table_names = [table.name for table in metadata.tables.values()]
 
 table = pn.widgets.Select(name='Select Table', options=table_names)
 
-limit = pn.widgets.IntSlider(name='Limit Rows', start=0, end=1500)
+limit = pn.widgets.IntSlider(name='Limit Rows (If 0, shows all)', start=0, end=1500)
 
 def get_data(engine, table, limit):
     with engine.connect() as conn:
-        wine_data = pd.read_sql(sql=f"SELECT * FROM {table} LIMIT {limit}", con=conn)
+        if limit == 0: 
+            wine_data = pd.read_sql(sql=f"SELECT * FROM {table}", con=conn)
+        else: 
+            wine_data = pd.read_sql(sql=f"SELECT * FROM {table} LIMIT {limit}", con=conn)
     conn.close()
     return wine_data
 
@@ -94,8 +97,6 @@ row1= pn.Column(pn.Row(scatterWidget, scatter, sizing_mode="stretch_both"))
 row2= pn.Column(hist, hist_var, sizing_mode="stretch_both")
 
 template = pn.template.FastListTemplate(title="Wine Quality - PostgreSQL + Panel Ploomber Demo", main= [row1, row2],sidebar=[table, limit, qualityScore], sidebar_width=280)
-
-
 
 template.servable()
 

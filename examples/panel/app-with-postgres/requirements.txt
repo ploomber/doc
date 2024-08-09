@@ -6,3 +6,4 @@ hvplot
 sqlalchemy
 watchfiles
 ucimlrepo
+psycopg2
