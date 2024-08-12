@@ -1,6 +1,6 @@
 # Panel Wine Quality EDA App Connected to PostgreSQL 
 
-In this application, we use Panel to create a basic EDA dashboard for the Wine Quality dataset that we first uploaded to a PostgreSQL database. The app uses the `pn.bind` method, which executes functions if a bounded variable is modified, to add interactivity with the database. For example, the `Select Table` and `Limit Rows` widgets are bound to our get_data function and wine_data variable, meaning that whenever we change the table or row limit, the wine_data is updated with the result of the new get_data call. 
+In this application, we use Panel to create a basic EDA dashboard for the [Wine Quality](https://archive.ics.uci.edu/dataset/186/wine+quality) dataset that we first uploaded to a PostgreSQL database. The app uses the `pn.bind` method, which executes functions if a bounded variable is modified, to add interactivity with the database. For example, the `Select Table` and `Limit Rows` widgets are bound to our get_data function and wine_data variable, meaning that whenever we change the table or row limit, the wine_data is updated with the result of the new get_data call. 
 
 ![](app.png)
 
