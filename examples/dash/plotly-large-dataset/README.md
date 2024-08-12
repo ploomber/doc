@@ -15,7 +15,7 @@ Interactive Dash application that plots large datasets using:
 
 We will be using a commercial flight dataset that documents information such as flight departure date/time and delays. You can find it [here](https://github.com/vega/falcon/blob/master/data/flights-3m.csv).
 
-Once you download the dataset, run `python csv-clean.py flights-3m.csv` to obtained the cleaned csv file `flights-3m-cleaned.csv`. Move the cleaned file to the `data` folder in the project folder (`webgl`, `resample` or  `combined`). 
+Once you download the dataset, run `python csv-clean.py flights-3m.csv` to obtained the cleaned csv file `flights-3m-cleaned.csv`. Move the cleaned file to the `data` folder in any of the project folders (`webgl`, `resample` or  `combined`) you want to test. 
 
 ## Local testing
 
