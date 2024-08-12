@@ -175,5 +175,11 @@ By default applications run with Python 3.11. Refer to this [section](../faq/faq
 [![](../../examples/panel/multi-page-app/screenshot.png)](https://github.com/ploomber/doc/tree/main/examples/panel/multi-page-app)
 :::
 
+:::{grid-item-card} Wine Data Postgres App
+:link: https://github.com/ploomber/doc/tree/main/examples/panel/app-with-postgres
+![](https://github.com/ploomber/doc/raw/main/examples/panel/app-with-postgres/app.png)
++++
+[Live demo](https://panel-postgres-demo.ploomberapp.io/app)
+:::
 
 ::::
