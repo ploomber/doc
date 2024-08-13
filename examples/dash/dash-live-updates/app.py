@@ -4,10 +4,10 @@ import dash_bootstrap_components as dbc
 from datetime import datetime
 import requests
 
-default_fig = lambda title: dict(
-    data=[{'x': [], 'y': [], 'name': title}],
+default_fig = dict(
+    data=[{'x': [], 'y': [], 'name': 'BTC/USDT'}],
     layout=dict(
-        title=dict(text=title, font=dict(color='white')),
+        title=dict(text='Live Bitcoin Price Tracker: 5-Minute Rolling Window (BTC/USDT)', font=dict(color='white')),
         xaxis=dict(autorange=True, tickformat="%H:%M:%S", nticks=8, color='white'),
         yaxis=dict(autorange=True, color="white"),
         paper_bgcolor="#2D2D2D",
@@ -25,7 +25,7 @@ app.layout = html.Div([
         style={"text-align":"center",
                "padding-top":"20px",
                "padding-bottom":"20px"}),
-    dcc.Graph(id="graph-price-change", figure=default_fig("Live Bitcoin Price Tracker: 5-Minute Rolling Window (BTC/USDT)")),
+    dcc.Graph(id="graph-price-change", figure=default_fig),
     dcc.Interval(id="update", interval=4000),
     ])
 
@@ -38,12 +38,13 @@ def update_data(intervals):
     time = datetime.now().strftime("%H:%M:%S")
     response = requests.get('https://api.binance.us/api/v3/ticker/price?symbol=BTCUSDT')
     if response.status_code != 200:
-        return default_fig("Live Bitcoin Price Tracker: 5-Minute Rolling Window (BTC/USDT)"), f"Failed to fetch data: {response}"
-    price = float(response.json()['price'])
-    price = f"{price:.2f}"
-    new_data_price_change = dict(x=[[time]], y=[[price]])
-    # (new data, trace to add data to, number of elements to keep)
-    return (new_data_price_change, [0], 75), f"Current BTC/USDT price: {price}"
+        return default_fig, f"Failed to fetch data: {response}"
+    data = response.json()
+    price = float(data['price'])
+    return {
+        'x': [[time]],
+        'y': [[price]]
+    }, f"Current BTC/USDT Price: {price:.2f}"
 
 
 if __name__ == "__main__":
