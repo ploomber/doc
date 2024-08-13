@@ -1,48 +1,89 @@
-
 from dash import html, dcc, Output, Input, Dash
 import dash_bootstrap_components as dbc
+import os, psycopg2
 from datetime import datetime
-import requests
+from dotenv import load_dotenv
 
-default_fig = dict(
-    data=[{'x': [], 'y': [], 'name': 'BTC/USDT'}],
+# Load environment variables
+load_dotenv(".env")
+
+update_frequency = 4000
+graph_title1 = "Price Change: 5-Minute Rolling Window (BTC/USDT)"
+graph_title2 = "Number of Aggregate Trades: 5-Minute Rolling Window"
+
+default_fig = lambda title: dict(
+    data=[{'x': [], 'y': [], 'name': title}],
     layout=dict(
-        title=dict(text='Live Bitcoin Price Tracker: 5-Minute Rolling Window (BTC/USDT)', font=dict(color='white')),
-        xaxis=dict(autorange=True, tickformat="%H:%M:%S", nticks=8, color='white'),
+        title=dict(text=title, font=dict(color='white')),
+        xaxis=dict(autorange=True, tickformat="%H:%M:%S", color='white', nticks=8),
         yaxis=dict(autorange=True, color="white"),
         paper_bgcolor="#2D2D2D",
         plot_bgcolor="#2D2D2D"
     ))
 
-app = Dash('Live Bitcoin Price Tracker', external_stylesheets=[dbc.themes.CYBORG])
+# Initialize the Dash app
+app = Dash(external_stylesheets=[dbc.themes.CYBORG])
+server = app.server
+
 app.layout = html.Div([
     html.H1("Live Bitcoin Price Tracker",
-        style={"text-align":"center",
-               "padding-top":"40px",
-               "padding-bottom":"20px"}),
+            style={"text-align":"center", "padding-top":"20px", "padding-bottom":"20px"}),
     html.Hr(), 
     html.H2(id="price-ticker",
-        style={"text-align":"center",
-               "padding-top":"20px",
-               "padding-bottom":"20px"}),
-    dcc.Graph(id="graph-price-change", figure=default_fig),
-    dcc.Interval(id="update", interval=4000),
+            style={"text-align":"center", "padding-top":"10px", "padding-bottom":"10px"}),
+    dcc.Graph(id="graph-price-change", figure=default_fig(graph_title1)),
+    dcc.Graph(id="graph-agg-per-min", figure=default_fig(graph_title2)),
+    dcc.Interval(id="update", interval=update_frequency),
     ])
 
+# Function to fetch data from the database
+def fetch_data():
+    # Construct the connection string
+    db_user = os.getenv('DB_USER')
+    db_password = os.getenv('DB_PASSWORD')
+    db_host = os.getenv('DB_HOST')
+    db_port = os.getenv('DB_PORT')
+    db_name = os.getenv('DB_NAME')
+
+    if not all([db_user, db_password, db_host, db_port, db_name]):
+        return None, "Database connection details are not fully set in environment variables"
+
+    connection_string = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
+    try:
+        with psycopg2.connect(connection_string) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT price FROM trades WHERE time > NOW() - INTERVAL '1 minute'")
+            rows = cursor.fetchall()
+            
+            if not rows:
+                print("No data available - Are you running websocket_backend.py?")
+                return None, "No data available"
+            return rows, None
+    except psycopg2.Error as e:
+        print(f"Database connection error: {e}")
+        return None, "Database connection error"
+
+# Callback to extend the data in the graphs
 @app.callback(
         Output("graph-price-change", "extendData"),
+        Output("graph-agg-per-min", "extendData"),
         Output("price-ticker", "children"),
         Input("update", "n_intervals"),
         )
 def update_data(intervals):
-    time = datetime.now().strftime("%H:%M:%S")
-    response = requests.get('https://api.binance.us/api/v3/ticker/price?symbol=BTCUSDT')
-    if response.status_code != 200:
-        return default_fig, f"Failed to fetch data: {response}"
-    data = response.json()
-    price = float(data['price'])
-    new_data_price_change = dict(x=[[time]], y=[[price]])
-    return (new_data_price_change, [0], 75), f"Current BTC/USDT Price: {price:.2f}"
+    rows, msg = fetch_data()
+    if rows == None:
+        return None, None, msg
+
+    current_price = rows[0][0]
+    total_trades = len(rows)
+    new_data_price_change = dict(x=[[datetime.now().strftime("%H:%M:%S")]], y=[[current_price]])
+    new_data_agg_per_min = dict(x=[[datetime.now().strftime("%H:%M:%S")]], y=[[total_trades]])
+
+    # (new data, trace to add data to, number of elements to keep)
+    return ((new_data_price_change, [0], 75),
+            (new_data_agg_per_min, [0], 75),
+            f"Current BTC price: {current_price}")
 
 if __name__ == "__main__":
     app.run_server(debug=True)
