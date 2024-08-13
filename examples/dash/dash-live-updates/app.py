@@ -14,7 +14,7 @@ default_fig = dict(
         plot_bgcolor="#2D2D2D"
     ))
 
-app = Dash(external_stylesheets=[dbc.themes.CYBORG])
+app = Dash('Live Bitcoin Price Tracker', external_stylesheets=[dbc.themes.CYBORG])
 app.layout = html.Div([
     html.H1("Live Bitcoin Price Tracker",
         style={"text-align":"center",
@@ -41,11 +41,8 @@ def update_data(intervals):
         return default_fig, f"Failed to fetch data: {response}"
     data = response.json()
     price = float(data['price'])
-    return {
-        'x': [[time]],
-        'y': [[price]]
-    }, f"Current BTC/USDT Price: {price:.2f}"
-
+    new_data_price_change = dict(x=[[time]], y=[[price]])
+    return (new_data_price_change, [0], 75), f"Current BTC/USDT Price: {price:.2f}"
 
 if __name__ == "__main__":
     app.run_server(debug=True)
