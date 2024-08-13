@@ -35,6 +35,13 @@ fig.update_layout(
 
 app.layout = html.Div(children=[
     html.H1("Plotting Large Datasets in Dash"),
+    html.H2("""Downsampled figure: Departure delay time of around 3 
+million flights in the first half (1/1-6/30) of 2006"""),
+    html.Div("""Click on the graph and drag 
+your cursor around to zoom into any part of the graph you want."""
+            , style={"margin-top": "10px"}),
+    html.Div("""To revert the figure to its original state, click on the 
+'Reset axes' button at the upper right corner of the figure."""
+            , style={"margin-top": "10px"}),
     dcc.Graph(id='example-graph', figure=fig),
-
 ])
