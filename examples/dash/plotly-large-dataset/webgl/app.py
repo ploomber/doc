@@ -29,7 +29,7 @@ fig.add_trace(go.Scattergl(
 
 fig.update_layout(
     title="Flight departure delay",
-    xaxis_title="Date and time",
+    xaxis_title="Flight date and time (24h)",
     yaxis_title="Departure delay (minutes)"
 )
 
