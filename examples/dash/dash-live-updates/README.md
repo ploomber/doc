@@ -2,7 +2,7 @@
 
 Explore how to display real-time, time-series data using Dash and a PostgreSQL extension, TimescaleDB, to dynamically update Bitcoin prices and aggregate trades fetched via the Binance WebSocket API.
 
-![Dash App](dashboard.png)
+![Dash App](images/dashboard.png)
 
 ## Architecture
 Our Bitcoin trade monitoring app consists of two main components:
@@ -26,14 +26,14 @@ pip install -r requirements.txt
 
 To start with Timescale DB, sign up [here](https://console.cloud.timescale.com/signup), and click `New service` in your dashboard.
 
-![Database Setup 0](timescale0.png)
+![Database Setup 0](images/timescale0.png)
 
 Configure your service:
-![Database Setup 1](timescale1.png)
+![Database Setup 1](images/timescale1.png)
 
 Now save your connection information. This is crucial as you will need this information to connect both your backend and frontend scripts to the database.
 
-![Database Setup 2](timescale2.png)
+![Database Setup 2](images/timescale2.png)
 
 You can either manually set your connection details as environment variables using `export DB_USER=<USERNAME>`, or utilize a `.env` file in your working directory and load it via `load_dotenv(".env")` at the beginning of each file. Your `.env` file should be formatted as follows:
 
@@ -46,7 +46,7 @@ DB_PORT=<PORT>
 ```
 
 After setup, your [dashboard](https://console.cloud.timescale.com/dashboard/services) will display your new service. If you haven't saved your connection details, click on your service and scroll to the bottom to find them, and save them via the mentioned method above.
-![Database Setup 3](timescale3.png)
+![Database Setup 3](images/timescale3.png)
 
 #### 2. Update `websocket_backend.py` 
 After ensuring all environment variables are set, update `websocket_backend.py` accordingly if you are using different database than TimescaleDB.
@@ -89,15 +89,15 @@ Log into your [Ploomber Cloud account](https://www.platform.ploomber.io/applicat
 
 Click the NEW button:
 
-![GUI Deployment](gui_deploy1.png)
+![GUI Deployment](images/gui_deploy1.png)
 
 Select the Dash option, and upload your code (`app.py` and `requirements.txt`) as a zip file in the source code section:
 
-![GUI Deployment](gui_deploy2.png)
+![GUI Deployment](images/gui_deploy2.png)
 
 In the secret section, add your database's connection details as environment variables required for our app.
 
-![GUI Deployment](gui_deploy3.png)
+![GUI Deployment](images/gui_deploy3.png)
 
 After optionally customizing some settings, click `CREATE`.
 
