@@ -2,10 +2,6 @@ from dash import html, dcc, Output, Input, Dash
 import dash_bootstrap_components as dbc
 import os, psycopg2
 from datetime import datetime
-from dotenv import load_dotenv
-
-# Load environment variables
-load_dotenv(".env")
 
 update_frequency = 4000
 graph_title1 = "Price Change: 5-Minute Rolling Window (BTC/USDT)"
@@ -26,7 +22,7 @@ app = Dash(external_stylesheets=[dbc.themes.CYBORG])
 server = app.server
 
 app.layout = html.Div([
-    html.H1("Live Bitcoin Price Tracker",
+    html.H1("Live Bitcoin Monitoring App",
             style={"text-align":"center", "padding-top":"20px", "padding-bottom":"20px"}),
     html.Hr(), 
     html.H2(id="price-ticker",
