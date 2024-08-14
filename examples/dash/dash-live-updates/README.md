@@ -67,8 +67,8 @@ python app.py
 ### Deployment on Ploomber Cloud
 
 Ploomber Cloud supports two deployment methods:
-- (1) Graphical User Interface (GUI)
-- (2) Command Line Interface (CLI)
+- Graphical User Interface (GUI)
+- Command Line Interface (CLI)
 
 To deploy your Dash app on Ploomber Cloud, you need:
 
