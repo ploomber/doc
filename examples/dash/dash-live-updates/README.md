@@ -57,7 +57,7 @@ Run the backend script and see if it's successfully printing out the real-time d
 python websocket_backend.py
 ```
 
-### Frontend Setup
+### Frontend for Real-time Monitoring Dash App
 
 Run the frontend script to start the Dash application:
 ```sh
