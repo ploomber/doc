@@ -1,11 +1,10 @@
 from dash import html, dcc, Output, Input, Dash
 import dash_bootstrap_components as dbc
 import os, psycopg2
-from datetime import datetime
 
 update_frequency = 4000
 graph_title1 = "Price Change: 5-Minute Rolling Window (BTC/USDT)"
-graph_title2 = "Number of Aggregate Trades: 5-Minute Rolling Window"
+graph_title2 = "Aggregated Trades per Minute: 5-Minute Rolling Window"
 
 default_fig = lambda title: dict(
     data=[{'x': [], 'y': [], 'name': title}],
@@ -48,7 +47,14 @@ def fetch_data():
     try:
         with psycopg2.connect(connection_string) as conn:
             cursor = conn.cursor()
-            cursor.execute("SELECT price FROM trades WHERE time > NOW() - INTERVAL '1 minute'")
+            cursor.execute("""
+                SELECT *
+                FROM trades
+                WHERE time >= (
+                    SELECT MAX(time)
+                    FROM trades
+                ) - INTERVAL '1 minute';
+            """)
             rows = cursor.fetchall()
             
             if not rows:
@@ -70,11 +76,11 @@ def update_data(intervals):
     rows, msg = fetch_data()
     if rows == None:
         return None, None, msg
-
-    current_price = rows[0][0]
+    
+    current_price = rows[0][1]
     total_trades = len(rows)
-    new_data_price_change = dict(x=[[datetime.now().strftime("%H:%M:%S")]], y=[[current_price]])
-    new_data_agg_per_min = dict(x=[[datetime.now().strftime("%H:%M:%S")]], y=[[total_trades]])
+    new_data_price_change = dict(x=[[rows[0][0]]], y=[[current_price]])
+    new_data_agg_per_min = dict(x=[[rows[0][0]]], y=[[total_trades]])
 
     # (new data, trace to add data to, number of elements to keep)
     return ((new_data_price_change, [0], 75),

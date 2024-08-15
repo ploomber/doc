@@ -23,7 +23,7 @@ async def setup_db():
     await conn.execute("DROP TABLE IF EXISTS trades")
     await conn.execute("""
         CREATE TABLE trades(
-            time TIMESTAMPTZ NOT NULL,
+            time TIMESTAMP NOT NULL,
             price DOUBLE PRECISION
         )
     """)
