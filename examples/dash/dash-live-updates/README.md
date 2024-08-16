@@ -11,6 +11,8 @@ Our Bitcoin trade monitoring app consists of two main components:
 
 - **Frontend (Real-time Monitoring Dash App)**: This component establishes a Dash application to visualize the Bitcoin trade data stored in the database. It utilizes Dash’s `dcc.Interval` component to periodically fetch the latest data and update the graph. The frontend is implemented in `app.py`.
 
+Note: `rest_api_dash.py` is an example code that uses the Binance REST API to fetch data and display it immediately without the need for a database. However, due to its slower update rate, this approach was not adopted.
+
 ## Steps for Testing Locally
 
 ### Development Environment Setup
