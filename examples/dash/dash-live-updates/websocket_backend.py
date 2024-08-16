@@ -39,8 +39,8 @@ async def insert_data(url, db_conn):
             data = json.loads(data)
             trades_buffer.append((datetime.datetime.fromtimestamp(data['T']/1000.0), float(data['p'])))
             print(trades_buffer[-1])
-            # Write in batches of 10
-            if len(trades_buffer) > 10:
+            # Write in batches of 5
+            if len(trades_buffer) > 5:
                 await db_conn.executemany("""INSERT INTO trades(time, price) VALUES ($1, $2)""", trades_buffer)
                 trades_buffer = []
 

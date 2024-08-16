@@ -31,8 +31,10 @@ app.layout = html.Div([
     dcc.Interval(id="update", interval=update_frequency),
     ])
 
+previous_time = None
 # Function to fetch data from the database
 def fetch_data():
+    global previous_time
     # Construct the connection string
     db_user = os.getenv('DB_USER')
     db_password = os.getenv('DB_PASSWORD')
@@ -57,10 +59,14 @@ def fetch_data():
             """)
             rows = cursor.fetchall()
             
-            if not rows:
+            if not rows or (previous_time and rows[0][0] <= previous_time): 
                 print("No data available - Are you running websocket_backend.py?")
                 return None, "No data available"
+
+            previous_time = rows[0][0]
+            
             return rows, None
+    
     except psycopg2.Error as e:
         print(f"Database connection error: {e}")
         return None, "Database connection error"
@@ -81,6 +87,7 @@ def update_data(intervals):
     total_trades = len(rows)
     new_data_price_change = dict(x=[[rows[0][0]]], y=[[current_price]])
     new_data_agg_per_min = dict(x=[[rows[0][0]]], y=[[total_trades]])
+    print(f"Current X: {rows[0][0]}")
 
     # (new data, trace to add data to, number of elements to keep)
     return ((new_data_price_change, [0], 75),
