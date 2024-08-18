@@ -1,0 +1,6 @@
+python-dotenv
+dash
+dash-bootstrap-components
+psycopg2-binary
+asyncpg
+websockets
