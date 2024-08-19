@@ -1,4 +1,4 @@
-# This example was obtained from FastHTML's examples directory. 
+# This example was obtained from FastHTML's examples directory. You can check it out here: https://github.com/AnswerDotAI/fasthtml/blob/main/examples/basic_app.py
 
 # Run with: python basic_app.py
 from fasthtml.common import *
