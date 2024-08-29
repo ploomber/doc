@@ -9,31 +9,11 @@ app.layout = html.Div([
         style={'textAlign': 'center'}
     ),
     html.Button(
-        'Click me 1!',
+        'Click me!',
         style={
             'width': '100%',
             'padding': '10px',
             'background': 'darkgreen',
-            'color': 'white',
-            'fontSize': '16px'
-        }
-    ),
-    html.Button(
-        'Click me 2!',
-        style={
-            'width': '100%',
-            'padding': '10px',
-            'background': 'blue',
-            'color': 'white',
-            'fontSize': '16px'
-        }
-    ),
-    html.Button(
-        'Click me 3!',
-        style={
-            'width': '100%',
-            'padding': '10px',
-            'background': 'red',
             'color': 'white',
             'fontSize': '16px'
         }
