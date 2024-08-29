@@ -1,0 +1,26 @@
+.button {
+  width: 100%;
+  padding: 10px;
+  color: white;
+  font-size: 16px;
+}
+
+.green {
+  background: darkgreen;
+}
+
+.blue {
+  background: blue;
+}
+
+.red {
+  background: red;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.padding-20 {
+  padding: 20px;
+}
