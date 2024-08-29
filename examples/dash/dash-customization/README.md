@@ -13,24 +13,24 @@ Each section includes simple scripts that feature a title and a button, demonstr
 ## Methods for UI Customization in Dash
 ### 1. Inline CSS Styling
 #### Example Code
-- `app1.py`
+- `app_inline.py`
 
 ### 2. Using Your Own CSS Files
 #### Example Code
-- `app2.py`
+- `app_css.py`
 - `assets/style.css`
 
 ### 3. Dash Bootstrap Components
 #### Prerequisites
 - Run `pip install dash-bootstrap-components`
 #### Example Code
-- `app3.py`
+- `app_bootstrap.py`
 
 ### 4. Custom Callbacks for Dynamic Styling
 #### Prerequisites
-- Run `pip install dash-bootstrap-components` (note: `dash-bootstrap-components` is not required to implement custom callback functions, but it is used in `app4.py` as it is implemented on top of `app3.py`.)
+- Run `pip install dash-bootstrap-components` (note: `dash-bootstrap-components` is not required to implement custom callback functions, but it is used in `app_callback.py` as it is implemented on top of `app_bootstrap.py`.)
 #### Example Code
-- `app4.py`
+- `app_callback.py`
 
 
 ### 5. Building Custom Dash Components
@@ -46,10 +46,10 @@ Each section includes simple scripts that feature a title and a button, demonstr
 Note: To learn more about the `dash-component-boilerplate`, refer to [here](https://github.com/plotly/dash-component-boilerplate).
 
 #### Example Code for Custom Button Component and Deployment on Ploomber Cloud
-- `app5/app.py`: Main script for the Dash app (can replace the `usage.py` file)
-- `app5/CustomButton.react.js`: Main source code for the custom component (can replace the `src/lib/components/<component_name>.react.js` file)
-- `app5/requirements.txt`: For deployment on Ploomber Cloud
-- `app5/demo/`: The generated Python scripts required for deployment on Ploomber Cloud
+- `custom_component/app_custom.py`: Main script for the Dash app (can replace the `usage.py` file)
+- `custom_component/CustomButton.react.js`: Main source code for the custom component (can replace the `src/lib/components/<component_name>.react.js` file)
+- `custom_component/requirements.txt`: For deployment on Ploomber Cloud
+- `custom_component/demo/`: The generated Python scripts required for deployment on Ploomber Cloud
 
 
 ## Deployment on Ploomber Cloud
