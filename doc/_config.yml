@@ -21,6 +21,7 @@ sphinx:
     # https://myst-parser.readthedocs.io/en/latest/syntax/optional.html#auto-generated-header-anchors
     # Needed for referencing headers in other files
     myst_heading_anchors: 2
+    html_js_files: ['js/posthog.js'] 
 
   extra_extensions:
     - notfound.extension
