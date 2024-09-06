@@ -1,4 +1,4 @@
-# Integrating Stripe in a Flask Application: A Step-by-step Guide
+# Integrating Stripe in a Flask Application
 
 A Flask app that can receive payments via Stripe.
 
