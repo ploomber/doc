@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
+        <h1 class="text-3xl font-bold mb-4">Login</h1>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <p class="text-red-500 mb-4">{{ message }}</p>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <form method="POST" class="mb-6">
+            <input type="email" name="email" placeholder="Email" required class="w-full p-2 mb-4 border rounded">
+            <input type="password" name="password" placeholder="Password" required
+                class="w-full p-2 mb-4 border rounded">
+            <button type="submit"
+                class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Login</button>
+        </form>
+        <p class="text-center">Don't have an account? <a href="{{ url_for('register') }}"
+                class="text-blue-500 hover:underline">Register</a></p>
+    </div>
+</body>
+
+</html>

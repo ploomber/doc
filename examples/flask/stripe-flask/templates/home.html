@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Service</title>
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
+        {% if current_user.is_authenticated %}
+        <h1 class="text-3xl font-bold mb-4">Welcome, {{ current_user.email }}!</h1>
+        <a href="{{ url_for('logout') }}" class="text-blue-500 hover:underline mb-4 inline-block">Logout</a>
+        {% if subscription_message %}
+        <p class="text-gray-700 mb-4">{{ subscription_message }}</p>
+        {% endif %}
+        {% if not current_user.stripe_subscription_id %}
+        <form action="{{ url_for('create_checkout_session') }}" method="POST" class="mb-6">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Subscribe
+                Now</button>
+        </form>
+        {% endif %}
+        <div class="flex flex-col space-y-4 mb-6">
+            <button hx-post="/free" hx-target="#responseDisplay" hx-swap="innerHTML"
+                class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded">Free</button>
+            <button hx-post="/premium" hx-target="#responseDisplay" hx-swap="innerHTML"
+                class="bg-yellow-400 hover:bg-yellow-500 text-gray-800 font-semibold py-3 px-6 rounded">Premium</button>
+        </div>
+        <div id="responseDisplay" class="mt-4 p-4 bg-gray-100 rounded"></div>
+        {% else %}
+        <h1 class="text-3xl font-bold mb-4">Welcome to Our Service</h1>
+        <div class="mb-6">
+            <a href="{{ url_for('login') }}" class="text-blue-500 hover:underline">Login</a> or
+            <a href="{{ url_for('register') }}" class="text-blue-500 hover:underline">Register</a>
+        </div>
+        {% endif %}
+
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <p class="text-green-500 mb-4">{{ message }}</p>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+    </div>
+</body>
+
+</html>
