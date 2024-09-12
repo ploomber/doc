@@ -49,7 +49,6 @@ parts:
       - file: features/document-processing
       - file: features/serverless-fns
       - file: features/scheduled-fns
-      - file: features/notebook-sharing
 
   - caption: Pricing
     chapters:
