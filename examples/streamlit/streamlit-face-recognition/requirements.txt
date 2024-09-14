@@ -1,0 +1,5 @@
+face-recognition
+git+https://github.com/ageitgey/face_recognition_models
+streamlit
+numpy
+Pillow
