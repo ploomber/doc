@@ -1,9 +1,5 @@
 # Dockerfile Essentials
 
-```{note}
-Docker deployment is only available to Pro, Teams, and Enterprise users.
-```
-
 You may deploy your application as a [Docker](../apps/docker.md) application for more flexibility. Refer to this [section](../faq/faq.md#customize-deployment) to learn how Docker deployments can help.
 
 Here are some tips on writing a good `Dockerfile` for Python applications:
