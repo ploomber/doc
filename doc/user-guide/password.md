@@ -21,6 +21,81 @@ To enable it, simply turn the option on and set a user and a password:
 Your password isn't visible after deployment so write it down!
 ```
 
+## Basic Password Protection with the CLI
+
+Ploomber Cloud allows you to add authentication for specific features of your application using the CLI. This provides an additional layer of security for sensitive parts of your project.
+
+### Adding Authentication
+
+To add authentication for a specific feature, use the following command:
+
+```bash
+ploomber-cloud auth --add --feature <feature_name>
+```
+
+Where `<feature_name>` is one of the supported features compatible with authentication.
+
+If you don't specify a feature, you will be prompted to select one from the available options.
+
+### Options
+
+- `--overwrite`: Use this flag to overwrite existing authentication fields if they already exist.
+
+### Removing Authentication
+
+To remove authentication for a specific feature, use:
+
+```bash
+ploomber-cloud auth --remove --feature <feature_name>
+```
+
+### Important Notes
+
+1. You can only add or remove authentication at a time, not both simultaneously.
+2. At least one action (add or remove) must be specified.
+3. The `--overwrite` flag can only be used when adding authentication, not when removing.
+
+### Authentication Process
+
+When adding authentication:
+
+1. You will be prompted to enter a username and password for the selected feature.
+2. If credentials already exist in the `.env` file and `--overwrite` is not used, those credentials will be reused.
+3. The credentials are stored in the `.env` file in your project directory.
+4. The authentication configuration is added to the Ploomber Cloud configuration file.
+
+### Credential Storage
+
+- Credentials are stored in the `.env` file in your project directory.
+- The Ploomber Cloud configuration file is updated with the authentication settings.
+
+### Warnings and Messages
+
+- If existing credentials are reused from the `.env` file, you will receive a warning message.
+- After successful authentication configuration, you will see a confirmation message and instructions for the next steps.
+
+### Permissions
+
+The `auth` command requires the user's tier to have the "authentication" permission to execute.
+You will need to upgrade if necessary.
+
+### Example Usage
+
+```bash
+# Add authentication for a specific feature
+ploomber-cloud auth --add --feature main_app
+
+# Remove authentication for a specific feature
+ploomber-cloud auth --remove --feature analytics
+
+# Add authentication with overwrite option
+ploomber-cloud auth --add --feature api --overwrite
+```
+
+```{note}
+This NGINX authentication feature is separate from the Auth0 integration described earlier. Choose the authentication method that best suits your project's needs.
+```
+
 (auth0-integration)=
 
 ## Auth0 authentication
@@ -204,78 +279,3 @@ You can set the following variables in your `.env` file to customize behavior:
 :::
 
 ::::
-
-## Authentication with NGINX
-
-Ploomber Cloud allows you to add NGINX authentication for specific features of your application. This provides an additional layer of security for sensitive parts of your project.
-
-### Adding Authentication
-
-To add authentication for a specific feature, use the following command:
-
-```bash
-ploomber-cloud auth --add --feature <feature_name>
-```
-
-Where `<feature_name>` is one of the supported features compatible with authentication.
-
-If you don't specify a feature, you will be prompted to select one from the available options.
-
-### Options
-
-- `--overwrite`: Use this flag to overwrite existing authentication fields if they already exist.
-
-### Removing Authentication
-
-To remove authentication for a specific feature, use:
-
-```bash
-ploomber-cloud auth --remove --feature <feature_name>
-```
-
-### Important Notes
-
-1. You can only add or remove authentication at a time, not both simultaneously.
-2. At least one action (add or remove) must be specified.
-3. The `--overwrite` flag can only be used when adding authentication, not when removing.
-
-### Authentication Process
-
-When adding authentication:
-
-1. You will be prompted to enter a username and password for the selected feature.
-2. If credentials already exist in the `.env` file and `--overwrite` is not used, those credentials will be reused.
-3. The credentials are stored in the `.env` file in your project directory.
-4. The authentication configuration is added to the Ploomber Cloud configuration file.
-
-### Credential Storage
-
-- Credentials are stored in the `.env` file in your project directory.
-- The Ploomber Cloud configuration file is updated with the authentication settings.
-
-### Warnings and Messages
-
-- If existing credentials are reused from the `.env` file, you will receive a warning message.
-- After successful authentication configuration, you will see a confirmation message and instructions for the next steps.
-
-### Permissions
-
-The `auth` command requires the user's tier to have the "authentication" permission to execute.
-You will need to upgrade if necessary.
-
-### Example Usage
-
-```bash
-# Add authentication for a specific feature
-ploomber-cloud auth --add --feature main_app
-
-# Remove authentication for a specific feature
-ploomber-cloud auth --remove --feature analytics
-
-# Add authentication with overwrite option
-ploomber-cloud auth --add --feature api --overwrite
-```
-
-```{note}
-This NGINX authentication feature is separate from the Auth0 integration described earlier. Choose the authentication method that best suits your project's needs.
-```
