@@ -25,6 +25,13 @@ Your password isn't visible after deployment so write it down!
 
 Ploomber Cloud allows you to add authentication for specific features of your application using the CLI. This provides an additional layer of security for sensitive parts of your project.
 
+### Example Usage
+
+```bash
+# Add authentication for the main application
+ploomber-cloud auth --add --feature main_app
+```
+
 ### Adding Authentication
 
 To add authentication for a specific feature, use the following command:
@@ -62,7 +69,7 @@ When adding authentication:
 1. You will be prompted to enter a username and password for the selected feature.
 2. If credentials already exist in the `.env` file and `--overwrite` is not used, those credentials will be reused.
 3. The credentials are stored in the `.env` file in your project directory.
-4. The authentication configuration is added to the Ploomber Cloud configuration file.
+4. The authentication configuration is added to the Ploomber Cloud configuration file (`ploomber-cloud.json`).
 
 ### Credential Storage
 
@@ -79,18 +86,6 @@ When adding authentication:
 The `auth` command requires the user's tier to have the "authentication" permission to execute.
 You will need to upgrade if necessary.
 
-### Example Usage
-
-```bash
-# Add authentication for a specific feature
-ploomber-cloud auth --add --feature main_app
-
-# Remove authentication for a specific feature
-ploomber-cloud auth --remove --feature analytics
-
-# Add authentication with overwrite option
-ploomber-cloud auth --add --feature api --overwrite
-```
 
 (auth0-integration)=
 ## Auth0 authentication
