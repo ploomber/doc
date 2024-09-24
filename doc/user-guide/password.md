@@ -96,6 +96,7 @@ ploomber-cloud auth --add --feature api --overwrite
 This NGINX authentication feature is separate from the Auth0 integration described earlier. Choose the authentication method that best suits your project's needs.
 ```
 
+(auth0-integration)=
 ## Auth0 authentication
 
 ```{important}
