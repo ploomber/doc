@@ -240,31 +240,31 @@ You can set the following variables in your `.env` file to customize behavior:
 :gutter: 2
 
 :::{grid-item-card} Panel
-:link: <https://github.com/ploomber/doc/tree/main/examples/panel/app-with-auth0>
+:link: https://github.com/ploomber/doc/tree/main/examples/panel/app-with-auth0
 :::
 
 :::{grid-item-card} Solara
-:link: <https://github.com/ploomber/doc/tree/main/examples/solara/app-with-auth0>
+:link: https://github.com/ploomber/doc/tree/main/examples/solara/app-with-auth0
 :::
 
 :::{grid-item-card} Streamlit
-:link: <https://github.com/ploomber/doc/tree/main/examples/streamlit/app-with-auth0>
+:link: https://github.com/ploomber/doc/tree/main/examples/streamlit/app-with-auth0
 :::
 
 :::{grid-item-card} Shiny R
-:link: <https://github.com/ploomber/doc/tree/main/examples/shiny-r/app-with-auth0>
+:link: https://github.com/ploomber/doc/tree/main/examples/shiny-r/app-with-auth0
 :::
 
 :::{grid-item-card} Chainlit
-:link: <https://github.com/ploomber/doc/tree/main/examples/chainlit/app-with-auth0>
+:link: https://github.com/ploomber/doc/tree/main/examples/chainlit/app-with-auth0
 :::
 
 :::{grid-item-card} Dash
-:link: <https://github.com/ploomber/doc/tree/main/examples/dash/app-with-auth0>
+:link: https://github.com/ploomber/doc/tree/main/examples/dash/app-with-auth0
 :::
 
 :::{grid-item-card} Voila
-:link: <https://github.com/ploomber/doc/tree/main/examples/voila/app-with-auth0>
+:link: https://github.com/ploomber/doc/tree/main/examples/voila/app-with-auth0
 :::
 
 ::::
