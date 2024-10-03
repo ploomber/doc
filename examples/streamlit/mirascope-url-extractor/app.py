@@ -3,8 +3,8 @@ from typing import Dict, List, Literal, Optional, Type, Union
 from urllib.request import Request, urlopen
 
 from bs4 import BeautifulSoup
-from mirascope.anthropic import AnthropicExtractor, AnthropicCallParams
 from mirascope.base.tools import DEFAULT_TOOL_DOCSTRING
+from mirascope.anthropic  import AnthropicExtractor, AnthropicCallParams
 from pydantic import BaseModel, Field, computed_field, create_model
 import streamlit as st
 
