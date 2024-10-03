@@ -1,4 +1,5 @@
-mirascope[anthropic]>=0.9.0
-streamlit
-pydantic-settings
-beautifulsoup4
+mirascope[anthropic]==0.9.1
+streamlit==1.33.0
+pydantic-settings==2.2.1
+beautifulsoup4==4.12.3
+anthropic==0.23.1
