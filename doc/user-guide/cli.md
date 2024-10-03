@@ -55,16 +55,21 @@ When deploying from the terminal, it's recommended to use the `--watch` option. 
 
 ## Configure an existing project
 
-If you want to deploy an existing project run the `init` command with the `--from-existing` flag:
+If you want to deploy an existing project, run the `init` command with the `--from-existing` flag:
 
 ```sh
 ploomber-cloud init --from-existing
 ```
 
-This will prompt you to choose from a list of your existing projects.
+This command will:
 
-Upon your choice, the command will generate a `ploomber-cloud.json` with your project's info. For example, if my app ID is `cool-tree-1860` and I'm deploying a `docker` app:
+1. Prompt you to choose from a list of your existing projects.
+2. Create a new directory named after your project ID (e.g., `./cool-tree-1860/`).
+3. Download the project files into this new directory.
+4. Generate a ploomber-cloud.json file with your project's information.
 
+
+For example, if your app ID is `cool-tree-1860` and you're deploying a Docker app, the `./cool-tree-1860/ploomber-cloud.json` file might look like this:
 
 ```json
 {
@@ -73,12 +78,24 @@ Upon your choice, the command will generate a `ploomber-cloud.json` with your pr
 }
 ```
 
+After initializing, you can deploy your project by going into this new directory:
+```sh
+cd cool-tree-1860
+```
+
 Then, execute:
-
-
 ```sh
 ploomber-cloud deploy
 ```
+
+## Download Configuration Only
+If you want to download only the configuration file without the project code, use the --only-config flag:
+
+```sh
+ploomber-cloud init --from-existing --only-config
+```
+
+This will generate only the ploomber-cloud.json file in your current directory, without creating a new project directory or downloading the project files.
 
 ## Force initialize an app
 
@@ -92,10 +109,10 @@ ploomber-cloud init --force
 
 This will replace the existing `ploomber-cloud.json` with a new one, with a different `id` field.
 
-It can also be combined with the `--from-existing` for re-initializing from an existing project:
+It can also be combined with the `--from-existing` and `--only-config` for re-initializing from an existing project:
 
 ```sh
-ploomber-cloud init --from-existing --force
+ploomber-cloud init --from-existing --only-config --force 
 ```
 
 ## Ignore a file or directory
