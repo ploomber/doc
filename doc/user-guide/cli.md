@@ -111,7 +111,7 @@ You can use the `--config` flag in combination with `--only-config` to specify a
 ```sh
 ploomber-cloud init --from-existing --only-config --config path/to/custom-config.json
 ```
-This allows you to tp choose a different name for the configuration file and the specify a different location to save the file.
+This allows you to choose a different name for the configuration file and the specify a different location to save the file.
 
 ## Force initialize an app
 
