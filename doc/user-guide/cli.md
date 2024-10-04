@@ -53,6 +53,8 @@ ploomber-cloud deploy --watch-incremental
 
 When deploying from the terminal, it's recommended to use the `--watch` option. This flag clears the terminal before printing updated logs, ensuring a clean display. Alternatively, if you're storing deployment output in a file, such as with GitHub Actions, opt for `--watch-incremental`. This option skips clearing the screen and only prints new logs and status updates.
 
+
+(config)=
 ## Configure an existing project
 
 If you want to deploy an existing project, run the `init` command with the `--from-existing` flag to download this one:
@@ -89,7 +91,7 @@ ploomber-cloud deploy
 ```
 
 **Optional Configuration**:
-You can use the `--config` flag with the `ploomber-cloud init --from-existing` command to specify a custom name for the configuration file instead of the default `ploomber-cloud.json`. When using this flag, only the file name will be considered, regardless of any specified path. For example:
+You can use the `--config` flag with the `ploomber-cloud init --from-existing` command to specify a custom name for the configuration file instead of the default `ploomber-cloud.json`. When using this flag for downloading your project, only the file name will be considered, regardless of any specified path. For example:
 ```sh
 ploomber-cloud init --from-existing --config ./specific-path/custom-config.json
 ```
@@ -444,7 +446,7 @@ ploomber-cloud labels --sync
 
 By default, the CLI reads and writes to a `ploomber-cloud.json` file, but you can customize it via the `--config` (or its short version, `-c`), switching the config file is useful when you need to manage multiple environments (for example, development and production).
 
-All commands that read or write the config file accept the `--config/-c` argument. You can use this option to specify both alternative file names and sub-directory paths, for example:
+All commands that read or write the config file accept the `--config/-c` argument. You can use this option to specify both alternative file names and paths, for example:
 
 ```sh
 # create the config file in ploomber-cloud.dev.json
@@ -454,7 +456,4 @@ ploomber-cloud init --config ploomber-cloud.dev.json
 ploomber-cloud deploy --config ./config/ploomber-cloud.dev.json
 ```
 
-```{warning}
-
-The `ploomber-cloud init --from-existing` command which download the full source code behaves differently with the --config flag. When used with this specific command, only the file name from the --config argument is considered, and any specified path is ignored.
-```
+For more details on configuring projects, refer to [this section](config).
