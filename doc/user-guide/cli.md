@@ -55,7 +55,7 @@ When deploying from the terminal, it's recommended to use the `--watch` option. 
 
 ## Configure an existing project
 
-If you want to deploy an existing project, run the `init` command with the `--from-existing` flag:
+If you want to deploy an existing project, run the `init` command with the `--from-existing` flag to download this one:
 
 ```sh
 ploomber-cloud init --from-existing
@@ -88,6 +88,14 @@ Then, execute:
 ploomber-cloud deploy
 ```
 
+**Optional Configuration**:
+You can use the `--config` flag with the `ploomber-cloud init --from-existing` command to specify a custom name for the configuration file instead of the default `ploomber-cloud.json`. When using this flag, only the file name will be considered, regardless of any specified path. For example:
+```sh
+ploomber-cloud init --from-existing --config ./specific-path/custom-config.json
+```
+
+This will create a configuration file named `custom-config.json` in the root of the downloaded project directory.
+
 ## Download Configuration Only
 If you want to download only the configuration file without the project code, use the --only-config flag:
 
@@ -96,6 +104,14 @@ ploomber-cloud init --from-existing --only-config
 ```
 
 This will generate only the ploomber-cloud.json file in your current directory, without creating a new project directory or downloading the project files.
+
+
+**Optional Configuration**:
+You can use the `--config` flag in combination with `--only-config` to specify a custom name and location for the configuration file:
+```sh
+ploomber-cloud init --from-existing --only-config --config path/to/custom-config.json
+```
+This allows you to tp choose a different name for the configuration file and the specify a different location to save the file.
 
 ## Force initialize an app
 
