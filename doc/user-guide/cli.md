@@ -454,5 +454,7 @@ ploomber-cloud init --config ploomber-cloud.dev.json
 ploomber-cloud deploy --config ./config/ploomber-cloud.dev.json
 ```
 
-> [!WARNING]
-> The `ploomber-cloud init --from-existing` command which download the full source code behaves differently with the --config flag. When used with this specific command, only the file name from the --config argument is considered, and any specified path is ignored.
+```{warning}
+
+The `ploomber-cloud init --from-existing` command which download the full source code behaves differently with the --config flag. When used with this specific command, only the file name from the --config argument is considered, and any specified path is ignored.
+```
