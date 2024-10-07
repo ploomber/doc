@@ -53,9 +53,11 @@ ploomber-cloud deploy --watch-incremental
 
 When deploying from the terminal, it's recommended to use the `--watch` option. This flag clears the terminal before printing updated logs, ensuring a clean display. Alternatively, if you're storing deployment output in a file, such as with GitHub Actions, opt for `--watch-incremental`. This option skips clearing the screen and only prints new logs and status updates.
 
+
+(config)=
 ## Configure an existing project
 
-If you want to deploy an existing project, run the `init` command with the `--from-existing` flag:
+If you want to deploy an existing project, run the `init` command with the `--from-existing` flag to download this one:
 
 ```sh
 ploomber-cloud init --from-existing
@@ -88,6 +90,14 @@ Then, execute:
 ploomber-cloud deploy
 ```
 
+**Optional Configuration**:
+You can use the `--config` flag with the `ploomber-cloud init --from-existing` command to specify a custom name for the configuration file instead of the default `ploomber-cloud.json`. When using this flag for downloading your project, only the file name will be considered, regardless of any specified path. For example:
+```sh
+ploomber-cloud init --from-existing --config ./specific-path/custom-config.json
+```
+
+This will create a configuration file named `custom-config.json` in the root of the downloaded project directory.
+
 ## Download Configuration Only
 If you want to download only the configuration file without the project code, use the --only-config flag:
 
@@ -96,6 +106,14 @@ ploomber-cloud init --from-existing --only-config
 ```
 
 This will generate only the ploomber-cloud.json file in your current directory, without creating a new project directory or downloading the project files.
+
+
+**Optional Configuration**:
+You can use the `--config` flag in combination with `--only-config` to specify a custom name and location for the configuration file:
+```sh
+ploomber-cloud init --from-existing --only-config --config path/to/custom-config.json
+```
+This allows you to choose a different name for the configuration file and the specify a different location to save the file.
 
 ## Force initialize an app
 
@@ -428,7 +446,7 @@ ploomber-cloud labels --sync
 
 By default, the CLI reads and writes to a `ploomber-cloud.json` file, but you can customize it via the `--config` (or its short version, `-c`), switching the config file is useful when you need to manage multiple environments (for example, development and production).
 
-All commands that read or write the config file accept the `--config/-c` argument, for example:
+All commands that read or write the config file accept the `--config/-c` argument. You can use this option to specify both alternative file names and paths, for example:
 
 ```sh
 # create the config file in ploomber-cloud.dev.json
@@ -437,3 +455,5 @@ ploomber-cloud init --config ploomber-cloud.dev.json
 # deploy using the dev config
 ploomber-cloud deploy --config ploomber-cloud.dev.json
 ```
+
+For more details on configuring projects, refer to [this section](config).
