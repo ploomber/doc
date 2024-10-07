@@ -453,7 +453,7 @@ All commands that read or write the config file accept the `--config/-c` argumen
 ploomber-cloud init --config ploomber-cloud.dev.json
 
 # deploy using the dev config
-ploomber-cloud deploy --config ./config/ploomber-cloud.dev.json
+ploomber-cloud deploy --config ploomber-cloud.dev.json
 ```
 
 For more details on configuring projects, refer to [this section](config).
