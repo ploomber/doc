@@ -119,4 +119,4 @@ Here's a few additional features that `Docker` deployment allows:
 
 [Upgrade your plan](https://ploomber.io/pricing/) to unlock advanced features like password protection, analytics and many more capabilities.
 
-[Click here](../pricing/overview.md) to see all Pro, Team, and Enterprise features.
+[Click here](../pricing/overview.md) to see all Pro, Teams, and Enterprise features.
