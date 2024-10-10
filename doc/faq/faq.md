@@ -117,6 +117,6 @@ Here's a few additional features that `Docker` deployment allows:
 * Customizing the Docker base image.
 * Adding a cache layer
 
-To unlock `Docker` deployment, [upgrade to Pro.](https://ploomber.io/pricing/)
+[Upgrade your plan](https://ploomber.io/pricing/) to unlock advanced features like password protection, analytics and many more capabilities.
 
 [Click here](../pricing/overview.md) to see all Pro, Teams, and Enterprise features.
