@@ -52,6 +52,22 @@ Some DNS providers don't support `ALIAS` records. If that's your case, you might
 need assistance, [contact us](mailto:contact@ploomber.io)
 ```
 
+(godaddy-redirect)=
+### GoDaddy Redirection
+
+Since GoDaddy doesn't support Alias, as well as a non-IP for the CNAME root domain, you will need to configure a subdomain with www.yourdomain.com and redirect the traffic from your top domain (`yourdomain.com`) to it. To do so:
+
+1. Create a `www` [custom subdomain](custom-subdomain).
+2. Update your DNS according to the instructions for this new subdomain `www.yourdomain.com`.
+3. Set up a Forwarding Rule to your Subdomain, of type `Permanent (301)` redirect.
+
+![1-forwarding-rule](../static/custom-domains/godaddy_redirect_1.png)
+![2-forwarding-rule](../static/custom-domains/godaddy_redirect_2.png)
+
+```{important}
+For this to work, make sure to generate a new **subdomain** for your `www.yourdomain.com`, since the SSL certificate generated for the top domain doesn't cover the www subdomain in case of a redirect.
+```
+
 (custom-subdomain)=
 ## Adding a custom subdomain
 
