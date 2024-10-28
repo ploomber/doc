@@ -68,6 +68,11 @@ Since GoDaddy doesn't support Alias, as well as a non-IP for the CNAME root doma
 For this to work, make sure to generate a new **subdomain** for your `www.yourdomain.com`, since the SSL certificate generated for the top domain doesn't cover the www subdomain in case of a redirect.
 ```
 
+So when looking at the current domain configured for your application, you should see `www.yourdomain.com` and not `yourdomain.com`, as seen below:
+
+![3-forwarding-rule](../static/custom-domains/godaddy_redirect_3.png)
+
+
 (custom-subdomain)=
 ## Adding a custom subdomain
 
