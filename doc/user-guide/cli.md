@@ -457,3 +457,21 @@ ploomber-cloud deploy --config ploomber-cloud.dev.json
 ```
 
 For more details on configuring projects, refer to [this section](config).
+
+
+## Start/Stop apps
+
+```{versionadded} 0.3.1
+```
+
+If you want to start or stop traffic to your apps, you can use the following commands:
+
+```sh
+ploomber-cloud start --project-id PROJECT_ID
+ploomber-cloud stop --project-id PROJECT_ID
+```
+
+Where `PROJECT_ID` is the randomly generated ID. If you did not set a custom name,
+the `PROJECT_ID` is the string in the URL (`PROJECT_ID.ploomberapp.io`), if you set
+a custom name, you can retrieve the `PROJECT_ID` by clicking on the ⚙️ icon next to the
+URL in your app detailed view.
