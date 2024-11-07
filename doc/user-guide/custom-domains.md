@@ -1,7 +1,7 @@
 # Custom domains/subdomains
 
 ```{important}
-Custom domains/subdomains are a [paid feature.](../pricing/overview.md)
+Custom domains/subdomains are only available to customers in the Pro, Teams and Enterprise plans.
 ```
 
 By default, applications are available under `project-id.ploomberapp.io`, where `project-id` is a randomly generated string.

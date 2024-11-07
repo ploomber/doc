@@ -45,7 +45,6 @@ curl -X 'GET' 'http://127.0.0.1/plot_actual_vs_predicted' --output plot.png
 - A Dockerfile
 - Your code
 
-Note: Docker deployment option is available exclusively to Pro, Teams, and Enterprise users. Start your 10-day free trial [here.](https://ploomber.io/pricing/)
 
 There are two ways you can deploy it on Ploomber Cloud: via (1) [Graphical User Interface](https://docs.cloud.ploomber.io/en/latest/quickstart/app.html), and (2) [Command Line Interface](https://docs.cloud.ploomber.io/en/latest/user-guide/cli.html). Let's take a look at the CLI method.
 
