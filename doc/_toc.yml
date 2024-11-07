@@ -50,11 +50,6 @@ parts:
       - file: features/serverless-fns
       - file: features/scheduled-fns
 
-  - caption: Pricing
-    chapters:
-      - file: pricing/overview
-      - file: pricing/compute
-
   - caption: FAQ
     chapters:
       - file: faq/faq
