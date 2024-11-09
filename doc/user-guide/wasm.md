@@ -1,23 +1,30 @@
 # WASM Apps
 
+```{note}
+To develop WASM apps, use our [AI editor.](https://editor.ploomber.io/editor/new)
+```
+
 WASM applications run entirely in the browser and do not count towards your app or
 compute quota. You can deploy as many as you want.
 
 ## What is WASM?
 
-- wasm is a new technology that allows running Python (among other languages) in the browser
-- without WASM, browsers are constrained and can only execute Javascript
+WASM is a new technology that allows running Python and other programming languages
+directly in web browsers. Traditional browsers can only execute JavaScript code,
+but WASM removes this limitation.
 
 ## How is it different than a regular app?
 
-- a regular application has a server and a client (the browser)
-- the client sends requests triggered by user interactions (e.g. user clicked a button)
-- the server processes the request and returns an answer (e.g the result of an operation)
-- in WASM apps, the source code is passed to the client (the browser) and executed locally
+Regular applications use a client-server architecture where the browser (client) sends
+requests to a server when users interact with the app, like clicking buttons. The
+server then processes these requests and sends back responses. WASM apps work
+differently - instead of sending requests to a server, the application code runs
+directly in the user's browser.
 
 ## Limitations
 
-- source code is visible to the client (hence, not recommended when using API keys or any other secrets)
-- not all python libraries work
-- slower startup times
-- performance depends on the client's computer
+WASM apps have some important limitations. The source code is visible to users, making
+them unsuitable for applications that use sensitive information like API keys. Not all
+Python libraries are compatible with WASM. The apps take longer to start up
+initially (since all libraries must be installed), and their performance depends on
+the user's computer specifications.
