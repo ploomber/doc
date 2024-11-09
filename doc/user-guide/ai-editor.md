@@ -15,22 +15,35 @@ click on `Create app`. If you prefer to start from scratch, click on `Start from
 Select the code you want to edit, and press `CTRL + K` (or click on `Edit`), then type
 the instructions and press `Enter`. The generated code will replace the selected code.
 
+<video width="100%" controls autoplay loop muted>
+  <source src="/_static/videos/editor/edit-code.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
+
 ## Generating code
 
 Place your cursor where you want to insert the code and press `CTRL + K`, then type
 the instructions and press `Enter`.
 
-![](/static/editor/generate-code.gif)
 
-<video width="100%" controls>
-  <source src="/static/editor/generate-code.mp4" type="video/mp4" preload="auto">
+
+<video width="100%" controls autoplay loop muted>
+  <source src="/_static/videos/editor/generate-code.webm" type="video/webm">
   Your browser does not support the video tag.
 </video>
+
 
 ## Chat
 
 Click on `Chat` or press `CTRL + L`, then type your question and press `Enter` (or
 click on `Send`). To hide the chat, click on `Chat` again or press `CTRL + L`
+
+<video width="100%" controls autoplay loop muted>
+  <source src="/_static/videos/editor/chat.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>
+
 
 ## Save/Revisions
 
