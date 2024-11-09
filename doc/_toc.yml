@@ -15,6 +15,8 @@ parts:
       - file: user-guide/github
       - file: user-guide/resources
       - file: user-guide/cli
+      - file: user-guide/wasm
+      - file: user-guide/ai-editor
       - file: user-guide/analytics
       - file: user-guide/gpu
       - file: user-guide/custom-domains
