@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "streamlit-okta"
+version = "0.1.0"
+description = ""
+authors = ["Latent <guillaume.thibault.98@proton.me>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+streamlit = "^1.40.0"
+python-dotenv = "^1.0.1"
+jwt = "^1.3.1"
+requests = "^2.32.3"
+streamlit-js-eval = "^0.1.7"
+streamlit-javascript = "^0.1.5"
+ploomber-cloud = "^0.3.1"
+pysaml2 = "^7.5.0"
+python3-saml = "^1.16.0"
+flask = "^3.0.3"
+werkzeug = "^3.1.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

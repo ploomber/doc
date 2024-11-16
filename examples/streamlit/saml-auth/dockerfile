@@ -1,0 +1,33 @@
+FROM python:3.12-slim
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first to leverage Docker cache
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application files
+COPY app.py .
+COPY streamlit_app.py .
+COPY key.pem .
+
+# Create directory for Streamlit config
+RUN mkdir -p /root/.streamlit
+
+# Copy the Streamlit config
+COPY config.toml /root/.streamlit/config.toml
+
+# Expose ports
+EXPOSE 5000
+EXPOSE 8501
+
+# Copy and set permissions for the startup script
+COPY start.sh .
+RUN chmod +x start.sh
+
+CMD ["./start.sh"]
