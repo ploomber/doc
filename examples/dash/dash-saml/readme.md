@@ -1,5 +1,7 @@
 # Dash SAML authentication
 
+Demonstration App for SAML integration with Dash
+
 > [!CAUTION]
 > IMPORTANT: This is a simplified example for demonstration purposes only.
 > 
