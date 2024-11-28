@@ -32,7 +32,7 @@ server = app.server
 
 ```{note}
 - `server = app.server` - Required to start a production grade server. Without it, deployment will fail as the infrastructure cannot find the server to start.
-- `app = Dash(__name__)` - The deployment might need to change the base routing of the application. If deployment fails, check for this log:
+- `app = Dash(__name__)` - The deployment may require modification of the application's basic routing. If deployment fails, check the following log:
 
   _ERROR: We were not able to modify your Routing automatically_
 
