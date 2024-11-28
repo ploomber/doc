@@ -30,6 +30,17 @@ app = Dash(__name__)
 server = app.server
 ```
 
+```{note}
+- `server = app.server` - Required to start a production grade server. Without it, deployment will fail as the infrastructure cannot find the server to start.
+- `app = Dash(__name__)` - The deployment might need to change the base routing of the application. If deployment fails, check for this log:
+  ```
+  ERROR: We were not able to modify your Routing automatically
+  INSTRUCTION: Please add `url_base_pathname="/application/"` to `app = Dash(__name__, ...)`
+  ```
+This modification is automated, but you may see the notice above if it fails.
+```
+
+
 ## Testing locally
 
 To test the Dash application, you can run the following commands locally:
