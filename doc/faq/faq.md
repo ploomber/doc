@@ -116,3 +116,30 @@ Here's a few additional features that `Docker` deployment allows:
 * Changing the Python version.
 * Customizing the Docker base image.
 * Adding a cache layer
+
+(micropip-package-installation-error)=
+## `Package installation error`
+
+If you encounter a "Package installation error" in the [editor](https://editor.ploomber.io), it means
+a package cannot be installed because it's incompatible with the browser-based
+environment. The error looks like this:
+
+~~~
+Package installation error: PythonError: Traceback (most recent call last):
+  File "/lib/python3.12/site-packages/micropip/_commands/install.py", line 146, in install
+    raise ValueError(
+ValueError: Can't find a pure Python 3 wheel for: 'PACKAGE'
+See: https://pyodide.org/en/stable/usage/faq.html#why-can-t-micropip-find-a-pure-python-wheel-for-a-package
+~~~
+
+This happens because the editor runs Python code in your browser using WebAssembly
+(WASM). Not all Python packages can run in WASM - they need to be "pure Python"
+packages without any compiled code.
+
+The error can occur in two situations:
+
+1. When trying to install a package you explicitly listed in `requirements.txt`
+2. When trying to install a dependency of one of your required packages
+
+While we're working to support more packages, the current workaround is to run your
+code locally instead of in the browser-based editor.
