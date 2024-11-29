@@ -143,3 +143,39 @@ The error can occur in two situations:
 
 While we're working to support more packages, the current workaround is to run your
 code locally instead of in the browser-based editor.
+
+
+(webr-installation-error-not-found)=
+## `Requested package PACKAGE not found in webR binary repo.`
+
+If you see this in the [editor](https://editor.ploomber.io), it means
+a package cannot be installed because it's incompatible with the browser-based
+environment. The error looks like this:
+
+~~~
+Warning in webr::install(pkg_name) :
+Requested package PACKAGE not found in webR binary repo.
+~~~
+
+This happens because the editor runs R code in your browser using WebAssembly
+(WASM), however, not all R packages can run in WASM.
+
+While we're working to support more packages, the current workaround is to run your
+code locally instead of in the browser-based editor.
+
+(webr-installation-error-load-failed)=
+## `Error: package or namespace load failed for PACKAGE`
+
+If you see this in the [editor](https://editor.ploomber.io), it means
+a package cannot be installed because at least one of its dependencies is incompatible
+with the browser-based environment. The error looks like this:
+
+~~~
+Error: package or namespace load failed for PACKAGE in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]):
+~~~
+
+This happens because the editor runs R code in your browser using WebAssembly
+(WASM), however, not all R packages can run in WASM.
+
+While we're working to support more packages, the current workaround is to run your
+code locally instead of in the browser-based editor.
