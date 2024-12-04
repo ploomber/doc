@@ -116,6 +116,12 @@ ploomber-cloud deploy --watch
 To ensure your app doesn't break on re-deployments, pin your [dependencies.](pin-dependencies)
 ```
 
+## Community Edition Banner
+
+When deploying Dash apps using our Community Edition, we automatically add a marketing banner to your application. This banner helps us maintain and improve our free hosting services. To remove the banner, [you'll need to upgrade to a paid plan](https://www.platform.ploomber.io/register/?trial=pro).
+
+If you experience any technical issues with your application related to the banner, please don't hesitate to reach out to our [support](support) team for assistance.
+
 ## Production deployments
 
 Ploomber has features to help you deploy production-ready Dash apps
