@@ -1,5 +1,6 @@
 # Get support
 
+(support)=
 ## Community users
 
 [Join our Slack](https://ploomber.io/community/) and post your question on the `#ask-anything` channel.
