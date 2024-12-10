@@ -41,6 +41,9 @@ dashboard = vm.Dashboard(pages=[page])
 # Create the application instance
 app = Vizro().build(dashboard)
 
+# Expose the Flask server to Gunicorn
+server = app.dash.server
+
 # Development server (optional)
 if __name__ == "__main__":
     app.run()
@@ -68,7 +71,7 @@ COPY . .
 
 # Configure the container
 EXPOSE 80
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "--workers", "4", "--threads", "2", "app:app"]
+ENTRYPOINT ["gunicorn", "app:server", "run", "--bind", "0.0.0.0:80"] 
 ```
 
 ## Testing locally
