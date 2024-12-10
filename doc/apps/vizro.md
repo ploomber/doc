@@ -21,7 +21,9 @@ Your deployment package must include these three essential files:
 2. `requirements.txt` - Python dependencies
 3. `Dockerfile` - Container configuration
 
-You can get started quickly using our template repository.
+```{note}
+You can get started quickly using our [template repository](https://github.com/ploomber/doc/tree/main/examples/docker/vizro)
+```
 
 ## Application Setup
 
