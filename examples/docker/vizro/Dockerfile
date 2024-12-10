@@ -21,4 +21,4 @@ COPY . .
 EXPOSE 8000
 
 # Run the application using Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "--workers", "4", "--threads", "2", "app:app"]
+ENTRYPOINT ["gunicorn", "app:server", "run", "--bind", "0.0.0.0:80"]
