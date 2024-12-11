@@ -45,6 +45,7 @@ parts:
       - file: apps/docker
       - file: apps/chainlit
       - file: apps/hyperdiv
+      - file: apps/vizro
 
   - caption: APIs
     chapters:
