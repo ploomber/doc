@@ -4,14 +4,18 @@
 Custom domains/subdomains are only available to customers in the Pro, Teams and Enterprise plans.
 ```
 
-By default, applications are available under `project-id.ploomberapp.io`, where `project-id` is a randomly generated string.
+Each application gets a unique URL in the format `project-id.ploomber.app` or `project-id.ploomberapp.io`, where project-id is an automatically generated identifier.
+
+```{important}
+We are slowly migrating all new applications to `ploomber.app`, but some existing apps are still on `ploomberapp.io`.
+```
 
 You can customize the [`project-id`](custom-ploomber-subdomain) or bring your [own domain](custom-domain) or [custom subdomain](custom-subdomain).
 
 (custom-ploomber-subdomain)=
-## `{custom}.ploomberapp.io`
+## `{custom}.ploomber.app` and `{custom}.ploomberapp.io`
 
-If you would like a custom `ploomberapp.io` subdomain, like `my-custom-app.ploomberapp.io`, you can add it during application setup:
+If you would like a custom `ploomberapp.io` or `ploomber.app` subdomain, like `my-custom-app.ploomberapp.io`, you can add it during application setup:
 
 ![](../static/custom-domains/custom-names.png)
 
@@ -40,11 +44,14 @@ A new window will display showing the DNS records you need to add ([see the upda
 
 ![](../static/custom-domains/pointing-change-dns-records.png)
 
+```{important}
+We are slowly migrating all new applications to `ploomber.app`, but some existing apps are still on `ploomberapp.io`. Make sure your DNS records match the domain associated with your application.
+```
 
 You must add three DNS records:
 
-1. A `ALIAS` record: `@` as host, and `yourapp.ploomberapp.io` as value (replace `yourapp` with your actual app ID)
-2. A `CNAME` record: `www` as host, and `yourapp.ploomberapp.io` as value (replace `yourapp` with your actual app ID)
+1. A `ALIAS` record: `@` as host, and `yourapp.ploomberapp.io` (or `yourapp.ploomber.app`) as value (replace `yourapp` with your actual app ID)
+2. A `CNAME` record: `www` as host, and `yourapp.ploomberapp.io` (or `yourapp.ploomber.app`) as value (replace `yourapp` with your actual app ID)
 3. A `CNAME` record: with the shown **CNAME name** and **CNAME value** (as displayed in the **SSL certification status** section)
 
 ```{important}
@@ -103,7 +110,7 @@ A new window will display showing the DNS records you need to add ([see the upda
 
 You must add two records:
 
-1. `CNAME` record: the subdomain you want to add as the host (e.g., if you want to connect `subdomain.yourdomain.com`, then, you must enter `subdomain`) and `yourapp.ploomberapp.io` as value (where `yourapp` is the ID assigned to your application)
+1. `CNAME` record: the subdomain you want to add as the host (e.g., if you want to connect `subdomain.yourdomain.com`, then, you must enter `subdomain`) and `yourapp.ploomberapp.io` (or `yourapp.ploomber.app` dependending on your application domain) as value (where `yourapp` is the ID assigned to your application)
 2. `CNAME` record: with the shown **CNAME name** and **CNAME value** (as displayed in the **SSL certification status** section)
 
 
@@ -143,7 +150,7 @@ if you encounter errors, remove the root domain from the value. (see this
 
 
 ```{important}
-DNS record changes might take up to 48 hours to take effect. In the meantime, your application will be accessible from the `ploomberapp.io` URL
+DNS record changes might take up to 48 hours to take effect. In the meantime, your application will be accessible from the `ploomber.app` or `ploomberapp.io` URL
 ```
 
 ## Moving an existing domain/subdomain to another app
@@ -190,7 +197,7 @@ These are the most common errors.
 
 ![](../static/custom-domains/domains-server-not-found.png)
 
-You'll see this error if you're missing the DNAME record that points from your domain (or subdomain) to the `ID.ploomberapp.io` URL, ensure you add it. Give it some time since DNS records take some time to update. If issues persist, contact us at [contact@ploomber.io](mailto:contact@ploomber.io).
+You'll see this error if you're missing the DNAME record that points from your domain (or subdomain) to the  `ID.ploomber.app` or `ID.ploomberapp.io` URL (depending on your application domain), ensure you add it. Give it some time since DNS records take some time to update. If issues persist, contact us at [contact@ploomber.io](mailto:contact@ploomber.io).
 
 
 ### Potential Security Risk Ahead

@@ -161,12 +161,16 @@ edit it by updating the `.env` file. This secret is used to sign your session to
 (auth0-urls)=
 ### Set `/callback` and `/status` URLs
 
-Almost done! We just need to set the `/callback` and `/status` URLs for your Auth0 app. Navigate to your Ploomber project's application page and copy the application URL. It should look like `https://application-name-1999.ploomberapp.io`.
+Almost done! We just need to set the `/callback` and `/status` URLs for your Auth0 app. Navigate to your Ploomber project's application page and copy the application URL. It should look like `https://application-name-1999.ploomber.app` or `https://application-name-1999.ploomberapp.io` (depending on your application domain).
 
 Now, go back to the Auth0 application page and scroll down to `Application URIs`. Set these values:
 
-- Allowed Callback URLs: `https://application-name-1999.ploomberapp.io/callback`
-- Allows Logout URLs: `https://application-name-1999.ploomberapp.io/status`
+- Allowed Callback URLs: `https://application-name-1999.ploomber.app/callback` 
+- Allows Logout URLs: `https://application-name-1999.ploomber.app/status`
+
+```{important}
+We are slowly migrating all new applications to `ploomber.app`, but some existing apps are still on `ploomberapp.io`. Make sure your URLs match the domain associated with your application.
+```
 
 It should look like this:
 

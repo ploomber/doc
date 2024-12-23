@@ -143,7 +143,9 @@ from openai import OpenAI
 # we haven't configured authentication, so we just pass a dummy value
 openai_api_key = "PUT_YOUR_API_KEY_HERE"
 
-# modify this value to match your host, remember to add /v1 at the end
+# Notes:
+# - We're gradually migrating from id.ploomberapp.io to id.ploomber.app
+# - Modify this value to match your host, remember to add /v1 at the end
 openai_api_base = "https://autumn-snow-1380.ploomberapp.io/v1"
 
 client = OpenAI(

@@ -91,7 +91,10 @@ And run the following in a Python session:
 import requests
 from getpass import getpass
 
-host = input("Enter your {id}.ploomberapp.io URL: ")
+# Notes:
+# - We're gradually migrating from id.ploomberapp.io to id.ploomber.app
+# - Modify this value to match your host
+host = input("Enter your {id}.ploomberapp.io URL: ") 
 password_new = getpass("Enter new password:")
 
 response = requests.patch(
@@ -105,7 +108,7 @@ response.raise_for_status()
 print("Your new password is:", password_new)
 ```
 
-You'll be prompted for your MLflow host (e.g., `something.ploomberapp.io`), you can
+You'll be prompted for your MLflow host (e.g., either `id.ploomber.app` or `id.ploomberapp.io`), you can
 get this from the Ploomber UI:
 
 ![](../static/docker/mlflow/host.png)
@@ -134,6 +137,10 @@ And run the following (replace the `set_tracking_uri` call with your host!):
 
 ```python
 import mlflow
+
+# Notes:
+# - We're gradually migrating from id.ploomberapp.io to id.ploomber.app
+# - Modify this value to match your host
 mlflow.set_tracking_uri(uri="https://someid.ploomberapp.io")
 
 mlflow.set_experiment("first-experiment")
