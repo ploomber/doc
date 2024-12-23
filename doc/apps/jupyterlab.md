@@ -87,7 +87,7 @@ And you're ready to use JupyterLab!
 
 ## Real-time collaboration
 
-Collaboration is configured by default! Share your `id.ploomberapp.io` URL with a colleague, the password, and open the same notebook, you'll get Google Doc-like collaboration!
+Collaboration is configured by default! Share your URL with a colleague (it'll be using either `id.ploomber.app` or `id.ploomberapp.io`), the password, and open the same notebook, you'll get Google Doc-like collaboration!
 
 
 ![](../static/docker/jupyterlab/jupyter-collab.gif)
@@ -122,7 +122,7 @@ python -c 'import secrets; print(secrets.token_urlsafe())'
 Copy the printed value (store it somewhere safe) and save it as a [secret](../user-guide/secrets.md), with
 the name `KG_AUTH_TOKEN`, now click on `CREATE`.
 
-Once the application is running, copy the URL (the `someid.ploomberapp.io` URL):
+Once the application is running, copy the URL (either `someid.ploomber.app` or `someid.ploomberapp.io`):
 
 ![](../static/docker/mlflow/host.png)
 
@@ -132,10 +132,10 @@ We can connect to the remote kernel. Install JupyterLab locally:
 pip install jupyterlab
 ```
 
-And initialize it with your `someid.ploomberapp.io` URL and the token you set earlier:
+And initialize it with your either `someid.ploomber.app` or `someid.ploomberapp.io` URL and the token you set earlier:
 
 ```sh
-GATEWAY_HOST=someid.ploomberapp.io
+GATEWAY_HOST=someid.ploomberapp.io # Should match your app domain (ploomber.app OR ploomberapp.io)
 TOKEN=sometoken
 jupyter lab --gateway-url=$GATEWAY_HOST --GatewayClient.auth_token=$TOKEN
 ```

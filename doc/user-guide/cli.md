@@ -472,6 +472,6 @@ ploomber-cloud stop --project-id PROJECT_ID
 ```
 
 Where `PROJECT_ID` is the randomly generated ID. If you did not set a custom name,
-the `PROJECT_ID` is the string in the URL (`PROJECT_ID.ploomberapp.io`), if you set
+the `PROJECT_ID` is the string in the URL (either `PROJECT_ID.ploomber.app` or `PROJECT_ID.ploomberapp.io`), if you set
 a custom name, you can retrieve the `PROJECT_ID` by clicking on the ⚙️ icon next to the
 URL in your app detailed view.

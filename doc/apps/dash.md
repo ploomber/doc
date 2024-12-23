@@ -164,8 +164,6 @@ By default applications run with Python 3.11. Refer to this [section](../faq/faq
 
 :::{grid-item-card} Clinical analytics
 [![](../../examples/dash/clinical-analytics/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/dash/clinical-analytics)
-+++
-[Live demo](https://delicate-cake-9107.ploomberapp.io)
 :::
 
 ::::

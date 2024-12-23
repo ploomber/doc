@@ -115,20 +115,14 @@ Ploomber Cloud allows you to easily deploy apps. **Select a framework** to learn
 
 :::{grid-item-card} Chatbots
 [![](../examples/panel/book-recommender/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/panel/book-recommender)
-+++
-[Live demo](https://gentle-frost-8296.ploomberapp.io)
 :::
 
 :::{grid-item-card} Analytical dashboards
 [![](../examples/dash/clinical-analytics/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/dash/clinical-analytics)
-+++
-[Live demo](https://delicate-cake-9107.ploomberapp.io)
 :::
 
 :::{grid-item-card} REST API
 [![](../examples/flask/login/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/flask/login)
-+++
-[Live demo](https://empty-haze-3369.ploomberapp.io)
 :::
 
 :::{grid-item-card} Machine Learning inference
