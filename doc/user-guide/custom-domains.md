@@ -15,7 +15,7 @@ You can customize the [`project-id`](custom-ploomber-subdomain) or bring your [o
 (custom-ploomber-subdomain)=
 ## `{custom}.ploomber.app` and `{custom}.ploomberapp.io`
 
-If you would like a custom `ploomberapp.io` or `ploomber.app` subdomain, like `my-custom-app.ploomberapp.io`, you can add it during application setup:
+If you would like a custom `ploomber.app` or `ploomberapp.io` subdomain, like `my-custom-app.ploomberapp.io`, you can add it during application setup:
 
 ![](../static/custom-domains/custom-names.png)
 
