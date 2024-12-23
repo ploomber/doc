@@ -133,8 +133,6 @@ A basic Flask app.
 
 :::{grid-item-card} User auth
 [![](../../examples/flask/login/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/flask/login)
-+++
-[Live demo](https://empty-haze-3369.ploomberapp.io)
 :::
 
 :::{grid-item-card} ML inference

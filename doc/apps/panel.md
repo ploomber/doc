@@ -151,8 +151,6 @@ By default applications run with Python 3.11. Refer to this [section](../faq/faq
 
 :::{grid-item-card} Book recommender
 [![](../../examples/panel/book-recommender/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/panel/book-recommender)
-+++
-[Live demo](https://gentle-frost-8296.ploomberapp.io)
 :::
 
 :::{grid-item-card} Chat with PDF
@@ -167,8 +165,6 @@ By default applications run with Python 3.11. Refer to this [section](../faq/faq
 
 :::{grid-item-card} Customer Chatbot
 [![](../../examples/panel/customer-chatbot/screenshot.webp)](https://github.com/ploomber/doc/tree/main/examples/panel/customer-chatbot)
-+++
-[Live demo](https://black-poetry-5215.ploomberapp.io)
 :::
 
 :::{grid-item-card} Multi Page App
@@ -178,8 +174,6 @@ By default applications run with Python 3.11. Refer to this [section](../faq/faq
 :::{grid-item-card} Wine Data Postgres App
 :link: https://github.com/ploomber/doc/tree/main/examples/panel/app-with-postgres
 ![](https://github.com/ploomber/doc/raw/main/examples/panel/app-with-postgres/app.png)
-+++
-[Live demo](https://panel-postgres-demo.ploomberapp.io/app)
 :::
 
 ::::
