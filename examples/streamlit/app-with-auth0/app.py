@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit.web.server.websocket_headers import _get_websocket_headers
 
 headers = st.context.headers
 
