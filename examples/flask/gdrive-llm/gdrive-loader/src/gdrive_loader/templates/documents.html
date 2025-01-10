@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container mx-auto px-6 py-12">
+    <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl font-light text-gray-800 mb-12">Your Documents</h2>
+
+        <div class="bg-gray-50 rounded-2xl p-8">
+            {% if documents %}
+            <ul class="divide-y divide-gray-200">
+                {% for doc in documents %}
+                <li class="py-4 px-4 text-gray-600 font-light hover:bg-gray-100 rounded-lg transition-colors">
+                    {{ doc.name }}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-gray-500 text-center font-light">No documents found</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Google Drive Explorer</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-white min-h-screen">
+    <nav class="bg-gray-50 border-b border-gray-200">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-8">
+                    <h1 class="text-2xl font-light text-gray-900">Drive Explorer</h1>
+                    <div class="flex space-x-8">
+                        <a href="{{ url_for('index') }}"
+                            class="text-gray-600 hover:text-gray-900 transition-colors px-3 py-2 {% if request.endpoint == 'index' %}text-gray-900 font-medium{% endif %}">
+                            Search
+                        </a>
+                        <a href="{{ url_for('documents') }}"
+                            class="text-gray-600 hover:text-gray-900 transition-colors px-3 py-2 {% if request.endpoint == 'documents' %}text-gray-900 font-medium{% endif %}">
+                            Documents
+                        </a>
+                    </div>
+                </div>
+                {% if logged_in %}
+                <div class="flex items-center space-x-4">
+                    <button id="load-docs" class="text-gray-600 hover:text-gray-900 transition-colors">Load
+                        docs</button>
+                    <a href="{{ url_for('logout') }}"
+                        class="text-gray-600 hover:text-gray-900 transition-colors">Logout</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    {% block body %}{% endblock %}
+
+    {% if logged_in %}
+    <script>
+        $(document).ready(function () {
+            $('#load-docs').click(function () {
+                $.post('/load', function (response) {
+                    if (response.status === 'success') {
+                        alert('Document loading started');
+                    }
+                });
+            });
+        });
+    </script>
+    {% endif %}
+</body>
+
+</html>
