@@ -21,7 +21,7 @@ To enable it, simply turn the option on and set a user and a password:
 Your password isn't visible after deployment so write it down!
 ```
 
-You can also add, update and remove password protection using the [command-line interface.](cli.md#password-protection)
+You can also add, update, and remove password protection using the [command-line interface.](cli.md#password-protection)
 
 (auth0-integration)=
 ## Auth0 authentication

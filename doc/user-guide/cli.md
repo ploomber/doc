@@ -358,6 +358,10 @@ Some important notes:
 
 ## Password protection
 
+```{tip}
+For enterprise-grade authentication, see: [Auth0 authentication](auth0-integration)
+```
+
 To add basic username/password protection to your app:
 
 ```bash
