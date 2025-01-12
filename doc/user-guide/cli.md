@@ -356,6 +356,63 @@ Some important notes:
     - If a secret is defined in `ploomber-cloud.json` but isn't set as an environment variable, the deployment will fail. 
     - If a secret is set as an environment variable but isn't defined in `ploomber-cloud.json`, that secret won't be included in the deployment.
 
+## Password protection
+
+To add basic username/password protection to your app:
+
+```bash
+ploomber-cloud auth --add --feature main_app
+
+# deploy the app to apply the changes
+ploomber-cloud deploy
+```
+
+If you want to add authentication to the analytics dashboard:
+
+```bash
+ploomber-cloud auth --add --feature analytics
+
+# deploy the app to apply the changes
+ploomber-cloud deploy
+```
+
+### Updating credentials
+
+```sh
+ploomber-cloud auth --overwrite --add --feature main_app
+
+# deploy the app to apply the changes
+ploomber-cloud deploy
+```
+
+If you want to update the credentials for the analytics dashboard:
+
+```sh
+ploomber-cloud auth --overwrite --add --feature analytics
+
+# deploy the app to apply the changes
+ploomber-cloud deploy
+```
+
+### Removing credentials
+
+```sh
+ploomber-cloud auth --remove --feature main_app
+
+# deploy the app to apply the changes
+ploomber-cloud deploy
+```
+
+If you want to remove credentials for the analytics dashboard:
+
+```sh
+ploomber-cloud auth --remove --feature analytics
+
+# deploy the app to apply the changes
+ploomber-cloud deploy
+```
+
+
 ## Configure resources
 
 You can customize the amount of `CPUs`, `RAM`, and `GPUs` that your project will use with this command:
