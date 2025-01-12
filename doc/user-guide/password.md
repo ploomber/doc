@@ -177,6 +177,14 @@ It should look like this:
 ![](../static/password/auth0-urls.png)
 
 ```{tip}
+You can use the same Auth0 integration with multiple Ploomber applications by initializing Ploomber app with the same `AUTH_CLIENT_ID`, `AUTH_CLIENT_SECRET` and `AUTH_ISSUER_BASE_URL` as your first one. 
+- For it to work, you will have to add all your allowed `/callback` and `/status` URLs separated by commas, like the following:
+
+![](../static/password/auth0-multiple-apps.png)
+```
+
+
+```{important}
 If you ever re-initialize and deploy your app under a different name, you'll have to update these URLs.
 ```
 
