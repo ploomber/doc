@@ -140,8 +140,6 @@ def load_documents_from_user(email, dry_run=False, limit=None):
                 existing_doc.embedding = embedding
                 print(f"Updated document: {name}")
 
-                if "Tasha" in name:
-                    print(f"Tasha: {content}")
             else:
                 # Create new document
                 db_doc = Document(
