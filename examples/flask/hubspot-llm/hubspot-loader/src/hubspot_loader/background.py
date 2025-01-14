@@ -13,8 +13,8 @@ def setup_periodic_tasks(sender: Celery, **kwargs):
 
     sender.add_periodic_task(
         PERIOD,
-        load_documents,
-        name="load_documents",
+        load_tickets,
+        name="load_tickets",
     )
 
 
