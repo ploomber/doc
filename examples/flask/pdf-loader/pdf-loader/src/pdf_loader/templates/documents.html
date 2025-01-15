@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block body %}
+<div class="container mx-auto px-6 py-12">
+    <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl font-light text-gray-800 mb-12">PDFs</h2>
+
+        <div id="dropzone"
+            class="bg-gray-50 rounded-2xl p-8 mb-8 border-2 border-dashed border-gray-300 hover:border-gray-400 transition-colors cursor-pointer">
+            <form id="upload-form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data"
+                class="text-center">
+                <input type="file" id="file-input" name="files[]" class="hidden" accept=".pdf" multiple>
+                <p class="text-gray-500 font-light mb-2">Drag and drop PDF files here</p>
+                <p class="text-gray-400 text-sm">or</p>
+                <button type="button" id="browse-button"
+                    class="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors">
+                    Browse Files
+                </button>
+            </form>
+        </div>
+
+        <div class="bg-gray-50 rounded-2xl p-8">
+            {% if documents %}
+            <ul class="divide-y divide-gray-200">
+                {% for doc in documents %}
+                <li
+                    class="py-4 px-4 text-gray-600 font-light hover:bg-gray-100 rounded-lg transition-colors flex items-center">
+                    <span class="flex-grow">{{ doc.name }}</span>
+                    {% if doc.status.value == 'pending' %}
+                    <span class="tooltip" title="Pending">
+                        <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </span>
+                    {% elif doc.status.value == 'processing' %}
+                    <span class="tooltip" title="Processing">
+                        <svg class="w-5 h-5 text-blue-500 animate-spin" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                            </path>
+                        </svg>
+                    </span>
+                    {% elif doc.status.value == 'completed' %}
+                    <span class="tooltip" title="Completed">
+                        <svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                    </span>
+                    {% elif doc.status.value == 'failed' %}
+                    <span class="tooltip" title="Failed">
+                        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </span>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p class="text-gray-500 text-center font-light">No PDFs found</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        const dropzone = $('#dropzone');
+        const fileInput = $('#file-input');
+        const uploadForm = $('#upload-form');
+        const browseButton = $('#browse-button');
+
+        // Handle drag and drop events
+        dropzone.on('dragover', function (e) {
+            e.preventDefault();
+            dropzone.addClass('border-gray-400');
+        });
+
+        dropzone.on('dragleave', function (e) {
+            e.preventDefault();
+            dropzone.removeClass('border-gray-400');
+        });
+
+        dropzone.on('drop', function (e) {
+            e.preventDefault();
+            dropzone.removeClass('border-gray-400');
+
+            const files = e.originalEvent.dataTransfer.files;
+            if (files.length > 0) {
+                // Create a new DataTransfer object
+                const dataTransfer = new DataTransfer();
+                // Add all dropped files
+                for (let i = 0; i < files.length; i++) {
+                    dataTransfer.items.add(files[i]);
+                }
+                // Set the files property of the file input
+                fileInput[0].files = dataTransfer.files;
+                uploadForm.submit();
+            }
+        });
+
+        // Handle browse button click
+        browseButton.on('click', function () {
+            fileInput.click();
+        });
+
+        // Submit form when files are selected through browse
+        fileInput.on('change', function () {
+            if (fileInput[0].files.length > 0) {
+                uploadForm.submit();
+            }
+        });
+    });
+</script>
+{% endblock %}
