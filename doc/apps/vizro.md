@@ -32,17 +32,15 @@ You can get started quickly using our [template repository](https://github.com/p
 Your `app.py` should initialize the Vizro application as follows:
 
 ```python
-import vizro as vm
+import vizro.models as vm
 from vizro import Vizro
 
 # Initialize your dashboard
+page = vm.Page(...)
 dashboard = vm.Dashboard(pages=[page])
 
 # Create the application instance
 app = Vizro().build(dashboard)
-
-# Expose the Flask server to Gunicorn
-server = app.dash.server
 
 # Development server (optional)
 if __name__ == "__main__":
@@ -51,7 +49,12 @@ if __name__ == "__main__":
 
 2. Dependencies File (`requirements.txt`)
 
-List all Python packages required by your application.
+List all Python packages required by your application. These should include pinned versions of `vizro` and `gunicorn`:
+
+```
+vizro==0.1.29
+gunicorn==23.0.0
+```
 
 3. `Dockerfile`
 
@@ -64,14 +67,14 @@ WORKDIR /app
 
 # Install dependencies
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt gunicorn vizro
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application files
 COPY . .
 
 # Configure the container
 EXPOSE 80
-ENTRYPOINT ["gunicorn", "app:server", "run", "--bind", "0.0.0.0:80"] 
+ENTRYPOINT ["gunicorn", "app:app", "--bind", "0.0.0.0:80"] 
 ```
 
 ## Testing locally
