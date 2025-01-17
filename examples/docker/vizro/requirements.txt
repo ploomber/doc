@@ -1,1 +1,2 @@
 vizro==0.1.29
+gunicorn==23.0.0
