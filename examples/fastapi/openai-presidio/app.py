@@ -5,6 +5,8 @@ import json
 from presidio_analyzer import AnalyzerEngine
 from presidio_anonymizer import AnonymizerEngine
 from contextlib import asynccontextmanager
+import gzip
+import zlib
 
 
 analyzer = AnalyzerEngine()
@@ -175,7 +177,7 @@ async def preprocess_request(request: Request):
 
 async def process_response(response: httpx.Response):
     """
-    Process the response from the target server.
+    Process the response from the target server, handling compression if present.
 
     Parameters
     ----------
@@ -187,13 +189,47 @@ async def process_response(response: httpx.Response):
     Response
         The processed response
     """
-    # Create a new headers dict and remove any content-encoding headers
-    headers = dict(response.headers)
-    headers.pop("content-encoding", None)
+    # Get the raw content and content encoding
+    content = response.content
+    content_encoding = response.headers.get("content-encoding", "").lower()
 
-    # Ensure we're sending uncompressed content
+    # Decompress content if needed
+    try:
+        if content_encoding == "gzip":
+            content = gzip.decompress(content)
+        elif content_encoding == "deflate":
+            content = zlib.decompress(content)
+
+        # Try to parse and log the response
+        content_type = response.headers.get("content-type", "")
+        if "application/json" in content_type:
+            # Parse JSON from decompressed content
+            response_json = json.loads(content.decode("utf-8"))
+            print(f"Response body: {json.dumps(response_json, indent=2)}")
+            content = json.dumps(response_json).encode("utf-8")
+        else:
+            # For non-JSON responses, try to log if it's text
+            if any(
+                text_type in content_type
+                for text_type in ["text/", "application/javascript", "application/xml"]
+            ):
+                try:
+                    print(f"Response body: {content.decode('utf-8')}")
+                except UnicodeDecodeError:
+                    print("Response body: [Could not decode text content]")
+            else:
+                print("Response body: [Binary content]")
+
+    except Exception as e:
+        print(f"Could not process response: {str(e)}")
+        # If decompression or processing fails, return the original content
+        content = response.content
+
+    # Create response headers, preserving the original content-encoding
+    headers = dict(response.headers)
+
     return Response(
-        content=response.content,
+        content=content,
         status_code=response.status_code,
         headers=headers,
         media_type=response.headers.get("content-type"),
