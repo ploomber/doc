@@ -1,0 +1,5 @@
+fastapi==0.115.7
+uvicorn==0.34.0
+httpx==0.28.1
+presidio_analyzer==2.2.357
+presidio_anonymizer==2.2.357
