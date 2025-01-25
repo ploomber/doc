@@ -38,7 +38,7 @@ def process_text():
     for response, line in zip(responses, lines):
         response["input"] = line
 
-    return render_template("text-results.html", responses=responses)
+    return render_template("table.html", responses=responses)
 
 
 def predict_from_pdf(pdf_stream):
@@ -80,7 +80,7 @@ def process_file():
 
     responses = predict_from_pdf(file)
 
-    return render_template("text-results.html", responses=responses)
+    return render_template("table.html", responses=responses)
 
 
 if __name__ == "__main__":
