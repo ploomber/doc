@@ -1,0 +1,151 @@
+<div class="container mx-auto px-4 py-8 max-w-7xl">
+    <!-- Controls Container -->
+    <div class="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 sm:gap-0">
+        <!-- Filter Controls -->
+        <div class="flex flex-wrap gap-2">
+            <button
+                class="label-filter px-4 py-2 rounded-lg text-sm font-medium border transition-colors duration-200 active"
+                data-label="all">
+                Show All
+            </button>
+            <button class="label-filter px-4 py-2 rounded-lg text-sm font-medium border transition-colors duration-200"
+                data-label="BENIGN">
+                Benign
+            </button>
+            <button class="label-filter px-4 py-2 rounded-lg text-sm font-medium border transition-colors duration-200"
+                data-label="MALICIOUS">
+                Malicious
+            </button>
+        </div>
+
+        <!-- Sort Control -->
+        <button id="sort-score"
+            class="w-full sm:w-auto px-4 py-2 rounded-lg text-sm font-medium border bg-white text-gray-700 border-gray-300 hover:bg-gray-50 transition-colors duration-200">
+            Sort by Score
+            <span class="sort-icon ml-1">↓</span>
+        </button>
+    </div>
+
+    <div class="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
+        <table class="min-w-full divide-y divide-gray-300">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col"
+                        class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[300px] sm:w-[400px] md:w-[500px] lg:w-[600px] xl:w-full">
+                        Input
+                    </th>
+                    <th scope="col"
+                        class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[100px]">
+                        Label
+                    </th>
+                    <th scope="col"
+                        class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[100px]">
+                        Score
+                    </th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200 bg-white">
+                {% for result in responses %}
+                <tr class="hover:bg-gray-50 result-row" data-label="{{ result.label }}">
+                    <td class="px-4 sm:px-6 py-4 text-sm text-gray-900">
+                        <div class="relative w-[300px] sm:w-[400px] md:w-[500px] lg:w-[600px] xl:w-full">
+                            <div class="max-h-[100px] overflow-y-auto overflow-x-auto xl:overflow-x-visible pr-2">
+                                <div class="whitespace-pre-wrap break-words">{{ result.input }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td
+                        class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm {% if result.label == 'BENIGN' %}text-green-600{% else %}text-red-600{% endif %}">
+                        {{ result.label }}
+                    </td>
+                    <td class="px-4 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {{ "%.2f"|format(result.score) }}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    /* Custom scrollbar styles */
+    .max-h-\[100px\]::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .max-h-\[100px\]::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .max-h-\[100px\]::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+
+    .max-h-\[100px\]::-webkit-scrollbar-thumb:hover {
+        background: #666;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        // Style for active filter button
+        const activeClass = 'bg-blue-600 text-white border-blue-600';
+        const inactiveClass = 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50';
+        let sortDirection = 'desc'; // Default sort direction
+
+        // Filter functionality
+        $('.label-filter').click(function () {
+            $('.label-filter').removeClass(activeClass).addClass(inactiveClass);
+            $(this).removeClass(inactiveClass).addClass(activeClass);
+
+            const selectedLabel = $(this).data('label');
+            filterRows(selectedLabel);
+        });
+
+        // Sort functionality
+        $('#sort-score').click(function () {
+            sortDirection = sortDirection === 'desc' ? 'asc' : 'desc';
+            const icon = sortDirection === 'desc' ? '↓' : '↑';
+            $(this).find('.sort-icon').text(icon);
+
+            sortRows();
+        });
+
+        // Initialize with "Show All" active
+        $('.label-filter[data-label="all"]').addClass(activeClass).removeClass(inactiveClass);
+
+        // Helper function to filter rows
+        function filterRows(selectedLabel) {
+            if (selectedLabel === 'all') {
+                $('.result-row').show();
+            } else if (selectedLabel === 'MALICIOUS') {
+                $('.result-row').hide();
+                $('.result-row[data-label="INJECTION"], .result-row[data-label="JAILBREAK"]').show();
+            } else {
+                $('.result-row').hide();
+                $(`.result-row[data-label="${selectedLabel}"]`).show();
+            }
+        }
+
+        // Helper function to sort rows
+        function sortRows() {
+            const tbody = $('tbody');
+            const rows = tbody.find('tr').toArray();
+
+            rows.sort(function (a, b) {
+                const scoreA = parseFloat($(a).find('td:last').text());
+                const scoreB = parseFloat($(b).find('td:last').text());
+
+                return sortDirection === 'desc'
+                    ? scoreB - scoreA
+                    : scoreA - scoreB;
+            });
+
+            tbody.empty();
+            tbody.append(rows);
+        }
+    });
+</script>

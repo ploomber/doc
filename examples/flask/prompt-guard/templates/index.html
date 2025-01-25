@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Guard checker</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <h1 class="text-3xl font-bold text-gray-800 mb-8">Prompt Guard checker</h1>
+
+        <!-- Tabs -->
+        <div class="mb-4">
+            <div class="border-b border-gray-200">
+                <ul class="flex flex-wrap -mb-px" role="tablist">
+                    <li class="mr-2 relative">
+                        <button
+                            class="tab-btn inline-block p-4 border-b-2 border-blue-600 text-blue-600 font-medium rounded-t-lg active hover:text-blue-800 hover:border-blue-800 transition-colors duration-200 ease-in-out"
+                            data-target="text-input">
+                            <span class="flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Text Input
+                            </span>
+                        </button>
+                        <div class="absolute bottom-0 right-0 w-px h-full bg-gray-200"></div>
+                    </li>
+                    <li class="mr-2">
+                        <button
+                            class="tab-btn inline-block p-4 border-b-2 border-transparent text-gray-500 font-medium rounded-t-lg hover:text-gray-600 hover:border-gray-300 transition-colors duration-200 ease-in-out"
+                            data-target="file-upload">
+                            <span class="flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg>
+                                File Upload
+                            </span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Text Input Tab -->
+        <div id="text-input" class="tab-content w-full">
+            <form id="text-form" class="space-y-4">
+                <textarea id="text-area" rows="10"
+                    class="block p-2.5 w-full text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 resize-y"
+                    placeholder="Enter your text here (one example per line)"></textarea>
+                <button type="submit"
+                    class="w-full sm:w-auto px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center justify-center">
+                    <span class="process-text">Process Text</span>
+                    <svg class="animate-spin ml-2 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+
+        <!-- File Upload Tab -->
+        <div id="file-upload" class="tab-content hidden w-full">
+            <form id="file-form" class="space-y-4">
+                <div class="flex items-center justify-center w-full">
+                    <label
+                        class="flex flex-col items-center justify-center w-full h-48 sm:h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+                        <div id="upload-placeholder" class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Click to upload</span> or
+                                drag and drop</p>
+                            <p class="text-xs text-gray-500">PDF files only</p>
+                        </div>
+                        <div id="file-selected" class="hidden flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-8 mb-4 text-green-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7"></path>
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-500">File selected:</p>
+                            <p id="selected-filename"
+                                class="text-sm font-semibold text-gray-700 text-center px-4 break-all"></p>
+                            <p class="mt-2 text-xs text-gray-500">(Click to change file)</p>
+                        </div>
+                        <input id="file-input" type="file" class="hidden" accept=".pdf" />
+                    </label>
+                </div>
+                <button type="submit"
+                    class="w-full sm:w-auto px-6 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center justify-center">
+                    <span class="process-text">Process File</span>
+                    <svg class="animate-spin ml-2 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg"
+                        fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                        </path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+
+        <!-- Output Section -->
+        <div id="output" class="mt-8 hidden">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Output</h2>
+            <div id="result"></div>
+        </div>
+    </div>
+    <script>
+        $(document).ready(function () {
+            // Tab switching
+            $('.tab-btn').click(function () {
+                // Remove active state from all tabs
+                $('.tab-btn').removeClass('active border-blue-600 text-blue-600')
+                    .addClass('border-transparent text-gray-500')
+                    .removeClass('hover:text-blue-800 hover:border-blue-800')
+                    .addClass('hover:text-gray-600 hover:border-gray-300');
+
+                // Add active state to clicked tab
+                $(this).removeClass('border-transparent text-gray-500')
+                    .removeClass('hover:text-gray-600 hover:border-gray-300')
+                    .addClass('active border-blue-600 text-blue-600')
+                    .addClass('hover:text-blue-800 hover:border-blue-800');
+
+                // Show corresponding content
+                $('.tab-content').addClass('hidden');
+                $(`#${$(this).data('target')}`).removeClass('hidden');
+            });
+
+            // File input change handler
+            $('#file-input').change(function () {
+                const file = this.files[0];
+                if (file) {
+                    $('#selected-filename').text(file.name);
+                    $('#upload-placeholder').addClass('hidden');
+                    $('#file-selected').removeClass('hidden');
+                } else {
+                    $('#upload-placeholder').removeClass('hidden');
+                    $('#file-selected').addClass('hidden');
+                }
+            });
+
+            // File upload form
+            $('#file-form').submit(function (e) {
+                e.preventDefault();
+                const fileInput = $('#file-input')[0];
+                if (!fileInput.files.length) {
+                    alert('Please select a file');
+                    return;
+                }
+
+                const $button = $(this).find('button');
+                $button.prop('disabled', true);
+                $button.find('.process-text').text('Processing...');
+                $button.find('svg').removeClass('hidden');
+
+                const formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+
+                $.ajax({
+                    url: '/api/process-file',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (html) {
+                        $('#result').html(html);
+                        $('#output').removeClass('hidden');
+                    },
+                    error: function (xhr) {
+                        alert(xhr.responseJSON?.error || 'An error occurred');
+                    },
+                    complete: function () {
+                        $button.prop('disabled', false);
+                        $button.find('.process-text').text('Process File');
+                        $button.find('svg').addClass('hidden');
+                    }
+                });
+            });
+
+            // Text input form
+            $('#text-form').submit(function (e) {
+                e.preventDefault();
+                const text = $('#text-area').val();
+
+                const $button = $(this).find('button');
+                $button.prop('disabled', true);
+                $button.find('.process-text').text('Processing...');
+                $button.find('svg').removeClass('hidden');
+
+                $.ajax({
+                    url: '/api/process-text',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ text: text }),
+                    success: function (html) {
+                        $('#result').html(html);
+                        $('#output').removeClass('hidden');
+                    },
+                    error: function () {
+                        alert('An error occurred');
+                    },
+                    complete: function () {
+                        $button.prop('disabled', false);
+                        $button.find('.process-text').text('Process Text');
+                        $button.find('svg').addClass('hidden');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
