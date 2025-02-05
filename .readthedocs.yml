@@ -16,5 +16,5 @@ conda:
 sphinx:
   builder: html
   fail_on_warning: true
-  configuration: docs/_config.yml
+  configuration: doc/_config.yml
 
