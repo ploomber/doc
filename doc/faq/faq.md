@@ -110,7 +110,7 @@ For this, you'll need to generate a personnal access token with access to the ta
 - [How to generate a Personnal Access Token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens)
 - [How to securely give CI access to private Git repos using a **Machine User**](https://github.com/orgs/gruntwork-io/discussions/784#discussioncomment-7644683)
 
-```yml
+```yaml
 jobs:
   deploy-to-ploomber-cloud:
     runs-on: ubuntu-latest
