@@ -73,14 +73,14 @@ This will produce a new `requirements.txt` file with specific versions
 for each package, ensuring that upgrades to the dependencies don't break your app.
 
 (private-packages)=
-## How to Include Private Packages
+## Including Private Packages
 
 ### UI & CLI
 To use a private packages, you'll have to do it via Docker:
 
 1. Copy your framework's base Dockerfile to project root ([Streamlit](https://github.com/ploomber/doc/blob/main/examples/streamlit/docker-based/Dockerfile), [Dash](https://github.com/ploomber/doc/blob/main/examples/dash/docker-based/Dockerfile), other framework Dockerfile can be find in our [examples](https://github.com/ploomber/doc/tree/main/examples))
 
-2. Clone your `private-package` to root directory (`git clone https://githib.com/org/private-package.git`), and remove it from you `requirements.txt`
+2. Clone your `package` to root directory (`git clone https://githib.com/org/package.git`), and **remove it from your `requirements.txt`**
 
 3. Update Dockerfile:
 ```Dockerfile
@@ -89,8 +89,8 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # ~~~~~~~~~~~~~ NEW ~~~~~~~~~~~~~~~~
-COPY private-package private-package
-RUN pip install private-package
+COPY package/ package/
+RUN pip install -e package/
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 COPY requirements.txt /app/
@@ -130,10 +130,9 @@ jobs:
       # ~~~~~~~~~~~~~ NEW ~~~~~~~~~~~~~~~~
       - name: Download private package
         run: |
-          # Remove package from requirements.txt if it exist
-          sed -i '/org\/private-package/d' requirements.txt
           # Clone private repository
-          git clone https://${{ secrets.GH_TOKEN }}@github.com/org/private-package.git
+          git clone https://${{ secrets.GH_TOKEN }}@github.com/org/package.git
+          # /!\ Remove your package from requirements.txt
       # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       - name: Deploy
         env:
