@@ -146,6 +146,7 @@ record displayed for the SSL certificate. You'll see something like this
 in the CNAME name: 
 - `_LONGSTRING.example.com.` → `_LONGSTING` 
 - `_LONGSTRING.subdomain.example.com.` → `_LONGSTRING`
+
 If you encounter errors, remove the root domain from the value. (see this
 [stack overflow](https://stackoverflow.com/a/63246970/709975) question to learn more)
 ```
