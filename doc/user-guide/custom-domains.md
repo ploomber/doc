@@ -141,10 +141,12 @@ You should be able to see something like this:
 
 
 ```{important}
-Depending on your DNS provider (e.g. namecheap), you might need to modify the CNAME
+Depending on your DNS provider (e.g. SquareSpace, and previously Namecheap), you might need to modify the CNAME
 record displayed for the SSL certificate. You'll see something like this
-in the CNAME name: `LONGSTRING.example.com.` or `LONGSTRING.subdomain.example.com.`,
-if you encounter errors, remove the root domain from the value. (see this
+in the CNAME name: 
+- `_LONGSTRING.example.com.` → `_LONGSTING` 
+- `_LONGSTRING.subdomain.example.com.` → `_LONGSTRING`
+If you encounter errors, remove the root domain from the value. (see this
 [stack overflow](https://stackoverflow.com/a/63246970/709975) question to learn more)
 ```
 
