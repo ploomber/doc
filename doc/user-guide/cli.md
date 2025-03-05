@@ -543,7 +543,7 @@ URL in your app detailed view.
 ```{versionadded} 0.4.2
 ```
 
-Enable live dev mode for automatic deployment on source changes. When you save a file, the CLI uploads the modified file, and you can see the changes at <project-id>.ploomber.app.
+Enable live dev mode for automatic deployment on source changes. When you save a file, the CLI uploads the modified file, and you can see the changes at `<project-id>.ploomber.app`.
 
 If you modify `requirements.txt`, the CLI installs the new dependencies and restarts the app automatically.
 
