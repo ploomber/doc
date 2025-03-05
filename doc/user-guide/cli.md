@@ -536,3 +536,19 @@ Where `PROJECT_ID` is the randomly generated ID. If you did not set a custom nam
 the `PROJECT_ID` is the string in the URL (either `PROJECT_ID.ploomber.app` or `PROJECT_ID.ploomberapp.io`), if you set
 a custom name, you can retrieve the `PROJECT_ID` by clicking on the ⚙️ icon next to the
 URL in your app detailed view.
+
+
+## Dev mode
+
+```{versionadded} 0.4.2
+```
+
+Enable live dev mode for automatic deployment on source changes. When you save a file, the CLI uploads the modified file, and you can see the changes at <project-id>.ploomber.app.
+
+If you modify `requirements.txt`, the CLI installs the new dependencies and restarts the app automatically.
+
+To start Dev Mode, run from your project folder:
+
+```sh
+ploomber-cloud dev
+```
