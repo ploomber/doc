@@ -1,59 +1,77 @@
 # Deploy a Database
 
-
 ## 1. Click on "Database" -> "New"
-
 ![](../static/db-new.png)
 
 ## 2. Fill out the form
-
-Here you'll need to choose a Database name, a username and password. Once done, you have the option to change the default hardware on which your database will be running.
-
+Here you'll need to choose a Database name, a username and password. Herre, you also have the option to change the default hardware on which your database will be running.
 ![](../static/db-enter-info.png)
 
 ```{important}
-Generate a strong password, ...
+Generate a strong password, preferably with a mix of uppercase and lowercase letters, numbers, and special characters. Store this password securely as you'll need it to connect to your database.
 ```
 
 ## 3. Wait for the deployment to finish
-
-Once created, the database will be deploy, this can take up to a minute. Once your database is running, you are ready to connect to it
-
+Once created, the database will be deployed, this can take up to a minute. When your database is running, you are ready to connect to it.
 ![](../static/db-running.png)
 
 ## 4. Connecting to your Database
+Once your database is deployed, you can connect to it directly from the CLI, or through tools like [pgAdmin](https://www.pgadmin.org/).
 
-Once your database deploy, you can connect to it directly from the CLI, or for [PgAdmin](https://www.pgadmin.org/)
-
-### Connecting to you Database from the CLI
-
+### Connecting to your Database from the CLI
 To connect to the database from the terminal, you'll first need psql, which can be installed with:
-```sh
-
-```
-
-Once installed, copy the PSQL command from the UI into your terminal to direclty connect to your database. This one will be in the following format, representing the URL, database username & password
-
 
 ```sh
-psql -h {DATABASE-URL} -U {USERNAME} {DATABASE_NAME}
+# For Debian/Ubuntu
+sudo apt-get install postgresql-client
+
+# For macOS using Homebrew
+brew install libpq
+brew link --force libpq
+
+# For Windows
+# Download the installer from https://www.postgresql.org/download/windows/
 ```
+
+Once installed, copy the PSQL command from the UI into your terminal to directly connect to your database. This will prompt you for the password. This one can be found above the PSQL command.
 
 ![](../static/db-psql.png)
 
-Congratualtion, you are now connected to your database, run the following commands to create a new tables:
-```sql
-
-
+```sh
+$ psql -h {DATABASE-URL} -U {USERNAME} {DATABASE_NAME}
+Password for user ...: {DATABASE_PASSWORD}
 ```
 
-### Connecting to you Database from the PgAdmin
+Congratulations, you are now connected to your database!
 
+You can run the following commands to create a new table:
 
-## Connecting you Python app to your Database
+```sql
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
 
+-- Insert a test user
+INSERT INTO users (username, email) VALUES ('testuser', 'test@example.com');
 
-## Connecting with JupySQL
+-- Verify the insertion
+SELECT * FROM users;
+```
 
+### Connecting to your Database from pgAdmin
 
+1. Open pgAdmin on your computer
+2. Right-click on "Servers" in the browser panel and select "Create" > "Server..."
+3. In the "General" tab, enter a name for your server connection
+4. Switch to the "Connection" tab and enter the following details:
+   - Host name/address: Your database URL (from the UI)
+   - Port: 5432 (default PostgreSQL port)
+   - Maintenance database: Your database name
+   - Username: Your database username
+   - Password: Your database password
+5. Click "Save" to connect to your database
+6. Your database will appear in the server list, and you can expand it to see tables and other objects
 
