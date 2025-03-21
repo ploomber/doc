@@ -4,7 +4,7 @@
 ![](../static/db-new.png)
 
 ## 2. Fill out the form
-Here you'll need to choose a Database name, a username and password. Herre, you also have the option to change the default hardware on which your database will be running.
+Here you'll need to choose a database name, a username, and password. You also have the option to change the default hardware on which your database will be running.
 ![](../static/db-enter-info.png)
 
 ```{important}
