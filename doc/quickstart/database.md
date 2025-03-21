@@ -10,11 +10,13 @@ This guide walks you through deploying and connecting to a PostgreSQL database. 
   - [Using Command Line (CLI)](#using-command-line-cli)
   - [Using pgAdmin (GUI)](#using-pgadmin-gui)
 
+(1-create-a-database)=
 ## 1. Create a Database
 Navigate to the "Database" section and click the "New" button to start the creation process.
 
 ![Create a new database](../static/db-new.png)
 
+(2-configure-database-settings)=
 ## 2. Configure Database Settings
 Configure your database by providing the following information:
 - Database name
@@ -32,14 +34,17 @@ Configure your database by providing the following information:
 > 
 > Store this password in a secure location - you'll need it to connect to your database.
 
+(3-wait-for-deployment)=
 ## 3. Wait for Deployment
 The deployment process typically takes about 1 minute. You'll see a progress indicator, and once complete, your database status will change to "Running".
 
 ![Database deployment status](../static/db-running.png)
 
+(4-connect-to-your-database)=
 ## 4. Connect to Your Database
 Choose one of the following methods to connect to your database:
 
+(using-command-line-cli)=
 ### Using Command Line (CLI)
 
 1. **Install the PostgreSQL client**
@@ -82,6 +87,7 @@ Choose one of the following methods to connect to your database:
    SELECT * FROM users;
    ```
 
+(using-pgadmin-gui)=
 ### Using pgAdmin (GUI)
 
 1. Launch pgAdmin on your computer
