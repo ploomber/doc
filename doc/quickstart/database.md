@@ -9,6 +9,9 @@ This guide walks you through deploying and connecting to a PostgreSQL database. 
 - [Connect to Your Database](#4-connect-to-your-database)
   - [Using Command Line (CLI)](#using-command-line-cli)
   - [Using pgAdmin (GUI)](#using-pgadmin-gui)
+- [Install Database Extensions](#5-install-database-extensions)
+  - [DuckDB Extension](#duckdb-extension)
+  - [PG Vector Extension](#pg-vector-extension)
 
 (1-create-a-database)=
 ## 1. Create a Database
@@ -103,4 +106,63 @@ Choose one of the following methods to connect to your database:
    | Connection | Password | Your database password |
 4. Click "Save" to establish the connection
 5. Your database will appear in the server list
+
+(5-install-database-extensions)=
+## 5. Install Database Extensions
+
+(duckdb-extension)=
+### DuckDB Extension
+
+To install and use the DuckDB extension in PostgreSQL:
+
+```sql
+-- Install the DuckDB extension
+CREATE EXTENSION IF NOT EXISTS pg_duckdb;
+
+-- Verify the installation
+SELECT * FROM pg_extension WHERE extname = 'pg_duckdb';
+
+-- Example: Run a DuckDB query from PostgreSQL
+SELECT * FROM duckdb.query('
+    FROM range(10) as a(a) 
+    SELECT [a for i in generate_series(0, a)] as arr
+');
+```
+
+(pg-vector-extension)=
+### PG Vector Extension
+
+To install and use the PG Vector extension for vector similarity search:
+
+```sql
+-- Install the pgvector extension
+CREATE EXTENSION IF NOT EXISTS vector;
+
+-- Verify the installation
+SELECT * FROM pg_extension WHERE extname = 'vector';
+
+-- Example: Create a table with vector support
+CREATE TABLE items (
+    id bigserial PRIMARY KEY,
+    embedding vector(3)  -- 3-dimensional vectors for this example
+);
+
+-- Insert sample vectors
+INSERT INTO items (embedding) 
+VALUES ('[1,2,3]'), ('[4,5,6]');
+
+-- Query vectors by similarity (using cosine distance)
+SELECT * FROM items 
+ORDER BY embedding <-> '[3,1,2]'  -- Find vectors closest to [3,1,2]
+LIMIT 5;
+
+-- Create an index for faster similarity search
+CREATE INDEX ON items USING ivfflat (embedding vector_cosine_ops);
+```
+
+> 💡 **Note**: 
+> - For vector operations, ensure your database instance has sufficient resources
+> - The vector dimension (3 in this example) should match your use case
+> - The `<->` operator calculates cosine distance between vectors
+> - Consider creating appropriate indexes for better query performance
 
