@@ -107,8 +107,10 @@ Choose one of the following methods to connect to your database:
 4. Click "Save" to establish the connection
 5. Your database will appear in the server list
 
+(5-install-database-extensions)=
 ## 5. Install Database Extensions
 
+(duckdb-extension)=
 ### DuckDB Extension
 
 To install and use the DuckDB extension in PostgreSQL:
@@ -127,6 +129,7 @@ SELECT * FROM duckdb.query('
 ');
 ```
 
+(pg-vector-extension)=
 ### PG Vector Extension
 
 To install and use the PG Vector extension for vector similarity search:
