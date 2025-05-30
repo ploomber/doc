@@ -1,0 +1,7 @@
+fastapi>=0.108.0
+uvicorn>=0.25.0
+git+https://github.com/modelcontextprotocol/python-sdk.git
+requests>=2.32.0
+python-dotenv>=1.0.0
+pydantic>=2.0.0
+PyJWT>=2.8.0 
