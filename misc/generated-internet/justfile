@@ -1,0 +1,34 @@
+# List commands
+default:
+    just --list
+
+VERSION := `whoami | tr -d '\n' && echo -n "-" && git rev-parse --short HEAD`
+
+# ---------------------- Helper -----------------------
+
+# Update the requirements.txt files
+gen_requirements:
+    #!/usr/bin/env sh
+    pip list --format=freeze > requirements.txt
+
+# -------------------- Run locally ---------------------
+# Development server
+dev:
+    uvicorn src.main:app --reload --port 8080
+
+# ------------ Docker Build preview --------------
+
+# Build the Docker Image of the Project
+build:
+    docker build . -t debugger-api
+
+# Preview the build with Docker
+preview profile model_api_key:
+    just _req
+    docker run -p 8080:80 -t -e PROFILE={{profile}} -e MODEL_API_KEY={{model_api_key}} debugger-api
+
+# -------------------- Deploy ---------------------
+
+# Deploy the API to Ploomber Cloud
+deploy model_api_key:
+    PROFILE=PROD MODEL_API_KEY={{model_api_key}} VERSION={{VERSION}} ploomber-cloud deploy
