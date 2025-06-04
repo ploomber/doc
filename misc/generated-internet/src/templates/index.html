@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberHub - Digital Escape Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=MS+Gothic&family=Courier+New&display=swap');
+
+        :root {
+            --window-gray: #c0c0c0;
+            --window-dark: #808080;
+            --window-light: #ffffff;
+            --title-blue: #008080;
+            --vaporwave-pink: #ff00ff;
+            --vaporwave-cyan: #00ffff;
+            --neon-green: #00ff00;
+            --sunset-orange: #ff8000;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'MS Gothic', monospace;
+            font-size: 11px;
+            background: linear-gradient(180deg, #ff00ff 0%, #8000ff 50%, #0080ff 100%);
+            color: #000000;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Vaporwave background with grid */
+        body::before {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background:
+                linear-gradient(90deg, transparent 49%, #ff00ff 50%, #ff00ff 51%, transparent 52%),
+                linear-gradient(0deg, transparent 49%, #ff00ff 50%, #ff00ff 51%, transparent 52%);
+            background-size: 40px 40px;
+            opacity: 0.3;
+            z-index: -2;
+            transform: perspective(500px) rotateX(45deg);
+            transform-origin: bottom;
+            animation: gridPulse 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes gridPulse {
+            0% {
+                opacity: 0.2;
+                background-size: 40px 40px;
+            }
+            100% {
+                opacity: 0.4;
+                background-size: 50px 50px;
+            }
+        }
+
+        /* Enhanced floating geometric shapes */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 20%;
+            right: 10%;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            animation: float 6s ease-in-out infinite;
+            z-index: -1;
+            filter: drop-shadow(0 0 20px #00ffff);
+        }
+
+        /* Cyberpunk particles */
+        .cyber-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: #00ffff;
+            border-radius: 50%;
+            animation: particleFloat linear infinite;
+            box-shadow: 0 0 10px currentColor;
+        }
+
+        .particle:nth-child(1) { width: 3px; height: 3px; left: 10%; animation-duration: 8s; animation-delay: 0s; }
+        .particle:nth-child(2) { width: 2px; height: 2px; left: 20%; animation-duration: 12s; animation-delay: 1s; background: #ff00ff; }
+        .particle:nth-child(3) { width: 4px; height: 4px; left: 30%; animation-duration: 10s; animation-delay: 2s; background: #00ff00; }
+        .particle:nth-child(4) { width: 2px; height: 2px; left: 40%; animation-duration: 15s; animation-delay: 3s; }
+        .particle:nth-child(5) { width: 3px; height: 3px; left: 50%; animation-duration: 9s; animation-delay: 4s; background: #ff8000; }
+        .particle:nth-child(6) { width: 2px; height: 2px; left: 60%; animation-duration: 11s; animation-delay: 5s; background: #ff00ff; }
+        .particle:nth-child(7) { width: 4px; height: 4px; left: 70%; animation-duration: 13s; animation-delay: 6s; background: #00ff00; }
+        .particle:nth-child(8) { width: 3px; height: 3px; left: 80%; animation-duration: 7s; animation-delay: 7s; }
+        .particle:nth-child(9) { width: 2px; height: 2px; left: 90%; animation-duration: 14s; animation-delay: 8s; background: #ff8000; }
+        .particle:nth-child(10) { width: 3px; height: 3px; left: 15%; animation-duration: 16s; animation-delay: 9s; background: #ff00ff; }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Scanlines effect */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            background: linear-gradient(
+                transparent 50%,
+                rgba(0, 255, 255, 0.3) 50%
+            );
+            background-size: 100% 4px;
+            animation: scanlineMove 0.1s linear infinite;
+        }
+
+        @keyframes scanlineMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* Additional geometric shapes with more variety */
+        .cyber-shape {
+            position: fixed;
+            opacity: 0.6;
+            z-index: -2;
+        }
+
+        .cyber-shape-1 {
+            top: 15%;
+            left: 5%;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, var(--vaporwave-pink), transparent);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            animation: float 8s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px var(--vaporwave-pink));
+        }
+
+        .cyber-shape-2 {
+            top: 60%;
+            right: 15%;
+            width: 60px;
+            height: 60px;
+            background: var(--vaporwave-cyan);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite reverse;
+            filter: drop-shadow(0 0 15px var(--vaporwave-cyan));
+        }
+
+        .cyber-shape-3 {
+            top: 30%;
+            left: 80%;
+            width: 40px;
+            height: 40px;
+            background: var(--neon-green);
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            animation: spin 10s linear infinite;
+            filter: drop-shadow(0 0 15px var(--neon-green));
+        }
+
+        .cyber-shape-4 {
+            top: 70%;
+            left: 20%;
+            width: 50px;
+            height: 20px;
+            background: var(--sunset-orange);
+            animation: floatHorizontal 12s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px var(--sunset-orange));
+        }
+
+        .cyber-shape-5 {
+            top: 40%;
+            right: 30%;
+            width: 30px;
+            height: 30px;
+            background: var(--vaporwave-pink);
+            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+            animation: float 7s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px var(--vaporwave-pink));
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.2); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        @keyframes floatHorizontal {
+            0%, 100% { transform: translateX(0px) translateY(0px); }
+            25% { transform: translateX(20px) translateY(-10px); }
+            50% { transform: translateX(40px) translateY(0px); }
+            75% { transform: translateX(20px) translateY(10px); }
+        }
+
+        /* Moving data streams */
+        .data-stream {
+            position: fixed;
+            width: 2px;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, #00ff00, transparent);
+            z-index: -2;
+            animation: dataFlow linear infinite;
+        }
+
+        .data-stream:nth-child(1) { left: 5%; animation-duration: 3s; animation-delay: 0s; }
+        .data-stream:nth-child(2) { left: 25%; animation-duration: 4s; animation-delay: 1s; }
+        .data-stream:nth-child(3) { left: 45%; animation-duration: 5s; animation-delay: 2s; }
+        .data-stream:nth-child(4) { left: 65%; animation-duration: 3.5s; animation-delay: 3s; }
+        .data-stream:nth-child(5) { left: 85%; animation-duration: 4.5s; animation-delay: 4s; }
+
+        @keyframes dataFlow {
+            0% { transform: translateY(-100vh); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* Glitch effect overlay */
+        .glitch-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 0, 255, 0.1) 50%, 
+                transparent 100%);
+            animation: glitchFlash 8s infinite;
+        }
+
+        @keyframes glitchFlash {
+            0%, 90%, 100% { opacity: 0; transform: translateX(0); }
+            91% { opacity: 0.3; transform: translateX(-2px); }
+            92% { opacity: 0.1; transform: translateX(2px); }
+            93% { opacity: 0.2; transform: translateX(-1px); }
+            94% { opacity: 0; transform: translateX(0); }
+        }
+
+        /* Enhanced retro grid with more depth */
+        .retro-grid {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 300px;
+            background:
+                linear-gradient(90deg, transparent 48%, var(--vaporwave-pink) 49%, var(--vaporwave-pink) 51%, transparent 52%),
+                linear-gradient(0deg, transparent 48%, var(--vaporwave-pink) 49%, var(--vaporwave-pink) 51%, transparent 52%);
+            background-size: 30px 30px;
+            opacity: 0.3;
+            z-index: -3;
+            transform: perspective(400px) rotateX(60deg);
+            transform-origin: bottom;
+            animation: gridWave 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes gridWave {
+            0% {
+                opacity: 0.2;
+                transform: perspective(400px) rotateX(60deg) translateZ(0px);
+            }
+            100% {
+                opacity: 0.4;
+                transform: perspective(400px) rotateX(60deg) translateZ(20px);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+
+        .desktop {
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .window {
+            background: var(--window-gray);
+            border: 2px outset var(--window-gray);
+            margin-bottom: 20px;
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .window-title {
+            background: linear-gradient(90deg, var(--title-blue), #004040);
+            color: white;
+            padding: 3px 8px;
+            font-weight: bold;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 2px;
+        }
+
+        .window-button {
+            background: var(--window-gray);
+            border: 1px outset var(--window-gray);
+            width: 16px;
+            height: 14px;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .window-button:hover {
+            border: 1px inset var(--window-gray);
+        }
+
+        .window-content {
+            padding: 8px;
+            background: var(--window-gray);
+        }
+
+        .main-window {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cyber-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--vaporwave-cyan);
+            text-shadow: 2px 2px 0px var(--vaporwave-pink),
+                4px 4px 0px #000000;
+            margin: 20px 0;
+            animation: neonPulse 2s infinite alternate;
+            letter-spacing: 4px;
+        }
+
+        @keyframes neonPulse {
+            0% {
+                text-shadow: 2px 2px 0px var(--vaporwave-pink),
+                    4px 4px 0px #000000,
+                    0 0 10px var(--vaporwave-cyan);
+            }
+
+            100% {
+                text-shadow: 2px 2px 0px var(--vaporwave-pink),
+                    4px 4px 0px #000000,
+                    0 0 20px var(--vaporwave-cyan),
+                    0 0 30px var(--vaporwave-cyan);
+            }
+        }
+
+        .menu-bar {
+            background: var(--window-gray);
+            border: 1px inset var(--window-gray);
+            padding: 2px;
+            display: flex;
+            gap: 1px;
+        }
+
+        .menu-item {
+            padding: 4px 8px;
+            font-size: 11px;
+            background: var(--window-gray);
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            border: 1px outset var(--window-gray);
+            background: var(--window-light);
+        }
+
+        .toolbar {
+            background: var(--window-gray);
+            border: 1px inset var(--window-gray);
+            padding: 4px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-button {
+            background: var(--window-gray);
+            border: 1px outset var(--window-gray);
+            padding: 4px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .toolbar-button:hover {
+            border: 1px inset var(--window-gray);
+        }
+
+        .content-area {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .sidebar-window {
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        .main-content-window {
+            flex: 1;
+        }
+
+        .listbox {
+            background: white;
+            border: 2px inset var(--window-gray);
+            min-height: 150px;
+            padding: 4px;
+            font-size: 11px;
+        }
+
+        .listbox-item {
+            padding: 2px 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .listbox-item:hover {
+            background: var(--title-blue);
+            color: white;
+        }
+
+        .icon {
+            width: 16px;
+            height: 16px;
+            display: inline-block;
+            background: var(--window-gray);
+            border: 1px outset var(--window-gray);
+            text-align: center;
+            line-height: 14px;
+            font-size: 8px;
+        }
+
+        .search-box {
+            background: white;
+            border: 2px inset var(--window-gray);
+            padding: 8px;
+            margin: 8px 0;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 2px 4px;
+            border: 1px inset var(--window-gray);
+            background: white;
+            font-family: 'MS Gothic', monospace;
+            font-size: 11px;
+        }
+
+        .button {
+            background: var(--window-gray);
+            border: 2px outset var(--window-gray);
+            padding: 4px 12px;
+            font-size: 11px;
+            cursor: pointer;
+            margin: 4px 2px;
+            font-family: 'MS Gothic', monospace;
+        }
+
+        .button:hover {
+            background: var(--window-light);
+        }
+
+        .button:active {
+            border: 2px inset var(--window-gray);
+        }
+
+        .news-ticker {
+            background: black;
+            color: var(--neon-green);
+            padding: 4px;
+            font-family: monospace;
+            font-size: 10px;
+            border: 1px inset var(--window-gray);
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .ticker-text {
+            animation: scroll 15s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(100%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .status-bar {
+            background: var(--window-gray);
+            border: 1px inset var(--window-gray);
+            padding: 2px 8px;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+        }
+
+        .dialog-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--window-gray);
+            border: 2px outset var(--window-gray);
+            min-width: 300px;
+            box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+        }
+
+        .dialog-content {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .dialog-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--sunset-orange);
+            border: 1px outset var(--window-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .dialog-buttons {
+            padding: 8px 16px;
+            text-align: center;
+            border-top: 1px solid var(--window-dark);
+        }
+
+        .retro-ad {
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border: 2px solid #ffffff;
+            padding: 8px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 0px #000000;
+            animation: adGlow 1s infinite alternate;
+            margin: 8px 0;
+        }
+
+        @keyframes adGlow {
+            0% {
+                box-shadow: 0 0 5px #ff00ff;
+            }
+
+            100% {
+                box-shadow: 0 0 15px #00ffff;
+            }
+        }
+
+        .pixel-art {
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+
+        .loading-bar {
+            background: var(--window-dark);
+            border: 1px inset var(--window-gray);
+            height: 20px;
+            margin: 8px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            background: linear-gradient(90deg, var(--title-blue), var(--vaporwave-cyan));
+            height: 100%;
+            width: 0%;
+            animation: loading 3s ease-in-out infinite;
+        }
+
+        @keyframes loading {
+
+            0%,
+            100% {
+                width: 0%;
+            }
+
+            50% {
+                width: 100%;
+            }
+        }
+
+        .geometric-shape {
+            position: absolute;
+            opacity: 0.6;
+        }
+
+        .shape-1 {
+            top: 10%;
+            left: 5%;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--vaporwave-pink), transparent);
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .shape-2 {
+            top: 60%;
+            right: 15%;
+            width: 40px;
+            height: 40px;
+            background: var(--vaporwave-cyan);
+            border-radius: 50%;
+            animation: float 5s ease-in-out infinite reverse;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .content-area {
+                flex-direction: column;
+            }
+
+            .sidebar-window {
+                width: 100%;
+            }
+
+            .toolbar {
+                flex-wrap: wrap;
+            }
+
+            .cyber-title {
+                font-size: 18px;
+                letter-spacing: 2px;
+            }
+        }
+
+        /* Popup iframe windows */
+        .popup-window {
+            position: fixed;
+            background: var(--window-gray);
+            border: 2px outset var(--window-gray);
+            box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            min-width: 400px;
+            min-height: 300px;
+            display: none;
+            resize: both;
+            overflow: auto;
+        }
+
+        .popup-window.active {
+            z-index: 2001;
+        }
+
+        .popup-title-bar {
+            background: linear-gradient(90deg, var(--title-blue), #004040);
+            color: white;
+            padding: 3px 8px;
+            font-weight: bold;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+            user-select: none;
+        }
+
+        .popup-title-bar:active {
+            background: linear-gradient(90deg, #006060, var(--title-blue));
+        }
+
+        .popup-controls {
+            display: flex;
+            gap: 2px;
+        }
+
+        .popup-control-btn {
+            background: var(--window-gray);
+            border: 1px outset var(--window-gray);
+            width: 16px;
+            height: 14px;
+            font-size: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: black;
+        }
+
+        .popup-control-btn:hover {
+            border: 1px inset var(--window-gray);
+        }
+
+        .popup-content {
+            height: calc(100% - 22px);
+            background: var(--window-gray);
+            border-top: 1px solid var(--window-dark);
+        }
+
+        .popup-iframe {
+            width: 100%;
+            height: 100%;
+            border: 2px inset var(--window-gray);
+            background: white;
+        }
+
+        .popup-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background: white;
+            border: 2px inset var(--window-gray);
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .popup-loading-text {
+            font-family: 'MS Gothic', monospace;
+            font-size: 11px;
+        }
+
+        /* Window manager styles */
+        .window-manager {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--window-gray);
+            border-top: 2px outset var(--window-gray);
+            height: 32px;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            gap: 4px;
+            z-index: 3000;
+        }
+
+        .taskbar-button {
+            background: var(--window-gray);
+            border: 1px outset var(--window-gray);
+            padding: 4px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .taskbar-button:hover {
+            background: var(--window-light);
+        }
+
+        .taskbar-button.active {
+            border: 1px inset var(--window-gray);
+            background: var(--window-dark);
+        }
+
+        /* Taskbar buttons container - make buttons flow horizontally */
+        #taskbar-buttons {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        /* Popup menu for iframe/fullpage choice */
+        .context-menu {
+            position: fixed;
+            background: var(--window-gray);
+            border: 2px outset var(--window-gray);
+            padding: 2px;
+            z-index: 4000;
+            display: none;
+            min-width: 120px;
+        }
+
+        .context-menu-item {
+            padding: 4px 8px;
+            font-size: 11px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .context-menu-item:hover {
+            border: 1px outset var(--window-gray);
+            background: var(--window-light);
+        }
+
+        /* Binary rain effect */
+        .binary-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -4;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #00ff00;
+        }
+
+        .binary-column {
+            position: absolute;
+            top: -100%;
+            white-space: nowrap;
+            animation: binaryFall linear infinite;
+            text-shadow: 0 0 5px currentColor;
+            opacity: 0.7;
+        }
+
+        .binary-column:nth-child(1) { left: 2%; animation-duration: 6s; animation-delay: 0s; }
+        .binary-column:nth-child(2) { left: 8%; animation-duration: 8s; animation-delay: 1s; }
+        .binary-column:nth-child(3) { left: 15%; animation-duration: 7s; animation-delay: 2s; }
+        .binary-column:nth-child(4) { left: 22%; animation-duration: 9s; animation-delay: 3s; }
+        .binary-column:nth-child(5) { left: 28%; animation-duration: 5s; animation-delay: 4s; }
+        .binary-column:nth-child(6) { left: 35%; animation-duration: 10s; animation-delay: 5s; }
+        .binary-column:nth-child(7) { left: 42%; animation-duration: 6s; animation-delay: 6s; }
+        .binary-column:nth-child(8) { left: 48%; animation-duration: 8s; animation-delay: 7s; }
+        .binary-column:nth-child(9) { left: 55%; animation-duration: 7s; animation-delay: 8s; }
+        .binary-column:nth-child(10) { left: 62%; animation-duration: 9s; animation-delay: 9s; }
+        .binary-column:nth-child(11) { left: 68%; animation-duration: 6s; animation-delay: 10s; }
+        .binary-column:nth-child(12) { left: 75%; animation-duration: 8s; animation-delay: 11s; }
+        .binary-column:nth-child(13) { left: 82%; animation-duration: 7s; animation-delay: 12s; }
+        .binary-column:nth-child(14) { left: 88%; animation-duration: 5s; animation-delay: 13s; }
+        .binary-column:nth-child(15) { left: 95%; animation-duration: 9s; animation-delay: 14s; }
+
+        @keyframes binaryFall {
+            0% { transform: translateY(-100vh); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* Circuit board patterns */
+        .circuit-pattern {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -5;
+            opacity: 0.1;
+            background:
+                linear-gradient(90deg, transparent 0%, #00ffff 49%, #00ffff 51%, transparent 100%),
+                linear-gradient(0deg, transparent 0%, #00ffff 49%, #00ffff 51%, transparent 100%),
+                radial-gradient(circle at 20% 30%, #ff00ff 2px, transparent 2px),
+                radial-gradient(circle at 60% 70%, #00ff00 2px, transparent 2px),
+                radial-gradient(circle at 80% 20%, #ffff00 2px, transparent 2px);
+            background-size: 150px 150px, 150px 150px, 80px 80px, 120px 120px, 100px 100px;
+            animation: circuitFlow 20s linear infinite;
+        }
+
+        @keyframes circuitFlow {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(-50px, -25px) rotate(90deg); }
+            50% { transform: translate(-100px, -50px) rotate(180deg); }
+            75% { transform: translate(-50px, -25px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        .energy-wave:nth-child(2) { animation-delay: 1s; border-color: #ff00ff; }
+        .energy-wave:nth-child(3) { animation-delay: 2s; border-color: #00ff00; }
+        .energy-wave:nth-child(4) { animation-delay: 3s; border-color: #ffff00; }
+
+        @keyframes energyPulse {
+            0% {
+                transform: translateX(-50%) scale(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(-50%) scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Laser beams */
+        .laser-beam {
+            position: fixed;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ff0040, #ff0040, transparent);
+            z-index: -2;
+            box-shadow: 0 0 10px #ff0040;
+            animation: laserSweep linear infinite;
+        }
+
+        .laser-beam:nth-child(1) {
+            top: 20%;
+            width: 100%;
+            animation-duration: 3s;
+        }
+
+        .laser-beam:nth-child(2) {
+            top: 60%;
+            width: 100%;
+            animation-duration: 4s;
+            animation-delay: 1.5s;
+            background: linear-gradient(90deg, transparent, #00ff80, #00ff80, transparent);
+            box-shadow: 0 0 10px #00ff80;
+        }
+
+        @keyframes laserSweep {
+            0% { transform: translateX(-100%); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(100%); opacity: 0; }
+        }
+
+        /* Holographic effects */
+        .hologram {
+            position: fixed;
+            z-index: -2;
+            opacity: 0.3;
+            animation: hologramFlicker 2s infinite;
+        }
+
+        .hologram-1 {
+            top: 25%;
+            right: 10%;
+            width: 60px;
+            height: 60px;
+            border: 2px solid #00ffff;
+            border-radius: 50%;
+            background: radial-gradient(circle, transparent 40%, #00ffff 41%, #00ffff 43%, transparent 44%);
+        }
+
+        .hologram-2 {
+            top: 45%;
+            left: 8%;
+            width: 40px;
+            height: 80px;
+            border: 2px solid #ff00ff;
+            background: linear-gradient(45deg, transparent 48%, #ff00ff 50%, transparent 52%);
+        }
+
+        .hologram-3 {
+            top: 65%;
+            right: 25%;
+            width: 50px;
+            height: 50px;
+            border: 2px solid #ffff00;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            background: #ffff00;
+        }
+
+        @keyframes hologramFlicker {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            25% { opacity: 0.6; transform: scale(1.05); }
+            50% { opacity: 0.2; transform: scale(0.95); }
+            75% { opacity: 0.5; transform: scale(1.02); }
+        }
+
+        /* Digital noise overlay */
+        .digital-noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.05;
+            background: 
+                radial-gradient(circle at 20% 30%, #ffffff 1px, transparent 1px),
+                radial-gradient(circle at 60% 70%, #ffffff 1px, transparent 1px),
+                radial-gradient(circle at 80% 20%, #ffffff 1px, transparent 1px),
+                radial-gradient(circle at 40% 90%, #ffffff 1px, transparent 1px);
+            background-size: 10px 10px, 15px 15px, 12px 12px, 18px 18px;
+            animation: noiseShift 0.2s linear infinite;
+        }
+
+        @keyframes noiseShift {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-1px, 1px); }
+            50% { transform: translate(1px, -1px); }
+            75% { transform: translate(-1px, -1px); }
+            100% { transform: translate(1px, 1px); }
+        }
+
+        /* Matrix-style text scrolling */
+        .matrix-text {
+            position: fixed;
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            color: #00ff00;
+            z-index: -4;
+            white-space: nowrap;
+            opacity: 0.4;
+            animation: textScroll linear infinite;
+        }
+
+        .matrix-text:nth-child(1) {
+            top: 15%;
+            animation-duration: 15s;
+        }
+
+        .matrix-text:nth-child(2) {
+            top: 35%;
+            animation-duration: 20s;
+            animation-delay: 5s;
+            color: #ff00ff;
+        }
+
+        .matrix-text:nth-child(3) {
+            top: 55%;
+            animation-duration: 12s;
+            animation-delay: 10s;
+            color: #00ffff;
+        }
+
+        .matrix-text:nth-child(4) {
+            top: 75%;
+            animation-duration: 18s;
+            animation-delay: 15s;
+            color: #ffff00;
+        }
+
+        @keyframes textScroll {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Neon grid lines */
+        .neon-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -5;
+            opacity: 0.15;
+            background:
+                linear-gradient(90deg, transparent 98%, #00ffff 99%, transparent 100%),
+                linear-gradient(0deg, transparent 98%, #ff00ff 99%, transparent 100%);
+            background-size: 100px 100px;
+            animation: gridShift 10s ease-in-out infinite alternate;
+        }
+
+        @keyframes gridShift {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(20px, 20px) scale(1.1); }
+        }
+
+        /* Plasma effect */
+        .plasma-effect {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -6;
+            opacity: 0.1;
+            background: 
+                radial-gradient(ellipse at top left, #ff00ff 0%, transparent 50%),
+                radial-gradient(ellipse at top right, #00ffff 0%, transparent 50%),
+                radial-gradient(ellipse at bottom left, #00ff00 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, #ffff00 0%, transparent 50%);
+            animation: plasmaWave 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes plasmaWave {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.2) rotate(90deg); }
+        }
+
+        /* Data flow lines */
+        .data-flow {
+            position: fixed;
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, transparent, #00ff00, transparent);
+            z-index: -3;
+            animation: dataFlowMove linear infinite;
+        }
+
+        .data-flow:nth-child(1) { left: 12%; animation-duration: 2s; animation-delay: 0s; }
+        .data-flow:nth-child(2) { left: 24%; animation-duration: 3s; animation-delay: 0.5s; background: linear-gradient(to bottom, transparent, #ff00ff, transparent); }
+        .data-flow:nth-child(3) { left: 36%; animation-duration: 2.5s; animation-delay: 1s; background: linear-gradient(to bottom, transparent, #00ffff, transparent); }
+        .data-flow:nth-child(4) { left: 48%; animation-duration: 4s; animation-delay: 1.5s; }
+        .data-flow:nth-child(5) { left: 60%; animation-duration: 2.2s; animation-delay: 2s; background: linear-gradient(to bottom, transparent, #ffff00, transparent); }
+        .data-flow:nth-child(6) { left: 72%; animation-duration: 3.5s; animation-delay: 2.5s; background: linear-gradient(to bottom, transparent, #ff00ff, transparent); }
+        .data-flow:nth-child(7) { left: 84%; animation-duration: 2.8s; animation-delay: 3s; background: linear-gradient(to bottom, transparent, #00ffff, transparent); }
+        .data-flow:nth-child(8) { left: 96%; animation-duration: 3.2s; animation-delay: 3.5s; }
+
+        @keyframes dataFlowMove {
+            0% { transform: translateY(-100vh); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(100vh); opacity: 0; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Extensive Cyberpunk Background System -->
+    <div class="plasma-effect"></div>
+    <div class="neon-grid"></div>
+    <div class="circuit-pattern"></div>
+    <div class="digital-noise"></div>
+    
+    <!-- Binary Rain -->
+    <div class="binary-rain">
+        <div class="binary-column">10110100<br>01101001<br>11010110<br>00101011<br>10110100<br>01101001<br>11010110<br>00101011<br>10110100<br>01101001<br>11010110<br>00101011<br>10110100<br>01101001<br>11010110<br>00101011</div>
+        <div class="binary-column">01110010<br>10011011<br>01100100<br>11010001<br>01110010<br>10011011<br>01100100<br>11010001<br>01110010<br>10011011<br>01100100<br>11010001<br>01110010<br>10011011<br>01100100<br>11010001</div>
+        <div class="binary-column">11001010<br>00110111<br>10101100<br>01010011<br>11001010<br>00110111<br>10101100<br>01010011<br>11001010<br>00110111<br>10101100<br>01010011<br>11001010<br>00110111<br>10101100<br>01010011</div>
+        <div class="binary-column">10101010<br>01010101<br>11110000<br>00001111<br>10101010<br>01010101<br>11110000<br>00001111<br>10101010<br>01010101<br>11110000<br>00001111<br>10101010<br>01010101<br>11110000<br>00001111</div>
+        <div class="binary-column">00111100<br>11000011<br>10110001<br>01001110<br>00111100<br>11000011<br>10110001<br>01001110<br>00111100<br>11000011<br>10110001<br>01001110<br>00111100<br>11000011<br>10110001<br>01001110</div>
+        <div class="binary-column">11100111<br>00011000<br>10000001<br>01111110<br>11100111<br>00011000<br>10000001<br>01111110<br>11100111<br>00011000<br>10000001<br>01111110<br>11100111<br>00011000<br>10000001<br>01111110</div>
+        <div class="binary-column">01100110<br>10011001<br>00100100<br>11011011<br>01100110<br>10011001<br>00100100<br>11011011<br>01100110<br>10011001<br>00100100<br>11011011<br>01100110<br>10011001<br>00100100<br>11011011</div>
+        <div class="binary-column">10011101<br>01100010<br>11010011<br>00101100<br>10011101<br>01100010<br>11010011<br>00101100<br>10011101<br>01100010<br>11010011<br>00101100<br>10011101<br>01100010<br>11010011<br>00101100</div>
+        <div class="binary-column">11111000<br>00000111<br>10101010<br>01010101<br>11111000<br>00000111<br>10101010<br>01010101<br>11111000<br>00000111<br>10101010<br>01010101<br>11111000<br>00000111<br>10101010<br>01010101</div>
+        <div class="binary-column">00110011<br>11001100<br>01010101<br>10101010<br>00110011<br>11001100<br>01010101<br>10101010<br>00110011<br>11001100<br>01010101<br>10101010<br>00110011<br>11001100<br>01010101<br>10101010</div>
+        <div class="binary-column">11010110<br>00101001<br>10110100<br>01001011<br>11010110<br>00101001<br>10110100<br>01001011<br>11010110<br>00101001<br>10110100<br>01001011<br>11010110<br>00101001<br>10110100<br>01001011</div>
+        <div class="binary-column">01011010<br>10100101<br>00111100<br>11000011<br>01011010<br>10100101<br>00111100<br>11000011<br>01011010<br>10100101<br>00111100<br>11000011<br>01011010<br>10100101<br>00111100<br>11000011</div>
+        <div class="binary-column">10001111<br>01110000<br>11100001<br>00011110<br>10001111<br>01110000<br>11100001<br>00011110<br>10001111<br>01110000<br>11100001<br>00011110<br>10001111<br>01110000<br>11100001<br>00011110</div>
+        <div class="binary-column">01111001<br>10000110<br>00101101<br>11010010<br>01111001<br>10000110<br>00101101<br>11010010<br>01111001<br>10000110<br>00101101<br>11010010<br>01111001<br>10000110<br>00101101<br>11010010</div>
+        <div class="binary-column">11001001<br>00110110<br>10100100<br>01011011<br>11001001<br>00110110<br>10100100<br>01011011<br>11001001<br>00110110<br>10100100<br>01011011<br>11001001<br>00110110<br>10100100<br>01011011</div>
+    </div>
+        
+    <!-- Laser Beams -->
+    <div class="laser-beam"></div>
+    <div class="laser-beam"></div>
+    
+    <!-- Holographic Elements -->
+    
+    <!-- Data Flow Lines -->
+    <div class="data-flow"></div>
+    <div class="data-flow"></div>
+    <div class="data-flow"></div>
+    <div class="data-flow"></div>
+    <div class="data-flow"></div>
+    <div class="data-flow"></div>
+    <div class="data-flow"></div>
+    <div class="data-flow"></div>
+
+    <!-- Enhanced Cyberpunk Background Elements -->
+    <div class="cyber-particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <div class="scanlines"></div>
+    <div class="glitch-overlay"></div>
+    
+    <div class="data-stream"></div>
+    <div class="data-stream"></div>
+    <div class="data-stream"></div>
+    <div class="data-stream"></div>
+    <div class="data-stream"></div>
+    
+    <div class="desktop">
+        <div class="window main-window">
+            <div class="window-title">
+                CyberHub.exe - Digital Escape Portal
+                <div class="window-controls">
+                    <div class="window-button">_</div>
+                    <div class="window-button">□</div>
+                    <div class="window-button" data-action="close" data-target="main">×</div>
+                </div>
+            </div>
+
+            <div class="window-content">
+                <!-- <div class="cyber-title">CYBERHUB</div> -->
+
+
+                <div class="menu-bar">
+                    <div class="menu-item" data-action="navigate" data-target="file">File</div>
+                    <div class="menu-item" data-action="navigate" data-target="edit">Edit</div>
+                    <div class="menu-item" data-action="navigate" data-target="view">View</div>
+                    <div class="menu-item" data-action="navigate" data-target="go">Go</div>
+                    <div class="menu-item" data-action="navigate" data-target="bookmarks">Bookmarks</div>
+                    <div class="menu-item" data-action="navigate" data-target="help">Help</div>
+                </div>
+
+                <div class="toolbar">
+                    <div class="toolbar-button" data-action="navigate" data-target="back">← Back</div>
+                    <div class="toolbar-button" data-action="navigate" data-target="forward">Forward →</div>
+                    <div class="toolbar-button" data-action="navigate" data-target="home">🏠 Home</div>
+                    <div class="toolbar-button" data-action="navigate" data-target="reload">↻ Reload</div>
+                </div>
+
+                <div class="news-ticker">
+                    <div class="ticker-text">★ Ploomber: Deploy all your Python Apps under the same platform! Simple &
+                        predictive pricing. Perfect to host internal apps with enterprise auth ★</div>
+                </div>
+
+                <div class="content-area">
+                    <div class="sidebar-window">
+                        <div class="window-title">
+                            Navigator
+                        </div>
+                        <div class="window-content">
+                            <div class="search-box">
+                                <strong>Web Search:</strong><br>
+                                <input type="text" class="search-input" id="search-input"
+                                    placeholder="Enter URL or keywords...">
+                                <button class="button" data-action="search">GO!</button>
+                            </div>
+
+                            <div style="margin: 8px 0; font-weight: bold;">Categories:</div>
+                            <div class="listbox">
+                                <div class="listbox-item" data-action="category" data-target="tech">
+                                    <span class="icon">💻</span> Tech Zone
+                                </div>
+                                <div class="listbox-item" data-action="category" data-target="games">
+                                    <span class="icon">🎮</span> Games Central
+                                </div>
+                                <div class="listbox-item" data-action="category" data-target="music">
+                                    <span class="icon">🎵</span> Music Hub
+                                </div>
+                                <div class="listbox-item" data-action="category" data-target="art">
+                                    <span class="icon">🎨</span> Digital Art
+                                </div>
+                                <div class="listbox-item" data-action="category" data-target="chat">
+                                    <span class="icon">💬</span> Chat Rooms
+                                </div>
+                                <div class="listbox-item" data-action="category" data-target="news">
+                                    <span class="icon">📰</span> News Feed
+                                </div>
+                                <div class="listbox-item" data-action="category" data-target="shop">
+                                    <span class="icon">🛒</span> Cyber Mall
+                                </div>
+                                <div class="listbox-item" data-action="category" data-target="forums">
+                                    <span class="icon">📋</span> BBS Forums
+                                </div>
+                                <div class="listbox-item" data-action="category" data-target="downloads">
+                                    <span class="icon">💾</span> Downloads
+                                </div>
+                                <div class="listbox-item" data-action="category" data-target="webmail">
+                                    <span class="icon">📧</span> Webmail
+                                </div>
+                                <div class="listbox-item" data-action="category" data-target="personal">
+                                    <span class="icon">🏠</span> Personal Pages
+                                </div>
+                                <div class="listbox-item" data-action="category" data-target="links">
+                                    <span class="icon">🔗</span> Cool Links
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="main-content-window">
+                        <div class="window-content" id="main-content">
+                            <div style="text-align: center; margin-bottom: 16px;">
+                                <strong>Welcome to the Digital Frontier</strong><br>
+                                <small>Your gateway to cyberspace • Est. 1995</small>
+                            </div>
+
+                            <div style="background: white; border: 2px inset #c0c0c0; padding: 12px; margin: 12px 0;">
+                                <div style="font-weight: bold; margin-bottom: 8px; color: #008080;">🌐 About CyberHub
+                                </div>
+                                <div style="font-size: 11px; line-height: 1.4;">
+                                    CyberHub is your portal to explore the digital frontier. Navigate through various
+                                    sections using the categories on the left, or dive into our curated collections
+                                    below.
+                                    Experience the web as it was meant to be - raw, authentic, and full of discovery.
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 8px; margin: 12px 0;">
+                                <div style="flex: 1;">
+                                    <div style="font-weight: bold; margin-bottom: 4px;">🔥 Hot Picks:</div>
+                                    <div class="listbox" style="min-height: 120px;">
+                                        <div class="listbox-item" data-action="hotpick" data-target="vr">
+                                            <span class="icon">🥽</span> Virtual Reality Central
+                                        </div>
+                                        <div class="listbox-item" data-action="hotpick" data-target="ai">
+                                            <span class="icon">🤖</span> AI Playground
+                                        </div>
+                                        <div class="listbox-item" data-action="hotpick" data-target="cyber">
+                                            <span class="icon">🌐</span> CyberSpace Explorer
+                                        </div>
+                                        <div class="listbox-item" data-action="hotpick" data-target="retro">
+                                            <span class="icon">📼</span> Retro Gaming Zone
+                                        </div>
+                                        <div class="listbox-item" data-action="hotpick" data-target="digital">
+                                            <span class="icon">💾</span> Digital Archives
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="flex: 1;">
+                                    <div style="font-weight: bold; margin-bottom: 4px;">⭐ Featured Sites:</div>
+                                    <div class="listbox" style="min-height: 120px;">
+                                        <div class="listbox-item" data-action="featured" data-target="portal">
+                                            <span class="icon">💻</span> GitPlace
+                                        </div>
+                                        <div class="listbox-item" data-action="featured" data-target="community">
+                                            <span class="icon">👥</span> Orangedit
+                                        </div>
+                                        <div class="listbox-item" data-action="featured" data-target="library">
+                                            <span class="icon">📚</span> InstaPicture
+                                        </div>
+                                        <div class="listbox-item" data-action="featured" data-target="lab">
+                                            <span class="icon">🔬</span> YalouMail
+                                        </div>
+                                        <div class="listbox-item" data-action="featured" data-target="market">
+                                            <span class="icon">💰</span> Amaxon Shop
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background: white; border: 2px inset #c0c0c0; padding: 8px; margin: 12px 0;">
+                                <div style="font-weight: bold; margin-bottom: 8px;">📖 Quick Navigation Tips:</div>
+                                <div style="font-size: 11px; line-height: 1.3;">
+                                    • <strong>Click</strong> any item to open it in a new window<br>
+                                    • <strong>Ctrl+Click</strong> to navigate to the full page<br>
+                                    • <strong>Right-click</strong> to choose between window or page view<br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="status-bar">
+                    <span>Ready • Connected to CyberHub Network</span>
+                    <span>📡 56K Modem • 🔒 Secure Connection • Click=Window, Ctrl+Click=Navigate</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Context Menu for choosing between iframe and full page -->
+    <div class="context-menu" id="context-menu">
+        <div class="context-menu-item" data-choice="iframe">📱 Open in Window</div>
+        <div class="context-menu-item" data-choice="fullpage">🌐 Navigate to Page</div>
+    </div>
+
+    <!-- Window Manager Taskbar -->
+    <div class="window-manager" id="window-manager" style="display: none;">
+        <div style="font-weight: bold; margin-right: 8px;">Windows:</div>
+        <div id="taskbar-buttons"></div>
+    </div>
+
+    <div class="dialog-box" id="escape-dialog">
+        <div class="window-title">
+            System Alert
+            <div class="window-controls">
+                <div class="window-button">×</div>
+            </div>
+        </div>
+        <div class="dialog-content">
+            <div class="dialog-icon">⚠️</div>
+            <div>Do you want to escape the matrix?</div>
+        </div>
+        <div class="dialog-buttons">
+            <button class="button" data-action="dialog" data-target="ok">OK</button>
+            <button class="button" data-action="dialog" data-target="cancel">Cancel</button>
+        </div>
+    </div>
+
+    <div id="loading-toast" style="
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #c0c0c0;
+        border: 2px outset #c0c0c0;
+        padding: 8px 16px;
+        font-family: 'MS Gothic', monospace;
+        font-size: 11px;
+        z-index: 9999;
+        box-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+    ">💾 Loading next page...</div>
+
+    <script>
+        let windowCounter = 0;
+        let activeWindows = new Map();
+        let currentContextElement = null;
+
+        // Function to create a new popup window
+        function createPopupWindow(title, url) {
+            windowCounter++;
+            const windowId = `window-${windowCounter}`;
+
+            const popup = document.createElement('div');
+            popup.className = 'popup-window';
+            popup.id = windowId;
+            popup.style.left = `${50 + (windowCounter * 30)}px`;
+            popup.style.top = `${50 + (windowCounter * 30)}px`;
+            popup.style.width = '600px';
+            popup.style.height = '400px';
+
+            popup.innerHTML = `
+                <div class="popup-title-bar" data-window-id="${windowId}">
+                    <span class="popup-title">${title}</span>
+                    <div class="popup-controls">
+                        <div class="popup-control-btn" data-action="minimize" data-window-id="${windowId}">_</div>
+                        <div class="popup-control-btn" data-action="maximize" data-window-id="${windowId}">□</div>
+                        <div class="popup-control-btn" data-action="close-popup" data-window-id="${windowId}">×</div>
+                    </div>
+                </div>
+                <div class="popup-content">
+                    <div class="popup-loading">
+                        <div class="loading-bar" style="width: 200px;">
+                            <div class="loading-progress"></div>
+                        </div>
+                        <div class="popup-loading-text">💾 Loading ${title}...</div>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(popup);
+
+            // Show window manager if first window
+            if (activeWindows.size === 0) {
+                document.getElementById('window-manager').style.display = 'flex';
+            }
+
+            // Add to active windows
+            activeWindows.set(windowId, {title, url, element: popup, minimized: false});
+
+            // Add taskbar button
+            addTaskbarButton(windowId, title);
+
+            // Make window draggable
+            makeDraggable(popup, popup.querySelector('.popup-title-bar'));
+
+            // Focus the window
+            focusWindow(windowId);
+
+            // Show the window
+            popup.style.display = 'block';
+
+            // Load iframe after a short delay to show loading animation
+            setTimeout(() => {
+                loadIframeContent(windowId, url, title);
+            }, 1000);
+
+            return windowId;
+        }
+
+        // Function to load iframe content
+        async function loadIframeContent(windowId, url, title) {
+            const windowData = activeWindows.get(windowId);
+            if (!windowData) return;
+
+            const popup = windowData.element;
+            const contentDiv = popup.querySelector('.popup-content');
+
+            try {
+                // Check if this is a data URL (already contains HTML content)
+                if (url.startsWith('data:text/html')) {
+                    // Extract the HTML content from the data URL
+                    let htmlContent = decodeURIComponent(url.split(',')[1]);
+                    // Keep interactive JavaScript - now that CORS is fixed, it will work
+                    // Create iframe with the content using srcdoc and permissive sandbox for interactivity
+                    contentDiv.innerHTML = `<iframe class="popup-iframe" srcdoc="${htmlContent.replace(/"/g, '&quot;')}" sandbox="allow-same-origin allow-scripts allow-forms allow-popups"></iframe>`;
+                } else {
+                    // For regular URLs, fetch the content first
+                    const response = await fetch(url);
+                    let htmlContent = await response.text();
+                    // Keep interactive JavaScript - now that CORS is fixed, it will work
+                    // Create iframe with the content using srcdoc and permissive sandbox for interactivity
+                    contentDiv.innerHTML = `<iframe class="popup-iframe" srcdoc="${htmlContent.replace(/"/g, '&quot;')}" sandbox="allow-same-origin allow-scripts allow-forms allow-popups"></iframe>`;
+                }
+
+                // Set up navigation interception
+                setupIframeNavigation(windowId);
+
+            } catch (error) {
+                // If iframe fails, show error
+                contentDiv.innerHTML = `
+                    <div class="popup-loading">
+                        <div style="color: red;">❌ Failed to load ${title}</div>
+                        <div style="font-size: 10px; margin-top: 8px;">Error: ${error.message}</div>
+                    </div>
+                `;
+            }
+        }
+
+        // Function to set up iframe navigation interception
+        function setupIframeNavigation(windowId) {
+            const windowData = activeWindows.get(windowId);
+            if (!windowData) return;
+
+            const iframe = windowData.element.querySelector('.popup-iframe');
+            if (!iframe) return;
+
+            // Simple load event listener (no document access needed)
+            iframe.addEventListener('load', function () {
+                console.log(`Iframe loaded for window ${windowId}`);
+                // Note: We skip title extraction to avoid cross-origin warnings
+                // The title is already set when the window is created
+            });
+        }
+
+        // Function to add taskbar button
+        function addTaskbarButton(windowId, title) {
+            const taskbar = document.getElementById('taskbar-buttons');
+            const button = document.createElement('div');
+            button.className = 'taskbar-button active';
+            button.id = `taskbar-${windowId}`;
+            button.textContent = title;
+            button.onclick = () => toggleWindow(windowId);
+            taskbar.appendChild(button);
+        }
+
+        // Function to remove taskbar button
+        function removeTaskbarButton(windowId) {
+            const button = document.getElementById(`taskbar-${windowId}`);
+            if (button) button.remove();
+
+            // Hide window manager if no windows
+            if (activeWindows.size === 0) {
+                document.getElementById('window-manager').style.display = 'none';
+            }
+        }
+
+        // Function to focus window
+        function focusWindow(windowId) {
+            // Remove active class from all windows and taskbar buttons
+            document.querySelectorAll('.popup-window').forEach(w => w.classList.remove('active'));
+            document.querySelectorAll('.taskbar-button').forEach(b => b.classList.remove('active'));
+
+            // Add active class to current window and button
+            const windowData = activeWindows.get(windowId);
+            if (windowData) {
+                windowData.element.classList.add('active');
+                const button = document.getElementById(`taskbar-${windowId}`);
+                if (button) button.classList.add('active');
+            }
+        }
+
+        // Function to toggle window visibility
+        function toggleWindow(windowId) {
+            const windowData = activeWindows.get(windowId);
+            if (!windowData) return;
+
+            if (windowData.minimized) {
+                // Restore window
+                windowData.element.style.display = 'block';
+                windowData.minimized = false;
+                focusWindow(windowId);
+            } else {
+                // Minimize window
+                windowData.element.style.display = 'none';
+                windowData.minimized = true;
+            }
+        }
+
+        // Function to close popup window
+        function closeWindow(windowId) {
+            const windowData = activeWindows.get(windowId);
+            if (!windowData) return;
+
+            windowData.element.remove();
+            removeTaskbarButton(windowId);
+            activeWindows.delete(windowId);
+        }
+
+        // Make element draggable
+        function makeDraggable(element, handle) {
+            let isDragging = false;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+            let xOffset = 0;
+            let yOffset = 0;
+
+            handle.addEventListener('mousedown', dragStart);
+            document.addEventListener('mousemove', drag);
+            document.addEventListener('mouseup', dragEnd);
+
+            function dragStart(e) {
+                if (e.target.classList.contains('popup-control-btn')) return;
+
+                initialX = e.clientX - xOffset;
+                initialY = e.clientY - yOffset;
+
+                if (e.target === handle) {
+                    isDragging = true;
+                    element.style.cursor = 'move';
+                }
+            }
+
+            function drag(e) {
+                if (isDragging) {
+                    e.preventDefault();
+                    currentX = e.clientX - initialX;
+                    currentY = e.clientY - initialY;
+                    xOffset = currentX;
+                    yOffset = currentY;
+
+                    element.style.left = currentX + 'px';
+                    element.style.top = currentY + 'px';
+                }
+            }
+
+            function dragEnd(e) {
+                initialX = currentX;
+                initialY = currentY;
+                isDragging = false;
+                element.style.cursor = 'default';
+            }
+        }
+
+        // Function to show context menu
+        function showContextMenu(e, element) {
+            e.preventDefault();
+            currentContextElement = element;
+
+            const menu = document.getElementById('context-menu');
+            menu.style.display = 'block';
+            menu.style.left = e.pageX + 'px';
+            menu.style.top = e.pageY + 'px';
+        }
+
+        // Function to hide context menu
+        function hideContextMenu() {
+            document.getElementById('context-menu').style.display = 'none';
+            currentContextElement = null;
+        }
+
+        // Function to show loading toast
+        function showLoadingToast(message = '💾 Loading...') {
+            const toast = document.getElementById('loading-toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+        }
+
+        // Function to hide loading toast
+        function hideLoadingToast() {
+            const toast = document.getElementById('loading-toast');
+            toast.style.display = 'none';
+        }
+
+        // Function to send interaction data to the server and replace entire page
+        async function sendInteraction(actionType, elementId, elementText, inputValue = null, additionalData = null) {
+            showLoadingToast('💾 Loading next page...');
+
+            const interactionData = {
+                action_type: actionType,
+                element_id: elementId,
+                element_text: elementText,
+                input_value: inputValue,
+                page_url: window.location.href,
+                timestamp: new Date().toISOString(),
+                additional_data: additionalData
+            };
+
+            try {
+                const response = await fetch('/api/interact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(interactionData)
+                });
+
+                if (response.ok) {
+                    const htmlContent = await response.text();
+                    // Replace entire page content
+                    document.open();
+                    document.write(htmlContent);
+                    document.close();
+                } else {
+                    hideLoadingToast();
+                    console.error('Error: Server responded with status', response.status);
+                }
+            } catch (error) {
+                hideLoadingToast();
+                console.error('Error sending interaction:', error);
+            }
+        }
+
+        // Function to get page URL for iframe
+        async function getPageUrlForIframe(actionType, elementId, elementText, inputValue = null, additionalData = null) {
+            showLoadingToast('💾 Loading window content...');
+
+            const interactionData = {
+                action_type: actionType,
+                element_id: elementId,
+                element_text: elementText,
+                input_value: inputValue,
+                page_url: window.location.href,
+                timestamp: new Date().toISOString(),
+                additional_data: additionalData
+            };
+
+            try {
+                const response = await fetch('/api/interact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(interactionData)
+                });
+
+                if (response.ok) {
+                    // Instead of replacing page, return the URL to load in iframe
+                    // We'll use a data URL with the HTML content
+                    const htmlContent = await response.text();
+                    hideLoadingToast();
+                    return 'data:text/html,' + encodeURIComponent(htmlContent);
+                } else {
+                    hideLoadingToast();
+                    console.error('Error: Server responded with status', response.status);
+                    return null;
+                }
+            } catch (error) {
+                hideLoadingToast();
+                console.error('Error getting page content:', error);
+                return null;
+            }
+        }
+
+        // Handle iframe action (simplified version)
+        async function handleIframeAction(action, target, text, elementId) {
+            showLoadingToast('💾 Loading window...');
+
+            try {
+                // Get the page content from server using POST
+                const interactionData = {
+                    action_type: 'click',
+                    element_id: elementId,
+                    element_text: text,
+                    input_value: null,
+                    page_url: window.location.href,
+                    timestamp: new Date().toISOString(),
+                    additional_data: {action: action, target: target}
+                };
+
+                const response = await fetch('/api/interact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(interactionData)
+                });
+
+                if (response.ok) {
+                    const htmlContent = await response.text();
+                    // Create a data URL with the HTML content
+                    const dataUrl = 'data:text/html;charset=utf-8,' + encodeURIComponent(htmlContent);
+                    createPopupWindow(text.trim(), dataUrl);
+                    hideLoadingToast();
+                } else {
+                    hideLoadingToast();
+                    console.error('Error: Server responded with status', response.status);
+                }
+            } catch (error) {
+                hideLoadingToast();
+                console.error('Error creating iframe window:', error);
+            }
+        }
+
+        // Function to attach event listeners
+        function attachEventListeners() {
+            // Handle right-clicks on elements with data-action attribute
+            document.addEventListener('contextmenu', function (e) {
+                if (e.target.hasAttribute('data-action')) {
+                    showContextMenu(e, e.target);
+                }
+            });
+
+            // Handle clicks on context menu items
+            document.addEventListener('click', function (e) {
+                if (e.target.classList.contains('context-menu-item')) {
+                    const choice = e.target.getAttribute('data-choice');
+                    hideContextMenu();
+
+                    if (currentContextElement) {
+                        const action = currentContextElement.getAttribute('data-action');
+                        const target = currentContextElement.getAttribute('data-target');
+                        const text = currentContextElement.textContent;
+                        const elementId = currentContextElement.id || null;
+
+                        if (choice === 'iframe') {
+                            // Open in iframe window
+                            handleIframeAction(action, target, text, elementId);
+                        } else {
+                            // Navigate full page
+                            sendInteraction('click', elementId, text, null, {action: action, target: target});
+                        }
+                    }
+                    return;
+                }
+
+                // Hide context menu on any other click
+                hideContextMenu();
+
+                // Handle popup window controls
+                if (e.target.hasAttribute('data-action')) {
+                    const action = e.target.getAttribute('data-action');
+                    const windowId = e.target.getAttribute('data-window-id');
+
+                    if (action === 'close-popup') {
+                        closeWindow(windowId);
+                        return;
+                    }
+
+                    if (action === 'minimize') {
+                        toggleWindow(windowId);
+                        return;
+                    }
+
+                    if (action === 'maximize') {
+                        // Toggle maximize/restore
+                        const windowData = activeWindows.get(windowId);
+                        if (windowData) {
+                            const popup = windowData.element;
+                            if (popup.style.width === '100vw') {
+                                // Restore
+                                popup.style.width = '600px';
+                                popup.style.height = '400px';
+                                popup.style.left = '50px';
+                                popup.style.top = '50px';
+                            } else {
+                                // Maximize
+                                popup.style.width = '100vw';
+                                popup.style.height = 'calc(100vh - 32px)';
+                                popup.style.left = '0px';
+                                popup.style.top = '0px';
+                            }
+                        }
+                        return;
+                    }
+                }
+
+                // Handle clicks on popup windows to focus them
+                const popupWindow = e.target.closest('.popup-window');
+                if (popupWindow) {
+                    focusWindow(popupWindow.id);
+                    return;
+                }
+
+                // Handle regular clicks on elements with data-action attribute
+                if (e.target.hasAttribute('data-action')) {
+                    e.preventDefault();
+                    const action = e.target.getAttribute('data-action');
+                    const target = e.target.getAttribute('data-target');
+                    const text = e.target.textContent;
+                    const elementId = e.target.id || null;
+
+                    // Special handling for escape dialog
+                    if (action === 'close' && target === 'main') {
+                        document.getElementById('escape-dialog').style.display = 'block';
+                        return;
+                    }
+
+                    // Check if Ctrl key is pressed for full page navigation
+                    if (e.ctrlKey) {
+                        // Ctrl+click: Navigate to full page
+                        sendInteraction('click', elementId, text, null, {action: action, target: target});
+                    } else {
+                        // Regular click: Open in iframe window
+                        handleIframeAction(action, target, text, elementId);
+                    }
+                }
+            });
+
+            // Handle search input
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') {
+                        const searchValue = e.target.value;
+                        sendInteraction('search', 'search-input', 'Search', searchValue);
+                    }
+                });
+            }
+
+            // Handle search button click
+            const searchBtn = document.querySelector('[data-action="search"]');
+            if (searchBtn) {
+                searchBtn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const searchInput = document.getElementById('search-input');
+                    const searchValue = searchInput ? searchInput.value : '';
+                    sendInteraction('search', 'search-btn', 'Search Button', searchValue);
+                });
+            }
+        }
+
+        // Initialize event listeners when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            attachEventListeners();
+        });
+    </script>
+</body>
+
+</html>
