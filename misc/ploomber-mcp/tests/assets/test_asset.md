@@ -1,0 +1,1 @@
+This is some asset used by the test suite.

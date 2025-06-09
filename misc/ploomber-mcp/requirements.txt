@@ -1,0 +1,2 @@
+ploomber_cloud
+mcp[cli]
