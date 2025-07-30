@@ -552,3 +552,34 @@ To start Dev Mode, run from your project folder:
 ```sh
 ploomber-cloud dev
 ```
+
+## Explicitly include files
+
+```{versionadded} 0.4.5
+```
+
+By default, `ploomber-cloud` ignores certain files when deploying your app (e.g. `.git` or `.pyc`).
+
+If you want to make sure certain files are **not** ignored, you can specify them in the `include` config field.
+
+You'll need to generate your config file using:
+
+```sh
+ploomber-cloud init
+```
+
+Next, add the `include` field to the generated `ploomber-cloud.json`:
+
+```json
+{
+    "id": "mute-mouse-4739",
+    "type": "streamlit",
+    "include": [
+        ".git"
+    ]
+}
+```
+
+You can specify as many files or directories you want, and this will ensure the files are **always included** in your zipped Ploomber Cloud deployment.
+
+
