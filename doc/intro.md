@@ -9,6 +9,9 @@ myst:
     property=og:url: https://docs.cloud.ploomber.io/en/latest
 ---
 
+```{tip}
+Ploomber's app hosting platform is shutting down in October 31st, 2025. [Read more](https://ploomber.io/blog/platform-shut-down/)
+```
 
 # Ploomber Cloud
 
